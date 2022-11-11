@@ -101,6 +101,7 @@ export default {
       '.HrGlossaryBreadcrumb',
       '.NavbarMobile',
       '.HrGlossaryBanner',
+      '.HrGlossaryCalc',
       '.acc-out-of-view',
       '.Footer',
     ]);
