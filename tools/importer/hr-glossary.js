@@ -12,16 +12,16 @@
 /* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
 
-const createReferenceBlock = (main, document) => {
-  main.querySelectorAll('.HrGlossaryAlsoLike__container').forEach((container) => {
-    const cells = [['Reference']];
-    container.querySelectorAll('.HrGlossaryAlsoLike__wrapper').forEach((cell) => {
-      cells.push([cell]);
-    });
-    const table = WebImporter.DOMUtils.createTable(cells, document);
-    container.replaceWith(table);
-  });
-};
+// const createReferenceBlock = (main, document) => {
+//   main.querySelectorAll('.HrGlossaryAlsoLike__container').forEach((container) => {
+//     const cells = [['Reference']];
+//     container.querySelectorAll('.HrGlossaryAlsoLike__wrapper').forEach((cell) => {
+//       cells.push([cell]);
+//     });
+//     const table = WebImporter.DOMUtils.createTable(cells, document);
+//     container.replaceWith(table);
+//   });
+// };
 
 const createMetadata = (main, document) => {
   const meta = {};
@@ -36,42 +36,23 @@ const createMetadata = (main, document) => {
     meta.Description = desc.content;
   }
 
-  const category = document.querySelector('[property="article:section"]');
-  if (category) {
-    meta.Category = category.content;
-  }
-
-  const date = document.querySelector('[property="article:published_time"]');
-  if (date) {
-    meta['Publication Date'] = date.content.substring(0, date.content.indexOf('T'));
-  }
-
-  const updated = main.querySelector('.blogPostContent__metaModifiedDate');
-  if (updated && updated.textContent) {
-    const d = updated.textContent.replace('Updated ', '');
-    meta['Updated Date'] = new Date(d).toISOString().substring(0, 10);
-  }
-
-  const author = main.querySelector('[rel="author"]');
-  if (author) {
-    meta.Author = author;
-  }
-
-  const metatop = main.querySelector('.blogPostContent__metaTop');
-  if (metatop) {
-    const split = metatop.textContent.trim().split('\n');
-    if (split.length === 3) {
-      // eslint-disable-next-line prefer-destructuring
-      meta['Read Time'] = split[2].trim();
-    }
-  }
-
   const img = document.querySelector('[property="og:image"]');
   if (img) {
     const el = document.createElement('img');
     el.src = img.content;
     meta.Image = el;
   }
+
+  const term = document.querySelector('h1');
+  if (term) {
+    meta.Term = term.innerHTML.replace(/[\n\t]/gm, '');
+  }
+
+  meta.Template = 'HR Glossary';
+  
+  meta.Theme = '';
+
+  meta.Category = '';
 
   const block = WebImporter.Blocks.getMetadataBlock(document, meta);
   main.append(block);
@@ -102,12 +83,14 @@ export default {
       '.NavbarMobile',
       '.HrGlossaryBanner',
       '.HrGlossaryCalc',
+      '.HrGlossaryAlsoLike',
+      '.HrGlossaryTerm__contentCtaWrap',
       '.acc-out-of-view',
       '.Footer',
     ]);
     const main = document.querySelector('.HrGlossary');
 
-    createReferenceBlock(main, document);
+    // createReferenceBlock(main, document);
     createMetadata(main, document);
 
     return main;
