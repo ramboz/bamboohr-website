@@ -50,9 +50,11 @@ const createMetadata = (main, document) => {
 
   meta.Template = 'HR Glossary';
   
-  meta.Theme = '';
+  meta.Theme = 'green';
 
   meta.Category = '';
+
+	meta.Robots = '';
 
   const block = WebImporter.Blocks.getMetadataBlock(document, meta);
   main.append(block);
