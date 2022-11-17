@@ -12,16 +12,72 @@
 /* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
 
-// const createReferenceBlock = (main, document) => {
-//   main.querySelectorAll('.HrGlossaryAlsoLike__container').forEach((container) => {
-//     const cells = [['Reference']];
-//     container.querySelectorAll('.HrGlossaryAlsoLike__wrapper').forEach((cell) => {
-//       cells.push([cell]);
-//     });
-//     const table = WebImporter.DOMUtils.createTable(cells, document);
-//     container.replaceWith(table);
-//   });
-// };
+const createCalloutBlock = (main, document) => {
+  main.querySelectorAll('.HrGlossaryTerm__contentCta').forEach((callout) => {
+    const cells = [['Callout']];
+    // let blockName = 'Callout';
+
+    // cells.push([blockName]);
+
+    const container = document.createElement('div');
+
+    const firstText = callout.querySelector('.HrGlossaryTerm__contentCtaTitle');
+    if (firstText) {
+      const h = document.createElement('h3');
+      h.innerHTML = firstText.textContent;
+      container.append(h);
+    }
+
+    const sub = callout.querySelector('.HrGlossaryTerm__contentCtaSubheading');
+    if (sub) {
+      const p = document.createElement('p');
+      p.innerHTML = sub.innerHTML;
+      container.append(p);
+    }
+
+    cells.push([container]);
+
+    const cta = callout.querySelector('a');
+    if (cta) {
+      cells.push([cta]);
+    }
+    callout.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
+  });
+};
+
+const createReferenceBlock = (main, document) => {
+  main.querySelectorAll('.HrGlossaryAlsoLike__container').forEach((container) => {
+    const cells = [['Cards (image top, 3 columns)']];
+    container.querySelectorAll('.HrGlossaryAlsoLike__wrapper').forEach((cell) => {
+      cells.push([cell]);
+    });
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    container.replaceWith(table);
+  });
+};
+
+const createReferenceBlock2 = (main, document) => {
+  main.querySelectorAll('.HrGlossaryAlsoLike__container').forEach((container) => {
+    const cells = [['Cards (image top, 3 columns)']];
+    const mainContainer = document.createElement('div');
+
+    container.querySelectorAll('.HrGlossaryAlsoLike__wrapper').forEach((wrapper) => {
+      const wrapper = document.createElement('div');
+      const image = wrapper.querySelector('.HrGlossaryAlsoLike__image');
+      if (image) {
+        const img = document.createElement('img');
+        img.src = image.content;
+        wrapper.append(img);
+      }
+
+      // cells.push([wrapper]);
+      // cells.push([cell]);
+    });
+    // wrapper.push[[mainContainer]];
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    mainContainer.replaceWith(table);
+  });
+};
 
 const createMetadata = (main, document) => {
   const meta = {};
@@ -54,7 +110,7 @@ const createMetadata = (main, document) => {
 
   meta.Category = '';
 
-	meta.Robots = '';
+  meta.Robots = '';
 
   const block = WebImporter.Blocks.getMetadataBlock(document, meta);
   main.append(block);
@@ -85,14 +141,15 @@ export default {
       '.NavbarMobile',
       '.HrGlossaryBanner',
       '.HrGlossaryCalc',
-      '.HrGlossaryAlsoLike',
-      '.HrGlossaryTerm__contentCtaWrap',
+      // '.HrGlossaryAlsoLike',
+      // '.HrGlossaryTerm__contentCtaWrap',
       '.acc-out-of-view',
       '.Footer',
     ]);
     const main = document.querySelector('.HrGlossary');
-
-    // createReferenceBlock(main, document);
+    createCalloutBlock(main, document);
+    createReferenceBlock(main, document);
+    // createReferenceBlock2(main, document);
     createMetadata(main, document);
 
     return main;
