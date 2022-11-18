@@ -1,0 +1,13 @@
+.hr-glossary .callout.block {
+  background: var(--theme-base);
+}
+
+.hr-glossary .callout h3,
+.hr-glossary .callout p {
+  color: var(--color-white);
+}
+
+.hr-glossary .callout .button-container a {
+  background: var(--color-white);
+  color: var(--theme-base);
+}

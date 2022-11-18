@@ -15,6 +15,7 @@
 const createCalloutBlock = (main, document) => {
   main.querySelectorAll('.HrGlossaryTerm__contentCta').forEach((callout) => {
     const cells = [['Callout']];
+    // const cells = [];
     // let blockName = 'Callout';
 
     // cells.push([blockName]);
@@ -37,47 +38,69 @@ const createCalloutBlock = (main, document) => {
 
     cells.push([container]);
 
-    const cta = callout.querySelector('a');
+    const cta = callout.querySelector('.HrGlossaryTerm__contentCtaBtn');
+    // const goodUrl = 'https://www.bamboohr.com' + cta.href;
+    // const newBtn = cta.setAttribute('href', goodUrl);
     if (cta) {
       cells.push([cta]);
+      // cells.push([newBtn]);
     }
-    callout.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    callout.replaceWith(table);
   });
 };
 
 const createReferenceBlock = (main, document) => {
+  // main.querySelectorAll('.HrGlossaryAlsoLike__container').forEach((container) => {
+
+  //   const cells = [['Cards (image top, 3 columns)']];
+
+  //   container.querySelectorAll('.HrGlossaryAlsoLike__wrapper').forEach((reference) => {
+  //     cells.push([reference]);
+  //   });
+
+  //   const table = WebImporter.DOMUtils.createTable(cells, document);
+  //   container.replaceWith(table);
+  // });
+
+
+
+
+
   main.querySelectorAll('.HrGlossaryAlsoLike__container').forEach((container) => {
+
     const cells = [['Cards (image top, 3 columns)']];
-    container.querySelectorAll('.HrGlossaryAlsoLike__wrapper').forEach((cell) => {
-      cells.push([cell]);
+    // const container = document.createElement('div');
+
+    container.querySelectorAll('.HrGlossaryAlsoLike__wrapper').forEach((reference) => {
+      const wrapper = document.createElement('div');
+
+      const image = reference.querySelector('.HrGlossaryAlsoLike__image');
+      if (image) {
+        wrapper.append(image);
+      }
+
+      const description = reference.querySelector('.HrGlossaryAlsoLike__paragraph');
+      if (description) {
+        const p = document.createElement('p');
+        p.innerHTML = description.innerHTML.replace(/[\r\n\t]/gm, '');
+        wrapper.append(p);
+      }
+
+      const button = reference.querySelector('.HrGlossaryAlsoLike__link');
+      if (button) {
+        wrapper.append(button);
+      }
+
+      cells.push([wrapper]);
     });
+
     const table = WebImporter.DOMUtils.createTable(cells, document);
     container.replaceWith(table);
   });
+
 };
 
-const createReferenceBlock2 = (main, document) => {
-  main.querySelectorAll('.HrGlossaryAlsoLike__container').forEach((container) => {
-    const cells = [['Cards (image top, 3 columns)']];
-    const mainContainer = document.createElement('div');
-
-    container.querySelectorAll('.HrGlossaryAlsoLike__wrapper').forEach((wrapper) => {
-      const wrapper = document.createElement('div');
-      const image = wrapper.querySelector('.HrGlossaryAlsoLike__image');
-      if (image) {
-        const img = document.createElement('img');
-        img.src = image.content;
-        wrapper.append(img);
-      }
-
-      // cells.push([wrapper]);
-      // cells.push([cell]);
-    });
-    // wrapper.push[[mainContainer]];
-    const table = WebImporter.DOMUtils.createTable(cells, document);
-    mainContainer.replaceWith(table);
-  });
-};
 
 const createMetadata = (main, document) => {
   const meta = {};
@@ -87,9 +110,9 @@ const createMetadata = (main, document) => {
     meta.Title = title.innerHTML.replace(/[\n\t]/gm, '');
   }
 
-  const desc = document.querySelector('[property="og:description"]');
-  if (desc) {
-    meta.Description = desc.content;
+  const description = document.querySelector('[property="og:description"]');
+  if (description) {
+    meta.Description = description.content.replace(/[\r\n\t]/gm, '');
   }
 
   const img = document.querySelector('[property="og:image"]');
@@ -149,7 +172,6 @@ export default {
     const main = document.querySelector('.HrGlossary');
     createCalloutBlock(main, document);
     createReferenceBlock(main, document);
-    // createReferenceBlock2(main, document);
     createMetadata(main, document);
 
     return main;
