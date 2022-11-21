@@ -123,19 +123,22 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
       col.classList.add('img-col');
       hasImage = true;
     } else col.classList.add('non-img-col');
-    const isButtonLinks = block.classList.contains('button-style-link');
-    const buttons = col.querySelectorAll('a.button');
-
-    if (isButtonLinks) {
-      buttons.forEach((button) => {
-        button.classList.add('link');
-        button.parentElement.classList.add('left');
-      });
-    } else {
-      buttons.forEach((button) => {
-        button.classList.add('small');
-        button.parentElement.classList.add('left');
-      });
+    const noLeftButtons = block.classList.contains('no-left-buttons');
+    
+    if (!noLeftButtons) {
+      const isButtonLinks = block.classList.contains('button-style-link');
+      const buttons = col.querySelectorAll('a.button');
+      if (isButtonLinks) {
+        buttons.forEach((button) => {
+          button.classList.add('link');
+          button.parentElement.classList.add('left');
+        });
+      } else {
+        buttons.forEach((button) => {
+          button.classList.add('small');
+          button.parentElement.classList.add('left');
+        });
+      }
     }
 
     addIconContainer(col);
@@ -153,6 +156,11 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
 }
 
 export default function decorate(block) {
+  const zIndex1 = 'z-index-1';
+  if (block.classList.contains(zIndex1)) {
+    block.parentElement.classList.add(zIndex1);
+    block.classList.remove(zIndex1);
+  }
   const cols = [...block.firstElementChild.children];
   block.classList.add(`columns-${cols.length}-cols`);
 

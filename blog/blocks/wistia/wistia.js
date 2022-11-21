@@ -93,7 +93,11 @@ const handleThumbClick = ({ target }) => {
   wrapperElem.classList.add('visible');
 };
 
-export default async function decorate(block) {
+const loadWistia = async (block) => {
+  if (block.classList.contains('is-loaded')) {
+    return;
+  }
+
   const url = block.querySelector('a')?.getAttribute('href') || null;
   let posterElem = block.querySelector('picture');
 
@@ -127,4 +131,15 @@ export default async function decorate(block) {
   // empty and add elements
   block.innerText = '';
   block.append(posterElem);
+
+  block.classList.add('is-loaded');
+};
+
+export default async function decorate(block) {
+  const observer = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) {
+      loadWistia(block);
+    }
+  });
+  observer.observe(block);
 }

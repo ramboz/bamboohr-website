@@ -60,6 +60,7 @@ export function sortOptions(sortBy) {
                                 || a.time.localeCompare(b.time)
                                 || a.category.localeCompare(b.category),
     title: (a, b) => a.title.localeCompare(b.title),
+    term: (a, b) => a.term.localeCompare(b.term),
   };
   return sorts[sortBy];
 }

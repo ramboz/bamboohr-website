@@ -164,6 +164,21 @@ export function loadCSS(href, callback) {
 }
 
 /**
+ * Loads a template specific CSS file.
+ */
+ function loadTemplateCSS() {
+  const template = toClassName(getMetadata('template'));
+  if (template) {
+    const templates = ['bhr-comparison', 'bhr-home', 'ee-solution', 'hr-software', 'hr-unplugged',
+      'industry', 'live-demo-webinars', 'payroll-roi', 'performance-reviews', 'pricing-quote'];
+    if (templates.includes(template)) {
+      const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
+      loadCSS(`${cssBase}/styles/templates/${template}.css`);
+    }
+  }
+}
+
+/**
  * Retrieves the content of a metadata tag.
  * @param {string} name The metadata name (or property)
  * @returns {string} The metadata value
@@ -302,7 +317,7 @@ export function decorateBlock(block) {
       block.classList.remove(style);
     });
   // eslint-disable-next-line no-use-before-define
-  addWidthToParent(block);
+  addClassToParent(block);
 }
 
 /**
@@ -895,6 +910,7 @@ export async function lookupPages(pathnames, collection) {
   const indexPaths = {
     blog: '/blog/fixtures/blog-query-index.json',
     integrations: '/integrations/query-index.json?sheet=listings',
+    hrGlossary: '/hr-glossary/query-index.json',
     hrvs: '/drafts/sclayton/resources/hr-vs/query-index.json',
   };
   const indexPath = indexPaths[collection];
@@ -1006,7 +1022,6 @@ function linkImages(main) {
 export async function decorateMain(main) {
   linkImages(main);
 
-  decorateIcons(main);
   await buildAutoBlocks(main);
   setCategory();
   decorateSections(main);
@@ -1081,7 +1096,9 @@ async function loadLazy(doc) {
   });
   if (queryParams.header === 'meganav') header.classList.add('header-meganav');
   const main = doc.querySelector('main');
+  loadTemplateCSS();
   await loadBlocks(main);
+  decorateIcons(main);
 
   const { hash } = window.location;
   const element = hash ? main.querySelector(hash) : false;
@@ -1215,11 +1232,11 @@ export function createElem(elemType, ...cssClass) {
 }
 
 /**
- * Add width to a block's parent.
+ * Add class to a block's parent.
  * @param {Element} block The block element
  */
-export function addWidthToParent(block) {
-  const widths = [
+export function addClassToParent(block) {
+  const classes = [
     'full-width',
     'med-width',
     'normal-width',
@@ -1227,12 +1244,15 @@ export function addWidthToParent(block) {
     'medium-width',
     'extra-wide',
     'extra-small-width',
+    'top-section-top-margin',
+    'bottom-margin',
+    'top-margin'
   ];
-  widths.some((w) => {
-    const found = block.classList.contains(w);
+  classes.some((c) => {
+    const found = block.classList.contains(c);
     if (found) {
-      block.parentElement.classList.add(w);
-      block.classList.remove(w);
+      block.parentElement.classList.add(c);
+      block.classList.remove(c);
     }
     return found;
   });

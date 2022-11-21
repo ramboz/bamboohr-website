@@ -16,8 +16,8 @@ const IMAGE_WIDTHS = {
 const IMAGE_OPTIMIZATION = 'medium';
 
 // TODO: would probably be best to make this a global utility
-function buildPicture(images) {
-  const pictureElem = createElem('picture', 'multi-hero-background');
+export function buildPicture(images) {
+  const pictureElem = document.createElement('picture');
 
   Object.keys(images).forEach((key) => {
     const sourceWebpElem = createElem('source');
@@ -50,8 +50,6 @@ function buildPicture(images) {
     pictureElem.prepend(sourceWebpElem);
   });
 
-  console.log('PICTURE', pictureElem);
-
   return pictureElem;
 }
 
@@ -78,10 +76,14 @@ function processBackground(block) {
 
   if (Object.keys(images).length > 0) {
     const backgroundPictureElem = buildPicture(images);
+    backgroundPictureElem.classList.add('multi-hero-background');
 
     const multiHeroSection = block.closest('.multi-hero-container');
 
     multiHeroSection.prepend(backgroundPictureElem);
+
+    const mobileBackground = createElem('div', 'multi-hero-mobile-background');
+    multiHeroSection.prepend(mobileBackground);
   }
 }
 

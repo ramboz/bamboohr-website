@@ -1,4 +1,5 @@
 import { buildFigure } from '../../scripts/scripts.js';
+import { buildPicture } from '../multi-hero/multi-hero.js';
 
 function buildColumns(rowEl, count) {
   const columnEls = Array.from(rowEl.children);
@@ -10,16 +11,34 @@ function buildColumns(rowEl, count) {
   rowEl.classList.add('image-list', `image-list-${count}`);
 }
 
-export default function decorateImage(blockEl) {
-  if ([...blockEl.classList].some((c) => c.startsWith('bg-'))) {
-    blockEl.parentElement.classList.add('background-image');
+export default function decorateImage(block) {
+  if ([...block.classList].some((c) => c.startsWith('bg-'))) {
+    block.parentElement.classList.add('background-image');
   }
-  const blockCount = blockEl.firstChild.childElementCount;
+  const blockCount = block.firstChild.childElementCount;
   if (blockCount > 1) {
-    buildColumns(blockEl.firstChild, blockCount);
-  } else if (blockEl?.firstChild?.firstChild) {
-    const figEl = buildFigure(blockEl.firstChild.firstChild);
-    blockEl.innerHTML = '';
-    blockEl.append(figEl);
+    buildColumns(block.firstChild, blockCount);
+  } else if (block?.firstChild?.firstChild) {
+    const figEl = buildFigure(block.firstChild.firstChild);
+    block.innerHTML = '';
+    block.append(figEl);
+  } else if (block.classList.contains('has-breakpoint-images')) {
+    const images = {};
+    const imgSizes = ['tablet', 'laptop', 'desktop'];
+    let imgsFoundCnt = 0;
+    block.querySelectorAll('picture').forEach(pic => {
+      const imagePathFull = pic.firstElementChild.srcset;
+      const imagePath = imagePathFull.substr(0, imagePathFull.indexOf('?'));
+
+      images[imgSizes[imgsFoundCnt]] = imagePath;
+      imgsFoundCnt++;
+    });
+
+    if (imgsFoundCnt > 0) {
+      block.firstElementChild.remove();
+
+      const backgroundPictureElem = buildPicture(images);
+      block.append(backgroundPictureElem);
+    }
   }
 }

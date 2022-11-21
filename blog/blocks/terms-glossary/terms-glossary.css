@@ -1,0 +1,35 @@
+main .section > div.terms-glossary-wrapper {
+    max-width: 1200px;
+}
+
+.glossary-group-container {
+    margin-bottom: 60px;
+}
+
+.glossary-group-letter {
+    color: var(--color-gray-12);
+    margin-bottom: 20px;
+}
+
+main a.glossary-link {
+    display: block;
+    line-height: 28px;
+}
+
+@media screen and (min-width: 600px) {
+    .glossary-term-container {
+        column-count: 2;
+        column-gap: 60px;
+    }
+    .glossary-group-container {
+        -webkit-column-break-inside: avoid;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+}
+@media screen and (min-width: 1024px) {
+    .glossary-term-container {
+        column-count: 3;
+        column-gap: 10px;
+    }
+}
