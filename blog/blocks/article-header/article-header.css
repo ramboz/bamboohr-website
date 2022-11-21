@@ -133,7 +133,8 @@ main .article-header a:any-link {
   text-decoration: none;
 }
 
-main .article-header-share img {
+main .article-header-share img,
+main .article-header-share .icon svg {
   width: 36px;
   height: 36px;
   object-fit: contain;
@@ -169,7 +170,8 @@ main .article-header-share img {
     box-sizing: border-box;
   }
 
-  main .article-header-share img {
+  main .article-header-share img,
+  main .article-header-share .icon svg {
     display: inline-block;
     padding: 9px
   }
