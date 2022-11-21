@@ -188,7 +188,6 @@ body.pricing-quote {
 }
 
 /* Alt pricing */
-
 .alt-pricing main .button-container a[data-modal].button {
   color: var(--color-2-shade-15);
   background-color: var(--color-2-tint-5);
