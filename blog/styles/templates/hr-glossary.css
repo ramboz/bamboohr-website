@@ -1,3 +1,11 @@
+.hr-glossary main {
+  margin-bottom: 100px;
+}
+
+.hr-glossary main > .section.page-header-container {
+  padding: 0;
+}
+
 .hr-glossary .callout.block {
   background: var(--theme-base);
 }
@@ -10,4 +18,17 @@
 .hr-glossary .callout .button-container a {
   background: var(--color-white);
   color: var(--theme-base);
+}
+
+.hr-glossary main .default-content-wrapper a:any-link {
+  background: linear-gradient(#f000 50%, var(--theme-tint10) 50.1%);
+}
+
+.hr-glossary #you-might-also-like {
+  margin-top: 80px;
+  margin-bottom: 40px;
+}
+
+.hr-glossary .cards > .card.has-image img {
+  margin-bottom: 30px;
 }

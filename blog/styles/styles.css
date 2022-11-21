@@ -406,6 +406,7 @@ main .title.small-header2 :is(h1, h2, h3, h4, h5, h6, div) {
 
 .typ-title1,
 .resources-guides main h3,
+.hr-glossary #you-might-also-like,
 main .title.title1 :is(h1, h2, h3, h4, h5, h6, div) {
   font-family: var(--heading-font-family);
   font-weight: 700;
@@ -527,6 +528,7 @@ table td {
   main .article-header h1,
   .call-to-action-modal main h3,
   .hr-unplugged .section-1.success h2,
+  .hr-glossary h1,
   main .title.section-header :is(h1, h2, h3, h4, h5, h6, div) {
     font-size: 48px;
     line-height: 60px;

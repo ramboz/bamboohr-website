@@ -38,9 +38,12 @@ const createCalloutBlock = (main, document) => {
 
     cells.push([container]);
 
-    const cta = callout.querySelector('.HrGlossaryTerm__contentCtaBtn');
-    // const goodUrl = 'https://www.bamboohr.com' + cta.href;
-    // const newBtn = cta.setAttribute('href', goodUrl);
+    let cta = callout.querySelector('.HrGlossaryTerm__contentCtaBtn');
+    const href = cta.getAttribute('href');
+    const goodUrl = 'https://www.bamboohr.com' + href;
+    // const url = cta.getAttribute('href', goodUrl);
+    // r.innerHTML = r.getAttribute('href');
+    cta.href = goodUrl;
     if (cta) {
       cells.push([cta]);
       // cells.push([newBtn]);
