@@ -15,10 +15,6 @@
 const createCalloutBlock = (main, document) => {
   main.querySelectorAll('.HrGlossaryTerm__contentCta').forEach((callout) => {
     const cells = [['Callout']];
-    // const cells = [];
-    // let blockName = 'Callout';
-
-    // cells.push([blockName]);
 
     const container = document.createElement('div');
 
@@ -39,11 +35,9 @@ const createCalloutBlock = (main, document) => {
     cells.push([container]);
 
     let cta = callout.querySelector('.HrGlossaryTerm__contentCtaBtn');
-    const href = cta.getAttribute('href');
-    const goodUrl = 'https://www.bamboohr.com' + href;
-    // const url = cta.getAttribute('href', goodUrl);
-    // r.innerHTML = r.getAttribute('href');
-    cta.href = goodUrl;
+    // const href = cta.getAttribute('href');
+    // const goodUrl = 'https://www.bamboohr.com' + href;
+    // cta.href = goodUrl;
     if (cta) {
       cells.push([cta]);
       // cells.push([newBtn]);
@@ -54,22 +48,6 @@ const createCalloutBlock = (main, document) => {
 };
 
 const createReferenceBlock = (main, document) => {
-  // main.querySelectorAll('.HrGlossaryAlsoLike__container').forEach((container) => {
-
-  //   const cells = [['Cards (image top, 3 columns)']];
-
-  //   container.querySelectorAll('.HrGlossaryAlsoLike__wrapper').forEach((reference) => {
-  //     cells.push([reference]);
-  //   });
-
-  //   const table = WebImporter.DOMUtils.createTable(cells, document);
-  //   container.replaceWith(table);
-  // });
-
-
-
-
-
   main.querySelectorAll('.HrGlossaryAlsoLike__container').forEach((container) => {
 
     const cells = [['Cards (image top, 3 columns)']];
