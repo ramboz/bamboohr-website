@@ -87,7 +87,7 @@ function parseExperimentConfig(json) {
  export async function getExperimentConfig(experimentId, instantExperiment) {
   if (instantExperiment) {
     const config = {
-      experimentName: `Instant Experiment: ${experimentId}`,
+      label: `Instant Experiment: ${experimentId}`,
       audience: '',
       status: 'Active',
       id: experimentId,
