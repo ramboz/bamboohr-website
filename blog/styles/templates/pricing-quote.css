@@ -186,26 +186,3 @@ body.pricing-quote {
     font-size: 36px;
   }
 }
-
-/* Alt pricing */
-.red-highlights main .button-container a[data-modal].button,
-.pricing.challenger-1 .button-container a[data-modal].button {
-  color: var(--color-2-shade-15);
-  background-color: var(--color-2-tint-5);
-}
-
-.red-highlights main .table td:last-of-type path,
-.pricing.challenger-1 .table td:last-of-type path {
-  stroke: var(--color-2-shade-5);
-}
-
-.blue-highlights main .button-container a[data-modal].button,
-.pricing.challenger-2 .button-container a[data-modal].button {
-  color: var(--color-5-shade-10);
-  background-color: var(--color-5-tint-5);
-}
-
-.blue-highlights main .table td:last-of-type path,
-.pricing.challenger-2 .table td:last-of-type path {
-  stroke: var(--color-5-shade-5);
-}
