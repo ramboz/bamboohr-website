@@ -1072,69 +1072,6 @@ async function loadMartech() {
 }
 
 /**
- * Parses the experimentation configuration sheet and creates an internal model.
- *
- * Output model is expected to have the following structure:
- *      {
- *        label: <string>,
- *        blocks: [<string>]
- *        audience: Desktop | Mobile,
- *        status: Active | On | True | Yes,
- *        variantNames: [<string>],
- *        variants: {
- *          [variantName]: {
- *            label: <string>
- *            percentageSplit: <number 0-1>,
- *            pages: <string>,
- *            blocks: <string>,
- *          }
- *        }
- *      };
- */
-function parseExperimentConfig(json) {
-  const config = {};
-  try {
-    json.settings.data.forEach((line) => {
-      const key = toCamelCase(line.Name);
-      config[key] = line.Value;
-    });
-    config.id = experimentId;
-    config.manifest = path;
-    const variants = {};
-    let variantNames = Object.keys(json.experiences.data[0]);
-    variantNames.shift();
-    variantNames = variantNames.map((vn) => toCamelCase(vn));
-    variantNames.forEach((variantName) => {
-      variants[variantName] = {};
-    });
-    let lastKey = 'default';
-    json.experiences.data.forEach((line) => {
-      let key = toCamelCase(line.Name);
-      if (!key) key = lastKey;
-      lastKey = key;
-      const vns = Object.keys(line);
-      vns.shift();
-      vns.forEach((vn) => {
-        const camelVN = toCamelCase(vn);
-        if (key === 'pages' || key === 'blocks') {
-          variants[camelVN][key] = variants[camelVN][key] || [];
-          if (key === 'pages') variants[camelVN][key].push(new URL(line[vn]).pathname);
-          else variants[camelVN][key].push(line[vn]);
-        } else {
-          variants[camelVN][key] = line[vn];
-        }
-      });
-    });
-    config.variants = variants;
-    config.variantNames = variantNames;
-    return config;
-  } catch (e) {
-    console.log('error parsing experiment config:', e);
-  }
-  return null;
-}
-
-/**
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
