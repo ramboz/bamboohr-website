@@ -15,7 +15,7 @@ import {
   loadCSS,
   toClassName,
   getMetadata,
-} from '../../blog/scripts/scripts.js';
+} from '../../scripts/scripts.js';
 
 const percentformat = new Intl.NumberFormat('en-US', { style: 'percent', maximumSignificantDigits: 2 });
 const countformat = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 2 });
@@ -80,7 +80,6 @@ async function createExperiment() {
   };
 
   const manifestButton = config.manifest ? `<div class="hlx-button"><a href="${config.manifest}">Manifest</a></div>` : '';
-
   const div = document.createElement('div');
   div.className = 'hlx-experiment hlx-badge';
   div.classList.add(`hlx-experiment-status-${toClassName(config.status)}`);

@@ -1,1 +1,98 @@
-function e(e,t,n,r){var a=function(e){var t=function(e,t){for(var n,r,a=3&e.length,i=e.length-a,o=3432918353,c=461845907,u=t,d=0;d<i;)n=255&e.charCodeAt(d)|(255&e.charCodeAt(++d))<<8|(255&e.charCodeAt(++d))<<16|(255&e.charCodeAt(++d))<<24,++d,u=27492+(65535&(r=5*(65535&(u=(u^=n=(65535&(n=(n=(65535&n)*o+(((n>>>16)*o&65535)<<16)&4294967295)<<15|n>>>17))*c+(((n>>>16)*c&65535)<<16)&4294967295)<<13|u>>>19))+((5*(u>>>16)&65535)<<16)&4294967295))+((58964+(r>>>16)&65535)<<16);switch(n=0,a){case 3:n^=(255&e.charCodeAt(d+2))<<16;case 2:n^=(255&e.charCodeAt(d+1))<<8;case 1:u^=n=(65535&(n=(n=(65535&(n^=255&e.charCodeAt(d)))*o+(((n>>>16)*o&65535)<<16)&4294967295)<<15|n>>>17))*c+(((n>>>16)*c&65535)<<16)&4294967295}return u^=e.length,u=2246822507*(65535&(u^=u>>>16))+((2246822507*(u>>>16)&65535)<<16)&4294967295,u=3266489909*(65535&(u^=u>>>13))+((3266489909*(u>>>16)&65535)<<16)&4294967295,(u^=u>>>16)>>>0}(e,0);return Math.abs(t)%1e4/1e4}(e+"."+t),i=function(e,t,n){for(var r=e.reduce((function(e,t){return e+t}),0),a=0,i=0;i<t.length;i++)if(!(n>(a+=Number(e[i].toFixed(2))/r)))return t[i]}(n,r,a);return{treatmentId:i,bucketId:a}}function t(e,t,n){var r,a=function(e){var t=localStorage.getItem("unified-decisioning-experiments");if(t){var n=JSON.parse(t);if(n[e])return n[e].treatment}return null}(e);if(a)r=a;else{var i=function(e,t){for(var n=100*Math.random(),r=t.length;n>0&&r>0;)n-=+e[r-=1];return t[r]}(t,n);!function(e,t){var n=localStorage.getItem("unified-decisioning-experiments"),r=n?JSON.parse(n):{},a=new Date;Object.keys(r).forEach((function(e){var t=new Date(r[e].date);a.getTime()-t.getTime()>2592e6&&delete r[e]}));var i=a.toISOString().split("T")[0];r[e]={treatment:t,date:i},localStorage.setItem("unified-decisioning-experiments",JSON.stringify(r))}(e,i),r=i}return{treatmentId:r}}var n="VISITOR",r="DEVICE";function a(a,i,o){var c=a[o],u=c.experiment;if("EXPERIMENTATION"===c.type){var d=function(a,i){var o=i.id,c=i.identityNamespace,u=i.randomizationUnit,d=void 0===u?n:u,f=a.identityMap,s=i.treatments.map((function(e){return e.id})),m=i.treatments.map((function(e){return e.allocationPercentage})),h=null;switch(d){case n:h=e(o,f[c][0].id,m,s);break;case r:h=t(o,m,s);break;default:throw new Error("Unknow randomization unit")}return{experimentId:o,hashedBucket:h.bucketId,treatment:{id:h.treatmentId}}}(i,u).treatment;return[d]}}function i(e,t){var n={};return e.decisionNodes.forEach((function(e){n[e.id]=e})),{items:a(n,t,e.rootDecisionNodeId)}}export{i as evaluateDecisionPolicy};
+var LOCAL_STORAGE_KEY = 'unified-decisioning-experiments';
+function assignTreatment(allocationPercentages, treatments) {
+  var random = Math.random() * 100;
+  var i = treatments.length;
+  while (random > 0 && i > 0) {
+      i -= 1;
+      random -= +allocationPercentages[i];
+  }
+  return treatments[i];
+}
+function getLastExperimentTreatment(experimentId) {
+  var experimentsStr = localStorage.getItem(LOCAL_STORAGE_KEY);
+  if (experimentsStr) {
+      var experiments = JSON.parse(experimentsStr);
+      if (experiments[experimentId]) {
+          return experiments[experimentId].treatment;
+      }
+  }
+  return null;
+}
+function setLastExperimentTreatment(experimentId, treatment) {
+  var experimentsStr = localStorage.getItem(LOCAL_STORAGE_KEY);
+  var experiments = experimentsStr ? JSON.parse(experimentsStr) : {};
+  var now = new Date();
+  var expKeys = Object.keys(experiments);
+  expKeys.forEach(function (key) {
+      var date = new Date(experiments[key].date);
+      if ((now.getTime() - date.getTime()) > (1000 * 86400 * 30)) {
+          delete experiments[key];
+      }
+  });
+  var date = now.toISOString().split('T')[0];
+  experiments[experimentId] = { treatment: treatment, date: date };
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(experiments));
+}
+function assignTreatmentByDevice(experimentId, allocationPercentages, treatments) {
+  var cachedTreatmentId = getLastExperimentTreatment(experimentId);
+  var treatmentIdResponse;
+  if (!cachedTreatmentId) {
+      var assignedTreatmentId = assignTreatment(allocationPercentages, treatments);
+      setLastExperimentTreatment(experimentId, assignedTreatmentId);
+      treatmentIdResponse = assignedTreatmentId;
+  }
+  else {
+      treatmentIdResponse = cachedTreatmentId;
+  }
+  return {
+      treatmentId: treatmentIdResponse
+  };
+}
+
+var RandomizationUnit = {
+  VISITOR: 'VISITOR',
+  DEVICE: 'DEVICE'
+};
+function evaluateExperiment(context, experiment) {
+  var experimentId = experiment.id, identityNamespace = experiment.identityNamespace, _a = experiment.randomizationUnit, randomizationUnit = _a === void 0 ? RandomizationUnit.VISITOR : _a;
+  var identityMap = context.identityMap;
+  var treatments = experiment.treatments.map(function (item) { return item.id; });
+  var allocationPercentages = experiment.treatments.map(function (item) { return item.allocationPercentage; });
+  var treatmentAssignment = null;
+  switch (randomizationUnit) {
+      case RandomizationUnit.DEVICE: {
+          treatmentAssignment = assignTreatmentByDevice(experimentId, allocationPercentages, treatments);
+          break;
+      }
+      default:
+          throw new Error("Unknow randomization unit");
+  }
+  var evaluationResponse = {
+      experimentId: experimentId,
+      hashedBucket: treatmentAssignment.bucketId,
+      treatment: {
+          id: treatmentAssignment.treatmentId
+      }
+  };
+  return evaluationResponse;
+}
+
+function traverseDecisionTree(decisionNodesMap, context, currentNodeId) {
+  var _a = decisionNodesMap[currentNodeId], experiment = _a.experiment, type = _a.type;
+  if (type === 'EXPERIMENTATION') {
+      var treatment = evaluateExperiment(context, experiment).treatment;
+      return [treatment];
+  }
+}
+function evaluateDecisionPolicy(decisionPolicy, context) {
+  var decisionNodesMap = {};
+  decisionPolicy.decisionNodes.forEach(function (item) {
+      decisionNodesMap[item['id']] = item;
+  });
+  var items = traverseDecisionTree(decisionNodesMap, context, decisionPolicy.rootDecisionNodeId);
+  return {
+      items: items
+  };
+}
+
+export { evaluateDecisionPolicy };

@@ -153,6 +153,29 @@ function isValidAudience(audience) {
   return true;
 }
 
+/**
+ * Checks whether the current page is suitable to run an experiment.
+ * It is a production or live domain, url does not contain a fragment preceded with a hash, and it is not a bot.
+ * @returns {boolean} true if the current is suitable to run an experiment
+ */
+ function isSuitablePage() {
+  if (!window.location.host.includes('bamboohr.com') && !window.location.host.includes('.hlx.live')) {
+    return false;
+    // reason = 'not prod host';
+  }
+  if (window.location.hash) {
+    return false;
+    // reason = 'suppressed by #';
+  }
+
+  if (navigator.userAgent.match(/bot|crawl|spider/i)) {
+    return false;
+    // reason = 'bot detected';
+  }
+  return true;
+}
+
+
 function getDecisionPolicy(config) {
   const decisionPolicy = {
     id: 'content-experimentation-policy',
@@ -207,8 +230,10 @@ async function replaceInner(path, element, isBlock = false) {
   return null;
 }
 
+
+
 export async function runExperiment(experiment, instantExperiment) {
-  const ued = import ('./experimentation-ued.js');
+
   const usp = new URLSearchParams(window.location.search);
   const [forcedExperiment, forcedVariant] = usp.has('experiment') ? usp.get('experiment').split('/') : [];
 
@@ -219,7 +244,8 @@ export async function runExperiment(experiment, instantExperiment) {
   }
 
   experimentConfig.run = forcedExperiment
-    || isValidAudience(toClassName(experimentConfig.audience));
+    || (isValidAudience(toClassName(experimentConfig.audience)) && isSuitablePage());
+    
   window.hlx = window.hlx || {};
   window.hlx.experiment = experimentConfig;
   console.debug('run', experimentConfig.run, experimentConfig.audience);
@@ -230,7 +256,7 @@ export async function runExperiment(experiment, instantExperiment) {
   if (forcedVariant && experimentConfig.variantNames.includes(forcedVariant)) {
     experimentConfig.selectedVariant = forcedVariant;
   } else {
-    const { evaluateDecisionPolicy } = await ued;
+    const { evaluateDecisionPolicy } = await import('./experimentation-ued.js');
     const decision = evaluateDecisionPolicy(getDecisionPolicy(experimentConfig), {});
     experimentConfig.selectedVariant = decision.items[0].id;
   }
