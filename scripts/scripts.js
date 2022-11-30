@@ -242,45 +242,35 @@ export async function decorateIcons(element) {
   // prepare for forward compatible icon handling
   replaceIcons(element);
 
-  const icons = [...element.querySelectorAll('span.icon')];
-  
-  const symbols = {};
-  const fetchBase = window.hlx.serverPath;
-  await Promise.all(icons.map(async (span) => {
-    const iconName = span.className.split('icon-')[1];
-    if (!symbols[iconName]) {
-      symbols[iconName] = true;
-      try {
-        const response = await fetch(`${fetchBase}${window.hlx.codeBasePath}/icons/${iconName}.svg`);
-        const svg = await response.text();
-        symbols[iconName] = svg
-          .replace('<svg', `<symbol id="${iconName}"`)
-          .replace('</svg>', '</symbol>');
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }));
-
   let svgSprite = document.getElementById('franklin-svg-sprite');
   if (!svgSprite) {
     const div = document.createElement('div');
-    div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none">
-      ${Object.values(symbols).join('\n')}
-    </svg>`;
+    div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>`;
     svgSprite = div.firstElementChild;
     document.body.prepend(div.firstElementChild);
-  } else {
-    svgSprite.innerHTML += Object.values(symbols).join('\n');
   }
 
-  icons.forEach(async (span) => {
+  const icons = [...element.querySelectorAll('span.icon')];
+  
+  const promises = {};
+  const fetchBase = window.hlx.serverPath;
+  icons.forEach((span) => {
     const iconName = span.className.split('icon-')[1];
-    const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
-    parent.innerHTML =
-      `<svg xmlns="http://www.w3.org/2000/svg">
-        <use href="#${iconName}"/>
-      </svg>`;
+    if (!promises[iconName]) {
+      promises[iconName] = fetch(`${fetchBase}${window.hlx.codeBasePath}/icons/${iconName}.svg`)
+        .then((response) => response.text())
+        .then((svg) => svg.replace('<svg', `<symbol id="${iconName}"`).replace('</svg>', '</symbol>'))
+        .then((symbol) => { svgSprite.innerHTML += symbol; })
+        .then(() => {
+          document.querySelectorAll(`.icon-${iconName}`).forEach((icon) => {
+            const parent = icon.firstElementChild?.tagName === 'A' ? icon.firstElementChild : icon;
+            parent.innerHTML =
+              `<svg xmlns="http://www.w3.org/2000/svg">
+                <use href="#${iconName}"/>
+              </svg>`;
+          });
+        });
+    }
   });
 }
 
