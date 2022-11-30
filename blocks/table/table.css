@@ -124,6 +124,11 @@
   align-items: center;
 }
 
+.table .icon-checkmark svg {
+  width: 18px;
+  height: 18px;
+}
+
 .table.comparison .elite-ribbon::after,
 .table.comparison .pro-ribbon::after {
   font-size: 17px;
