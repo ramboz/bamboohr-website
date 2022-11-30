@@ -249,6 +249,7 @@ export async function decorateIcons(element) {
   await Promise.all(icons.map(async (span) => {
     const iconName = span.className.split('icon-')[1];
     if (!symbols[iconName]) {
+      symbols[iconName] = true;
       try {
         const response = await fetch(`${fetchBase}${window.hlx.codeBasePath}/icons/${iconName}.svg`);
         const svg = await response.text();
