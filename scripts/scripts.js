@@ -274,7 +274,7 @@ export async function decorateIcons(element) {
     svgSprite.innerHTML += Object.values(symbols).join('\n');
   }
 
-  element.querySelectorAll('span.icon').forEach(async (span) => {
+  icons.forEach(async (span) => {
     const iconName = span.className.split('icon-')[1];
     const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
     parent.innerHTML =
