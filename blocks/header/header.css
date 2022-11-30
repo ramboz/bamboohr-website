@@ -10,6 +10,12 @@
   color: #9CA393;
 }
 
+
+.nav-brand .icon {
+  width: 150px;
+  height: 23px;
+}
+
 .nav-search-btn .icon-search svg {
   color: var(--color-1);
 }
