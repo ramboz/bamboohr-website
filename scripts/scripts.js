@@ -237,20 +237,49 @@ function replaceIcons(element) {
  * Replace icons with inline SVG and prefix with codeBasePath.
  * @param {Element} element
  */
-export function decorateIcons(element) {
+export async function decorateIcons(element) {
+  
   // prepare for forward compatible icon handling
   replaceIcons(element);
 
+  const icons = [...element.querySelectorAll('span.icon')];
+  
+  const symbols = {};
   const fetchBase = window.hlx.serverPath;
-  element.querySelectorAll('span.icon').forEach((span) => {
+  await Promise.all(icons.map(async (span) => {
     const iconName = span.className.split('icon-')[1];
-    fetch(`${fetchBase}${window.hlx.codeBasePath}/icons/${iconName}.svg`).then((resp) => {
-      if (resp.status === 200)
-        resp.text().then((svg) => {
-          const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
-          parent.innerHTML = svg;
-        });
-    });
+    if (!symbols[iconName]) {
+      try {
+        const response = await fetch(`${fetchBase}${window.hlx.codeBasePath}/icons/${iconName}.svg`);
+        const svg = await response.text();
+        symbols[iconName] = svg
+          .replace('<svg', `<symbol id="${iconName}"`)
+          .replace('</svg>', '</symbol>');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }));
+
+  let svgSprite = document.getElementById('franklin-svg-sprite');
+  if (!svgSprite) {
+    const div = document.createElement('div');
+    div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none">
+      ${Object.values(symbols).join('\n')}
+    </svg>`;
+    svgSprite = div.firstElementChild;
+    document.body.prepend(div.firstElementChild);
+  } else {
+    svgSprite.innerHTML += Object.values(symbols).join('\n');
+  }
+
+  element.querySelectorAll('span.icon').forEach(async (span) => {
+    const iconName = span.className.split('icon-')[1];
+    const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
+    parent.innerHTML =
+      `<svg xmlns="http://www.w3.org/2000/svg">
+        <use href="#${iconName}"/>
+      </svg>`;
   });
 }
 
