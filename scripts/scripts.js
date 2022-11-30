@@ -262,7 +262,7 @@ export function decorateIcons(element) {
     if (!promises[iconName]) {
       promises[iconName] = fetch(`${fetchBase}${window.hlx.codeBasePath}/icons/${iconName}.svg`)
         .then((response) => response.text())
-        .then((svg) => svg.replace('<svg', `<symbol id="${iconName}"`).replace('</svg>', '</symbol>'))
+        .then((svg) => svg.replace('<svg', `<symbol id="${iconName}"`).replace(/ width=".*?"/, '').replace(/ height=".*?"/, '').replace('</svg>', '</symbol>'))
         .then((symbol) => { svgSprite.innerHTML += symbol; })
         .then(() => {
           document.querySelectorAll(`.icon-${iconName}`).forEach((icon) => {
