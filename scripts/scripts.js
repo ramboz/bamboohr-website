@@ -238,22 +238,29 @@ function replaceIcons(element) {
  * @param {Element} element
  */
 export async function decorateIcons(element) {
+  const symbols = {};
+  let svgSprite = document.getElementById('franklin-svg-sprite');
+  if (!svgSprite) {
+    const div = document.createElement('div');
+    div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>`;
+    svgSprite = div.firstElementChild;
+    document.body.append(div.firstElementChild);
+  }
   
   // prepare for forward compatible icon handling
   replaceIcons(element);
 
   const icons = [...element.querySelectorAll('span.icon')];
   
-  const symbols = {};
   const fetchBase = window.hlx.serverPath;
-  await Promise.all(icons.map(async (span) => {
+  icons.forEach(async (span) => {
     const iconName = span.className.split('icon-')[1];
     if (!symbols[iconName]) {
       symbols[iconName] = true;
       try {
         const response = await fetch(`${fetchBase}${window.hlx.codeBasePath}/icons/${iconName}.svg`);
         const svg = await response.text();
-        symbols[iconName] = svg
+        svgSprite.innerHTML += svg
           .replace('<svg', `<symbol id="${iconName}"`)
           .replace(/ width=".*?"/, '')
           .replace(/ height=".*?"/, '')
@@ -262,22 +269,7 @@ export async function decorateIcons(element) {
         console.error(err);
       }
     }
-  }));
 
-  let svgSprite = document.getElementById('franklin-svg-sprite');
-  if (!svgSprite) {
-    const div = document.createElement('div');
-    div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none">
-      ${Object.values(symbols).join('\n')}
-    </svg>`;
-    svgSprite = div.firstElementChild;
-    document.body.prepend(div.firstElementChild);
-  } else {
-    svgSprite.innerHTML += Object.values(symbols).join('\n');
-  }
-
-  icons.forEach(async (span) => {
-    const iconName = span.className.split('icon-')[1];
     const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
     parent.innerHTML =
       `<svg xmlns="http://www.w3.org/2000/svg">
