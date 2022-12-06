@@ -233,6 +233,7 @@ function replaceIcons(element) {
   });
 }
 
+const ICONS_CACHE = {};
 /**
  * Replace icons with inline SVG and prefix with codeBasePath.
  * @param {Element} element
@@ -244,45 +245,56 @@ export async function decorateIcons(element) {
 
   const icons = [...element.querySelectorAll('span.icon')];
   
-  const symbols = {};
   const fetchBase = window.hlx.serverPath;
   await Promise.all(icons.map(async (span) => {
     const iconName = span.className.split('icon-')[1];
-    if (!symbols[iconName]) {
-      symbols[iconName] = true;
+    if (!ICONS_CACHE[iconName]) {
+      ICONS_CACHE[iconName] = true;
       try {
         const response = await fetch(`${fetchBase}${window.hlx.codeBasePath}/icons/${iconName}.svg`);
         const svg = await response.text();
-        symbols[iconName] = svg
-          .replace('<svg', `<symbol id="${iconName}"`)
-          .replace(/ width=".*?"/, '')
-          .replace(/ height=".*?"/, '')
-          .replace('</svg>', '</symbol>');
+        if (svg.match(/(<style | class=)/)) {
+          ICONS_CACHE[iconName] = { styled: true, html: svg };
+        } else {
+          ICONS_CACHE[iconName] = {
+            html: svg
+            .replace('<svg', `<symbol id="${iconName}"`)
+            .replace(/ width=".*?"/, '')
+            .replace(/ height=".*?"/, '')
+            .replace('</svg>', '</symbol>')
+          }
+        }
       } catch (err) {
         console.error(err);
       }
     }
   }));
 
+  const symbols = Object.values(ICONS_CACHE).filter((v) => !v.styled).map((v) => v.html).join('\n');
   let svgSprite = document.getElementById('franklin-svg-sprite');
   if (!svgSprite) {
     const div = document.createElement('div');
     div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none">
-      ${Object.values(symbols).join('\n')}
+      ${symbols}
     </svg>`;
     svgSprite = div.firstElementChild;
     document.body.prepend(div.firstElementChild);
   } else {
-    svgSprite.innerHTML += Object.values(symbols).join('\n');
+    svgSprite.innerHTML += symbols;
   }
 
   icons.forEach(async (span) => {
     const iconName = span.className.split('icon-')[1];
     const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
-    parent.innerHTML =
-      `<svg xmlns="http://www.w3.org/2000/svg">
-        <use href="#${iconName}"/>
-      </svg>`;
+    if (ICONS_CACHE[iconName].styled) {
+      parent.innerHTML = ICONS_CACHE[iconName].html;
+    }
+    else {
+      parent.innerHTML =
+        `<svg xmlns="http://www.w3.org/2000/svg">
+          <use href="#${iconName}"/>
+        </svg>`;
+    }
   });
 }
 
