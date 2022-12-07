@@ -386,7 +386,9 @@ main .title.hero-subhead :is(h1, h2, h3, h4, h5, h6, div) {
   line-height: 26px;
   margin: 20px 0 0;
 }
-
+.typ-subhead1 :is(h1, h2, h3, h4, h5, h6, div) {
+  font-weight: 500;
+}
 .typ-section-subhead,
 main .title.section-subhead :is(h1, h2, h3, h4, h5, h6, div) {
   font-family: var(--body-font-family);
