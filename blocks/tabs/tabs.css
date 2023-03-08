@@ -363,6 +363,10 @@ main .tabs.style-2 .tabs-title .tabs-title-subtitle::after {
   width: .5rem;
 }
 
+main .tabs.style-2 .tabs-title[aria-selected="false"] .tabs-title-active-subtitle-content {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   main .tabs.style-2 .tabs-title .tabs-title-subtitle::after {
     opacity: 1;
@@ -494,6 +498,41 @@ main .tabs.style-3 > .accordion .tabs-content ul li a:any-link {
   font-weight: var(--heading-font-weight);
   color: var(--theme-shade10);
   background-image: linear-gradient(rgb(0 0 0 / 0%) 50%, var(--secondary-theme-tint10) 0);
+}
+
+/* style 4 */
+
+main .tabs.style-4 {
+  border-radius: 1rem;
+  padding: 40px;
+  background-color: #F7FFE5;
+}
+
+main .tabs.style-4 .tabs-flex-content {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+main .tabs.style-4 h2 {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@media (max-width: 599px) {
+  main .tabs.style-4 .tabs-flex-content {
+    flex-flow: column;
+  }
+
+  .tabs-img-col {
+    order: 1;
+    width: unset;
+  }
+
+  .tabs-non-img-col {
+    order: 2;
+    width: unset;
+  }
 }
 
 /* Dots */

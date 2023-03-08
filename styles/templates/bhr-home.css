@@ -492,6 +492,11 @@
     .bhr-home .image.bg-home-bottom-pudgy picture {
         bottom: 370px;
     }
+
+    .bhr-home main .tabs.style-2 {
+        column-gap: 1rem;
+      grid-template-columns: 1fr 1fr;
+    }
 }
 
 @media (min-width: 1200px) {

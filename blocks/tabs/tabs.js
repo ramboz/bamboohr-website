@@ -105,11 +105,21 @@ function buildDotNav(block) {
 
 export default function decorate(block) {
   [...block.children].forEach((tab) => {
+    // fixup buttons
+    const isButtonLinks = block.classList.contains('button-style-link');
+    if (isButtonLinks) {
+      const buttons = tab.querySelectorAll('a.button');
+      buttons.forEach((button) => {
+        button.classList.add('link');
+      });
+    }
+
     // setup tab title
     const title = tab.querySelector('h2');
     const anchor = title.querySelector('a');
     const open = title.querySelector('strong') !== null; // bold title indicates auto-open tab
     let titleElement;
+    const content = tab.querySelector('div');
 
     // need titles in same element
     if (block.classList.contains('style-2')) {
@@ -128,7 +138,18 @@ export default function decorate(block) {
       titleElement.textContent = '';
       titleElement.append(title);
 
-      if (subtitle) {
+      if (block.classList.contains('active-subtitle')) {
+        const activeSubtitleContent = document.createElement('div');
+        activeSubtitleContent.classList = 'tabs-title-active-subtitle-content';
+        titleElement.append(activeSubtitleContent);
+        [...content.children].forEach(child => {
+          const pic = child.querySelector('picture');
+  
+          if (!pic && child.tagName !== 'H2') {
+            activeSubtitleContent.append(child);
+          }
+        });
+      } else if (subtitle) {
         subtitle.classList.add('tabs-title-subtitle');
         titleElement.append(subtitle);
       }
@@ -144,10 +165,31 @@ export default function decorate(block) {
     titleElement.setAttribute('aria-selected', open);
 
     // setup tab content
-    const content = tab.querySelector('div');
     content.classList.add('tabs-content');
     content.setAttribute('aria-labelledby', titleElement.id);
     content.setAttribute('aria-hidden', !open);
+
+    if (block.classList.contains('style-4')) {
+      const containerDiv = document.createElement('div');
+      containerDiv.classList = 'tabs-flex-content';
+      content.append(containerDiv);
+      const textDiv = document.createElement('div');
+      textDiv.classList = 'column6 tabs-non-img-col';
+      const picDiv = document.createElement('div');
+      picDiv.classList = 'column6 tabs-img-col';
+      containerDiv.append(textDiv, picDiv);
+
+      [...content.children].forEach(child => {
+        const pic = child.querySelector('picture');
+
+        if (pic) {
+          if (pic.parentElement.tagName === 'P') pic.parentElement.remove();
+          picDiv.append(pic);
+        } else if (child.tagName !== 'H2') {
+          textDiv.append(child);
+        }
+      });
+    }
 
     if (block.classList.contains('style-3')) {
       // accordions need content and titles in same element
