@@ -358,6 +358,7 @@ function mktoFormReset(form, moreStyles) {
   const currentForm = document.getElementById(formId);
 
   const rando = Math.floor(Math.random() * 1000000);
+  
   formEl.querySelectorAll('label[for]').forEach((labelEl) => {
     const forEl = formEl.querySelector(`[id="${labelEl.htmlFor}"]`);
     if (forEl) {
@@ -365,7 +366,7 @@ function mktoFormReset(form, moreStyles) {
       labelEl.htmlFor = newId;
       forEl.id = newId;
 
-      if (forEl.classList.contains('mktoField') && forEl.getAttribute('type') !== 'checkbox') {
+      if (forEl.classList.contains('mktoField') && forEl.getAttribute('type') === 'checkbox') {
         forEl.nextElementSibling.htmlFor = newId;
       }
     }
