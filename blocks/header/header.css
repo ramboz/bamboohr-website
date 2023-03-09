@@ -139,7 +139,7 @@ header .nav-hamburger {
   height: 22px;
   padding-top: 3px;
   color: var(--color-gray3);
-	cursor: pointer;
+  cursor: pointer;
 }
 
 header .nav[aria-expanded="false"] .nav-hamburger-icon,
@@ -261,7 +261,7 @@ header .nav[aria-expanded="true"] {
 
 header .nav-sections h2 {
   border-bottom: 2px solid var(--color-gray-2);
-	cursor: default;
+  cursor: default;
 }
 
 header .nav-sections h2,
@@ -293,7 +293,7 @@ header .nav-section li {
   font-size: 14px;
   color: var(--color-gray-8);
   padding: 10px 0;
-	cursor: default;
+  cursor: default;
 }
 
 header .nav-section li a:any-link {
