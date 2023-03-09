@@ -486,7 +486,7 @@ main .tabs.style-3 > .accordion .tabs-content[aria-hidden="false"] {
 }
 
 main .tabs.style-3 > .accordion .tabs-content p {
-  margin: 0;
+  margin: 0 0 1em;
 }
 
 main .tabs.style-3 > .accordion .tabs-content p a:any-link,
