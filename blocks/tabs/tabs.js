@@ -3,9 +3,14 @@ const mediaQueryPhone = window.matchMedia('(max-width: 599px)');
 const mediaQueryTablet = window.matchMedia('(max-width: 1024px)');
 
 function openTab(e) {
-  const { target } = e;
-  const selected = target.getAttribute('aria-selected') === 'true';
+  let { target } = e;
   let parent = target.parentNode;
+  const twoup = parent.parentNode;
+  if (twoup?.classList.contains('click-not-hover') && parent.classList.contains('tabs-title')) {
+    target = parent;
+    parent = target.parentNode;
+  }
+  const selected = target.getAttribute('aria-selected') === 'true';
 
   // accordion nested one level deeper
   if (parent.classList.contains('accordion')) parent = parent.parentNode;
@@ -154,7 +159,9 @@ export default function decorate(block) {
         titleElement.append(subtitle);
       }
 
-      titleElement.addEventListener('mouseover', openTab);
+      if (block.classList.contains('click-not-hover')) {
+        titleElement.addEventListener('click', openTab);
+      } else titleElement.addEventListener('mouseover', openTab);
     } else {
       titleElement = title;
       titleElement.innerHTML = title.textContent;
