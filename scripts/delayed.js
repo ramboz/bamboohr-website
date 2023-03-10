@@ -166,8 +166,6 @@ loadScript('header', adobeTagsSrc, async () => {
 
 loadScript('header', 'https://www.googleoptimize.com/optimize.js?id=OPT-PXL7MPD', null);
 
-loadScript('header', 'https://cdn-4.convertexperiments.com/js/10004673-10005501.js', null);
-
 loadTrustArcFormScript();
 
 /* google tag manager */

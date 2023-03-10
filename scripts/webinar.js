@@ -31,7 +31,7 @@ function buildForm(main) {
   
   const section = document.createElement('div');
   const block = buildBlock('form', [blockContent]);
-  block?.classList?.add('grid-7-5', 'has-content', 'old-style');
+  block?.classList?.add('grid-7-5', 'has-content');
   section.prepend(block);
   main.innerHTML = section.outerHTML;
 }

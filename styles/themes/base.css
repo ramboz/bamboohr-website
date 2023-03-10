@@ -621,67 +621,83 @@
 }
 
 /** copy **/
-#base .copy-color-base :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-base :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--theme-base);
 }
 
-#base .copy-color-tint-5 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-tint-5 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--theme-tint5);
 }
 
-#base .copy-color-tint-15 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-tint-15 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--theme-tint15);
 }
 
-#base .copy-color-tint-10 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-tint-10 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--theme-tint10);
 }
 
-#base .copy-color-shade-5 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-shade-5 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--theme-shade5);
 }
 
-#base .copy-color-shade-10 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-shade-10 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--theme-shade10);
 }
 
-#base .copy-color-shade-15 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-shade-15 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--theme-shade15);
 }
 
-#base .copy-color-secondary-base :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-secondary-base :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--secondary-theme-base);
 }
 
-#base .copy-color-secondary-tint-5 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-secondary-tint-5 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--secondary-theme-tint5);
 }
 
-#base .copy-color-secondary-tint-15 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-secondary-tint-15 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--secondary-theme-tint15);
 }
 
-#base .copy-color-secondary-tint-10 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-secondary-tint-10 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--secondary-theme-tint10);
 }
 
-#base .copy-color-secondary-shade-5 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-secondary-shade-5 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--secondary-theme-shade5);
 }
 
-#base .copy-color-secondary-shade-10 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-secondary-shade-10 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--secondary-theme-shade10);
 }
 
-#base .copy-color-secondary-shade-15 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-secondary-shade-15 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--secondary-theme-shade15);
 }
 
-#base .copy-color-white :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-white :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--color-white);
 }
 
-#base .copy-color-gray-12 :is(p, li, div) {
+/* stylelint-disable-next-line selector-class-pattern */
+#base .copy-color-gray-12 :is(p, li, div:not(.mktoErrorMsg):not(.form-msg)) {
   color: var(--color-gray-12);
 }
 

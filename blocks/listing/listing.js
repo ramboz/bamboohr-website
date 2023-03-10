@@ -11,12 +11,37 @@ import {
 } from '../../scripts/scripts.js';
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 
+function getLinkText(format, mediaType) {
+  let linkText = 'View Now';
+  if (format) linkText = format.toLowerCase() === 'video' ? 'Watch Now' : 'Read Now';
+  else if (mediaType) {
+    switch (mediaType.toLowerCase()) {
+      case 'read':
+        linkText = 'Read Now';
+        break;
+      case 'watch':
+        linkText = 'Watch Now';
+        break;
+      case 'listen':
+        linkText = 'Listen Now';
+        break;
+      case 'tools':
+      default:
+        linkText = 'View Now';
+        break;
+    }
+  }
+
+  return linkText;
+}
+
 function createArticleCard(article, classPrefix, eager = false) {
   const title = article.title.split(' - ')[0];
   const card = document.createElement('div');
-  const articleFormat = article?.format || '';
+  const articleCategory = article.category || article.topicPrimary || '';
+  const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
-  card.setAttribute('am-region', `${article.category} . ${articleFormat}`.toUpperCase());
+  card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
   const image = article.cardImage || article.image;
   const pictureString = createOptimizedPicture(
     image,
@@ -24,18 +49,18 @@ function createArticleCard(article, classPrefix, eager = false) {
     eager,
     [{ width: 750 }],
   ).outerHTML;
-  const category = toCategory(article.category);
-  const watchOrRead = articleFormat?.toLowerCase() === 'video' ? 'Watch Now' : 'Read Now';
+  const category = toCategory(articleCategory);
+  const linkText = getLinkText(article?.format, article?.mediaType);
   card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
-    <span class="${classPrefix}-card-category">${article.category}</span> 
-    <span class="${classPrefix}-card-format">${articleFormat || ''}</span>
+    <span class="${classPrefix}-card-category">${articleCategory}</span> 
+    <span class="${classPrefix}-card-format">${articleFormat}</span>
     </div>
     <div class="${classPrefix}-card-picture"><a href="${article.path}">${pictureString}</a></div>
     <div class="${classPrefix}-card-body" am-region="${title}">
     <h5>${article?.presenter || ''}</h5>
     <h3>${title}</h3>
     <p>${article.description}</p>
-    <p><a href="${article.path}">${watchOrRead}</a></p>
+    <p><a href="${article.path}">${linkText}</a></p>
     </div>`;
   return (card);
 }
@@ -200,6 +225,7 @@ export default async function decorate(block, blockName) {
     indexConfig.indexPath = blockConfig['index-path'];
     indexConfig.indexName = blockConfig['index-name'];
     indexConfig.cardStyle = blockConfig['card-style'];
+    indexConfig.facetStyle = blockConfig['facet-style'];
   } else {
     Object.keys(blockConfig).forEach((key) => {
       config[toCamelCase(key)] = blockConfig[key];
@@ -382,7 +408,7 @@ export default async function decorate(block, blockName) {
       resultsElement.innerHTML = '';
       results.forEach((product) => {
         if (indexConfig.cardStyle === 'article') {
-          resultsElement.append(createArticleCard(product, theme.toLowerCase()));
+          resultsElement.append(createArticleCard(product, 'listing-article'));
         } else resultsElement.append(createAppCard(product, blockName));
       });
     }
@@ -396,13 +422,35 @@ export default async function decorate(block, blockName) {
 
   const runSearch = async (filterConfig = config) => {
     let facets = {};
-    facets = {
-      category: {},
-      businessSize: {},
-      dataFlow: {},
-      industryServed: {},
-      locationRestrictions: {},
-    };
+    if (indexConfig.facetStyle === 'taxonomyV1') {
+      facets = {
+        topicPrimary: {},
+        topicSecondary: {},
+        featured: {},
+        contentType: {},
+        brandedContent: {},
+        mediaType: {},
+        events: {},
+        productFeatureAnnouncement: {},
+        caseStudies: {},
+        authorSpeaker: {},
+        businessSize: {},
+        companyProfileIndustry: {},
+        companyProfileSize: {},
+        companyProfileGrowthStage: {},
+        userProfileRole: {},
+        planType: {},
+      };
+    } else {
+      facets = {
+        category: {},
+        businessSize: {},
+        dataFlow: {},
+        industryServed: {},
+        locationRestrictions: {},
+      };
+    }
+    
     const results = await filterResults(theme, filterConfig, facets, indexConfig);
     // eslint-disable-next-line no-nested-ternary
     const sortBy = document.getElementById('listing-sortby')
