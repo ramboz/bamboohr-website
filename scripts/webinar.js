@@ -1,13 +1,17 @@
 import { buildBlock, getMetadata, toClassName, createOptimizedPicture } from './scripts.js';
 
 export function isUpcomingEvent() {
+  let isUpcoming = false;
   const eventDateStr = getMetadata('event-date');
-  const [year, month, day] = eventDateStr.split('-');
-  const eventDate = new Date(+year, +month - 1, +day);
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return eventDate >= today;
+  if (eventDateStr) {
+    const [year, month, day] = eventDateStr.split('-');
+    const eventDate = new Date(+year, +month - 1, +day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    isUpcoming = eventDate >= today;
+  }
+  
+  return isUpcoming;
 }
 
 function buildForm(main) {

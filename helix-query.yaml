@@ -304,12 +304,16 @@ indices:
         select: head > meta[name="event-date-and-time"]
         value: |
           attribute(el, 'content')
-      publishDate:
-        select: head > meta[name="publish-date"]
+      publicationDate:
+        select: head > meta[name="publication-date"]
         value: |
           attribute(el, 'content')
       hideFromLibrary:
         select: head > meta[name="hide-from-library"]
+        value: |
+          attribute(el, 'content')
+      mediaType:
+        select: head > meta[name="media-type"]
         value: |
           attribute(el, 'content')
       robots:

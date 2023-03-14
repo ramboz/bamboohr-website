@@ -882,3 +882,7 @@ div .tablet-center-image .column-flex-container.columns-align-start {
     line-height: 60px;
   }
 }
+
+.columns.image-auto-width .img-col img {
+  width: auto;
+}

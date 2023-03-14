@@ -15,8 +15,8 @@ function buildLandingPage(main) {
   }
   logos = `<p class="form-logos">${partnerLogos}</p>`;
 
-  const category = getMetadata('category');
-  const formTitle = getMetadata('form-title') || `Download your free ${category.slice(0, -1)}`;
+  const resourceType = window.location.pathname.replace('/resources/','').split('/');
+  const formTitle = getMetadata('form-title') || `Download your free ${resourceType[0].slice(0, -1)}`;
   const formSubheading = getMetadata('form-subheading') || 'All you need to do is complete the form below.';
   blockContent.push(`<p><strong>${formTitle}</strong></p><p>${formSubheading}</p>${logos}<p>form</p>`);
   

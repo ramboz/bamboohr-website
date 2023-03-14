@@ -12,22 +12,20 @@ import {
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 
 function getLinkText(format, mediaType) {
-  let linkText = 'View Now';
+  let linkText = 'Read Now';
   if (format) linkText = format.toLowerCase() === 'video' ? 'Watch Now' : 'Read Now';
   else if (mediaType) {
     switch (mediaType.toLowerCase()) {
-      case 'read':
-        linkText = 'Read Now';
-        break;
       case 'watch':
         linkText = 'Watch Now';
         break;
       case 'listen':
         linkText = 'Listen Now';
         break;
+      case 'read':
       case 'tools':
       default:
-        linkText = 'View Now';
+        linkText = 'Read Now';
         break;
     }
   }
@@ -38,7 +36,8 @@ function getLinkText(format, mediaType) {
 function createArticleCard(article, classPrefix, eager = false) {
   const title = article.title.split(' - ')[0];
   const card = document.createElement('div');
-  const articleCategory = article.category || article.topicPrimary || '';
+  const articleCategory = article.category || article.topicPrimary || article.topicSecondary
+    || article.contentType || article.brandedContent || '';
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
@@ -65,17 +64,25 @@ function createArticleCard(article, classPrefix, eager = false) {
   return (card);
 }
 
-function getBlockHTML(ph, theme) {
-  const defaultSortText = (theme === 'hrvs') ? ph.category : ph.default;
-  const defaultSortProp = (theme === 'hrvs') ? 'hrvsCategory' : 'level';
-  const pageSortOptions = (theme === 'hrvs')
-    ? `<li data-sort="hrvsCategory">${ph.category}</li>
+function getBlockHTML(ph, theme, indexConfig = {}) {
+  let defaultSortText = ph.default;
+  let defaultSortProp = 'level';
+  let pageSortOptions = `<li data-sort="level">${ph.default}</li>
+    <li data-sort="name">${ph.name}</li>
+    <li data-sort="publicationDate">${ph.newest}</li>`;
+  if (theme === 'hrvs') {
+    defaultSortText = ph.category;
+    defaultSortProp = 'hrvsCategory';
+    pageSortOptions = `<li data-sort="hrvsCategory">${ph.category}</li>
       <li data-sort="startTime">${ph.startTime}</li>
       <li data-sort="presenter">${ph.presenter}</li>
-      <li data-sort="title">${ph.title}</li>`
-    : `<li data-sort="level">${ph.default}</li>
-      <li data-sort="name">${ph.name}</li>
-      <li data-sort="publicationDate">${ph.newest}</li>`;
+      <li data-sort="title">${ph.title}</li>`;
+  } else if (indexConfig.facetStyle === 'taxonomyV1') {
+    defaultSortText = ph.newest;
+    defaultSortProp = 'publicationDate';
+    pageSortOptions = `<li data-sort="publicationDate">${ph.newest}</li>
+      <li data-sort="title">${ph.title}</li>`;
+  }
   return /* html */ `
   <p class="listing-results-count"><span id="listing-results-count"></span> ${ph.results}</p>
   <div class="listing-facets">
@@ -237,7 +244,7 @@ export default async function decorate(block, blockName) {
     ctaBlockInfo = document.createElement('div');
     ctaBlockInfo.append(block.firstElementChild);
   }
-  block.innerHTML = getBlockHTML(ph, theme);
+  block.innerHTML = getBlockHTML(ph, theme, indexConfig);
 
   const resultsElement = block.querySelector('.listing-results');
   const facetsElement = block.querySelector('.listing-facets');
@@ -426,20 +433,16 @@ export default async function decorate(block, blockName) {
       facets = {
         topicPrimary: {},
         topicSecondary: {},
-        featured: {},
+        planType: {},
         contentType: {},
         brandedContent: {},
         mediaType: {},
-        events: {},
-        productFeatureAnnouncement: {},
-        caseStudies: {},
         authorSpeaker: {},
-        businessSize: {},
-        companyProfileIndustry: {},
-        companyProfileSize: {},
-        companyProfileGrowthStage: {},
-        userProfileRole: {},
-        planType: {},
+        contentSize: {},
+        industry: {},
+        companySize: {},
+        companyGrowthStage: {},
+        userRole: {},
       };
     } else {
       facets = {

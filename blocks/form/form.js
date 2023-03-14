@@ -506,11 +506,10 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         }
 
         const formSubmitText = getMetadata('form-submit-text');
-        const eventDateStr = getMetadata('event-date');
         const formSubmitBtn = formEl.querySelector('.mktoButton');
         if (formSubmitText) {
           formSubmitBtn.textContent = formSubmitText;
-        } else if (eventDateStr && window.location.pathname.includes('/webinars/')) {
+        } else if (window.location.pathname.includes('/webinars/')) {
           formSubmitBtn.textContent = isUpcomingEvent() ? 'Register' : 'Watch Now';
         }
 
