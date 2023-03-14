@@ -340,24 +340,12 @@ main .tabs.style-4 h2.tabs-title[aria-selected="true"] {
 
 main .tabs.style-4 h2.tabs-title {
   padding: 10px 30px;
-  border-radius: 100px;
-  transition: background-color .25s ease-in-out;
-  border: solid 2px var(--theme-shade5);
   margin: 0;
-}
-
-main .tabs.style-4 h2.tabs-title[aria-selected="true"] {
-  color: var(--color-white);
-  background: linear-gradient(90deg, var(--theme-shade10) 0%, var(--theme-shade5) 100%);
 }
 
 main .tabs.style-4 h2.tabs-title[aria-selected="false"] {
   color: var(--theme-shade5);
   background: unset;
-}
-
-main .tabs.style-4 h2.tabs-title[aria-selected="false"]:hover {
-  background-color: var(--theme-tint10);
 }
 
 main .tabs.style-2 .tabs-title[aria-selected="true"] a.button.link:any-link:hover,
