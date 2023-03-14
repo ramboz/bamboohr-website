@@ -392,6 +392,12 @@
     }
 }
 
+@media (min-width: 785px) {
+    .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
+        max-width: 960px;
+    }
+}
+
 @media (min-width: 837px) {
     .bhr-home .image.bg-home-bottom-pudgy picture {
         bottom: 370px;
@@ -507,6 +513,18 @@
     .bhr-home .columns.bottom-cta h2 {
         font-size: 48px;
         line-height: 60px;
+    }
+}
+
+@media (min-width: 1490px) {
+    .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
+        max-width: 1410px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
+        max-width: 1520px;
     }
 }
 
