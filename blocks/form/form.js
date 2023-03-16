@@ -510,7 +510,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         if (formSubmitText) {
           formSubmitBtn.textContent = formSubmitText;
         } else if (window.location.pathname.includes('/webinars/')) {
-          formSubmitBtn.textContent = isUpcomingEvent() ? 'Register' : 'Watch Now';
+          formSubmitBtn.textContent = isUpcomingEvent() ? 'Register for this event' : 'Watch Now';
         }
 
         form.onSuccess(() => {

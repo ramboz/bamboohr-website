@@ -33,11 +33,11 @@ function getLinkText(format, mediaType) {
   return linkText;
 }
 
-function createArticleCard(article, classPrefix, eager = false) {
+export function createArticleCard(article, classPrefix, eager = false) {
   const title = article.title.split(' - ')[0];
   const card = document.createElement('div');
   const articleCategory = article.category || article.topicPrimary || article.topicSecondary
-    || article.contentType || article.brandedContent || '';
+    || article.productArea || article.contentType || article.brandedContent || '';
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
@@ -93,7 +93,6 @@ function getBlockHTML(ph, theme, indexConfig = {}) {
     <ul>
       ${pageSortOptions}
     </ul>
-  </div>
   </div>
   <ul class="listing-results">
   </ul>`;
@@ -216,7 +215,7 @@ export default async function decorate(block, blockName) {
   const themeOverride = themeOverrides[0] ? themeOverrides[0].substring(firstHyphenIdx) : '';
   const theme = themeOverride || getMetadata('theme');
   const ph = await fetchPlaceholders('/integrations');
-  const indexConfig = {indexPath: '', indexName: '', cardStyle: ''};
+  const indexConfig = {indexPath: '', indexName: '', cardStyle: '', facetStyle: ''};
 
   const addEventListeners = (elements, event, callback) => {
     elements.forEach((e) => {
@@ -434,6 +433,7 @@ export default async function decorate(block, blockName) {
         topicPrimary: {},
         topicSecondary: {},
         planType: {},
+        productArea: {},
         contentType: {},
         brandedContent: {},
         mediaType: {},
@@ -464,7 +464,7 @@ export default async function decorate(block, blockName) {
     block.querySelector('#listing-results-count').textContent = results.length;
     displayResults(results, null);
     // eslint-disable-next-line no-use-before-define
-    displayFacets(facets, filterConfig);
+    displayFacets(facets, filterConfig, results.length);
   };
 
   const createFilterConfig = () => {
@@ -494,7 +494,7 @@ export default async function decorate(block, blockName) {
     selectSort(event.target);
   });
 
-  const displayFacets = (facets, filters) => {
+  const displayFacets = (facets, filters, resultsCount) => {
     const rawFilters = getSelectedFilters().map((check) => check.value);
     const selected = config.category
       ? rawFilters.filter((filter) => filter !== config.category)
@@ -575,7 +575,10 @@ export default async function decorate(block, blockName) {
                                     : b.toLowerCase() === 'keynote' ? 1
                                     : a.localeCompare(b));
       } else facetValues.sort();
-      if (facetValues.length) {
+      if (facetValues.length 
+          && (facetValues.length !== 1 
+              || filterValues.includes(facetValues[0]) 
+              || facets[facetKey][facetValues[0]] < resultsCount)) {
         const div = document.createElement('div');
         div.className = 'listing-facet';
         const h3 = document.createElement('h3');
