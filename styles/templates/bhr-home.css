@@ -156,6 +156,7 @@
 .bhr-home main .columns-wrapper,
 .bhr-home main .default-content-wrapper,
 .bhr-home main .quote-wrapper,
+.bhr-home main .tabs-wrapper,
 .bhr-home main .title-wrapper,
 .bhr-home main .reprise-wrapper,
 .bhr-home main .wistia-wrapper {
@@ -234,6 +235,13 @@
     position: relative;
     margin-top: 0;
     padding-top: 96px;
+}
+
+.bhr-home .image.bg-home-section-2-middle-1 picture {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 26%;
 }
 
 .bhr-home .image.bg-home-middle-1 picture {
@@ -392,9 +400,19 @@
     }
 }
 
+@media (max-width: 784px) {
+    .bhr-home .image.bg-home-section-2-middle-1 {
+        display: none;
+    }
+}
+
 @media (min-width: 785px) {
     .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
         max-width: 960px;
+    }
+
+    .bhr-home .image.bg-home-section-2-middle-1 picture {
+        top: 56%;
     }
 }
 
@@ -422,6 +440,10 @@
     .bhr-home .columns > div > div:last-of-type {
         margin-right: auto;
     }
+
+    .bhr-home .image.bg-home-section-2-middle-1 picture {
+        top: 35%;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -446,6 +468,10 @@
 
     .bhr-home .columns.columns-2-cols:not(.title2-heading) .column-flex-container {
         text-align: center;
+    }
+
+    .bhr-home .columns.title1-heading h1 {
+        margin-top: 24px;
     }
       
     .bhr-home .columns.columns-2-cols:not(.hero-subhead) .column-flex-container .non-img-col:not(.columns-title-span) p {
