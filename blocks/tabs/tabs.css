@@ -553,7 +553,7 @@ main .tabs.style-4 .tabs-content {
 }
 
 main .tabs.style-4 .tabs-content .tabs-img-col img {
-  width: 80%;
+  width: 100%;
 }
 
 @media (min-width: 600px) {
