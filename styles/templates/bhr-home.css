@@ -36,7 +36,8 @@
     margin-bottom: 50px;
 }
 
-.bhr-home .columns h3 {
+.bhr-home .columns h3,
+.bhr-home .tabs.style-4 .tabs-content h3 {
     margin-top: 0;
     color: var(--color-gray-10);
     font-style: normal;
@@ -44,7 +45,8 @@
     line-height: 30px;
 }
 
-.bhr-home .section.homepagev2 .columns h3 {
+.bhr-home .section.homepagev2 .columns h3,
+.bhr-home .section.homepagev2 .tabs-content h3 {
     color: var(--theme-shade10);
 }
 
