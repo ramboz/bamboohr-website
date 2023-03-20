@@ -552,6 +552,10 @@ main .tabs.style-4 .tabs-content {
   padding: 0 50px;
 }
 
+main .tabs.style-4 .tabs-content .tabs-img-col img {
+  width: 100%
+}
+
 @media (min-width: 600px) {
   main .tabs.style-4 .tabs-title {
     order: unset;

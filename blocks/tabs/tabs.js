@@ -181,9 +181,9 @@ export default function decorate(block) {
       containerDiv.classList = 'tabs-flex-content';
       content.append(containerDiv);
       const textDiv = document.createElement('div');
-      textDiv.classList = 'column6 tabs-non-img-col';
+      textDiv.classList = 'column4 tabs-non-img-col';
       const picDiv = document.createElement('div');
-      picDiv.classList = 'column6 tabs-img-col';
+      picDiv.classList = 'column8 tabs-img-col';
       containerDiv.append(textDiv, picDiv);
 
       [...content.children].forEach(child => {
