@@ -1,4 +1,4 @@
-import { loadFragment } from '../../scripts/scripts.js';
+import { loadFragment, initConversionTracking } from '../../scripts/scripts.js';
 
 function getModalId(path) {
   const segments = path.split('/');
@@ -6,7 +6,7 @@ function getModalId(path) {
 }
 
 export default async function decorate(block) {
-  
+
   if (block.innerHTML === '') {
     const openModal = async (a, path) => {
       a.addEventListener('click', async (e) => {
@@ -24,7 +24,7 @@ export default async function decorate(block) {
           const modalContent = document.createElement('div');
           modalContent.classList.add('modal-content');
           modal.append(modalContent);
-          
+
           if (a.dataset.path) {
             const fragment = await loadFragment(a.dataset.path);
             const formTitleEl = fragment.querySelector('h2');
@@ -32,7 +32,8 @@ export default async function decorate(block) {
             const formSubTitleEl = fragment.querySelector('h3');
             if (formSubTitleEl) formSubTitleEl.outerHTML = `<p class="modal-form-subtitle">${formSubTitleEl.innerHTML}</p>`;
             modalContent.append(fragment);
-          }
+          }          
+          initConversionTracking(modal, path);
           wrapper.append(modal);
           block.append(wrapper);
           wrapper.classList.add('visible');
