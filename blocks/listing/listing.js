@@ -3,6 +3,7 @@ import {
   getMetadata,
   createOptimizedPicture,
   fetchPlaceholders,
+  loadCSS,
   readBlockConfig,
   readIndex,
   toCamelCase,
@@ -10,6 +11,9 @@ import {
   toClassName,
 } from '../../scripts/scripts.js';
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
+import decorateWistia from '../wistia/wistia.js';
+
+let g_loadWistiaCSS = true;
 
 function getLinkText(format, mediaType) {
   let linkText = 'Read Now';
@@ -41,20 +45,33 @@ export function createArticleCard(article, classPrefix, eager = false) {
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
-  const image = article.cardImage || article.image;
-  const pictureString = createOptimizedPicture(
-    image,
-    article.imageAlt || article.title,
-    eager,
-    [{ width: 750 }],
-  ).outerHTML;
+  let articlePicture = '';
+  let wistiaBlock = '';
+  if (article.wistiaVideoId) {
+    wistiaBlock = `<div class="wistia block">
+        <a href="https://bamboohr.wistia.com/medias/${article.wistiaVideoId}"></a>
+      </div>`;
+  } else {
+    const image = article.cardImage || article.image;
+    const pictureString = createOptimizedPicture(
+      image,
+      article.imageAlt || article.title,
+      eager,
+      [{ width: 750 }],
+    ).outerHTML;
+
+    articlePicture = `<div class="${classPrefix}-card-picture">
+        <a href="${article.path}">${pictureString}</a>
+      </div>`;
+  }
+  const articleImage = articlePicture || wistiaBlock;
   const category = toCategory(articleCategory);
   const linkText = getLinkText(article?.format, article?.mediaType);
   card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
     <span class="${classPrefix}-card-category">${articleCategory}</span> 
     <span class="${classPrefix}-card-format">${articleFormat}</span>
     </div>
-    <div class="${classPrefix}-card-picture"><a href="${article.path}">${pictureString}</a></div>
+    ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
     <h5>${article?.presenter || ''}</h5>
     <h3>${title}</h3>
@@ -62,6 +79,23 @@ export function createArticleCard(article, classPrefix, eager = false) {
     <p><a href="${article.path}">${linkText}</a></p>
     </div>`;
   return (card);
+}
+
+export function loadWistiaBlock(article, articleCard) {
+  if (article.wistiaVideoId) {
+    const wistiaBlock = articleCard.querySelector('.wistia.block');
+
+    if (wistiaBlock) {
+      decorateWistia(wistiaBlock);
+
+      if (g_loadWistiaCSS) {
+        // load css
+        const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
+        loadCSS(`${cssBase}/blocks/wistia/wistia.css`, null);
+        g_loadWistiaCSS = false;
+      }
+    }
+  }
 }
 
 function getBlockHTML(ph, theme, indexConfig = {}) {
@@ -414,7 +448,9 @@ export default async function decorate(block, blockName) {
       resultsElement.innerHTML = '';
       results.forEach((product) => {
         if (indexConfig.cardStyle === 'article') {
-          resultsElement.append(createArticleCard(product, 'listing-article'));
+          const articleCard = createArticleCard(product, 'listing-article');
+          resultsElement.append(articleCard);
+          loadWistiaBlock(product, articleCard);
         } else resultsElement.append(createAppCard(product, blockName));
       });
     }
