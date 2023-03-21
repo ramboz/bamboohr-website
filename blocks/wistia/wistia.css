@@ -41,8 +41,8 @@
 }
 
 
-.block.wistia picture::before,
-.block.wistia picture::after {
+.block.wistia:not(.hide-play) picture::before,
+.block.wistia:not(.hide-play) picture::after {
     content: '';
     place-self: center;
     z-index: 1;
