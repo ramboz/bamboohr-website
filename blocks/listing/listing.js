@@ -13,7 +13,7 @@ import {
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 import decorateWistia from '../wistia/wistia.js';
 
-let g_loadWistiaCSS = true;
+let gLoadWistiaCSS = true;
 
 function getLinkText(format, mediaType) {
   let linkText = 'Read Now';
@@ -88,11 +88,11 @@ export function loadWistiaBlock(article, articleCard) {
     if (wistiaBlock) {
       decorateWistia(wistiaBlock);
 
-      if (g_loadWistiaCSS) {
+      if (gLoadWistiaCSS) {
         // load css
         const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
         loadCSS(`${cssBase}/blocks/wistia/wistia.css`, null);
-        g_loadWistiaCSS = false;
+        gLoadWistiaCSS = false;
       }
     }
   }

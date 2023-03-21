@@ -103,7 +103,7 @@ export default async function decorate(block, blockName) {
   indexConfig.cardStyle = blockConfig['card-style'];
   indexConfig.filterOn = blockConfig.filter;
   indexConfig.sortBy = blockConfig['sort-by'];
-  indexConfig.limit = +blockConfig['limit'] || 0;
+  indexConfig.limit = +blockConfig.limit || 0;
 
   block.innerHTML = '<ul class="upcoming-results"></ul>';
 
