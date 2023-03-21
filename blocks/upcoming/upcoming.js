@@ -4,7 +4,7 @@ import {
   readIndex,
 } from '../../scripts/scripts.js';
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
-import { createArticleCard } from '../listing/listing.js';
+import { createArticleCard, loadWistiaBlock } from '../listing/listing.js';
 
 function createDateCard(article, classPrefix, eager = false) {
   const title = article.title.split(' - ')[0];
@@ -15,24 +15,58 @@ function createDateCard(article, classPrefix, eager = false) {
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
-  const image = article.cardImage || article.image;
-  const pictureString = createOptimizedPicture(
-    image,
-    article.imageAlt || article.title,
-    eager,
-    [{ width: 750 }],
-  ).outerHTML;
+  let articlePicture = '';
+  let wistiaBlock = '';
+  if (article.wistiaVideoId) {
+    wistiaBlock = `<div class="wistia block hide-play">
+        <a href="https://bamboohr.wistia.com/medias/${article.wistiaVideoId}"></a>
+      </div>`;
+  } else {
+    const image = article.cardImage || article.image;
+    const pictureString = createOptimizedPicture(
+      image,
+      article.imageAlt || article.title,
+      eager,
+      [{ width: 750 }],
+    ).outerHTML;
+
+    articlePicture = `<div class="${classPrefix}-card-picture">
+        <a href="${article.path}">${pictureString}</a>
+      </div>`;
+  }
+  const articleImage = articlePicture || wistiaBlock;
+  const articleLinkText = article.linkText || 'Register for this event';
+  const articleLink = article.path ? `<p><a href="${article.path}">${articleLinkText}</a></p>` : '';
   card.innerHTML = `
-    <div class="${classPrefix}-card-picture"><a href="${article.path}">${pictureString}</a></div>
+    ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
     <h4>${article.eventDateAndTime}</h4>
     <h5>${article?.presenter || ''}</h5>
     <h3>${title}</h3>
     <p>${article.description}</p>
     ${articleCategoryElement}
-    <p><a href="${article.path}">Register for this event</a></p>
+    ${articleLink}
     </div>`;
   return (card);
+}
+
+function checkForMatch(row, key, defaultReturn) {
+  if (key === 'futureOnly') {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const date = new Date(row.eventDate);
+    
+    if (date >= today) return true;
+
+    return false;
+  }
+
+  if (row[key]) {
+    if (key !== 'eventDateAndTime') return true;
+    if (!row[key].toLowerCase().includes('demand')) return true;
+  }
+
+  return defaultReturn;
 }
 
 async function filterResults(indexConfig = {}) {
@@ -42,30 +76,21 @@ async function filterResults(indexConfig = {}) {
   
   const listings = window.pageIndex[collection];
 
+  if (!indexConfig.filterOn) return listings.data;
+
   const keys = indexConfig.filterOn.split(',').map((t) => t.trim());
 
   /* filter */
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
   const results = listings.data.filter((row) => {
-    const filterMatches = {};
     let matched = false;
     const matchedAll = keys.every((key) => {
-      if (row[key]) {
-        if (key === 'eventDateAndTime') {
-          if (!row[key].toLowerCase().includes('demand')) matched = true;
-        } else matched = true;
-      } else if (key === 'futureOnly') {
-        const date = new Date(row.eventDate);
-        if (date >= today) matched = true;
-        else matched = false;
-      }
-      filterMatches[key] = matched;
+      matched = checkForMatch(row, key, matched);
       return matched;
     });
 
     return matchedAll;
   });
+  
   return results;
 }
 
@@ -78,6 +103,7 @@ export default async function decorate(block, blockName) {
   indexConfig.cardStyle = blockConfig['card-style'];
   indexConfig.filterOn = blockConfig.filter;
   indexConfig.sortBy = blockConfig['sort-by'];
+  indexConfig.limit = +blockConfig.limit || 0;
 
   block.innerHTML = '<ul class="upcoming-results"></ul>';
 
@@ -85,13 +111,20 @@ export default async function decorate(block, blockName) {
 
   const displayResults = async (results) => {
     resultsElement.innerHTML = '';
-    results.forEach((product) => {
+    const max = indexConfig.limit ? indexConfig.limit : results.length;
+    for (let i = 0; i < max; i += 1) {
+      const product = results[i];
+
       if (indexConfig.cardStyle === 'date') {
-        resultsElement.append(createDateCard(product, 'upcoming-article'));
+        const dateCard = createDateCard(product, 'upcoming-article');
+        resultsElement.append(dateCard);
+        loadWistiaBlock(product, dateCard);
       } else if (indexConfig.cardStyle === 'article') {
-        resultsElement.append(createArticleCard(product, 'upcoming-article'));
+        const articleCard = createArticleCard(product, 'upcoming-article');
+        resultsElement.append(articleCard);
+        loadWistiaBlock(product, articleCard);
       } else resultsElement.append(createAppCard(product, blockName));
-    });
+    }
   };
 
   const runSearch = async () => {
