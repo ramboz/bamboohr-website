@@ -8,7 +8,6 @@
     --radius: .5rem;
     --width: 26.5rem;
 
-    background-color: var(--color-gray-2);
     border-radius: var(--radius);
     cursor: pointer;
     display: grid;
