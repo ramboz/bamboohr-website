@@ -10,6 +10,12 @@
  * governing permissions and limitations under the License.
  */
 
+const SEGMENTATION_CONFIG = {
+  audiences: {
+    'is-customer': () => Math.random() > .5
+  }
+}
+
 /**
  * log RUM if part of the sample.
  * @param {string} checkpoint identifies the checkpoint in funnel
@@ -1118,6 +1124,16 @@ async function loadMartech() {
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
+  const instantSegments = [...document.head.querySelectorAll(`meta[property^="audience"]`)].map((meta) => {
+    const [_,id,value] = meta.getAttribute('property').split(':');
+    return { id, value, url: meta.getAttribute('content') };
+  });
+  if (instantSegments.length) {
+    // eslint-disable-next-line import/no-cycle
+    const { runSegmentation } = await import('./experimentation.js');
+    await runSegmentation(instantSegments, SEGMENTATION_CONFIG);
+  }
+  
   const experiment = getMetadata('experiment');
   const instantExperiment = getMetadata('instant-experiment');
   if (instantExperiment || experiment) {
