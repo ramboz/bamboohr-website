@@ -264,6 +264,13 @@
   transform: translateY(-50%);
 }
 
+@media (min-width: 900px) {
+  .has-bg > span[class*='bg-left-'] {
+    max-width: 50%;
+    margin-right: auto;
+  }
+}
+
 /* multi 1 */
 .has-bg > span.bg-left-multi-1 {
   /* uses defaults */
@@ -343,6 +350,13 @@
   justify-content: end;
   top: 50%;
   transform: translateY(-50%);
+}
+
+@media (min-width: 900px) {
+  .has-bg > span[class*='bg-right-'] {
+    max-width: 50%;
+    margin-left: auto;
+  }
 }
 
 /* multi 1 */
