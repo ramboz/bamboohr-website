@@ -552,6 +552,10 @@ main .tabs.style-4 .tabs-content {
   padding: 0 50px;
 }
 
+main .tabs.style-4 .tabs-content p {
+  color: var(--color-gray-12);
+}
+
 main .tabs.style-4 .tabs-content .tabs-img-col img {
   width: 100%;
 }
