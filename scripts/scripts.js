@@ -1124,8 +1124,8 @@ async function loadMartech() {
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
-  const instantSegments = [...document.head.querySelectorAll(`meta[property^="audience"]`)].map((meta) => {
-    const [_,id,value] = meta.getAttribute('property').split(':');
+  const instantSegments = [...document.head.querySelectorAll(`meta[property^="audience:"]`)].map((meta) => {
+    const [_, id, value] = meta.getAttribute('property').split(':');
     return { id, value, url: meta.getAttribute('content') };
   });
   if (instantSegments.length) {
