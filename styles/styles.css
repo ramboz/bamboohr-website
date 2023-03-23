@@ -517,6 +517,18 @@ table td {
   line-height: 22px;
 }
 
+ol {
+  list-style-type: decimal;
+}
+
+ol li ol {
+  list-style-type: lower-alpha;
+}
+
+ol li ol li ol {
+  list-style-type: upper-roman;
+}
+
 @media (min-width: 600px) {
   .typ-hero-subhead,
   .typ-subhead1,
