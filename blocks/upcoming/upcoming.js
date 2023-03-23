@@ -9,8 +9,8 @@ import { createArticleCard, loadWistiaBlock } from '../listing/listing.js';
 function createDateCard(article, classPrefix, eager = false) {
   const title = article.title.split(' - ')[0];
   const card = document.createElement('div');
-  const articleCategory = article.category || article.topicPrimary || article.topicSecondary
-    || article.contentType || article.brandedContent || '';
+  const articleCategory = article.category || article.topic || article.contentType
+    || article.brandedContent || '';
   const articleCategoryElement = articleCategory ? `<p>${articleCategory}</p>` : '';
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
