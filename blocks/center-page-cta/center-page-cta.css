@@ -22,7 +22,7 @@
 
 /* override since no "laptop" size */
 @media (min-width: 1800px) {
-    .has-bg > span.bg > svg:not(:only-child).laptop {
+    .has-bg > span.bg-block-center-page-cta > svg:not(:only-child).laptop {
         display: revert;
     }
 }

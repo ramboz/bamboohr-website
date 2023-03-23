@@ -4,12 +4,12 @@
     <path d="M588.826 478.58C589.109 493.606 581.353 507.642 568.482 515.4L477.664 570.137C464.792 577.895 448.759 578.197 435.604 570.929L342.791 519.647C329.637 512.378 321.359 498.644 321.076 483.618L319.081 377.599C318.798 362.572 326.554 348.537 339.425 340.779L430.244 286.041C443.115 278.283 459.148 277.981 472.303 285.249L565.116 336.532C578.27 343.8 586.548 357.534 586.831 372.56L588.826 478.58Z"
           fill="currentcolor" class="theme-tint-5"/>
     <path d="M558.075 153.897C589.243 189.029 599.302 238.121 584.461 282.68L538.669 420.169C523.828 464.728 486.342 497.985 440.333 507.412L298.367 536.499C252.357 545.926 204.814 530.091 173.645 494.959L77.4713 386.557C46.3026 351.425 36.2441 302.333 51.085 257.774L96.8773 120.285C111.718 75.7258 149.204 42.4691 195.213 33.0422L337.179 3.95467C383.189 -5.47228 430.732 10.3627 461.901 45.4947L558.075 153.897Z"
-          fill="url(#bg-center-page-cta-tablet-a)"/>
+          fill="url(#bg-center-page-cta-tablet)"/>
     <defs>
-        <radialGradient id="bg-center-page-cta-tablet-a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+        <radialGradient id="bg-center-page-cta-tablet" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
                         gradientTransform="translate(188.051 83.6652) rotate(5.39953) scale(415.608 483.48)">
-            <stop stop-color="currentcolor" class="theme-shade-10"/>
-            <stop offset="0.912806" stop-color="currentcolor" class="theme-shade-15"/>
+            <stop stop-color="currentcolor" class="theme-shade-5"/>
+            <stop offset="0.912806" stop-color="currentcolor" class="theme-shade-10"/>
         </radialGradient>
     </defs>
 </svg>

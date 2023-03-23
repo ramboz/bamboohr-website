@@ -1,0 +1,93 @@
+.content-library main {
+  padding: 20px 0;
+  background-color: var(--color-gray-1);
+}
+
+@media (min-width: 1200px) {
+  .content-library main {
+    padding: 60px 0;
+  }
+}
+
+.content-library .form.has-content .content-col img {
+  margin: 40px 0;
+  background-color: var(--color-white);
+}
+
+.content-library .courses-speaker {
+  background-color: var(--color-gray-1);
+}
+
+.content-library .courses-speaker .columns img {
+  border-radius: 50%;
+  max-width: 157px;
+}
+
+.content-library .wistia-course {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .content-library .wistia-course {
+      display: block;
+  }
+}
+
+.content-library .wistia-course-button {
+  display: block;
+}
+
+@media (min-width: 600px) {
+  .content-library .wistia-course-button {
+      display: none;
+  }
+}
+
+.content-library-success main {
+  background: none;
+}
+
+.content-library-success .columns .img-col img {
+  box-shadow: var(--box-shadow-2);
+  border-radius: 15px;
+}
+
+.content-library-success .success-download {
+  margin-bottom: 100px;
+}
+
+.content-library-success .want-more-columns {
+  margin-top: 40px;
+}
+
+.content-library-success .want-more-columns h4 {
+  margin-top: 30px;
+}
+
+.content-library-success .want-more-columns > div > div {
+  margin-bottom: 50px;
+}
+
+@media (min-width: 900px) {
+  .content-library-success .want-more-columns > div > div {
+    margin-bottom: 0;
+  }
+}
+
+.content-library-success .want-more-columns a.button:not(.link):any-link {
+  background: none;
+  color: var(--theme-shade10);
+}
+
+.content-library-success .want-more-columns a.button:not(.link):any-link::after {
+  background-color: currentcolor;
+  content: '';
+  display: inline-block;
+  height: 0.8125rem;
+  margin-left: 0.5rem;
+  mask-image: url('../caret-right.svg');
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-mask-image: url('../caret-right.svg');
+  vertical-align: middle; /* TODO: replace with flex on button? */
+  width: 0.5rem;
+}

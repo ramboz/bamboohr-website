@@ -1,0 +1,13 @@
+main .metadata-content .content-date::before {
+    content: '•';
+    display: inline-block;
+    margin: 1px 8px 0 4px;
+    font-size: 10px;
+    vertical-align: top;
+}
+
+.metadata-content .content-container {
+    display: flex;
+    align-items: center;
+    column-gap: 60px;
+}

@@ -1,5 +1,50 @@
 import { hasClassStartsWith, getValuesFromClassName, loadCSS } from '../../scripts/scripts.js';
 import decorateWistia from '../wistia/wistia.js';
+import { buildPicture } from '../multi-hero/multi-hero.js';
+
+function addBreakpointImages(col, block) {
+  if (block.classList.contains('has-breakpoint-images')) {
+    const images = {};
+    const imgSizes = ['tablet', 'laptop', 'desktop'];
+    let imgsFoundCnt = 0;
+    col.querySelectorAll('picture').forEach(pic => {
+      const imagePathFull = pic.firstElementChild.srcset;
+      const imagePath = imagePathFull.substr(0, imagePathFull.indexOf('?'));
+
+      images[imgSizes[imgsFoundCnt]] = imagePath;
+      imgsFoundCnt += 1;
+
+      if (pic.parentElement.tagName === 'P') pic.parentElement.remove();
+      else pic.remove();
+    });
+
+    if (imgsFoundCnt > 0) {
+      const imgBreakpoints = {'tablet': '0', 'laptop': '600px', 'desktop': '900px' };
+      const backgroundPictureElem = buildPicture(images, imgBreakpoints);
+      col.append(backgroundPictureElem);
+    }
+  }
+}
+
+function addButtonClasses(col, block) {
+  const noLeftButtons = block.classList.contains('no-left-buttons');
+    
+  if (!noLeftButtons) {
+    const isButtonLinks = block.classList.contains('button-style-link');
+    const buttons = col.querySelectorAll('a.button');
+    if (isButtonLinks) {
+      buttons.forEach((button) => {
+        button.classList.add('link');
+        button.parentElement.classList.add('left');
+      });
+    } else {
+      buttons.forEach((button) => {
+        button.classList.add('small');
+        button.parentElement.classList.add('left');
+      });
+    }
+  }
+}
 
 function addIconBtnClass(buttonContainer, icon) {
   const iconClass = [...icon.classList].find(c => c.startsWith('icon-'));
@@ -52,17 +97,29 @@ function addIconContainer(col) {
   }
 }
 
+function hasOnlyWistiaChildren(colChildren) {
+  let hasWistiaChildrenOnly = false;
+  // Assumption: wistia block content is thumbnail (picture) + wistia link or just wistia link 
+  if (colChildren?.length === 2 &&
+      colChildren[0].firstElementChild?.tagName === 'PICTURE' &&
+      colChildren[1].firstElementChild?.tagName === 'A' &&
+      colChildren[1].firstElementChild?.href?.includes('wistia')) {
+      hasWistiaChildrenOnly = true;
+  } else if (colChildren?.length === 1 && 
+            colChildren[0].tagName === 'A' &&
+            colChildren[0].href?.includes('wistia')) {
+      hasWistiaChildrenOnly = true;
+  }
+
+  return hasWistiaChildrenOnly;
+}
+
 function addWistia(col, loadWistiaCSS) {
   const wistiaBlock = document.createElement('div');
   wistiaBlock.classList.add('wistia', 'block');
 
   const colChildren = [...col.children];
-  let addAllChildren = false;
-  if (colChildren.length == 2 &&
-      colChildren[0].firstElementChild.tagName === 'PICTURE' &&
-      colChildren[1].firstElementChild.tagName === 'A') {
-    addAllChildren = true;
-  }
+  const addAllChildren = hasOnlyWistiaChildren(colChildren);
 
   colChildren?.forEach((child) => {
     if (addAllChildren || child.querySelector('a')?.href?.includes('wistia')) {
@@ -78,7 +135,6 @@ function addWistia(col, loadWistiaCSS) {
     // load css
     const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
     loadCSS(`${cssBase}/blocks/wistia/wistia.css`, null);
-    loadWistiaCSS = false;
   }
 
   col.classList.add('img-col');
@@ -104,7 +160,7 @@ function findSplitSubType(val) {
 }
 
 function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
-  const extraSplits = splitVals.length > 2 ? 1 : 0;
+  const extraSplits = splitVals?.length > 2 ? 1 : 0;
   const colParent = cols[0].parentElement;
   let loadWistiaCSS = needToLoadWistiaCSS;
   const colsToRemove = [];
@@ -113,7 +169,7 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
   let hasImage = false;
   let hasWistia = false;
   cols.forEach((col, i) => {
-    col.classList.add(`column${splitVals[i + extraSplits]}`);
+    if (splitVals) col.classList.add(`column${splitVals[i + extraSplits]}`);
 
     if (col.innerText.toLowerCase() === 'title span') {
       if (colParent.nextElementSibling) {
@@ -125,29 +181,20 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
       colsToRemove.push(col);
     } else if (col.querySelector('a')?.href?.includes('wistia')) {
       addWistia(col, loadWistiaCSS);
+      loadWistiaCSS = false;
       hasImage = true;
       hasWistia = true;
+
+      if (!col.parentElement.classList.contains('column-flex-container')) {
+        col.parentElement.classList.add('column-flex-container', 'columns-align-start');
+      }
     } else if (col.querySelector('img')) {
       col.classList.add('img-col');
       hasImage = true;
+      addBreakpointImages(col, block);
     } else col.classList.add('non-img-col');
-    const noLeftButtons = block.classList.contains('no-left-buttons');
     
-    if (!noLeftButtons) {
-      const isButtonLinks = block.classList.contains('button-style-link');
-      const buttons = col.querySelectorAll('a.button');
-      if (isButtonLinks) {
-        buttons.forEach((button) => {
-          button.classList.add('link');
-          button.parentElement.classList.add('left');
-        });
-      } else {
-        buttons.forEach((button) => {
-          button.classList.add('small');
-          button.parentElement.classList.add('left');
-        });
-      }
-    }
+    addButtonClasses(col, block);
 
     addIconContainer(col);
   });
@@ -211,13 +258,14 @@ export default function decorate(block) {
       setupColumns(cols, splitVals, block, true);
     }
   } else if (cols.length === 1) {
-    if (block.classList.contains('button-style-link')) {
-      const buttons = block.querySelectorAll('a.button');
-      buttons.forEach((button) => {
-        button.classList.add('link');
-        button.parentElement.classList.add('left');
-      });
-    }
+    addButtonClasses(cols[0], block);
+  } else if (block.classList.contains('grid')) {
+    const rows = [...block.children];
+    let allCols = [];
+    rows.forEach( r => {
+      allCols = [...allCols, ...r.children];
+    });
+    setupColumns(allCols, null, block, true);
   }
 
   if (hasClassStartsWith(block, 'margin-')) {

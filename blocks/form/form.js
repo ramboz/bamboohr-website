@@ -1,4 +1,5 @@
-import { readBlockConfig } from '../../scripts/scripts.js';
+import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
+import { isUpcomingEvent } from '../../scripts/webinar.js';
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -254,9 +255,12 @@ function createLabel(fd) {
 }
 
 function createDescription(fd) {
-  const desc = document.createElement('p');
-  desc.className = 'form-description';
-  desc.textContent = fd.Description;
+  let desc = '';
+  if (fd.Description) {
+    desc = document.createElement('p');
+    desc.className = 'form-description';
+    desc.textContent = fd.Description;
+  }
   return desc;
 }
 
@@ -351,15 +355,18 @@ async function createForm(formURL) {
 function mktoFormReset(form, moreStyles) {
   const formId = `mktoForm_${form.getId()}`;
   const formEl = form.getFormElem()[0];
+  const currentForm = document.getElementById(formId);
 
   const rando = Math.floor(Math.random() * 1000000);
+  
   formEl.querySelectorAll('label[for]').forEach((labelEl) => {
     const forEl = formEl.querySelector(`[id="${labelEl.htmlFor}"]`);
     if (forEl) {
       const newId = `${forEl.id}_${rando}`;
       labelEl.htmlFor = newId;
       forEl.id = newId;
-      if (forEl.classList.contains('mktoField')) {
+
+      if (forEl.classList.contains('mktoField') && forEl.getAttribute('type') === 'checkbox') {
         forEl.nextElementSibling.htmlFor = newId;
       }
     }
@@ -390,29 +397,77 @@ function mktoFormReset(form, moreStyles) {
     el.remove();
   });
 
-  formEl.querySelector('[name="Country"]').addEventListener('change', () => {
-    document.querySelectorAll('.mktoAsterix').forEach((el) => {
-      el.remove();
+  if (formEl.querySelector('[name="Country"]')) {
+    formEl.querySelector('[name="Country"]').addEventListener('change', () => {
+      document.querySelectorAll('.mktoAsterix').forEach((el) => {
+        el.remove();
+      });
+      document.querySelectorAll('.mktoHtmlText').forEach((el) => {
+        el.removeAttribute('style');
+      });
+      if (currentForm.querySelector('[name="Disclaimer__c"]')) {
+        const gdprLabel = currentForm.querySelector('[for="Disclaimer__c"]');
+        const gdprInput = currentForm.querySelector('[id="Disclaimer__c"]');
+        gdprInput.id = `Disclaimer__c_${rando}`;
+        gdprInput.nextElementSibling.htmlFor = `Disclaimer__c_${rando}`;
+        gdprLabel.htmlFor = `Disclaimer__c_${rando}`;
+        gdprLabel.removeAttribute('style');
+        gdprInput.parentElement.classList.add('form-checkbox-option');
+        gdprLabel.parentElement.classList.add('form-checkbox-flex');
+        gdprLabel.firstElementChild.classList.add('form-gdpr-text');
+ 
+        currentForm.querySelector('[name="Disclaimer__c"]').addEventListener('input', () => {
+          if (currentForm.querySelector('.form-msg') && currentForm.querySelectorAll('.mktoField.mktoInvalid').length === 0 && currentForm.querySelectorAll('.mktoLogicalField.mktoInvalid').length === 0) {
+            currentForm.querySelector('.form-msg').remove();
+          }
+        });
+      }
     });
-    document.querySelectorAll('.mktoHtmlText').forEach((el) => {
-      el.removeAttribute('style');
-    });
-    if (document.getElementById(formId).querySelector('[name="Disclaimer__c"]')) {
-      const gdprLabel = document.getElementById(formId).querySelector('[for="Disclaimer__c"]');
-      const gdprInput = document.getElementById(formId).querySelector('[id="Disclaimer__c"]');
-      gdprInput.id = `Disclaimer__c_${rando}`;
-      gdprInput.nextElementSibling.htmlFor = `Disclaimer__c_${rando}`;
-      gdprLabel.htmlFor = `Disclaimer__c_${rando}`;
-      gdprLabel.removeAttribute('style');
-      gdprInput.parentElement.classList.add('form-checkbox-option');
-      gdprLabel.parentElement.classList.add('form-checkbox-flex');
-      gdprLabel.firstElementChild.classList.add('form-gdpr-text');
-    }
-  });
-
+  }
+  
   formEl.querySelectorAll('[type="checkbox"]').forEach((el) => {
     el.parentElement.classList.add('form-checkbox-option');
     el.parentElement.parentElement.classList.add('form-checkbox-flex');
+  });
+
+  // side-by-side fields
+
+  const firstName = formEl.querySelector('[name="FirstName"]');
+  const lastName = formEl.querySelector('[name="LastName"]');
+  const phone = formEl.querySelector('[name="Phone"]');
+  const numberOfEmp = formEl.querySelector('[name="Employees_Text__c"]');
+
+  if (firstName && lastName) {
+    firstName.closest('.mktoFormRow').classList.add('form-input-width50');
+    lastName.closest('.mktoFormRow').classList.add('form-input-width50');
+  }
+
+  if (phone && numberOfEmp) {
+    phone.closest('.mktoFormRow').classList.add('form-input-width50');
+    numberOfEmp.closest('.mktoFormRow').classList.add('form-input-width50');
+  }
+
+  // Add error message when form is invalid
+  const mktoButton = formEl.querySelector('.mktoButton');
+  const formMsg = document.createElement('div');
+  formMsg.classList.add('form-msg');
+  formMsg.textContent = '*Please correct marked fields';
+
+  mktoButton.addEventListener('click', () => {
+    if (form.validate() === false && !currentForm.querySelector('.form-msg')) {
+      currentForm.append(formMsg);
+    }
+  });
+
+  // Remove error message when form is valid
+  formEl.querySelectorAll('.mktoField').forEach((input) => {
+    ['input', 'blur'].forEach((event) => {
+      input.addEventListener(event, () => {
+        if (currentForm.querySelector('.form-msg') && currentForm.querySelectorAll('.mktoField.mktoInvalid').length === 0) {
+          currentForm.querySelector('.form-msg').remove();
+        }
+      });
+    })
   });
 
   if (!moreStyles) {
@@ -437,11 +492,26 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
     window.MktoForms2.whenReady((form) => {
       if (form.getId().toString() === formId) {
         mktoFormReset(form);
+        const formEl = form.getFormElem()[0];
 
         /* Adobe Form Start event tracking when user click into the first field */
         form.getFormElem()[0].firstElementChild.addEventListener('click', () => {
-          adobeEventTracking('Form Start', form.getId());
+          window.setTimeout(() => adobeEventTracking('Form Start', form.getId()), 4000);
         });
+
+        const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
+        const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
+        if (readyTalkMeetingID && readyTalkEl) {
+          formEl.querySelector('input[name="readyTalkMeetingID"]').value = readyTalkMeetingID;
+        }
+
+        const formSubmitText = getMetadata('form-submit-text');
+        const formSubmitBtn = formEl.querySelector('.mktoButton');
+        if (formSubmitText) {
+          formSubmitBtn.textContent = formSubmitText;
+        } else if (window.location.pathname.includes('/webinars/')) {
+          formSubmitBtn.textContent = isUpcomingEvent() ? 'Register for this event' : 'Watch Now';
+        }
 
         form.onSuccess(() => {
           /* GA events tracking */
@@ -478,12 +548,26 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
   }
 }
 
+
+const getDefaultEmbed = (url) => `<iframe frameborder="0" src="${url}" allowfullscreen scrolling="no" loading="lazy"></iframe>`;
+
+export function scrollToForm() {
+  const formEl = document.querySelector('.form-wrapper');
+  formEl.scrollIntoView({
+    behavior: 'smooth',
+  });
+  formEl.querySelector('input:not([type=hidden])').focus();
+};
+
 export default async function decorate(block) {
   const config = readBlockConfig(block);
-  const as = block.querySelectorAll('a');
-  let formUrl = as[0] ? as[0].href : '';
-  let successUrl = as[1] ? as[1].href : '';
-  let chilipiper;
+  let chilipiper; let formUrl; let successUrl;
+  
+  if (!block.classList.contains('has-content')) {
+    const as = block.querySelectorAll('a');
+    formUrl = as[0] ? as[0].href : '';
+    successUrl = as[1] ? as[1].href : '';
+  }
 
   [...block.classList].forEach((name) => {
     if (!Number.isNaN(+name.split('').at(0))) {
@@ -491,7 +575,6 @@ export default async function decorate(block) {
       block.classList.add(`grid-${name}`);
     }
   });
-
   if (!formUrl) {
     const resp = await fetch('/forms-map.json');
     const json = await resp.json();
@@ -501,7 +584,9 @@ export default async function decorate(block) {
         entry.URL === window.location.pathname || (entry.URL.endsWith('**') && window.location.pathname.startsWith(entry.URL.split('**')[0]))
       ) {
         formUrl = entry.Form;
-        successUrl = entry.Success;
+        let fbTracking = '';
+        if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php'
+        successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
         chilipiper = entry.Chilipiper;
       }
     });
@@ -527,6 +612,11 @@ export default async function decorate(block) {
             loadFormAndChilipiper(formId, successUrl, chilipiper);
           } else {
             col.classList.add('content-col');
+            const a = col.querySelector('a');
+            if (a && block.classList.contains('with-google-map')) {
+              const url = new URL(a.href.replace(/\/$/, ''));
+              a.outerHTML = getDefaultEmbed(url);
+            }
           }
         });
       } else {

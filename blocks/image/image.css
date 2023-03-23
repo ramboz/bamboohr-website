@@ -63,6 +63,11 @@ main .image.shadow {
   box-shadow: var(--box-shadow-2);
 }
 
+main .image.full-section-width img {
+  width: 100%;
+  margin-bottom: -8px;
+}
+
 @media (min-width: 600px) {
   main .image-list {
     flex-direction: row;

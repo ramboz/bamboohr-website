@@ -110,7 +110,8 @@ export default function decorate(block) {
   // skip for new styles
   if ((block.classList.contains('style-1')
       || block.classList.contains('style-2')
-      || block.classList.contains('style-3')) 
+      || block.classList.contains('style-3') 
+      || block.classList.contains('style-4')) 
     && !block.classList.contains('auto-play')) return;
 
   carouselInterval = window.setInterval(() => {

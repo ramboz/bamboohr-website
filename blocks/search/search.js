@@ -1,6 +1,7 @@
 import { getMetadata, lookupPages } from '../../scripts/scripts.js';
 import { createBlogCard } from '../featured-articles/featured-articles.js';
 import { createAppCard } from '../app-cards/app-cards.js';
+import { createResourceCard } from '../resources-library/resources-library.js';
 
 function highlightTextElements(terms, elements) {
   elements.forEach((e) => {
@@ -33,15 +34,19 @@ function highlightTextElements(terms, elements) {
 async function displaySearchResults(terms, results) {
   let collection = 'blog';
   if (getMetadata('theme') === 'integrations') collection = 'integrations';
+  if (getMetadata('theme') === 'resources') collection = 'resources';
   await lookupPages([], collection);
   const allPages = window.pageIndex[collection].data;
   allPages.forEach((page) => {
     let searchTags = '';
     if (collection === 'integrations') {
-      searchTags = `${page.level}, ${page.tag}, ${page.category}`;
+      searchTags = `${page.level}, ${page.tag}, ${page.category}, ${page.partnerConnectionLibrary}`;
     }
     if (collection === 'blog') {
       searchTags = `${page.tags}`;
+    }
+    if (collection === 'resources') {
+      searchTags = `${page.title}, ${page.category}, ${page.description}`;
     }
     page.searchTags = searchTags;
   });
@@ -50,10 +55,24 @@ async function displaySearchResults(terms, results) {
   const filtered = allPages.filter((e) => e.title.toLowerCase().includes(terms.toLowerCase())
     || e.description.toLowerCase().includes(terms.toLowerCase())
     || e.searchTags.toLowerCase().includes(terms.toLowerCase()));
+  
+
+  if  (collection === 'integrations') {
+    const hasIndirectIntegrationOnly = filtered.every((listing) => listing.partnerConnectionLibrary.toLowerCase().includes(terms.toLowerCase()));
+    
+    if (hasIndirectIntegrationOnly === true) {
+      const msg = document.createElement('p');
+      msg.className = 'search-results-msg';
+      msg.textContent = 'We don’t offer a direct integration for the provider you’ve searched for, but don’t worry! You can access that integration through one of our integration platform partners below.';
+      ul.before(msg);
+    }
+  }
+  
   filtered.forEach((row) => {
     let card;
     if (collection === 'blog') card = createBlogCard(row, 'search-blog');
     if (collection === 'integrations') card = createAppCard(row, 'search-app');
+    if (collection === 'resources') card = createResourceCard(row, 'resource');
     ul.append(card);
   });
 

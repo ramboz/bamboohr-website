@@ -1,0 +1,105 @@
+main .logos > div > div {
+  display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: stretch;
+}
+
+@media (min-width: 1200px) {
+  main .logos > div > div {
+    width: 83.33%;
+    margin: 0 auto;
+  }
+}
+
+main .logos > div > div picture {
+  flex: 0 0 auto;
+  width: 25%;
+  text-align: center;
+  padding: 0 20px;
+  margin-bottom: 22px;
+}
+
+@media (min-width: 600px) {
+  main .logos > div > div picture {
+    margin-bottom: 38px;
+  }
+
+  main .logos > div > div picture img {
+    max-height: 97px;
+  }
+}
+
+@media (min-width: 900px) {
+  main .logos > div > div picture img {
+    max-height: 124px;
+  }
+}
+
+@media (min-width: 1800px) {
+  main .logos > div > div picture {
+    margin-bottom: 58px;
+  }
+
+  main .logos > div > div picture img {
+    max-height: 148px;
+  }
+}
+
+main .logos.partner-logos ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: stretch;
+}
+
+main .logos.partner-logos ul li {
+  flex: 0 0 auto;
+  width: 50%;
+  padding: 0 8px;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 900px) {
+  main .logos.partner-logos ul li {
+    margin-bottom: 16px;
+  }
+}
+
+@media (min-width: 900px) {
+  main .logos.partner-logos ul li {
+    width: 33.33%;
+  }
+}
+
+@media (min-width: 1200px) {
+  main .logos.partner-logos ul li {
+    width: 16.66%;
+  }
+}
+
+main .logos.partner-logos ul li picture {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background-color: var(--color-white);
+  border-radius: 1rem;
+  box-shadow: var(--theme-shadow1-shade5);
+  height: 4rem;
+  padding: 10px;
+}
+
+@media (min-width: 600px) {
+  main .logos.partner-logos ul li picture {
+    padding: 6px 24px;
+  }
+}
+
+main .logos.partner-logos ul li picture img {
+  max-height: 100%;
+}

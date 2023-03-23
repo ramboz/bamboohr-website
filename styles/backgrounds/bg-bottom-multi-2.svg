@@ -1,15 +1,15 @@
 <svg width="1881" height="782" viewBox="0 0 1881 782" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M240.836 406.807L240.032 405.54L240.836 406.807L806.429 47.7482C896.612 -9.49234 1009.68 -13.7857 1103.05 36.4976L1103.76 35.177L1103.05 36.4977L1688.66 351.869C1782.03 402.153 1841.51 499.363 1844.71 606.918L1864.71 1281.34C1867.9 1388.9 1814.3 1490.42 1724.11 1547.68L1158.51 1906.72C1068.33 1963.96 955.261 1968.26 861.896 1917.97L276.282 1602.6C182.915 1552.32 123.428 1455.11 120.235 1347.55L100.234 673.127C97.049 565.582 150.647 464.059 240.836 406.807Z"
-          stroke="url(#paint0_linear_0_1)" stroke-width="3"/>
+          stroke="url(#bg-bottom-multi-2-a)" stroke-width="3"/>
     <path d="M10.4595 881.752L182.477 1533.94C210.047 1638.46 290.397 1720.08 393.281 1748.09L1035.28 1922.84C1138.16 1950.84 1247.93 1920.96 1323.25 1844.46L1793.22 1367.03C1868.53 1290.52 1897.94 1179 1870.37 1074.49L1698.36 422.301C1670.79 317.784 1590.44 236.158 1487.55 208.151L845.554 33.4034C742.67 5.39604 632.899 35.284 557.585 111.783L87.625 589.222C12.3108 665.732 -17.1003 777.245 10.4595 881.752Z"
-          fill="url(#paint1_linear_0_1)"/>
+          fill="url(#bg-bottom-multi-2-b)"/>
     <defs>
-        <linearGradient id="paint0_linear_0_1" x1="297.658" y1="327.861" x2="1685.54" y2="1606.65"
+        <linearGradient id="bg-bottom-multi-2-a" x1="297.658" y1="327.861" x2="1685.54" y2="1606.65"
                         gradientUnits="userSpaceOnUse">
             <stop stop-color="currentcolor" class="theme-tint-5"/>
             <stop offset="1" stop-color="currentcolor" class="theme-shade-5"/>
         </linearGradient>
-        <linearGradient id="paint1_linear_0_1" x1="617.5" y1="978" x2="570" y2="442" gradientUnits="userSpaceOnUse">
+        <linearGradient id="bg-bottom-multi-2-b" x1="617.5" y1="978" x2="570" y2="442" gradientUnits="userSpaceOnUse">
             <stop stop-color="currentcolor" class="theme-tint-5"/>
             <stop offset="0.870552" stop-color="currentcolor" class="theme-shade-5"/>
         </linearGradient>

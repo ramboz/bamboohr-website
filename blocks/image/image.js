@@ -31,7 +31,7 @@ export default function decorateImage(block) {
       const imagePath = imagePathFull.substr(0, imagePathFull.indexOf('?'));
 
       images[imgSizes[imgsFoundCnt]] = imagePath;
-      imgsFoundCnt++;
+      imgsFoundCnt += 1;
     });
 
     if (imgsFoundCnt > 0) {

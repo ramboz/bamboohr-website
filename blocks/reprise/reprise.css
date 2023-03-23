@@ -1,0 +1,40 @@
+.block.reprise {
+    display: flex;
+    justify-content: center;
+}
+
+.reprise-wrapper {
+    display: none;
+}
+
+.block.reprise picture {
+    cursor: pointer;
+}
+
+
+/* modal */
+.reprise-modal .modal {
+    border-radius: 1rem;
+    max-width: none;
+    padding: 1rem;
+    width: auto;
+}
+
+/* embed */
+.reprise-modal .modal-content > div {
+    --width: 85vw;
+
+    height: calc(var(--width) * .5625);/* default = 16:9 */
+    width: var(--width);
+}
+
+@media (min-width: 1025px) {
+    .reprise-modal .modal-content > div {
+        --width: 75vw;
+    }
+}
+@media screen and (min-width: 1320px) {
+    .reprise-wrapper {
+        display: block;
+    }
+}

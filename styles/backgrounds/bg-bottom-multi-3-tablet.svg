@@ -1,15 +1,15 @@
 <svg width="768" height="736" viewBox="0 0 768 736" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M869.989 566.758C883.955 651.917 851.429 738.058 784.662 792.733L575.079 964.359C508.312 1019.03 417.449 1033.94 336.716 1003.45L83.2912 907.76C2.55827 877.276 -55.7789 806.037 -69.7452 720.878L-113.586 453.56C-127.553 368.401 -95.0264 282.26 -28.2598 227.586L181.324 55.9594C248.09 1.28471 338.954 -13.6172 419.687 16.867L673.111 112.558C753.844 143.043 812.181 214.282 826.148 299.441L869.989 566.758Z"
-          stroke="url(#paint0_linear_0_1)" stroke-width="1.625"/>
+          stroke="url(#bg-bottom-multi-3-tablet-a)" stroke-width="1.625"/>
     <path d="M896.602 323.193C953.536 378.176 976.811 459.357 957.661 536.154L871.956 879.853C852.806 956.65 794.14 1017.4 718.056 1039.21L377.552 1136.84C301.468 1158.65 219.526 1138.22 162.592 1083.24L-92.2071 837.165C-149.141 782.182 -172.416 701.001 -153.266 624.204L-67.5612 280.505C-48.411 203.707 10.2556 142.96 86.3394 121.146L426.843 23.5189C502.927 1.70473 584.869 22.1378 641.803 77.1211L896.602 323.193Z"
-          fill="url(#paint1_radial_0_1)"/>
+          fill="url(#bg-bottom-multi-3-tablet-b)"/>
     <defs>
-        <linearGradient id="paint0_linear_0_1" x1="804.292" y1="161.196" x2="-47.9106" y2="859.058"
+        <linearGradient id="bg-bottom-multi-3-tablet-a" x1="804.292" y1="161.196" x2="-47.9106" y2="859.058"
                         gradientUnits="userSpaceOnUse">
             <stop stop-color="currentcolor" class="theme"/>
             <stop offset="1" stop-color="currentcolor" class="secondary"/>
         </linearGradient>
-        <radialGradient id="paint1_radial_0_1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+        <radialGradient id="bg-bottom-multi-3-tablet-b" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
                         gradientTransform="translate(344.417 -41.1868) rotate(134.124) scale(525.943 611.833)">
             <stop stop-color="currentcolor" class="theme"/>
             <stop offset="1" stop-color="currentcolor" class="theme-shade-15"/>

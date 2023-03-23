@@ -1,15 +1,15 @@
 <svg width="428" height="531" viewBox="0 0 428 531" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M-16.1398 146.552L-16.9437 145.285L-16.1397 146.552L186.055 18.1913C186.055 18.1912 186.055 18.1912 186.055 18.1912C218.003 -2.08667 258.052 -3.60493 291.12 14.2041L500.472 126.947C533.541 144.757 554.619 179.193 555.751 217.305L562.901 458.406L564.4 458.362L562.901 458.406C564.032 496.52 545.038 532.492 513.086 552.775L310.889 681.132C278.941 701.409 238.892 702.928 205.824 685.119L-3.52755 572.376C-36.5971 554.566 -57.6754 520.13 -58.8067 482.018L-65.9568 240.917C-67.0855 202.807 -48.0918 166.835 -16.1398 146.552Z"
-          stroke="url(#paint0_linear_0_1)" stroke-width="3"/>
+          stroke="url(#bg-bottom-multi-2-mobile-a)" stroke-width="3"/>
     <path d="M-99.4166 315.638L-37.846 548.844C-27.9778 586.216 0.782196 615.404 37.6077 625.419L267.399 687.904C304.225 697.919 343.516 687.231 370.473 659.877L538.691 489.16C565.648 461.802 576.175 421.928 566.307 384.555L504.736 151.35C494.868 113.977 466.108 84.7895 429.283 74.7748L199.491 12.2894C162.666 2.2747 123.375 12.9619 96.4174 40.3162L-71.7965 211.037C-98.754 238.394 -109.281 278.269 -99.4166 315.638Z"
-          fill="url(#paint1_linear_0_1)"/>
+          fill="url(#bg-bottom-multi-2-mobile-b)"/>
     <defs>
-        <linearGradient id="paint0_linear_0_1" x1="3.6572" y1="117.515" x2="499.812" y2="574.672"
+        <linearGradient id="bg-bottom-multi-2-mobile-a" x1="3.6572" y1="117.515" x2="499.812" y2="574.672"
                         gradientUnits="userSpaceOnUse">
             <stop stop-color="currentcolor" class="theme-tint-5"/>
             <stop offset="1" stop-color="currentcolor" class="theme-shade-5"/>
         </linearGradient>
-        <linearGradient id="paint1_linear_0_1" x1="117.863" y1="350.054" x2="100.895" y2="158.391"
+        <linearGradient id="bg-bottom-multi-2-mobile-b" x1="117.863" y1="350.054" x2="100.895" y2="158.391"
                         gradientUnits="userSpaceOnUse">
             <stop stop-color="currentcolor" class="theme-tint-5"/>
             <stop offset="0.870552" stop-color="currentcolor" class="theme-shade-5"/>

@@ -1,0 +1,88 @@
+.webinar main .form-container {
+  background-color: var(--color-gray-1);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+@media (min-width: 1200px) {
+  .webinar main .form-container {
+    padding: 60px 0;
+  }
+}
+
+.webinar .form.has-content .content-col img {
+  margin: 40px 0;
+  background-color: var(--color-white);
+}
+
+.webinar main .speaker-container .title-wrapper {
+  margin-bottom: 30px;
+}
+
+.webinar main .speaker-container {
+  margin-bottom: 100px;
+}
+
+.webinar-success-ondemand main {
+  background-color: var(--color-gray-1);
+  padding-top: 50px;
+}
+
+.webinar-success-ondemand .success-partner-logos img {
+  max-width: 134px;
+  margin: 50px 0;
+}
+
+.webinar-success-ondemand .wistia-columns .column7,
+.webinar-success-ondemand .slide-share-columns .column7 {
+  box-shadow: var(--box-shadow-2);
+}
+
+.webinar-success-ondemand .title-container {
+  text-align: center;
+}
+
+.webinar-success-ondemand .slide-share-columns {
+  margin-top: 300px;
+}
+
+.webinar-success-ondemand .slide-share-columns iframe {
+  min-height: 250px;
+}
+
+@media (min-width: 600px) {
+  .webinar-success-ondemand .slide-share-columns iframe {
+    min-height: 370px;
+  }
+}
+
+.webinar-success-ondemand main .bottom-cta {
+  background-color: var(--color-1);
+  padding: 50px 0 100px;
+  text-align: center;
+  margin-top: 100px;
+}
+
+@media (min-width: 900px) {
+  .webinar-success-ondemand main .bottom-cta {
+    margin-top: 200px;
+  }
+}
+
+.webinar-success-ondemand .bottom-cta a {
+  background-color: var(--color-white);
+  color: var(--color-1);
+}
+
+.webinar-success-upcoming main{
+  padding: 50px 0;
+}
+
+.webinar-success-upcoming .upcoming-cta {
+  text-align: center;
+  margin-bottom: 120px;
+}
+
+.webinar-success-upcoming .upcoming-cta a {
+  margin: 0 20px;
+}

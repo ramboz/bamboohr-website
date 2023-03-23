@@ -4,8 +4,14 @@
 
 .hero {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   padding: 30px 0;
+}
+
+@media (min-width: 600px) {
+  .hero {
+    flex-direction: column-reverse;
+  }
 }
 
 div.pink .hero>div:first-child {
@@ -30,11 +36,6 @@ div.pink .hero>div:first-child h1 {
 
 .hero>.image-group-container {
   width: 66.66%;
-}
-
-.hero .cta-container {
-  display: flex;
-  flex-flow: column wrap;
 }
 
 .hero a.button:any-link {
@@ -66,10 +67,6 @@ main .section .hero p.button-container {
 
   .hero>.image-group-container {
     width: 33.33%;
-  }
-
-  .hero .cta-container {
-    flex-direction: row;
   }
 
   .hero a.button:any-link {
@@ -437,7 +434,7 @@ main .section .hero p.button-container {
 }
 
 .hero.triple-hex>div:first-child h1 {
-  color: var(--color-white);
+  color: var(--theme-shade15);
   line-height: 1.2;
 }
 
@@ -456,21 +453,22 @@ main .section .hero p.button-container {
 }
 
 .hero.triple-hex>div:first-child h2 {
-  color: var(--theme-tint15);
+  color: var(--theme-shade10);
   font-size: 1.625rem;
   font-style: normal;
   line-height: 1.1538;
 }
 
 .hero.triple-hex>div:first-child p {
-  color: var(--color-white);
+  color: var(--color-gray-12);
   font-size: 1.3125rem;
   font-weight: normal;
   line-height: 1.4286;
 }
 
 @media (min-width: 600px) and (max-width: 1024px) {
-  .hero.triple-hex>div:first-child p {
+  .hero.triple-hex>div:first-child p,
+  .hero.triple-hex>div:first-child .cta-container {
     margin-right: calc((60 / var(--container-width)) * 100vw);
   }
 }
@@ -482,11 +480,11 @@ main .section .hero p.button-container {
   --image-width: 320;
 
   padding: 0;
-  position: absolute;
   right: calc((var(--image-right) / var(--container-width)) * 100vw);
   top: calc((var(--image-top) / var(--container-width)) * 100vw);
   width: calc((var(--image-width) / var(--container-width)) * 100vw);
   z-index: -1;
+  margin-top: 30px;
 }
 
 @media (min-width: 600px) {
@@ -494,6 +492,9 @@ main .section .hero p.button-container {
     --image-right: -25;
     --image-top: 225;
     --image-width: 500;
+
+    position: absolute;
+    margin-top: 0;
   }
 }
 

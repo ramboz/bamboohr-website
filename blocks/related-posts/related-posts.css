@@ -1,4 +1,4 @@
-main .related-posts-container {
+main .related-posts-container:not(.metadata-content-container) {
   padding: 0;
 }
 
@@ -11,6 +11,13 @@ main .section > .related-posts-wrapper {
   background-size: contain;
   padding: 150px 30px;
   margin-top: 100px;
+}
+
+main .section > .related-posts-wrapper.no-background {
+  background-color: unset;
+  background-image: none;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 main .section > .related-posts-wrapper::before {

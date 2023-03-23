@@ -7,10 +7,4 @@
    fill="currentcolor" class="theme-tint-10" />
   <path d="M1122.95 595.941L1055.09 661.852C1044.22 672.415 1028.61 676.395 1014.15 672.294L923.932 646.705C909.472 642.605 898.359 631.046 894.774 616.384L872.411 524.886C868.827 510.223 873.319 494.684 884.194 484.122L952.054 418.211C962.929 407.648 978.533 403.668 992.992 407.769L1083.22 433.358C1097.67 437.458 1108.79 449.017 1112.37 463.679L1134.73 555.177C1138.32 569.84 1133.83 585.379 1122.95 595.941Z"
    fill="currentcolor" class="secondary-tint-10" />
-  <defs>
-    <linearGradient id="bg-top-multi-4-laptop-a" x1="1779.19" y1="-458.605" x2="81.1944" y2="-494.956" gradientUnits="userSpaceOnUse">
-      <stop offset="0.107639" stop-color="currentcolor" class="theme-tint-10" />
-      <stop offset="0.623264" stop-color="currentcolor" class="theme-shade-5" />
-    </linearGradient>
-  </defs>
 </svg>

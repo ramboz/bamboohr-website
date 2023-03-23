@@ -1,8 +1,8 @@
 <svg width="700" height="1328" viewBox="0 0 700 1328" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M1191.88 314.74L1287.52 769.823C1302.84 842.754 1278.4 918.045 1223.38 967.355L880.084 1275.04C825.069 1324.35 747.847 1340.16 677.512 1316.55L238.588 1169.15C168.249 1145.53 115.479 1086.05 100.155 1013.12L4.52003 558.039C-10.8042 485.109 13.6423 409.817 68.657 360.507L411.955 52.8261C466.97 3.51646 544.192 -12.3016 614.528 11.3133L1053.45 158.721C1123.79 182.342 1176.56 241.819 1191.88 314.74Z"
-          fill="url(#bg-right-single-1-laptop-a)"/>
+          fill="url(#bg-right-single-1-laptop)"/>
     <defs>
-        <linearGradient id="bg-right-single-1-laptop-a" x1="350.024" y1="76.0386" x2="788" y2="892"
+        <linearGradient id="bg-right-single-1-laptop" x1="350.024" y1="76.0386" x2="788" y2="892"
                         gradientUnits="userSpaceOnUse">
             <stop stop-color="currentcolor" class="secondary-tint-15"/>
             <stop offset="1" stop-color="currentcolor" class="theme-tint-15"/>

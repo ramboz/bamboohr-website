@@ -73,7 +73,10 @@ main .toc > ol > li::before {
     margin-top: 0;
   }
 
-  .resources-guides main .toc > ol > ol {
-    padding-left: 40px;
+  main .toc > ol > ol,
+  main .toc > ol > ol > ol,
+  main .toc > ol > ol > ol > ol,
+  main .toc > ol > ol > ol > ol > ol {
+    padding-left: 30px;
   }
 }

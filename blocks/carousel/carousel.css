@@ -51,6 +51,10 @@ main .carousel > div {
   color: var(--color-white);
 }
 
+main .carousel.row-4 > div {
+  justify-content: center;
+}
+
 main .carousel div.carousel-text {
   text-align: center;
   width: 500px;
@@ -122,7 +126,8 @@ main .carousel-wrapper .carousel-controls {
 /* undo defaults for new styles, set some defaults */
 main .carousel.style-1,
 main .carousel.style-2,
-main .carousel.style-3 {
+main .carousel.style-3,
+main .carousel.style-4 {
   background-color: unset;
   border-radius: unset;
   box-shadow: unset;
@@ -130,7 +135,8 @@ main .carousel.style-3 {
 
 main .carousel.style-1 > div,
 main .carousel.style-2 > div,
-main .carousel.style-3 > div {
+main .carousel.style-3 > div,
+main .carousel.style-4 > div {
   background-image: unset;
   color: unset;
   height: unset;
@@ -139,13 +145,15 @@ main .carousel.style-3 > div {
 
 main .carousel.style-1 picture,
 main .carousel.style-2 picture,
-main .carousel.style-3 picture {
+main .carousel.style-3 picture,
+main .carousel.style-4 picture {
   position: unset;
 }
 
 main .carousel.style-1 .carousel-text,
 main .carousel.style-2 .carousel-text,
-main .carousel.style-3 .carousel-text {
+main .carousel.style-3 .carousel-text,
+main .carousel.style-4 .carousel-text {
   color: var(--color-gray-10);
   display: flex;
   flex-direction: column;
@@ -162,13 +170,15 @@ main .carousel.style-3 .carousel-text {
 
 main .carousel.style-1 p:empty,
 main .carousel.style-2 p:empty,
-main .carousel.style-3 p:empty {
+main .carousel.style-3 p:empty,
+main .carousel.style-4 p:empty {
   display: none;
 }
 
 main .carousel.style-1 ~ .carousel-buttons,
 main .carousel.style-2 ~ .carousel-buttons,
-main .carousel.style-3 ~ .carousel-buttons {
+main .carousel.style-3 ~ .carousel-buttons,
+main .carousel.style-4 ~ .carousel-buttons {
   gap: calc(var(--gap) - var(--size));
   margin-top: -1.5rem;
 }
@@ -176,14 +186,16 @@ main .carousel.style-3 ~ .carousel-buttons {
 @media (min-width: 700px) {
   main .carousel.style-1 ~ .carousel-buttons,
   main .carousel.style-2 ~ .carousel-buttons,
-  main .carousel.style-3 ~ .carousel-buttons {
+  main .carousel.style-3 ~ .carousel-buttons,
+  main .carousel.style-4 ~ .carousel-buttons {
     margin-top: -3rem;
   }
 }
 
 main .carousel.style-1 ~ .carousel-buttons button,
 main .carousel.style-2 ~ .carousel-buttons button,
-main .carousel.style-3 ~ .carousel-buttons button {
+main .carousel.style-3 ~ .carousel-buttons button,
+main .carousel.style-4 ~ .carousel-buttons button {
   background-color: transparent;
   border-radius: 50%;
   display: flex;
@@ -195,7 +207,8 @@ main .carousel.style-3 ~ .carousel-buttons button {
 
 main .carousel.style-1 ~ .carousel-buttons button::after,
 main .carousel.style-2 ~ .carousel-buttons button::after,
-main .carousel.style-3 ~ .carousel-buttons button::after {
+main .carousel.style-3 ~ .carousel-buttons button::after,
+main .carousel.style-4 ~ .carousel-buttons button::after {
   border-radius: 50%;
   content: '';
   display: block;
@@ -312,6 +325,11 @@ main .carousel.style-2 {
     flex-direction: column;
     overflow: visible;
   }
+
+  main .carousel.style-4 {
+    flex-flow: row wrap;
+    justify-content: center;
+  }
 }
 
 main .carousel.style-2 > div {
@@ -324,6 +342,10 @@ main .carousel.style-2 > div {
   main .carousel.style-2 > div {
     flex-direction: row-reverse;
     gap: 9.5rem;
+  }
+
+  main .carousel.row-4 > div {
+    width: 25%;
   }
 }
 
@@ -339,13 +361,15 @@ main .carousel.style-2 .carousel-text {
 }
 
 @media (min-width: 1025px) {
-  main .carousel.style-2 .carousel-text {
+  main .carousel.style-2 .carousel-text,
+  main .carousel.style-4 .carousel-text {
     text-align: revert;
     width: revert;
   }
 }
 
-main .carousel.style-2 h2 {
+main .carousel.style-2 h2,
+main .carousel.style-4 h2 {
   font-family: var(--heading-font-family);
   font-style: normal;
   font-weight: var(--heading-font-weight);
@@ -356,27 +380,32 @@ main .carousel.style-2 h2 {
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-main .carousel.style-2 p {
+main .carousel.style-2 p, 
+main .carousel.style-4 p {
   margin: 0;
   color: var(--color-gray-10);
 }
 
-main .carousel.style-2 ~ .carousel-buttons {
+main .carousel.style-2 ~ .carousel-buttons, 
+main .carousel.style-4 ~ .carousel-buttons {
   --gap: 1.875rem;
   --size: 1.25rem;
 }
 
 @media (min-width: 1025px) {
-  main .carousel.style-2 ~ .carousel-buttons button {
+  main .carousel.style-2 ~ .carousel-buttons button, 
+  main .carousel.style-4 ~ .carousel-buttons button {
     display: none;
   }
 }
 
-main .carousel.style-2 ~ .carousel-buttons button::after {
+main .carousel.style-2 ~ .carousel-buttons button::after,
+main .carousel.style-4 ~ .carousel-buttons button::after {
   background-color: var(--theme-tint5);
 }
 
-main .carousel.style-2 ~ .carousel-buttons button.selected::after {
+main .carousel.style-2 ~ .carousel-buttons button.selected::after,
+main .carousel.style-4 ~ .carousel-buttons button.selected::after {
   background-color: var(--theme-shade10);
 }
 

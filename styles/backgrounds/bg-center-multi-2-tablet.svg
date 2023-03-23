@@ -1,9 +1,9 @@
 <svg width="365" height="605" viewBox="0 0 365 605" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path opacity="0.5"
           d="M462.047 29.7084L462.173 28.7183L462.047 29.7083L245.127 2.19966C210.722 -2.16247 176.489 12.3066 155.317 40.1694L21.8783 215.792C0.706346 243.655 -4.17533 280.67 9.067 312.892L92.5467 516.019C105.79 548.237 135.14 570.772 169.544 575.134L386.464 602.642C420.869 607.004 455.103 592.535 476.274 564.673L609.713 389.05C630.881 361.188 635.762 324.174 622.52 291.952L623.445 291.572L622.52 291.952L539.045 88.823C525.802 56.6054 496.452 34.0704 462.047 29.7084Z"
-          stroke="url(#bg-right-single-2-tablet-a)" stroke-width="2"/>
+          stroke="url(#bg-center-multi-2-tablet-a)" stroke-width="2"/>
     <defs>
-        <linearGradient id="bg-right-single-2-tablet-a" x1="434.617" y1="13.7242" x2="196.972" y2="591.117"
+        <linearGradient id="bg-center-multi-2-tablet-a" x1="434.617" y1="13.7242" x2="196.972" y2="591.117"
                         gradientUnits="userSpaceOnUse">
             <stop stop-color="currentcolor" class="theme-shade-15"/>
             <stop offset="1" stop-color="currentcolor" class="theme-shade-10"/>

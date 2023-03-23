@@ -88,12 +88,24 @@ main .quote.full.source .image {
   }
 }
 
+main .quote.full.image-60 .image {
+  max-width: 3.8rem;
+}
+
 main .quote.full.image-130 .image {
   max-width: 8.125rem;
 }
 
+main .quote.full.image-160 .image {
+  max-width: 10rem;
+}
+
 main .quote.full.image-200 .image {
   max-width: 12.5rem;
+}
+
+main .quote.full.image-260 .image {
+  max-width: 16.25rem;
 }
 
 main .quote.full.image-360 .image {
@@ -196,7 +208,7 @@ main .quote.full.secondary .byline {
   }
 }
 
-main .quote.full .button {
+main .quote.full:not(.button-theme-shade-5) .button {
   border-radius: 1.875rem;
   color: var(--color-white);
   font-family: var(--body-font-family);
@@ -241,7 +253,15 @@ main .quote.hero .byline {
   text-transform: uppercase;
 }
 
+main .quote.color-shade-10 {
+  color: var(--theme-shade10);
+}
+
 /* TODO: just to show update */
 .temp-bg {
+  background-image: linear-gradient(90deg, var(--theme-shade5) 0%, var(--theme-shade10) 100%);
+}
+
+.block-inventory main .quote.hero .content {
   background-image: linear-gradient(90deg, var(--theme-shade5) 0%, var(--theme-shade10) 100%);
 }

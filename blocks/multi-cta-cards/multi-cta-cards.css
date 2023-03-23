@@ -1,7 +1,6 @@
 .multi-cta-cards.gray,
 .multi-cta-cards .gray {
   --theme-tint10: var(--color-gray-1);
-  --theme-shade15: var(--color-gray-9);
   --theme-bullet-level1: var(--bullet-level1-gray);
   --theme-bullet-level2: var(--bullet-level2-gray);
   --theme-bullet-level3: var(--bullet-level3-gray);
@@ -45,9 +44,10 @@
   margin: 4px 0 24px;
 }
 
-.multi-cta-cards > div > div > h4 + p {
+.multi-cta-cards > div > div > h4 + p,
+.multi-cta-cards > div > div > h6 + p {
   border-bottom: 1px solid var(--color-gray-1);
-  color: var(--color-gray-9);
+  color: var(--color-gray-12);
   margin: 0;
   padding: 16px;
 }
@@ -56,6 +56,7 @@
   border-bottom: none;
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 
 .multi-cta-cards > div > div > h4 + .button-container .button {
@@ -87,12 +88,13 @@
   cursor: pointer;
 }
 
-.multi-cta-cards > div > div > ul li > span {
+.multi-cta-cards .card-text {
   font-size: 12px;
   font-weight: var(--heading-font-weight);
   letter-spacing: 1.5px;
-  line-height: 260%;
+  line-height: 18px;
   text-transform: uppercase;
+  padding-bottom: 16px;
 }
 
 .multi-cta-tooltip-container {
@@ -116,6 +118,7 @@
   content: '';
   height: 8px;
   left: 0;
+  top: -7px;
   margin: 12px 0;
   position: absolute;
   transform: rotate(135deg);
@@ -130,6 +133,7 @@
 .multi-cta-cards > div > div > ul + .button-container {
   margin: 0 0 21px;
   padding: 0;
+  text-align: center;
 }
 
 .multi-cta-tooltip-container a:any-link {
@@ -170,6 +174,40 @@
 
 .multi-cta-tooltip-container a:any-link svg > * {
   fill: var(--theme-shade5);
+}
+
+.multi-cta-cards.pricing :is(h3, h6) {
+  text-align: center;
+  margin: 0;
+}
+
+.multi-cta-cards.pricing h3 {
+  color: var(--color-1-shade-15);
+  font-style: italic;
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 900;
+}
+
+.multi-cta-cards.pricing h6:first-of-type {
+  margin-top: 24px;
+  color: var(--color-gray-12);
+  font-family: var(--body-font-family);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 1px;
+}
+
+.multi-cta-cards.pricing h6 {
+  color: var(--color-1-shade-5);
+  font-family: var(--body-font-family);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 @media (min-width: 600px) {

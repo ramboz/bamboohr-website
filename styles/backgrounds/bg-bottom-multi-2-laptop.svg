@@ -1,15 +1,15 @@
 <svg width="1440" height="726" viewBox="0 0 1440 726" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M76.2722 1046.42L60.7516 523.069C58.2834 439.732 99.8169 361.063 169.702 316.7L608.597 38.0733C678.477 -6.28035 766.088 -9.60622 838.431 29.3552L1292.86 274.081C1365.21 313.043 1411.3 388.367 1413.78 471.711L1429.3 995.06C1431.77 1078.41 1390.24 1157.07 1320.35 1201.44L881.452 1480.06C811.572 1524.41 723.961 1527.74 651.618 1488.77L197.187 1244.05C124.842 1205.09 78.746 1129.76 76.2722 1046.42Z"
-          stroke="url(#paint0_linear_0_1)" stroke-width="3"/>
+          stroke="url(#bg-bottom-multi-2-laptop-a)" stroke-width="3"/>
     <path d="M-9.24879 666.97L124.235 1173.06C145.629 1254.17 207.981 1317.51 287.818 1339.24L786.002 1474.84C865.839 1496.58 951.021 1473.38 1009.46 1414.02L1374.16 1043.54C1432.6 984.169 1455.42 897.635 1434.03 816.531L1300.55 310.44C1279.15 229.335 1216.8 165.995 1136.96 144.261L638.778 8.65835C558.941 -13.0751 473.759 10.1177 415.316 69.4807L50.631 439.97C-7.81223 499.34 -30.635 585.874 -9.24879 666.97Z"
-          fill="url(#paint1_linear_0_1)"/>
+          fill="url(#bg-bottom-multi-2-laptop-b)"/>
     <defs>
-        <linearGradient id="paint0_linear_0_1" x1="213.615" y1="255.155" x2="1290.6" y2="1247.49"
+        <linearGradient id="bg-bottom-multi-2-laptop-a" x1="213.615" y1="255.155" x2="1290.6" y2="1247.49"
                         gradientUnits="userSpaceOnUse">
             <stop stop-color="currentcolor" class="theme-tint-5"/>
             <stop offset="1" stop-color="currentcolor" class="theme-shade-5"/>
         </linearGradient>
-        <linearGradient id="paint1_linear_0_1" x1="461.81" y1="741.658" x2="424.95" y2="325.726"
+        <linearGradient id="bg-bottom-multi-2-laptop-b" x1="461.81" y1="741.658" x2="424.95" y2="325.726"
                         gradientUnits="userSpaceOnUse">
             <stop stop-color="currentcolor" class="theme-tint-5"/>
             <stop offset="0.870552" stop-color="currentcolor" class="theme-shade-5"/>

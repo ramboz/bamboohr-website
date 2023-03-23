@@ -2,8 +2,16 @@
   row-gap: 15px;
 }
 
-.industry main .multi-element.hero .content p {
+.industry main .multi-element.hero .content:not(.extra) p {
   margin-bottom: 10px;
+}
+
+.industry main .center-page-cta h2 {
+  color: var(--theme-tint15);
+}
+
+.industry main .center-page-cta .button-container > a.button:any-link {
+  background-color: var(--theme-tint10);
 }
 
 .industry main .quote.full h3 {
@@ -13,22 +21,22 @@
   line-height: 1.2;
   margin: 0 0 30px;
   font-style: normal;
-  color: var(--theme-shade5);
+  color: var(--theme-shade10);
 }
 
 .industry main .quote.full .content p {
-  color: var(--theme-shade10);
+  color: var(--theme-shade5);
   margin-bottom: 24px;
 }
 
 .industry main .quote.full .content .byline {
-  color: var(--theme-shade5);
+  color: var(--theme-shade10);
 }
 
 .industry main .quote.full .button {
   background-image: none;
   background-color: var(--theme-shade15);
-  color: var(--theme-tint5);
+  color: var(--theme-tint10);
 }
 
 main .quote.full.industry-footer h2 {
@@ -122,6 +130,10 @@ main .quote.full.industry-footer .image p picture {
     margin: 0 auto;
   }
 
+  .industry .cards.style-4-columns {
+    width: 83.33%;
+  }
+
   .industry .multi-element.logo-cards {
     width: 83.33%;
     margin: 0 auto;
@@ -139,6 +151,7 @@ main .quote.full.industry-footer .image p picture {
 }
 
 .industry main .quote.full.industry-footer .button {
+  background-image: none;
   background-color: var(--theme-tint10);
   color: var(--theme-shade15);
   padding: 18px 40px;
@@ -257,7 +270,7 @@ main .quote.full.industry-footer .image p picture {
 
 @media (min-width: 1200px) {
   .industry .has-bg > span.bg-solid-industry {
-    top: 70%;
+    top: 50%;
   }
 }
 

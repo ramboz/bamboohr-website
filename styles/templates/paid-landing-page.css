@@ -1,0 +1,59 @@
+.paid-landing-page main .form h1 {
+  font-family: var(--heading-font-family);
+  font-size: 40px;
+  font-weight: 900;
+  line-height: 48px;
+  color: var(--theme-shade10);
+}
+
+@media (min-width: 900px) {
+  .paid-landing-page main .form h1 {
+    font-size: 54px;
+    line-height: 60px;
+  }
+}
+
+@media (min-width: 1800px) {
+  .paid-landing-page main .form h1 {
+    font-size: 70px;
+    line-height: 80px;
+  }
+}
+
+.paid-landing-page main .form h2 {
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+  margin: 20px 0 0;
+  color: var(--theme-shade10);
+}
+
+@media (min-width: 600px) {
+  .paid-landing-page main .form h2 {
+    font-size: 21px;
+    line-height: 28px;
+    margin: 30px 0 0;
+  }
+}
+
+@media (max-width: 1199px) {
+  .paid-landing-page main .form .content-col {
+    text-align: center;
+  }
+}
+
+.paid-landing-page main .columns p,
+.paid-landing-page main .columns ul,
+.paid-landing-page main .app-download p,
+.paid-landing-page main .app-download ul,
+.paid-landing-page main .form .content-col p,
+.paid-landing-page main .form .content-col ul {
+  color: var(--color-gray-12);
+}
+
+@media (max-width: 899px) {
+  .paid-landing-page .has-bg > span.bg-right-multi-3 {
+    display: none;
+  }
+}

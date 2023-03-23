@@ -1,0 +1,101 @@
+/* backgrounds */
+.industry-category .has-bg > span.bg-top-multi-7 {
+  top: calc(((100vw * 0.95) - 100px) * -1);
+}
+
+@media (min-width: 600px) {
+  .industry-category .has-bg > span.bg-top-multi-7 {
+    top: calc(((100vw * 0.4) - 300px) * -1);
+  }  
+}
+
+@media (min-width: 769px) {
+  .industry-category .has-bg > span.bg-top-multi-7 {
+    top: calc(((100vw * 0.4) - 200px) * -1);
+  }  
+}
+
+@media (min-width: 1025px) {
+  .industry-category .has-bg > span.bg-top-multi-7 {
+    top: calc(((100vw * 0.40) - 410px) * -1);
+  }
+}
+
+@media (min-width: 1200px) {
+  .industry-category .has-bg > span.bg-top-multi-7 {
+    top: calc(((100vw * 0.40) - 470px) * -1);
+  }
+}
+
+@media (min-width: 1800px) {
+  .industry-category .has-bg > span.bg-top-multi-7 {
+    top: calc(((100vw * 0.40) - 540px) * -1);
+  }
+}
+
+.industry-category .has-bg > span.bg-bottom-multi-3 {
+  bottom: -100px;
+}
+
+@media (min-width: 360px) {
+  .industry-category .has-bg > span.bg-bottom-multi-3 {
+    bottom: calc(((100vw * 1.4) - 320px) * -1);
+  }
+}
+
+@media (min-width: 600px) {
+  .industry-category .has-bg > span.bg-bottom-multi-3 {
+    bottom: calc(((100vw * 0.8) - 420px) * -1);
+  }
+}
+
+@media (min-width: 1025px) {
+  .industry-category .has-bg > span.bg-bottom-multi-3 {
+    bottom: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .industry-category .has-bg > span.bg-bottom-multi-3 {
+    bottom: calc(((100vw * 0.4) - 400px) * -1);
+  }
+}
+
+.industry-category .multi-element.industry {
+  padding-top: 0;
+}
+
+@media (min-width: 769px) {
+  .industry-category .multi-element.hero.industry .extra {
+    bottom: -50px;
+  } 
+}
+
+@media (min-width: 900px) {
+  .industry-category .multi-element.hero.industry .extra {
+    bottom: -30px;
+  } 
+}
+
+@media (min-width: 769px) {
+  .industry-category .multi-element.industry {
+    align-items: flex-start;
+  }
+}
+
+@media (min-width: 1200px) {
+  .industry-category .multi-element.industry {
+    align-items: center;
+  }
+}
+
+.industry-category .cards .card h6 {
+  font-family: var(--body-font-family);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--theme-shade10);
+  margin: 0;
+}

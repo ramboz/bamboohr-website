@@ -4,12 +4,12 @@
     <path d="M896.738 728.823C897.168 751.684 885.369 773.037 865.786 784.84L727.615 868.118C708.032 879.921 683.64 880.38 663.627 869.322L522.421 791.302C502.408 780.244 489.814 759.349 489.384 736.488L486.349 575.19C485.918 552.329 497.717 530.975 517.3 519.172L655.471 435.895C675.054 424.092 699.446 423.632 719.459 434.69L860.665 512.711C880.678 523.769 893.272 544.664 893.702 567.525L896.738 728.823Z"
           fill="currentcolor" class="theme-tint-5"/>
     <path d="M849.953 234.851C897.373 288.3 912.676 362.988 890.097 430.78L820.428 639.957C797.85 707.749 740.819 758.345 670.82 772.688L454.834 816.941C384.835 831.283 312.502 807.192 265.082 753.742L118.764 588.819C71.3434 535.369 56.0406 460.682 78.6194 392.89L148.288 183.713C170.867 115.921 227.897 65.3243 297.896 50.9822L513.882 6.7285C583.881 -7.61364 656.214 16.4777 703.635 69.9275L849.953 234.851Z"
-          fill="url(#bg-center-page-cta-a)"/>
+          fill="url(#bg-center-page-cta-laptop)"/>
     <defs>
-        <radialGradient id="bg-center-page-cta-a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+        <radialGradient id="bg-center-page-cta-laptop" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
                         gradientTransform="translate(287 128) rotate(5.39953) scale(632.306 735.566)">
-            <stop stop-color="currentcolor" class="theme-shade-10"/>
-            <stop offset="0.912806" stop-color="currentcolor" class="theme-shade-15"/>
+            <stop stop-color="currentcolor" class="theme-shade-5"/>
+            <stop offset="0.912806" stop-color="currentcolor" class="theme-shade-10"/>
         </radialGradient>
     </defs>
 </svg>

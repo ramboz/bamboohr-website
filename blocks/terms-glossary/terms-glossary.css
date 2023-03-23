@@ -21,6 +21,7 @@ main a.glossary-link {
         column-count: 2;
         column-gap: 60px;
     }
+    
     .glossary-group-container {
         -webkit-column-break-inside: avoid;
         page-break-inside: avoid;

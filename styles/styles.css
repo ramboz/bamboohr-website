@@ -57,9 +57,11 @@ body.appear {
 
 main {
   overflow: hidden;
+  margin: 0;
+  color: var(--color-gray-9);
 }
-/* buttons */
 
+/* buttons */
 a.button:any-link {
   text-decoration: none;
   border-radius: 100px;
@@ -86,6 +88,28 @@ a.button:any-link {
 a.button:hover,
 a.button:focus {
   background-color: var(--theme-shade5);
+}
+
+.button-theme-shade-5 a.button:not(.link):any-link {
+  color: var(--color-white);
+  background-color: var(--theme-shade5);
+  border: solid 2px transparent;
+  transition: background-color .25s ease-in-out;
+}
+
+.button-theme-shade-5 a.button.light:not(.link):any-link {
+  color: var(--theme-shade5);
+  background-color: var(--color-white);
+  border: solid 2px var(--theme-shade5);
+}
+
+.button-theme-shade-5 a.button:not(.link):any-link:hover {
+  background-color: var(--theme-shade10);
+}
+
+.button-theme-shade-5 a.button.light:not(.link):any-link:hover {
+  color: var(--theme-shade5);
+  background-color: var(--theme-tint10);
 }
 
 /* button link */
@@ -120,7 +144,8 @@ a.button.link:any-link::after {
 
 /* small button style */
 a.button.small:any-link,
-main .callout a.button {
+main .callout a.button,
+.small-button a.button {
   font-size: 15px;
   line-height: 22px;
   padding: 10px 30px;
@@ -220,11 +245,6 @@ main ol li {
   font-weight: var(--body-font-weight);
 }
 
-main {
-  margin: 0;
-  color: var(--color-gray-9);
-}
-
 p,
 dl,
 ol,
@@ -258,7 +278,8 @@ main .columns ul {
 
 main .default-content-wrapper ul li,
 main .tabs ul li,
-main .columns ul li {
+main .columns ul li,
+main .form ul li {
   position: relative;
   margin-bottom: 16px;
   list-style-image: var(--theme-bullet-level1);
@@ -267,7 +288,8 @@ main .columns ul li {
 
 main .default-content-wrapper ul li ul li,
 main .tabs ul li ul li,
-main .columns ul li ul li {
+main .columns ul li ul li,
+main .form ul li ul li {
   list-style-image: var(--theme-bullet-level2);
 }
 
@@ -290,10 +312,18 @@ main h6 {
   color: var(--heading-color);
   font-weight: var(--heading-font-weight);
   font-family: var(--heading-font-family);
-  font-style: italic;
   margin-top: 48px;
   margin-bottom: 16px;
   scroll-margin: 80px;
+}
+
+.blog-post main h1,
+.blog-post main h2,
+.blog-post main h3,
+.blog-post main h4,
+.blog-post main h5,
+.blog-post main h6 {
+  font-style: italic;
 }
 
 main h1 {
@@ -326,6 +356,10 @@ main h6 {
 
 main h1.hidden {
   display: none;
+}
+
+main .font-style-normal h1 {
+  font-style: normal;
 }
 
 .comparison-matrix main h1 {
@@ -369,10 +403,15 @@ main .title.hero-subhead :is(h1, h2, h3, h4, h5, h6, div) {
   margin: 20px 0 0;
 }
 
+.typ-subhead1 :is(h1, h2, h3, h4, h5, h6, div) {
+  font-weight: 500;
+}
+
 .typ-section-subhead,
 main .title.section-subhead :is(h1, h2, h3, h4, h5, h6, div) {
   font-family: var(--body-font-family);
   font-size: 21px;
+  font-weight: 400;
   line-height: 30px;
   margin: 20px 0 0;
 }
@@ -407,6 +446,7 @@ main .title.title1 :is(h1, h2, h3, h4, h5, h6, div) {
 
 .typ-title2,
 .home-more .columns p strong,
+.hr-glossary main h4,
 main .title.title2 :is(h1, h2, h3, h4, h5, h6, div) {
   font-family: var(--heading-font-family);
   font-size: 20px;
@@ -431,7 +471,7 @@ main .title.stats-subhead :is(h1, h2, h3, h4, h5, h6, div) {
 }
 
 .typ-quote,
-main .title.quote :is(h1, h2, h3, h4, h5, h6, div),
+main .title.typ-quote :is(h1, h2, h3, h4, h5, h6, div),
 .resources-guides main h5 {
   font-family: var(--body-font-family);
   font-size: 20px;
@@ -751,18 +791,21 @@ main .section > div:empty {
     max-width: 450px;
   }
 
-  .resources-guides main .section > div.columns-wrapper.small-width {
+  main .section > div.columns-wrapper.small-width,
+  main .section > div.title-wrapper.small-width {
     max-width: 640px;
   }
 
   .resources-guides main .section > div.quote-wrapper.normal-width,
+  main .section > div.columns-wrapper.normal-width,
   main .section > div.image-wrapper.normal-width,
-  main .section > div.title-wrapper.normal-width {
+  main .section > div.title-wrapper.normal-width,
+  main .section > div.wistia-wrapper.normal-width {
     max-width: 760px;
   }
 
   main .section > div.cards-wrapper.med-width,
-  .resources-guides main .section > div.columns-wrapper.med-width,
+  main .section > div.columns-wrapper.med-width,
   .resources-guides main .section > div.toc-wrapper,
   .resources-guides main .section > div.quote-wrapper,
   .resources-guides main .section.negative-margin-section.med-width > div.default-content-wrapper,
@@ -773,24 +816,33 @@ main .section > div:empty {
   }
 
   .resources-guides main .section > div.cards-wrapper.full-width,
-  .resources-guides main .section > div.columns-wrapper.full-width,
+  main .section > div.columns-wrapper.full-width,
   main .section > div.image-wrapper.full-width,
   .resources-guides main .section > div.quote-wrapper.full-width,
   .resources-guides main .section > div.source-wrapper.full-width {
     max-width: 1160px;
   }
 
-  .resources-guides main .section > div.image-wrapper.extra-wide {
+  .resources-guides main .section > div.image-wrapper.extra-wide,
+  main .section > div.multi-cta-cards-wrapper.extra-wide {
     max-width: 1200px;
   }
 
-  .bhr-home main .section > div.quote-wrapper.extra-wide {
+  .bhr-home main .section > div.quote-wrapper.extra-wide,
+  main .section > div.columns-wrapper.extra-wide,
+  main .section > div.tabs-wrapper.extra-wide {
     max-width: 1280px;
   }
 
   main .section > div > :not(div) {
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+@media (max-width: 1024px) {
+  main .section > div.title-wrapper.laptop-small-width {
+    max-width: 640px;
   }
 }
 
@@ -819,9 +871,12 @@ main .section.max-width-small > div {
 }
 
 main .section p.button-container {
-  text-align: center;
   margin-top: 16px;
   margin-bottom: 0;
+}
+
+main .section .default-content-wrapper .button-container {
+  text-align: center;
 }
 
 .integrations .home-featured-cat p.button-container {
@@ -837,6 +892,9 @@ main .section.app-cards-container {
 }
 
 main .default-content-wrapper a:any-link {
+  --category-color: var(--color-1-shade-5);
+  --category-bg-color: var(--color-1-tint-15);
+
   color: var(--category-color);
   background: linear-gradient(#f000 50%, var(--category-bg-color) 50.1%);
   text-decoration: none;
@@ -1266,11 +1324,11 @@ table td {
 }
 
 table thead {
-  background-color: var(--color-1);
+  background-color: var(--theme-tint5);
 }
 
 table thead th {
-  border-color: var(--color-1);
+  border-color: var(--theme-tint5);
 }
 
 table tbody th {
@@ -1477,7 +1535,7 @@ body.modal-open {
   background-color: var(--body-background-color);
   border-radius: 20px;
   position: absolute;
-  top: 70px;
+  top: 90px;
   margin: 0 auto;
   padding: 50px 30px;
 }
@@ -1547,6 +1605,11 @@ body.modal-open {
 .modal .modal-form-subtitle {
   text-align: center;
   font-weight: 400;
+}
+
+.z-index-1 {
+  position: relative;
+  z-index: 1;
 }
 
 /* above the fold CSS goes here to squash CLS */

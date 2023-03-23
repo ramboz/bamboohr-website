@@ -70,7 +70,7 @@
   justify-content: center;
 }
 
-.app-download > div:last-child > div {
+.app-download > div:last-child:not(.grid-item-1) > div {
   display: flex;
   flex-wrap: nowrap;
 }

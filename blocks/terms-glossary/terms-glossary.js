@@ -16,8 +16,8 @@ import { sortOptions } from '../app-cards/app-cards.js';
     block.append(glossaryTermContainer);
 
     index.data.forEach((glossaryItem) => {
-      if (glossaryItem.term != '') {
-        const term = glossaryItem.term;
+      if (glossaryItem.term !== '') {
+        const {term} = glossaryItem;
         const glossaryLetter = term.charAt(0);
         if (glossaryLetter >= '0' && glossaryLetter <= '9') {
           glossaryItem.groupLetter = '#';
@@ -27,29 +27,27 @@ import { sortOptions } from '../app-cards/app-cards.js';
       }
     });
 
-    const groupBy = (array, key) => {
-      return array.reduce((result, currentValue) => {
+    const groupBy = (array, key) => array.reduce((result, currentValue) => {
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
           currentValue
         );
         return result;
       }, {});
-    };
 
     const glossaryGroupedByLetter = groupBy(index.data, 'groupLetter');
     
     const glossaryGroups = Object.entries(glossaryGroupedByLetter);
 
     glossaryGroups.forEach((glossaryGroup) => {
-      if (glossaryGroup[0] != 'undefined') {
+      if (glossaryGroup[0] !== 'undefined') {
         const glossaryGroupContainer = document.createElement('div');
         glossaryGroupContainer.className = 'glossary-group-container';
         glossaryTermContainer.append(glossaryGroupContainer);
         const glossaryGroupLetter = document.createElement('div');
         glossaryGroupLetter.className = 'glossary-group-letter typ-title1';
         glossaryGroupContainer.append(glossaryGroupLetter);
-        glossaryGroupLetter.textContent = glossaryGroup[0];
-        glossaryGroupLetter.id = glossaryGroup[0];
+        [glossaryGroupLetter].textContent = glossaryGroup;
+        [glossaryGroupLetter].id = glossaryGroup;
 
         glossaryGroup[1].forEach((glossaryGroupItem) => {
           const glossaryLink = document.createElement('a');

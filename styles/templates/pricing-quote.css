@@ -142,6 +142,12 @@ body.pricing-quote {
   visibility: hidden;
 }
 
+.pricing-quote .multi-cta-cards > div > div > h4 + p,
+.pricing-quote .multi-cta-cards > div > div > h6 + p {
+  font-size: 16px;
+  line-height: 24px;
+}
+
 @media (max-width: 440px) {
   .pricing-quote table th,
   .pricing-quote table td {
@@ -176,6 +182,18 @@ body.pricing-quote {
   }
 }
 
+@media (min-width: 1025px) {
+  .pricing-quote .multi-cta-cards > div > div {
+    flex: unset;
+    width: calc(50% - 12px);
+  }
+
+  .pricing-quote .multi-cta-cards > div {
+    column-gap: 24px;
+    flex-flow: wrap row;
+  }
+}
+
 @media (min-width: 1200px) {
   .pricing-quote main h1 {
     font-size: 70px;
@@ -184,5 +202,65 @@ body.pricing-quote {
 
   .pricing-quote main .title.section-header :is(h1, h2, h3, h4, h5, h6, div) {
     font-size: 36px;
+  }
+
+  .pricing-quote .multi-cta-tooltip-container {
+    width: 275px;
+  }
+
+  .pricing-quote .multi-cta-cards > div > div {
+    flex: 1;
+    width: unset;
+  }
+
+  .pricing-quote .multi-cta-cards > div {
+    column-gap: 32px;
+    flex-wrap: nowrap;
+  }
+}
+
+@media (min-width: 1300px) {
+  .pricing-quote .multi-cta-tooltip-container {
+    width: 300px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .pricing-quote main .section > div.multi-cta-cards-wrapper.extra-wide {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1490px) {
+  .pricing-quote .multi-cta-tooltip-container {
+    width: 350px;
+  }
+}
+
+@media (min-width: 1550px) {
+  .pricing-quote .multi-cta-tooltip-container {
+    width: 400px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .pricing-quote main .section > div.multi-cta-cards-wrapper.extra-wide {
+    max-width: 1520px;
+  }
+
+  .pricing-quote .multi-cta-tooltip-container {
+    width: 350px;
+  }
+}
+
+@media (min-width: 1670px) {
+  .pricing-quote .multi-cta-tooltip-container {
+    width: 400px;
+  }
+}
+
+@media (min-width: 1800px) {
+  .pricing-quote main .section > .multi-cta-wrapper-extended .multi-cta-cards {
+    max-width: 100%;
   }
 }

@@ -19,6 +19,7 @@ main .multi-hero-container {
 
 .multi-hero-main-container {
   background: linear-gradient(342.37deg, var(--theme-shade5) 31.85%, var(--theme-tint5) 114.99%);
+  padding-top: 20px;
   padding-left: 26px;
   padding-right: 26px;
   text-align: center;
@@ -77,7 +78,7 @@ main .multi-hero-container {
   background-size: contain;
   height: calc(100vw * 1.1834);
   position: absolute;
-  top: 311px;
+  top: 331px;
   left: 0;
   right: 0;
   z-index: 0;
@@ -172,7 +173,7 @@ main .multi-hero .carousel-controls {
   }
 
   .multi-hero-mobile-background {
-    top: 443px;
+    top: 463px;
   }
 
   .multi-hero.carousel {
@@ -182,7 +183,7 @@ main .multi-hero .carousel-controls {
 
 @media (max-width: 392px) {
   .multi-hero-mobile-background {
-    top: 491px;
+    top: 511px;
   }
 
   .multi-hero.carousel {
@@ -192,7 +193,7 @@ main .multi-hero .carousel-controls {
 
 @media (max-width: 376px) {
   .multi-hero-mobile-background {
-    top: 519px;
+    top: 539px;
   }
 }
 

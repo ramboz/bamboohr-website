@@ -29,6 +29,10 @@ footer .footer p {
 	color: var(--color-gray-6);
 }
 
+footer .footer p strong em a {
+	color: var(--color-1);
+}
+
 footer .footer ul {
 	list-style: none;
 	padding: 0;
@@ -71,7 +75,7 @@ footer .footer .support {
 
 footer .footer .compare {
 	grid-area: compare;
-	min-width: 187px;
+	min-width: 211px;
 }
 
 footer .footer .links {
@@ -163,7 +167,7 @@ footer .footer div[aria-hidden="true"] {
 	}
 	
 	footer .footer ul {
-		column-gap: 64px;
+		column-gap: 50px;
 	}
 
 	footer .footer .links {
@@ -209,6 +213,6 @@ footer .footer div[aria-hidden="true"] {
 	footer .footer .company,
 	footer .footer .support,
 	footer .footer .compare {
-		margin-right: 220px;
+		margin-right: 150px;
 	}
 }

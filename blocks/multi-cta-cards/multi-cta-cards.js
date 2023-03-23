@@ -59,7 +59,7 @@ function buildTooltips(block) {
 
       const rowIdx = colLiIdx + 2;
 
-      colLiElem.innerHTML = `<span>${colLiElem.innerHTML}</span>`;
+      colLiElem.innerHTML = `<div class="card-text">${colLiElem.innerHTML}</div>`;
 
       const tooltipElem = block.querySelector(
         `:scope > div:nth-child(${rowIdx}) > div:nth-child(${colIdx + 1})`,
