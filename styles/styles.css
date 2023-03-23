@@ -521,11 +521,11 @@ ol {
   list-style-type: decimal;
 }
 
-ol li ol {
+ol ol {
   list-style-type: lower-alpha;
 }
 
-ol li ol li ol {
+ol ol ol {
   list-style-type: upper-roman;
 }
 
