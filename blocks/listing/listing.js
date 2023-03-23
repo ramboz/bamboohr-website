@@ -40,8 +40,8 @@ function getLinkText(format, mediaType) {
 export function createArticleCard(article, classPrefix, eager = false) {
   const title = article.title.split(' - ')[0];
   const card = document.createElement('div');
-  const articleCategory = article.category || article.topicPrimary || article.topicSecondary
-    || article.productArea || article.contentType || article.brandedContent || '';
+  const articleCategory = article.category || article.topic || article.productArea
+    || article.contentType || article.brandedContent || '';
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
@@ -265,7 +265,7 @@ export default async function decorate(block, blockName) {
     indexConfig.indexPath = blockConfig['index-path'];
     indexConfig.indexName = blockConfig['index-name'];
     indexConfig.cardStyle = blockConfig['card-style'];
-    indexConfig.facetStyle = blockConfig['facet-style'];
+    indexConfig.facetStyle = blockConfig['facet-style'] || 'taxonomyV1';
   } else {
     Object.keys(blockConfig).forEach((key) => {
       config[toCamelCase(key)] = blockConfig[key];
@@ -466,8 +466,7 @@ export default async function decorate(block, blockName) {
     let facets = {};
     if (indexConfig.facetStyle === 'taxonomyV1') {
       facets = {
-        topicPrimary: {},
-        topicSecondary: {},
+        topic: {},
         planType: {},
         productArea: {},
         contentType: {},
