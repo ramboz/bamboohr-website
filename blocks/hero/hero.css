@@ -4,8 +4,14 @@
 
 .hero {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   padding: 30px 0;
+}
+
+@media (min-width: 600px) {
+  .hero {
+    flex-direction: column-reverse;
+  }
 }
 
 div.pink .hero>div:first-child {
@@ -461,7 +467,8 @@ main .section .hero p.button-container {
 }
 
 @media (min-width: 600px) and (max-width: 1024px) {
-  .hero.triple-hex>div:first-child p {
+  .hero.triple-hex>div:first-child p,
+  .hero.triple-hex>div:first-child .cta-container {
     margin-right: calc((60 / var(--container-width)) * 100vw);
   }
 }
@@ -473,11 +480,11 @@ main .section .hero p.button-container {
   --image-width: 320;
 
   padding: 0;
-  position: absolute;
   right: calc((var(--image-right) / var(--container-width)) * 100vw);
   top: calc((var(--image-top) / var(--container-width)) * 100vw);
   width: calc((var(--image-width) / var(--container-width)) * 100vw);
   z-index: -1;
+  margin-top: 30px;
 }
 
 @media (min-width: 600px) {
@@ -485,6 +492,9 @@ main .section .hero p.button-container {
     --image-right: -25;
     --image-top: 225;
     --image-width: 500;
+
+    position: absolute;
+    margin-top: 0;
   }
 }
 
