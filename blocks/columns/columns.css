@@ -704,8 +704,7 @@ div .tablet-center-image .column-flex-container.columns-align-start {
     text-align: center;
   }
   
-  .columns.columns-2-cols:not(.hero-subhead) .column-flex-container .non-img-col:not(.columns-title-span) p,
-  .columns.columns-2-cols:not(.hero-subhead) .column-flex-container .non-img-col:not(.columns-title-span) ul {
+  .columns.columns-2-cols:not(.hero-subhead) .column-flex-container .non-img-col:not(.columns-title-span) :is(p, ul) {
     text-align: left;
   }
   

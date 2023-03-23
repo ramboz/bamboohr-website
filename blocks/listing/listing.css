@@ -555,7 +555,8 @@ main .article-cards ul > div {
   width: 100%;
 }
 
-main .article-cards ul > div div a img {
+main .article-cards ul > div div a img,
+main .article-cards ul > div div.block.wistia picture {
   box-shadow: var(--box-shadow-2);
   border-radius: 15px;
 }

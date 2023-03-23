@@ -829,7 +829,8 @@ main .section > div:empty {
   }
 
   .bhr-home main .section > div.quote-wrapper.extra-wide,
-  main .section > div.columns-wrapper.extra-wide {
+  main .section > div.columns-wrapper.extra-wide,
+  main .section > div.tabs-wrapper.extra-wide {
     max-width: 1280px;
   }
 

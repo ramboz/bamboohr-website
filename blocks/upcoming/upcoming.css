@@ -70,7 +70,8 @@ main .upcoming ul > div {
   width: 100%;
 }
 
-main .upcoming ul > div div a img {
+main .upcoming ul > div div a img,
+main .upcoming ul > div div.block.wistia picture {
   box-shadow: var(--box-shadow-2);
   border-radius: 15px;
 }
