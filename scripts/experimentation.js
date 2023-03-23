@@ -302,21 +302,23 @@ export async function runExperiment(experiment, instantExperiment) {
 }
 
 export async function runSegmentation(segments, config = {}) {
-  console.debug(segments);
   const usp = new URLSearchParams(window.location.search);
   const forcedSegment = usp.get('segment');
 
   const resolved = forcedSegment
     ? segments.filter((s) => s.id === forcedSegment)
     : await getResolvedSegment(config.audiences, segments);
+
+  const [segment] = resolved;
+  window.hlx = window.hlx || {};
+  window.hlx.segmentation = {
+    segments,
+    resolvedSegment: segment,
+  };
+
   if (!resolved.length) {
     return;
   }
-
-  window.hlx = window.hlx || {};
-  window.hlx.segmentation = resolved;
-
-  const [segment] = resolved;
   
   sampleRUM('segmentation', { source: segment.id, target: segment.url });
   // eslint-disable-next-line no-console

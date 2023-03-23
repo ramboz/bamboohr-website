@@ -82,7 +82,7 @@ async function createExperiment() {
   const manifestButton = config.manifest ? `<div class="hlx-button"><a href="${config.manifest}">Manifest</a></div>` : '';
   const div = document.createElement('div');
   div.className = 'hlx-experiment hlx-badge';
-  div.classList.add(`hlx-experiment-status-${toClassName(config.status)}`);
+  div.classList.add(`hlx-badge-status-${toClassName(config.status)}`);
   div.innerHTML = `Experiment: ${config.id} <span class="hlx-open"></span>
     <div class="hlx-popup hlx-hidden">
     <div class="hlx-popup-header">
@@ -220,6 +220,61 @@ async function createExperiment() {
   return (div);
 }
 
+async function createSegments() {
+  const config = window?.hlx?.segmentation;
+  const segments = config?.segments;
+  const resolvedSegment = config?.resolvedSegment;
+  
+  if (!segments.length || !config) {
+    return;
+  }
+  console.debug('preview segments', segments);
+
+  const createVariant = (segment) => {
+    const div = document.createElement('div');
+
+    const segmentUrl = new URL(window.location.href);
+    segmentUrl.searchParams.set('segment', `${segment.id}`);
+
+    div.className = `hlx-variant${resolvedSegment && resolvedSegment.id === segment.id ? ' hlx-variant-selected' : ' '}`;
+    div.innerHTML = `<div>
+    <h5><code>${segment.id}</code></h5>
+    </div>
+    <div class="hlx-button"><a href="${segmentUrl.href}">Simulate</a></div>`;
+    return (div);
+  };
+
+  const div = document.createElement('div');
+  div.className = 'hlx-segmentation hlx-badge';
+  div.classList.add(`hlx-badge-status-${resolvedSegment ? 'active' : 'inactive'}`);
+  div.innerHTML = `${segments.length || 'No'} segment${segments.length > 1 ? 's' : ''} <span class="hlx-open"></span>
+    <div class="hlx-popup hlx-hidden">
+    <div class="hlx-popup-header">
+      <div>
+        <h4>Segmentation</h4>
+        <div class="hlx-details"></div>
+        <div class="hlx-info">How is it going?</div>
+      </div>
+      <div>
+      </div>
+    </div>
+    <div class="hlx-variants"></div>
+    </div>`;
+
+  const popup = div.querySelector('.hlx-popup');
+
+  div.addEventListener('click', () => {
+    popup.classList.toggle('hlx-hidden');
+  });
+
+  const variants = div.querySelector('.hlx-variants');
+  config.segments.forEach((segment) => {
+    variants.append(createVariant(segment));
+  });
+
+  return div;
+}
+
 /**
  * Decorates Preview mode badges and overlays
  * @return {Object} returns a badge or empty string
@@ -229,6 +284,7 @@ async function decoratePreviewMode() {
   const overlay = document.createElement('div');
   overlay.className = 'hlx-preview-overlay';
   overlay.append(await createExperiment());
+  overlay.append(await createSegments());
   document.body.append(overlay);
 }
 
