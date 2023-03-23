@@ -452,19 +452,21 @@ main .section .hero p.button-container {
 .hero.triple-hex .image-group-container {
   --image-right: 15;
   --image-top: 345;
+  --image-width: 320;
 
   padding: 0;
   right: calc((var(--image-right) / var(--container-width)) * 100vw);
   top: calc((var(--image-top) / var(--container-width)) * 100vw);
   width: calc((var(--image-width) / var(--container-width)) * 100vw);
   z-index: -1;
-  margin-top: 30px;
+  margin: 30px auto 0;
 }
 
 @media (min-width: 600px) {
   .hero.triple-hex .image-group-container {
     --image-right: -25;
     --image-top: 225;
+    --image-width: 500;
   }
 }
 
