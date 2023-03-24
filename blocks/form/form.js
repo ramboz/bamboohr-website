@@ -495,7 +495,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         const formEl = form.getFormElem()[0];
 
         /* Adobe Form Start event tracking when user changes the first field */		  
-		formEl.firstElementChild.addEventListener('change', function(){
+		formEl.firstElementChild.addEventListener('change', () => {
 		  adobeEventTracking('Form Start', form.getId());
 		});
 		
@@ -525,7 +525,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           adobeEventTracking('Form Complete', form.getId());
 
 		  /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
-		  setTimeout(function(){
+		  setTimeout(() => {
 			  if (successUrl && !chilipiper) window.location.href = successUrl;
 		  },1000);
           
