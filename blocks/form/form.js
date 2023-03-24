@@ -494,11 +494,11 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
 
-        /* Adobe Form Start event tracking when user click into the first field */
-        form.getFormElem()[0].firstElementChild.addEventListener('click', () => {
-          window.setTimeout(() => adobeEventTracking('Form Start', form.getId()), 4000);
-        });
-
+        /* Adobe Form Start event tracking when user changes the first field */		  
+		formEl.firstElementChild.addEventListener('change', () => {
+		  adobeEventTracking('Form Start', form.getId());
+		});
+		
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
         if (readyTalkMeetingID && readyTalkEl) {
@@ -524,7 +524,11 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           /* Adobe form complete events tracking */
           adobeEventTracking('Form Complete', form.getId());
 
-          if (successUrl && !chilipiper) window.location.href = successUrl;
+		  /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
+		  setTimeout(() => {
+			  if (successUrl && !chilipiper) window.location.href = successUrl;
+		  },1000);
+          
           return false;
         });
       }
