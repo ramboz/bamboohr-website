@@ -313,8 +313,11 @@ export async function runSegmentation(segments, config = {}) {
   window.hlx = window.hlx || {};
   window.hlx.segmentation = {
     segments: [
-      { id: 'default', url: window.location.href },
-      ...segments
+      { id: 'default', label: 'Default', url: window.location.href },
+      ...segments.map((s) => ({
+        ...s,
+        ...config.audiences[s.id],
+      }))
     ],
     resolvedSegment: segment,
   };

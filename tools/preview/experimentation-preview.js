@@ -243,7 +243,8 @@ async function createSegments() {
       : ''
     }`;
     div.innerHTML = `<div>
-    <h5><code>${segment.id}</code></h5>
+      <h5><code>${segment.id}</code></h5>
+      <p>${segment.label}</p>
     </div>
     <div class="hlx-button"><a href="${segmentUrl.href}">Simulate</a></div>`;
     return (div);

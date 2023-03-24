@@ -12,7 +12,10 @@
 
 const SEGMENTATION_CONFIG = {
   audiences: {
-    'is-customer': () => Math.random() > .5
+    'is-customer': {
+      label: 'Is a Customer',
+      test: () => Math.random() > .5
+    },
   }
 }
 
@@ -1125,8 +1128,8 @@ async function loadMartech() {
  */
 async function loadEager(doc) {
   const instantSegments = [...document.head.querySelectorAll(`meta[property^="audience:"]`)].map((meta) => {
-    const [, id, value] = meta.getAttribute('property').split(':');
-    return { id, value, url: meta.getAttribute('content') };
+    const [, id] = meta.getAttribute('property').split(':');
+    return { id, url: meta.getAttribute('content') };
   });
   if (instantSegments.length) {
     // eslint-disable-next-line import/no-cycle
