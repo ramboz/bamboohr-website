@@ -490,22 +490,15 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
     window.MktoForms2.whenReady((form) => {
-		console.log('form ready');
       if (form.getId().toString() === formId) {
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
 
-        /* Adobe Form Start event tracking when user click into the first field */
-        // form.getFormElem()[0].firstElementChild.addEventListener('click', () => {
-        //   window.setTimeout(() => adobeEventTracking('Form Start', form.getId()), 4000);
-        // });
-		  
-		  formEl.querySelector('input').addEventListener('change', function(){
-			  console.log('changed');
-			  adobeEventTracking('Form Start', form.getId());
-		  });
-		  		  
-
+        /* Adobe Form Start event tracking when user changes the first field */		  
+		formEl.firstElementChild.addEventListener('change', function(){
+		  adobeEventTracking('Form Start', form.getId());
+		});
+		
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
         if (readyTalkMeetingID && readyTalkEl) {
@@ -531,7 +524,10 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           /* Adobe form complete events tracking */
           adobeEventTracking('Form Complete', form.getId());
 
-		  setTimeout(function(){if (successUrl && !chilipiper) window.location.href = successUrl;},4000);
+		  /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
+		  setTimeout(function(){
+			  if (successUrl && !chilipiper) window.location.href = successUrl;
+		  },1000);
           
           return false;
         });
