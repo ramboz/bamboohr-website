@@ -476,7 +476,7 @@ function mktoFormReset(form, moreStyles) {
 }
 
 /* Adobe event tracking */
-function adobeEventTracking(event, name) {	
+function adobeEventTracking(event, name) {
   window.digitalData.push({
     event,
     component: {
