@@ -477,6 +477,8 @@ function mktoFormReset(form, moreStyles) {
 
 /* Adobe event tracking */
 function adobeEventTracking(event, name) {
+	alert('adobe tracking');
+	
   window.digitalData.push({
     event,
     component: {
@@ -490,6 +492,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
     window.MktoForms2.whenReady((form) => {
+		alert('form loaded');
       if (form.getId().toString() === formId) {
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
