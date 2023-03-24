@@ -35,14 +35,10 @@ function createDateCard(article, classPrefix, eager = false, cardLink = {}) {
       </div>`;
   }
   const articleImage = articlePicture || wistiaBlock;
-  const articleLinkText = article.linkText || 'Register for this event';
+  const articleLinkText = cardLink.text || article.linkText || 'Register for this event';
+  const articlePath = cardLink.link || article.path || '';
 
-  let articleLink = '';
-  if (Object.keys(cardLink).length) {
-    articleLink = `<p><a href="${cardLink.link}">${cardLink.text}</a></p>`;
-  } else if (article.path) {
-    articleLink = `<p><a href="${article.path}">${articleLinkText}</a></p>`;
-  }
+  const articleLink = articlePath ? `<p><a href="${articlePath}">${articleLinkText}</a></p>` : '';
 
   card.innerHTML = `
     ${articleImage}
@@ -111,12 +107,10 @@ export default async function decorate(block, blockName) {
   indexConfig.filterOn = blockConfig.filter;
   indexConfig.sortBy = blockConfig['sort-by'];
   indexConfig.limit = +blockConfig.limit || 0;
-  indexConfig.cardLink = blockConfig['card-link'] ? blockConfig['card-link'] : '';
-  indexConfig.cardLinkText = blockConfig['card-link-text'] ? blockConfig['card-link-text'] : '';
   
   let cardLink = {};
-  if (blockConfig['card-link']) {
-    cardLink = {link: indexConfig.cardLink, text: indexConfig.cardLinkText};
+  if (blockConfig['card-link'] && blockConfig['card-link-text']) {
+    cardLink = {link: blockConfig['card-link'], text: blockConfig['card-link-text']};
   }
 
   block.innerHTML = '<ul class="upcoming-results"></ul>';
