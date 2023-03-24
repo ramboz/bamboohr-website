@@ -526,7 +526,7 @@ ol ol {
 }
 
 ol ol ol {
-  list-style-type: upper-roman;
+  list-style-type: lower-roman;
 }
 
 @media (min-width: 600px) {
