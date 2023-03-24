@@ -6,7 +6,7 @@ import {
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 import { createArticleCard, loadWistiaBlock } from '../listing/listing.js';
 
-function createDateCard(article, classPrefix, eager = false) {
+function createDateCard(article, classPrefix, eager = false, cardLink = []) {
   const title = article.title.split(' - ')[0];
   const card = document.createElement('div');
   const articleCategory = article.category || article.topic || article.contentType
@@ -36,7 +36,14 @@ function createDateCard(article, classPrefix, eager = false) {
   }
   const articleImage = articlePicture || wistiaBlock;
   const articleLinkText = article.linkText || 'Register for this event';
-  const articleLink = article.path ? `<p><a href="${article.path}">${articleLinkText}</a></p>` : '';
+
+  let articleLink = '';
+  if (cardLink.length) {
+    articleLink = `<p><a href="${cardLink.link}">${cardLink.text}</a></p>`;
+  } else if (article.path) {
+    articleLink = `<p><a href="${article.path}">${articleLinkText}</a></p>`;
+  }
+
   card.innerHTML = `
     ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
@@ -104,6 +111,14 @@ export default async function decorate(block, blockName) {
   indexConfig.filterOn = blockConfig.filter;
   indexConfig.sortBy = blockConfig['sort-by'];
   indexConfig.limit = +blockConfig.limit || 0;
+  indexConfig.cardLink = blockConfig['card-link'] ? blockConfig['card-link'] : '';
+  indexConfig.cardLinkText = blockConfig['card-link-text'] ? blockConfig['card-link-text'] : '';
+  
+  const cardLink = [];
+  if (blockConfig['card-link']) {
+    cardLink.link = indexConfig.cardLink;
+    cardLink.text = indexConfig.cardLinkText;
+  }
 
   block.innerHTML = '<ul class="upcoming-results"></ul>';
 
@@ -116,7 +131,7 @@ export default async function decorate(block, blockName) {
       const product = results[i];
 
       if (indexConfig.cardStyle === 'date') {
-        const dateCard = createDateCard(product, 'upcoming-article');
+        const dateCard = createDateCard(product, 'upcoming-article', false, cardLink);
         resultsElement.append(dateCard);
         loadWistiaBlock(product, dateCard);
       } else if (indexConfig.cardStyle === 'article') {
