@@ -490,15 +490,18 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
     window.MktoForms2.whenReady((form) => {
-		alert('form loaded 2');
+		console.log('form ready');
       if (form.getId().toString() === formId) {
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
 
         /* Adobe Form Start event tracking when user click into the first field */
-        form.getFormElem()[0].firstElementChild.addEventListener('click', () => {
-          window.setTimeout(() => adobeEventTracking('Form Start', form.getId()), 4000);
-        });
+        // form.getFormElem()[0].firstElementChild.addEventListener('click', () => {
+        //   window.setTimeout(() => adobeEventTracking('Form Start', form.getId()), 4000);
+        // });
+		  $('form.mktoForm input').change(function() {
+			  adobeEventTracking('Form Start', form.getId());
+		  });
 
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
