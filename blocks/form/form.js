@@ -499,9 +499,12 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         // form.getFormElem()[0].firstElementChild.addEventListener('click', () => {
         //   window.setTimeout(() => adobeEventTracking('Form Start', form.getId()), 4000);
         // });
-		  $('form.mktoForm input').change(function() {
+		  
+		  formEl.querySelector('input').addEventListener('change', function(){
+			  console.log('changed');
 			  adobeEventTracking('Form Start', form.getId());
 		  });
+		  		  
 
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
