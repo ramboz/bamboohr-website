@@ -476,9 +476,7 @@ function mktoFormReset(form, moreStyles) {
 }
 
 /* Adobe event tracking */
-function adobeEventTracking(event, name) {
-	alert('adobe tracking');
-	
+function adobeEventTracking(event, name) {	
   window.digitalData.push({
     event,
     component: {
@@ -492,7 +490,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
     window.MktoForms2.whenReady((form) => {
-		alert('form loaded');
+		alert('form loaded 2');
       if (form.getId().toString() === formId) {
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
@@ -527,7 +525,8 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           /* Adobe form complete events tracking */
           adobeEventTracking('Form Complete', form.getId());
 
-          if (successUrl && !chilipiper) window.location.href = successUrl;
+		  setTimeout(function(){if (successUrl && !chilipiper) window.location.href = successUrl;},4000);
+          
           return false;
         });
       }
