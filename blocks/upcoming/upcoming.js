@@ -6,7 +6,7 @@ import {
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 import { createArticleCard, loadWistiaBlock } from '../listing/listing.js';
 
-function createDateCard(article, classPrefix, eager = false, cardLink = []) {
+function createDateCard(article, classPrefix, eager = false, cardLink = {}) {
   const title = article.title.split(' - ')[0];
   const card = document.createElement('div');
   const articleCategory = article.category || article.topic || article.contentType
@@ -38,7 +38,7 @@ function createDateCard(article, classPrefix, eager = false, cardLink = []) {
   const articleLinkText = article.linkText || 'Register for this event';
 
   let articleLink = '';
-  if (cardLink.length) {
+  if (Object.keys(cardLink).length) {
     articleLink = `<p><a href="${cardLink.link}">${cardLink.text}</a></p>`;
   } else if (article.path) {
     articleLink = `<p><a href="${article.path}">${articleLinkText}</a></p>`;
@@ -114,10 +114,9 @@ export default async function decorate(block, blockName) {
   indexConfig.cardLink = blockConfig['card-link'] ? blockConfig['card-link'] : '';
   indexConfig.cardLinkText = blockConfig['card-link-text'] ? blockConfig['card-link-text'] : '';
   
-  const cardLink = [];
+  let cardLink = {};
   if (blockConfig['card-link']) {
-    cardLink.link = indexConfig.cardLink;
-    cardLink.text = indexConfig.cardLinkText;
+    cardLink = {link: indexConfig.cardLink, text: indexConfig.cardLinkText};
   }
 
   block.innerHTML = '<ul class="upcoming-results"></ul>';
