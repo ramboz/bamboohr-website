@@ -226,7 +226,7 @@ async function createSegments() {
   const resolvedSegment = config?.resolvedSegment;
   
   if (!segments.length || !config) {
-    return;
+    return null;
   }
   console.debug('preview segments', segments);
 
@@ -236,7 +236,12 @@ async function createSegments() {
     const segmentUrl = new URL(window.location.href);
     segmentUrl.searchParams.set('segment', `${segment.id}`);
 
-    div.className = `hlx-variant${resolvedSegment && resolvedSegment.id === segment.id ? ' hlx-variant-selected' : ' '}`;
+    div.className = `hlx-variant${
+      resolvedSegment && resolvedSegment.id === segment.id
+      || !resolvedSegment && segment.id === 'default'
+      ? ' hlx-variant-selected'
+      : ''
+    }`;
     div.innerHTML = `<div>
     <h5><code>${segment.id}</code></h5>
     </div>
@@ -247,13 +252,13 @@ async function createSegments() {
   const div = document.createElement('div');
   div.className = 'hlx-segmentation hlx-badge';
   div.classList.add(`hlx-badge-status-${resolvedSegment ? 'active' : 'inactive'}`);
-  div.innerHTML = `${segments.length || 'No'} segment${segments.length > 1 ? 's' : ''} <span class="hlx-open"></span>
+  div.innerHTML = `${segments.length - 1 || 'No'} segment${segments.length > 2 ? 's' : ''} <span class="hlx-open"></span>
     <div class="hlx-popup hlx-hidden">
     <div class="hlx-popup-header">
       <div>
         <h4>Segmentation</h4>
         <div class="hlx-details"></div>
-        <div class="hlx-info">How is it going?</div>
+        <div class="hlx-info">See experience for various audiences.</div>
       </div>
       <div>
       </div>
