@@ -37,8 +37,8 @@ function getLinkText(format, mediaType) {
   return linkText;
 }
 
-export function createArticleCard(article, classPrefix, eager = false) {
-  const title = article.title.split(' - ')[0];
+export function createArticleCard(article, classPrefix, customLinkText = '', eager = false) {
+  const title = article.title.split(' | ')[0];
   const card = document.createElement('div');
   const articleCategory = article.category || article.topic || article.productArea
     || article.contentType || article.brandedContent || '';
@@ -66,7 +66,12 @@ export function createArticleCard(article, classPrefix, eager = false) {
   }
   const articleImage = articlePicture || wistiaBlock;
   const category = toCategory(articleCategory);
-  const linkText = getLinkText(article?.format, article?.mediaType);
+  const linkText = customLinkText || getLinkText(article?.format, article?.mediaType);
+
+  const isProductUpdates = window.location.pathname.includes('/product-updates/'); 
+  const [year, month, day] = article.publicationDate.split('-');
+  const releaseDate = isProductUpdates ? `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>` : '';
+
   card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
     <span class="${classPrefix}-card-category">${articleCategory}</span> 
     <span class="${classPrefix}-card-format">${articleFormat}</span>
@@ -75,6 +80,7 @@ export function createArticleCard(article, classPrefix, eager = false) {
     <div class="${classPrefix}-card-body" am-region="${title}">
     <h5>${article?.presenter || ''}</h5>
     <h3>${title}</h3>
+    ${releaseDate}
     <p>${article.description}</p>
     <p><a href="${article.path}">${linkText}</a></p>
     </div>`;
@@ -266,6 +272,7 @@ export default async function decorate(block, blockName) {
     indexConfig.indexName = blockConfig['index-name'];
     indexConfig.cardStyle = blockConfig['card-style'];
     indexConfig.facetStyle = blockConfig['facet-style'] || 'taxonomyV1';
+    indexConfig.customLinkText = blockConfig['custom-link-text'];
   } else {
     Object.keys(blockConfig).forEach((key) => {
       config[toCamelCase(key)] = blockConfig[key];
@@ -448,7 +455,7 @@ export default async function decorate(block, blockName) {
       resultsElement.innerHTML = '';
       results.forEach((product) => {
         if (indexConfig.cardStyle === 'article') {
-          const articleCard = createArticleCard(product, 'listing-article');
+          const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkText);
           resultsElement.append(articleCard);
           loadWistiaBlock(product, articleCard);
         } else resultsElement.append(createAppCard(product, blockName));
