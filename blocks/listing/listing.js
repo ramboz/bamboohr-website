@@ -70,8 +70,7 @@ export function createArticleCard(article, classPrefix, customLinkText = '', eag
 
   const isProductUpdates = window.location.pathname.includes('/product-updates/'); 
   const [year, month, day] = article.publicationDate.split('-');
-  let releaseDate = '';
-  if (isProductUpdates) releaseDate = `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>`;
+  const releaseDate = isProductUpdates ? `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>` : '';
 
   card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
     <span class="${classPrefix}-card-category">${articleCategory}</span> 
