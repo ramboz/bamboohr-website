@@ -458,7 +458,7 @@ export default async function decorate(block, blockName) {
           const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkText);
           resultsElement.append(articleCard);
           loadWistiaBlock(product, articleCard);
-        } else resultsElement.append(createAppCard(product, blockName, ));
+        } else resultsElement.append(createAppCard(product, blockName));
       });
     }
 
