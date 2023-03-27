@@ -85,14 +85,6 @@ main .tabs .tabs-content[aria-hidden="true"] {
     cursor: pointer;
   }
 
-  main .tabs.tabs.style-4 .tabs-title[aria-selected="false"] {
-    color: var(--color-gray-9);
-  }
-
-  main .tabs.tabs.style-4 .tabs-title[aria-selected="false"]:hover {
-    color: var(--color-gray-11);
-  }
-
   main .tabs .tabs-title[aria-selected="true"] {
     border-color: var(--theme-base);
   }
@@ -547,9 +539,21 @@ main .tabs.style-4 h2.tabs-title {
   text-align: center;
 }
 
+main .tabs.style-4 .tabs-title::after {
+  border: 0;
+}
+
+main .tabs.style-4 h2.tabs-title[aria-selected="true"] {
+  border-bottom: 4px solid var(--theme-base);
+}
+
 main .tabs.style-4 h2.tabs-title[aria-selected="false"] {
-  color: var(--theme-shade5);
+  color: var(--color-gray-9);
   background-color: var(--color-gray-1);
+}
+
+main .tabs.style-4 h2.tabs-title[aria-selected="false"]:hover {
+  color: var(--color-gray-11);
 }
 
 main .tabs.style-4 .tabs-content {
@@ -567,6 +571,14 @@ main .tabs.style-4 .tabs-content p {
 
 main .tabs.style-4 .tabs-content .tabs-img-col img {
   width: 100%;
+}
+
+main .tabs.style-4 .tabs-content a.button:any-link {
+  overflow: visible;
+}
+
+main .tabs.style-4 .tabs-content a.button.link:any-link::after {
+  margin-right: -1rem;
 }
 
 @media (min-width: 600px) {
@@ -595,8 +607,11 @@ main .tabs.style-4 .tabs-content .tabs-img-col img {
   }
 
   main .tabs.style-4 .tabs-content {
+    border: none;
+    box-shadow: none;
     border-bottom: 4px solid var(--theme-base);
-    padding-bottom: 10px;
+    padding: 20px 5px;
+    margin-top: 0;
   }
 }
 
