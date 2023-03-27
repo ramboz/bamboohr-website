@@ -18,16 +18,13 @@ const SEGMENTATION_CONFIG = {
         let allCookies=  document.cookie().split(';');
         const nameIndex = 0;
         const valueIndex = 1;
-        let cookieValue = false;
         if (allCookies){
           for (let  index = 0; index < allCookies.length(); index++ ){
-            if (cookie.split('=')[nameIndex] === 'is-customer'){
-              cookieValue= cookie.split('=')[valueIndex];
-              return cookieValue;
-            }
-          } 
-          return cookieValue;
+            if (allCookies[index].split('=')[nameIndex] === 'is-customer')
+              return allCookies[index].split('=')[valueIndex];
+            } 
         }
+        return false;
       }
     },
   }
