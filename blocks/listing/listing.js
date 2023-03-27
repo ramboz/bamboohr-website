@@ -40,7 +40,8 @@ function getLinkText(format, mediaType) {
 export function createArticleCard(article, classPrefix, customLinkText = '', eager = false) {
   const title = article.title.split(' | ')[0];
   const card = document.createElement('div');
-  const articleCategory = article.category || article.topic || article.productArea
+  const productCategory = (article.planType && article.productArea) ? `${article.planType} | ${article.productArea}` : '';
+  const articleCategory = article.category || article.topic || productCategory
     || article.contentType || article.brandedContent || '';
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
@@ -72,9 +73,11 @@ export function createArticleCard(article, classPrefix, customLinkText = '', eag
   const [year, month, day] = article.publicationDate.split('-');
   const releaseDate = isProductUpdates ? `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>` : '';
 
+  const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
+
   card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
     <span class="${classPrefix}-card-category">${articleCategory}</span> 
-    <span class="${classPrefix}-card-format">${articleFormat}</span>
+    ${articleFormatSpan}
     </div>
     ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
