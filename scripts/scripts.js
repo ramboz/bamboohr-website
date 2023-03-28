@@ -20,7 +20,7 @@ const SEGMENTATION_CONFIG = {
     'is-customer': {
       label: 'Is a Customer',
       test: () => { 
-        let allCookies=  document.cookie().split(';');
+        let allCookies=  document.cookie.split(';');
         const nameIndex = 0;
         const valueIndex = 1;
    
