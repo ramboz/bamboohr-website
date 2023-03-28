@@ -12,7 +12,7 @@
 
 //function for testing
 (function (){
-  document.cookie ='bhr_features={"is_admin":true, "bhr_user":fasle}';
+  document.cookie ='bhr_features={"is_admin":true, "bhr_user":false}';
 })();
 
 const SEGMENTATION_CONFIG = {
