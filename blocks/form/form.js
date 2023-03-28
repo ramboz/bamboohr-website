@@ -482,9 +482,6 @@ function adobeEventTracking(event, componentData) {
     "event": event,
     "component" : componentData
   });
-  if(componentData.business_size){
-	  alert('check');
-  }
 }
 
 function loadFormAndChilipiper(formId, successUrl, chilipiper) {
@@ -497,7 +494,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         const formEl = form.getFormElem()[0];
 
         /* Adobe Form Start event tracking when user changes the first field */		  
-		formEl.firstElementChild.addEventListener('change', () => {
+		formEl.firstElementChild.addEventListener('change', () => {			
 		  adobeEventTracking('Form Start', {"name": form.getId()});
 		});
 		
@@ -523,7 +520,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
             formName: form.getId(),
           });
 
-		  let formBusinessSize = formEl.querySelector('input[name="Employees_Text__c"]');
+		  let formBusinessSize = formEl.querySelector('select[name="Employees_Text__c"]').value;
 		  
           /* Adobe form complete events tracking */
           adobeEventTracking('Form Complete', {
