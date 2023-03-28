@@ -482,6 +482,9 @@ function adobeEventTracking(event, componentData) {
     "event": event,
     "component" : componentData
   });
+  if(componentData.business_size){
+	  alert('check');
+  }
 }
 
 function loadFormAndChilipiper(formId, successUrl, chilipiper) {
