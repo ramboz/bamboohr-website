@@ -69,9 +69,13 @@ export function createArticleCard(article, classPrefix, customLinkText = '', eag
   const category = toCategory(articleCategory);
   const linkText = customLinkText || getLinkText(article?.format, article?.mediaType);
 
-  const isProductUpdates = window.location.pathname.includes('/product-updates/'); 
-  const [year, month, day] = article.publicationDate.split('-');
-  const releaseDate = isProductUpdates ? `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>` : '';
+  const isProductUpdates = window.location.pathname.includes('/product-updates/');
+  let releaseDate = '';
+  if (isProductUpdates && article.publicationDate) {
+    const [year, month, day] = article.publicationDate.split('-');
+    releaseDate = `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>`;
+  } 
+  
 
   const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
 
@@ -130,6 +134,7 @@ function getBlockHTML(ph, theme, indexConfig = {}) {
   <p class="listing-results-count"><span id="listing-results-count"></span> ${ph.results}</p>
   <div class="listing-facets">
   </div>
+  <div class="listing-search"><input id="fulltext" placeholder="${ph.typeToSearch}" /></div>
   <div class="listing-sortby">
     <div class="listing-filter-button">${ph.filter}</div>
     <p class="listing-sort-button">${ph.sortBy} <span data-sort="${defaultSortProp}" id="listing-sortby">${defaultSortText}</span></p>
@@ -196,6 +201,10 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
         const rowValues = row[key].split(',').map((t) => t.trim());
         matched = tokens[key].some((t) => rowValues.includes(t));
       }
+      if (key === 'fulltext') {
+        const {fulltext} = config;
+        matched = row.title.toLowerCase().includes(fulltext.toLowerCase()) || row.description.toLowerCase().includes(fulltext.toLowerCase());
+      }
       filterMatches[key] = matched;
       return matched;
     });
@@ -258,7 +267,9 @@ export default async function decorate(block, blockName) {
   const themeOverride = themeOverrides[0] ? themeOverrides[0].substring(firstHyphenIdx) : '';
   const theme = themeOverride || getMetadata('theme');
   const ph = await fetchPlaceholders('/integrations');
-  const indexConfig = {indexPath: '', indexName: '', cardStyle: '', facetStyle: ''};
+  const indexConfig = {indexPath: '', indexName: '', cardStyle: '', facetStyle: '', customLinkText: '', excludeSearch: ''};
+
+  let {excludeSearch} = indexConfig;
 
   const addEventListeners = (elements, event, callback) => {
     elements.forEach((e) => {
@@ -276,7 +287,9 @@ export default async function decorate(block, blockName) {
     indexConfig.cardStyle = blockConfig['card-style'];
     indexConfig.facetStyle = blockConfig['facet-style'] || 'taxonomyV1';
     indexConfig.customLinkText = blockConfig['custom-link-text'];
+    indexConfig.excludeSearch = blockConfig['exclude-search'];
   } else {
+    excludeSearch = 'yes';
     Object.keys(blockConfig).forEach((key) => {
       config[toCamelCase(key)] = blockConfig[key];
     });
@@ -452,6 +465,19 @@ export default async function decorate(block, blockName) {
     block.querySelector('#listing-results-count').textContent = getHRVSVisibleCount();
   };
 
+  const highlightResults = (res) => {
+    const fulltext = document.getElementById('fulltext').value;
+    if (fulltext) {
+      res.querySelectorAll('h4 a').forEach((title) => {
+        const content = title.textContent;
+        const offset = content.toLowerCase().indexOf(fulltext.toLowerCase());
+        if (offset >= 0) {
+          title.innerHTML = `${content.substr(0, offset)}<span class="highlight">${content.substr(offset, fulltext.length)}</span>${content.substr(offset + fulltext.length)}`;
+        }
+      });
+    }
+  };
+
   const displayResults = async (results) => {
     if (theme === 'hrvs') displayHRVSResults(results);
     else {
@@ -463,6 +489,7 @@ export default async function decorate(block, blockName) {
           loadWistiaBlock(product, articleCard);
         } else resultsElement.append(createAppCard(product, blockName));
       });
+      highlightResults(resultsElement);
     }
 
     window.setTimeout(() => {
@@ -520,6 +547,7 @@ export default async function decorate(block, blockName) {
       if (filterConfig[facetKey]) filterConfig[facetKey] += `, ${facetValue}`;
       else filterConfig[facetKey] = facetValue;
     });
+    filterConfig.fulltext = document.getElementById('fulltext').value;
     return filterConfig;
   };
 
@@ -705,6 +733,16 @@ export default async function decorate(block, blockName) {
       }
     });
   };
+
+  // search box
+  const fulltextElement = block.querySelector('#fulltext');
+  fulltextElement.addEventListener('input', () => {
+    runSearch(createFilterConfig());
+  });
+  
+  if (excludeSearch && excludeSearch.toLowerCase() === 'yes') {
+    fulltextElement.style.display = 'none';
+  }
 
   runSearch(config);
 }

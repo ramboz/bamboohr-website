@@ -7,7 +7,7 @@ import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 import { createArticleCard, loadWistiaBlock } from '../listing/listing.js';
 
 function createDateCard(article, classPrefix, eager = false, cardLink = {}) {
-  const title = article.title.split(' - ')[0];
+  const title = article.title.split(' | ')[0];
   const card = document.createElement('div');
   const articleCategory = article.category || article.topic || article.contentType
     || article.brandedContent || '';
