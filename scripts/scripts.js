@@ -23,14 +23,12 @@ const SEGMENTATION_CONFIG = {
         let allCookies=  document.cookie.split(';');
         const nameIndex = 0;
         const valueIndex = 1;
-   i
-        if (allCookies){
-          for (let  index = 0; index < allCookies.length; index++ ){
-            if (allCookies[index].split('=')[nameIndex] === 'bhr_features') {
-              const cookieValueObj= JSON.parse(allCookies[index].split('=')[valueIndex]);
-              return ( (cookieValueObj.is_admin === true) && (cookieValueObj.bhr_user === false ))
-            }
-          } 
+       
+        for (let  index = 0; index < allCookies.length; index++ ){
+          if (allCookies[index].split('=')[nameIndex] === 'bhr_features') {
+            const cookieValueObj= JSON.parse(allCookies[index].split('=')[valueIndex]);
+            return ( (cookieValueObj.is_admin === true) && (cookieValueObj.bhr_user === false ))
+            } 
         }
         return false;
       }
