@@ -210,6 +210,25 @@ main .listing-results-count {
     text-align: center;
 }
 
+main .listing-search {
+    text-align: center;
+}
+
+main .listing-search input {
+    height: 36px;
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 400;
+    color: var(--color-gray-12);
+    padding: 16px 20px;
+    border-radius: 50px;
+    border: 2px solid var(--color-gray-8);
+    background-image: url('/icons/search.svg');
+    background-position: calc(100% - 16px) 50%;
+    background-repeat: no-repeat;
+    margin: 18px 0;
+}
+
 main .listing-sortby {
     text-align: center;
     font-size: 16px;
@@ -679,12 +698,17 @@ main .article-cards ul > div div p a::after {
 
     main .listing {
         display: grid;
-        grid-template-areas: '- count sortby' 'facets results results';
+        grid-template-areas: 'count search sortby' 'facets results results';
         align-items: flex-start;
     }
 
     main .listing.horizontal-filters {
         grid-template-areas: 'count - sortby' 'facets facets facets' 'results results results';
+    }
+
+    main .listing-search {
+        grid-area: search;
+        text-align: left;
     }
 
     main .listing-sortby {
