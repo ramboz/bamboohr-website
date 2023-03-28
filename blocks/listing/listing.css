@@ -584,6 +584,7 @@ main .listing.fixed-image-height .listing-results .listing-article-card .listing
     width: 100%;
     height: 220px;
     object-fit: contain;
+    background-color: var(--color-gray-2);
 }
 
 main .article-cards ul > div div h3 {
@@ -694,7 +695,6 @@ main .article-cards ul > div div p a::after {
 
     main .listing-results {
         grid-area: results;
-        grid-template-columns: repeat(3, 1fr);
     }
 
     main .listing-results-count {
@@ -808,5 +808,11 @@ main .article-cards ul > div div p a::after {
 @media (min-width: 1440px) {
     main .listing-facets  {
         margin-left: -70px;
+    }
+}
+
+@media (min-width: 1800px) {
+    main .listing-results {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
