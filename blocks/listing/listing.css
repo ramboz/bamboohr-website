@@ -697,6 +697,10 @@ main .article-cards ul > div div p a::after {
         grid-area: results;
     }
 
+    .integrations main .listing-results {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
     main .listing-results-count {
         grid-area: count;
         text-align: left;
@@ -815,4 +819,8 @@ main .article-cards ul > div div p a::after {
     main .listing-results {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+main .listing-results .listing-article-card .listing-article-card-header {
+    font-size: 15px;
 }
