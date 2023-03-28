@@ -10,6 +10,11 @@
  * governing permissions and limitations under the License.
  */
 
+//function for testing
+(function (){
+  document.cookie ='bhr_features={"is_admin":true, "bhr_user":false}';
+})();
+
 const SEGMENTATION_CONFIG = {
   audiences: {
     'is-customer': {
