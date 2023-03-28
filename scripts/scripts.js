@@ -10,11 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-//function for testing
-(function (){
-  document.cookie ='bhr_features={"is_admin":true, "bhr_user":false}';
-})();
-
 const SEGMENTATION_CONFIG = {
   audiences: {
     'is-customer': {
@@ -23,7 +18,7 @@ const SEGMENTATION_CONFIG = {
         let allCookies=  document.cookie.split(';');
         const nameIndex = 0;
         const valueIndex = 1;
-       
+        
         for (let  index = 0; index < allCookies.length; index++ ){
           if (allCookies[index].split('=')[nameIndex] === 'bhr_features') {
             const cookieValueObj= JSON.parse(allCookies[index].split('=')[valueIndex]);
