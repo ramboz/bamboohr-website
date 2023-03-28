@@ -210,6 +210,10 @@ main .listing-results-count {
     text-align: center;
 }
 
+main .listing-search {
+    text-align: center;
+}
+
 main .listing-search input {
     height: 36px;
     font-size: 17px;
@@ -704,6 +708,7 @@ main .article-cards ul > div div p a::after {
 
     main .listing-search {
         grid-area: search;
+        text-align: left;
     }
 
     main .listing-sortby {
