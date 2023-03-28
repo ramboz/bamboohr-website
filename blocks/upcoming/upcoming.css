@@ -119,12 +119,12 @@ main .upcoming-article-card .upcoming-article-card-picture img {
 
     main .upcoming-article-card:first-child .upcoming-article-card-picture {
         flex: 0 0 auto;
-        width: calc(66.67% - 20px);
+        width: calc(58.33% - 20px);
     }
 
     main .upcoming-article-card:first-child .upcoming-article-card-body {
         flex: 0 0 auto;
-        width: calc(33.33% - 20px);
+        width: calc(41.67% - 20px);
     }
 
     main .upcoming-results > li {

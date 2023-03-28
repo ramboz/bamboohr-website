@@ -580,6 +580,12 @@ main .article-cards ul > div div.block.wistia picture {
   border-radius: 15px;
 }
 
+main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+}
+
 main .article-cards ul > div div h3 {
   font-size: 20px;
   line-height: 1.4;
