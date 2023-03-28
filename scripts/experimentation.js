@@ -157,8 +157,8 @@ function isValidAudience(audience) {
 
 async function getResolvedSegment(audiences, applicableSegments) {
   const results = await Promise.all(applicableSegments.map((segment) => {
-    if (audiences[segment.id] && typeof audiences[segment.id] === 'function') {
-      return audiences[segment.id]();
+    if (audiences[segment.id] && typeof audiences[segment.id].test === 'function') {
+      return audiences[segment.id].test();
     }
     return true;
   }));
