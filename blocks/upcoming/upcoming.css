@@ -113,7 +113,7 @@ main .upcoming-article-card .upcoming-article-card-picture img {
         grid-column: 1 / -1;
         display: flex;
         column-gap: 40px;
-        margin-bottom: 80px;
+        margin-bottom: 20px;
         align-items: center;
     }
 
@@ -140,5 +140,11 @@ main .upcoming-article-card .upcoming-article-card-picture img {
 
     main .upcoming-results > div {
         width: calc(100% / 3);
+    }
+}
+
+@media (min-width: 1800px) {
+    main .upcoming-article-card:first-child {
+        margin-bottom: 50px;
     }
 }
