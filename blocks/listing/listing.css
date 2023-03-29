@@ -582,9 +582,28 @@ main .article-cards ul > div div.block.wistia picture {
 
 main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
     width: 100%;
-    height: 220px;
+    height: 240px;
     object-fit: contain;
-    background-color: var(--color-gray-2);
+    border: 2px solid var(--color-gray-1);
+    background-color: var(--color-white);
+}
+
+@media (min-width: 600px) {
+    main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
+        height: 170px;
+    }
+}
+
+@media (min-width: 900px) {
+    main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
+        height: 236px;
+    }
+}
+
+@media (min-width: 1800px) {
+    main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
+        height: 220px;
+    }
 }
 
 main .article-cards ul > div div h3 {
