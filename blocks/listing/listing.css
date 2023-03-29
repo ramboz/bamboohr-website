@@ -824,3 +824,8 @@ main .article-cards ul > div div p a::after {
 main .listing-results .listing-article-card .listing-article-card-header {
     font-size: 15px;
 }
+
+main .listing.no-controls .listing-results-count,
+main .listing.no-controls .listing-sortby {
+    display: none;
+}
