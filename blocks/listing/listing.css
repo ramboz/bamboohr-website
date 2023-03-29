@@ -826,6 +826,7 @@ main .listing-results .listing-article-card .listing-article-card-header {
 }
 
 main .listing.no-controls .listing-results-count,
-main .listing.no-controls .listing-sortby {
+main .listing.no-controls .listing-sortby,
+main .listing.no-controls .listing-search {
     display: none;
 }
