@@ -10,6 +10,12 @@
  * governing permissions and limitations under the License.
  */
 
+import {
+  analyticsTrackFormSubmission,
+  analyticsTrackLinkClicks,
+  setupAnalyticsTrackingWithAlloy,
+} from './lib-analytics.js';
+
 /**
  * log RUM if part of the sample.
  * @param {string} checkpoint identifies the checkpoint in funnel
@@ -113,14 +119,14 @@ export function getMetadata(name) {
  * @param {string} name The unsanitized name
  * @returns {string} The class name
  */
- export function toClassName(name) {
+export function toClassName(name) {
   return name && typeof name === 'string' ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-') : '';
 }
 
 /**
  * Loads a template specific CSS file.
  */
- function loadTemplateCSS() {
+function loadTemplateCSS() {
   const template = toClassName(getMetadata('template'));
   if (template) {
     const templates = ['bhr-comparison', 'bhr-home', 'ee-solution', 'hr-glossary', 'hr-software', 'hr-software-payroll', 'hr-unplugged',
@@ -670,8 +676,10 @@ async function loadPage(doc) {
   await loadEager(doc);
   // eslint-disable-next-line no-use-before-define
   await loadLazy(doc);
+  const setupAnalytics = setupAnalyticsTrackingWithAlloy(document);
   // eslint-disable-next-line no-use-before-define
   loadDelayed(doc);
+  await setupAnalytics;
 }
 
 export function initHlx(forceMultiple = false) {
@@ -1127,23 +1135,6 @@ async function loadEager(doc) {
   }
 
   if (!window.hlx.lighthouse) loadMartech();
-
-  /* This is temporary code to load our homepage convert test mid-test.
-     we are loading here to avoid the delay "long flicker" before the test page is loaded.
-     This type of test should be handled in Adobe Franklin experiments going forward.
-   */
-  // const testPaths = [
-  //   '/resources/hr-glossary/performance-review'
-  // ];
-  // const isOnTestPath = testPaths.includes(window.location.pathname);
-  // if (isOnTestPath) {
-    const $head = document.querySelector('head');
-    const $script = document.createElement('script');
-    $script.src = 'https://cdn-4.convertexperiments.com/js/10004673-10005501.js';
-    $head.append($script);
-  // }
-  /* This is the end of the temporary convert test code */
-
   decorateTemplateAndTheme();
   document.documentElement.lang = 'en';
   const main = doc.querySelector('main');
@@ -1209,6 +1200,8 @@ async function handleLoadDelayed() {
  * the user experience.
  */
 function loadDelayed() {
+  // TODO: re-enable before merging
+  /*
   const testPaths = [
     '/',
     '/resources/hr-glossary/performance-review',
@@ -1216,11 +1209,13 @@ function loadDelayed() {
     '/hr-solutions/industry/construction',
     '/blog/key-hr-metrics'
   ];
+  */
+  const testPaths = [];
   const isOnTestPath = testPaths.includes(window.location.pathname);
 
   if (isOnTestPath) handleLoadDelayed(); // import without delay (for testing page performance)
-  // else if (!window.hlx.performance) window.setTimeout(() => handleLoadDelayed(), 4000);
-  else if (!window.hlx.performance) handleLoadDelayed();
+  else if (!window.hlx.performance) window.setTimeout(() => handleLoadDelayed(), 4000);
+  // else if (!window.hlx.performance) handleLoadDelayed();
 
   // load anything that can be postponed to the latest here
 }
@@ -1420,33 +1415,59 @@ sampleRUM.drain('convert', (cevent, cvalueThunk, element, listenTo = []) => {
   }
 });
 
-// call upon conversion events, pushes them to the datalayer
-sampleRUM.always.on('convert', (data) => {
-  const { element } = data;
-  if (element && window.digitalData) {
-    let evtDataLayer;
+// Declare conversionEvent, bufferTimeoutId and tempConversionEvent outside the convert function to persist them for buffering between
+// subsequent convert calls
+let bufferTimeoutId;
+let conversionEvent;
+let tempConversionEvent;
+
+// call upon conversion events, sends them to alloy
+sampleRUM.always.on('convert', async (data) => {
+  const {element} = data;
+  // eslint-disable-next-line no-undef
+  if (element && alloy) {
     if (element.tagName === 'FORM') {
-      evtDataLayer = {
+      conversionEvent = {
         event: "Form Complete",
-        forms: {
-          formsComplete: 1,
-          formName: data.source, // this is the conversion event name
-          conversionValue: data.target,
-          formId: element.id,
-          formsType: ""
-        }
+        ...(data.source ? {conversionName: data.source} : {}),
+        ...(data.target ? {conversionValue: data.target} : {}),
       };
+
+      if (conversionEvent.event === "Form Complete" && (data.target === undefined || data.source === undefined)) {
+        // If a buffer has already been set and tempConversionEvent exists, merge the two conversionEvent objects to send to alloy
+        if (bufferTimeoutId !== undefined && tempConversionEvent !== undefined) {
+          conversionEvent = {...tempConversionEvent, ...conversionEvent}
+        } else {
+          // Temporarily hold the conversionEvent object until the timeout is complete
+          tempConversionEvent = {...conversionEvent};
+
+          // If there is partial form conversion data, set the timeout buffer to wait for additional data
+          bufferTimeoutId = setTimeout(async () => {
+            await analyticsTrackFormSubmission(element, {
+              "conversion": {
+                ...(conversionEvent.conversionName ? {"conversionName": `${conversionEvent.conversionName}`} : {}),
+                ...(conversionEvent.conversionValue ? {"conversionValue": `${conversionEvent.conversionValue}`} : {}),
+              },
+            });
+            tempConversionEvent = undefined;
+            conversionEvent = undefined;
+          }, 100);
+        }
+      }
     } else if (element.tagName === 'A') {
-      evtDataLayer = {
+      conversionEvent = {
         event: "Link Click",
-        eventData: {
-          linkName: data.source, // this is the conversion event name
-          linkText: element.innerHTML,
-          linkHref: element.href
-        }
+        ...(data.source ? {conversionName: data.source} : {}),
+        ...(data.target ? {conversionValue: data.target} : {}),
       };
+      await analyticsTrackLinkClicks(element, 'other', {
+        "conversion": {
+          ...(conversionEvent.conversionName ? {"conversionName": `${conversionEvent.conversionName}`} : {}),
+          ...(conversionEvent.conversionValue ? {"conversionValue": `${conversionEvent.conversionValue}`} : {}),
+        },
+      });
+      tempConversionEvent = undefined;
+      conversionEvent = undefined;
     }
-    console.debug('push to datalayer', evtDataLayer);
-    window.digitalData.push(evtDataLayer);
   }
 });

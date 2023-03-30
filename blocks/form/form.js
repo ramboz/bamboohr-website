@@ -358,7 +358,7 @@ function mktoFormReset(form, moreStyles) {
   const currentForm = document.getElementById(formId);
 
   const rando = Math.floor(Math.random() * 1000000);
-  
+
   formEl.querySelectorAll('label[for]').forEach((labelEl) => {
     const forEl = formEl.querySelector(`[id="${labelEl.htmlFor}"]`);
     if (forEl) {
@@ -415,7 +415,7 @@ function mktoFormReset(form, moreStyles) {
         gdprInput.parentElement.classList.add('form-checkbox-option');
         gdprLabel.parentElement.classList.add('form-checkbox-flex');
         gdprLabel.firstElementChild.classList.add('form-gdpr-text');
- 
+
         currentForm.querySelector('[name="Disclaimer__c"]').addEventListener('input', () => {
           if (currentForm.querySelector('.form-msg') && currentForm.querySelectorAll('.mktoField.mktoInvalid').length === 0 && currentForm.querySelectorAll('.mktoLogicalField.mktoInvalid').length === 0) {
             currentForm.querySelector('.form-msg').remove();
@@ -424,7 +424,7 @@ function mktoFormReset(form, moreStyles) {
       }
     });
   }
-  
+
   formEl.querySelectorAll('[type="checkbox"]').forEach((el) => {
     el.parentElement.classList.add('form-checkbox-option');
     el.parentElement.parentElement.classList.add('form-checkbox-flex');
@@ -475,16 +475,6 @@ function mktoFormReset(form, moreStyles) {
   }
 }
 
-/* Adobe event tracking */
-function adobeEventTracking(event, name) {
-  window.digitalData.push({
-    event,
-    component: {
-      name
-    }
-  });
-}
-
 function loadFormAndChilipiper(formId, successUrl, chilipiper) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -493,12 +483,6 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
       if (form.getId().toString() === formId) {
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
-
-        /* Adobe Form Start event tracking when user changes the first field */		  
-		formEl.firstElementChild.addEventListener('change', () => {
-		  adobeEventTracking('Form Start', form.getId());
-		});
-		
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
         if (readyTalkMeetingID && readyTalkEl) {
@@ -521,14 +505,11 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
             formName: form.getId(),
           });
 
-          /* Adobe form complete events tracking */
-          adobeEventTracking('Form Complete', form.getId());
+          /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
+          setTimeout(() => {
+            if (successUrl && !chilipiper) window.location.href = successUrl;
+          },1000);
 
-		  /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
-		  setTimeout(() => {
-			  if (successUrl && !chilipiper) window.location.href = successUrl;
-		  },1000);
-          
           return false;
         });
       }
@@ -566,7 +547,7 @@ export function scrollToForm() {
 export default async function decorate(block) {
   const config = readBlockConfig(block);
   let chilipiper; let formUrl; let successUrl;
-  
+
   if (!block.classList.contains('has-content')) {
     const as = block.querySelectorAll('a');
     formUrl = as[0] ? as[0].href : '';
