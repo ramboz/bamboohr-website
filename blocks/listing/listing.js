@@ -269,7 +269,7 @@ export default async function decorate(block, blockName) {
   const ph = await fetchPlaceholders('/integrations');
   const indexConfig = {indexPath: '', indexName: '', cardStyle: '', facetStyle: '', customLinkText: '', excludeSearch: ''};
 
-  let {excludeSearch} = indexConfig;
+  let excludeSearch = '';
 
   const addEventListeners = (elements, event, callback) => {
     elements.forEach((e) => {
@@ -288,6 +288,7 @@ export default async function decorate(block, blockName) {
     indexConfig.facetStyle = blockConfig['facet-style'] || 'taxonomyV1';
     indexConfig.customLinkText = blockConfig['custom-link-text'];
     indexConfig.excludeSearch = blockConfig['exclude-search'];
+    excludeSearch = indexConfig.excludeSearch;
   } else {
     excludeSearch = 'yes';
     Object.keys(blockConfig).forEach((key) => {
