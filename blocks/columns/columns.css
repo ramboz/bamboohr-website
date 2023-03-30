@@ -759,11 +759,6 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   font-style: normal;
 }
 
-.columns p:last-child > em {
-  font-size: 14px;
-  line-height: 24px;
-}
-
 .columns.title2-heading h3 {
   font-family: var(--heading-font-family);
   font-size: 20px;
