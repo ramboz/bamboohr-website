@@ -3,7 +3,6 @@ const mediaQueryPhone = window.matchMedia('(max-width: 599px)');
 const mediaQueryTablet = window.matchMedia('(max-width: 1024px)');
 
 function getIconParent(elem) {
-  let iconParent = null;
   let e = elem;
   if (e.tagName === 'path') e = e.parentNode;
   if (e.tagName === 'g') e = e.parentNode;
