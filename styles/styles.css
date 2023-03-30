@@ -43,7 +43,7 @@ body {
   font-family: var(--body-font-family);
   font-size: 18px;
   line-height: 27px;
-  color: var(--color-gray-9);
+  color: var(--color-gray-12);
   margin: 0;
   padding: 0;
   display: none;
@@ -58,7 +58,7 @@ body.appear {
 main {
   overflow: hidden;
   margin: 0;
-  color: var(--color-gray-9);
+  color: var(--color-gray-12);
 }
 
 /* buttons */
@@ -262,7 +262,7 @@ main .default-content-wrapper ol {
 main .default-content-wrapper ul li,
 main .default-content-wrapper ol li {
   margin-bottom: 16px;
-  color: var(--color-gray-9);
+  color: var(--color-gray-12);
 }
 
 main .default-content-wrapper ol li {
@@ -713,7 +713,7 @@ ol ol ol li::marker {
 /* links */
 
 main a:any-link {
-  color: var(--color-gray-9);
+  color: var(--color-gray-12);
   line-height: 1.5;
   text-decoration: none;
 }
@@ -1343,7 +1343,7 @@ table tbody th {
 }
 
 table td {
-  color: var(--color-gray-9);
+  color: var(--color-gray-12);
 }
 
 table thead {
@@ -1620,7 +1620,7 @@ body.modal-open {
 }
 
 .modal .modal-content p {
-  color: var(--color-gray-9);
+  color: var(--color-gray-12);
   font-size: 18px;
   line-height: 27px;
 }
