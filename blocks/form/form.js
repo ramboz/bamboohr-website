@@ -516,8 +516,9 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         form.onSuccess(() => {
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
+          const eventType = form.getId() === '1240' ? 'demoRequest' : 'marketoForm';
           window.dataLayer.push({
-            event: 'marketoForm',
+            event: eventType,
             formName: form.getId(),
           });
 
