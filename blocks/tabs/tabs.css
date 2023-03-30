@@ -546,11 +546,8 @@ main .tabs.style-4 .tabs-title[aria-selected="true"] {
 }
 
 main .tabs.style-4 .tabs-title[aria-selected="false"] {
-  background-color: var(--color-gray-1);
-}
-
-main .tabs.style-4 .tabs-title[aria-selected="false"] {
   color: var(--color-gray-9);
+  background-color: var(--color-gray-1);
 }
 
 main .tabs.style-4 .tabs-title[aria-selected="false"] h2 {
@@ -637,7 +634,7 @@ main .tabs.style-4 .tabs-content a.button.link:any-link::after {
   }
 
   main .tabs.style-4 .tabs-title:first-child {
-    border-radius: 16px 0 0 0;
+    border-radius: 16px 0 0;
   }
   
   main .tabs.style-4 .tabs-title:nth-last-child(2) {
