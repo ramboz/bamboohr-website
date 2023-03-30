@@ -550,10 +550,6 @@ main .tabs.style-4 .tabs-title[aria-selected="false"] {
   background-color: var(--color-gray-1);
 }
 
-main .tabs.style-4 .tabs-title[aria-selected="false"] h2 {
-  color: unset;
-}
-
 main .tabs.style-4 .tabs-title[aria-selected="false"]:hover {
   color: var(--theme-shade10);
   background-color: var(--theme-tint15);
@@ -562,6 +558,8 @@ main .tabs.style-4 .tabs-title[aria-selected="false"]:hover {
 main .tabs.style-4 .tabs-title h2 {
   margin-top: 0;
   margin-bottom: 0;
+  color: unset;
+  font-family: unset;
 }
 
 main .tabs.style-4 .tabs-content {
