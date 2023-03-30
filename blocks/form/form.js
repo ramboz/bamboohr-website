@@ -519,7 +519,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
             formName: form.getId(),
           });
 
-		  let formBusinessSize = formEl.querySelector('select[name="Employees_Text__c"]').value;
+		  const formBusinessSize = formEl.querySelector('select[name="Employees_Text__c"]').value;
 		  
           /* Adobe form complete events tracking */
           adobeEventTracking('Form Complete', {
