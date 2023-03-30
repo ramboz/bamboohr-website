@@ -511,7 +511,9 @@ main .title.small-info :is(h1, h2, h3, h4, h5, h6, div) {
 
 .typ-table-body,
 table th,
-table td {
+table td,
+table td ul li,
+table td ol li {
   font-family: var(--body-font-family);
   font-size: 15px;
   line-height: 22px;
