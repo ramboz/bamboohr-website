@@ -614,6 +614,13 @@
   text-transform: uppercase;
 }
 
+#base .title-size-small-header :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 36px;
+}
+
 #base .title-color-gray-9 :is(h1, h2, h3, h4, h5, h6) {
   color: var(--color-gray-9);
 }
@@ -624,6 +631,13 @@
 
 #base .title-margin-top-none :is(h1, h2, h3, h4, h5, h6) {
   margin-top: 0;
+}
+
+@media (min-width: 1200px) {
+  #base .title-size-small-header :is(h1, h2, h3, h4, h5, h6) {
+    font-size: 36px;
+    line-height: 44px;
+  }
 }
 
 /** copy **/
