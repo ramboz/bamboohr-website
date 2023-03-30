@@ -510,12 +510,13 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         } else if (window.location.pathname.includes('/webinars/')) {
           formSubmitBtn.textContent = isUpcomingEvent() ? 'Register for this event' : 'Watch Now';
         }
-
+        
         form.onSuccess(() => {
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
+          const eventType = form.getId() === 1240 ? 'demoRequest' : 'marketoForm';
           window.dataLayer.push({
-            event: 'marketoForm',
+            event: eventType,
             formName: form.getId(),
           });
 
