@@ -36,7 +36,8 @@
     margin-bottom: 50px;
 }
 
-.bhr-home .columns h3 {
+.bhr-home .columns h3,
+.bhr-home .tabs.style-4 .tabs-content h3 {
     margin-top: 0;
     color: var(--color-gray-10);
     font-style: normal;
@@ -44,7 +45,8 @@
     line-height: 30px;
 }
 
-.bhr-home .section.homepagev2 .columns h3 {
+.bhr-home .section.homepagev2 .columns h3,
+.bhr-home .section.homepagev2 .tabs-content h3 {
     color: var(--theme-shade10);
 }
 
@@ -156,6 +158,7 @@
 .bhr-home main .columns-wrapper,
 .bhr-home main .default-content-wrapper,
 .bhr-home main .quote-wrapper,
+.bhr-home main .tabs-wrapper,
 .bhr-home main .title-wrapper,
 .bhr-home main .reprise-wrapper,
 .bhr-home main .wistia-wrapper {
@@ -234,6 +237,13 @@
     position: relative;
     margin-top: 0;
     padding-top: 96px;
+}
+
+.bhr-home .image.bg-home-section-2-middle-1 picture {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 26%;
 }
 
 .bhr-home .image.bg-home-middle-1 picture {
@@ -392,6 +402,22 @@
     }
 }
 
+@media (max-width: 784px) {
+    .bhr-home .image.bg-home-section-2-middle-1 {
+        display: none;
+    }
+}
+
+@media (min-width: 785px) {
+    .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
+        max-width: 960px;
+    }
+
+    .bhr-home .image.bg-home-section-2-middle-1 picture {
+        top: 56%;
+    }
+}
+
 @media (min-width: 837px) {
     .bhr-home .image.bg-home-bottom-pudgy picture {
         bottom: 370px;
@@ -415,6 +441,10 @@
 
     .bhr-home .columns > div > div:last-of-type {
         margin-right: auto;
+    }
+
+    .bhr-home .image.bg-home-section-2-middle-1 picture {
+        top: 35%;
     }
 }
 
@@ -440,6 +470,10 @@
 
     .bhr-home .columns.columns-2-cols:not(.title2-heading) .column-flex-container {
         text-align: center;
+    }
+
+    .bhr-home .columns.title1-heading h1 {
+        margin-top: 24px;
     }
       
     .bhr-home .columns.columns-2-cols:not(.hero-subhead) .column-flex-container .non-img-col:not(.columns-title-span) p {
@@ -492,6 +526,11 @@
     .bhr-home .image.bg-home-bottom-pudgy picture {
         bottom: 370px;
     }
+
+    .bhr-home main .tabs.style-2 {
+        column-gap: 1rem;
+      grid-template-columns: 1fr 1fr;
+    }
 }
 
 @media (min-width: 1200px) {
@@ -502,6 +541,18 @@
     .bhr-home .columns.bottom-cta h2 {
         font-size: 48px;
         line-height: 60px;
+    }
+}
+
+@media (min-width: 1490px) {
+    .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
+        max-width: 1410px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
+        max-width: 1520px;
     }
 }
 

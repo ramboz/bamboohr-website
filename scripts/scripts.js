@@ -123,7 +123,7 @@ export function getMetadata(name) {
  function loadTemplateCSS() {
   const template = toClassName(getMetadata('template'));
   if (template) {
-    const templates = ['bhr-comparison', 'bhr-home', 'ee-solution', 'hr-glossary', 'hr-software-payroll', 'hr-unplugged',
+    const templates = ['bhr-comparison', 'bhr-home', 'ee-solution', 'hr-glossary', 'hr-software', 'hr-software-payroll', 'hr-unplugged',
       'hrvs-listing', 'industry', 'industry-category', 'live-demo-webinars', 'payroll-roi', 'performance-reviews', 'pricing-quote', 'content-library', 'webinar', 'paid-landing-page', 'product-updates', 'live-demo-webinar-lp', 'hr-101-guide'];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -1352,7 +1352,8 @@ export function addClassToParent(block) {
     'top-section-top-margin',
     'bottom-margin',
     'top-margin',
-    'laptop-small-width'
+    'laptop-small-width',
+    'variable-width'
   ];
   classes.some((c) => {
     const found = block.classList.contains(c);

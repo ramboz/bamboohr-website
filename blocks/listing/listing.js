@@ -37,11 +37,12 @@ function getLinkText(format, mediaType) {
   return linkText;
 }
 
-export function createArticleCard(article, classPrefix, eager = false) {
-  const title = article.title.split(' - ')[0];
+export function createArticleCard(article, classPrefix, customLinkText = '', eager = false) {
+  const title = article.title.split(' | ')[0];
   const card = document.createElement('div');
-  const articleCategory = article.category || article.topicPrimary || article.topicSecondary
-    || article.productArea || article.contentType || article.brandedContent || '';
+  const productCategory = (article.planType && article.productArea) ? `${article.planType} | ${article.productArea}` : '';
+  const articleCategory = article.category || article.topic || productCategory
+    || article.contentType || article.brandedContent || '';
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
@@ -66,15 +67,27 @@ export function createArticleCard(article, classPrefix, eager = false) {
   }
   const articleImage = articlePicture || wistiaBlock;
   const category = toCategory(articleCategory);
-  const linkText = getLinkText(article?.format, article?.mediaType);
+  const linkText = customLinkText || getLinkText(article?.format, article?.mediaType);
+
+  const isProductUpdates = window.location.pathname.includes('/product-updates/');
+  let releaseDate = '';
+  if (isProductUpdates && article.publicationDate) {
+    const [year, month, day] = article.publicationDate.split('-');
+    releaseDate = `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>`;
+  } 
+  
+
+  const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
+
   card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
     <span class="${classPrefix}-card-category">${articleCategory}</span> 
-    <span class="${classPrefix}-card-format">${articleFormat}</span>
+    ${articleFormatSpan}
     </div>
     ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
     <h5>${article?.presenter || ''}</h5>
     <h3>${title}</h3>
+    ${releaseDate}
     <p>${article.description}</p>
     <p><a href="${article.path}">${linkText}</a></p>
     </div>`;
@@ -121,6 +134,7 @@ function getBlockHTML(ph, theme, indexConfig = {}) {
   <p class="listing-results-count"><span id="listing-results-count"></span> ${ph.results}</p>
   <div class="listing-facets">
   </div>
+  <div class="listing-search"><input id="fulltext" placeholder="${ph.typeToSearch}" /></div>
   <div class="listing-sortby">
     <div class="listing-filter-button">${ph.filter}</div>
     <p class="listing-sort-button">${ph.sortBy} <span data-sort="${defaultSortProp}" id="listing-sortby">${defaultSortText}</span></p>
@@ -187,6 +201,10 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
         const rowValues = row[key].split(',').map((t) => t.trim());
         matched = tokens[key].some((t) => rowValues.includes(t));
       }
+      if (key === 'fulltext') {
+        const {fulltext} = config;
+        matched = row.title.toLowerCase().includes(fulltext.toLowerCase()) || row.description.toLowerCase().includes(fulltext.toLowerCase());
+      }
       filterMatches[key] = matched;
       return matched;
     });
@@ -249,7 +267,9 @@ export default async function decorate(block, blockName) {
   const themeOverride = themeOverrides[0] ? themeOverrides[0].substring(firstHyphenIdx) : '';
   const theme = themeOverride || getMetadata('theme');
   const ph = await fetchPlaceholders('/integrations');
-  const indexConfig = {indexPath: '', indexName: '', cardStyle: '', facetStyle: ''};
+  const indexConfig = {indexPath: '', indexName: '', cardStyle: '', facetStyle: '', customLinkText: '', excludeSearch: ''};
+
+  let excludeSearch = '';
 
   const addEventListeners = (elements, event, callback) => {
     elements.forEach((e) => {
@@ -265,8 +285,12 @@ export default async function decorate(block, blockName) {
     indexConfig.indexPath = blockConfig['index-path'];
     indexConfig.indexName = blockConfig['index-name'];
     indexConfig.cardStyle = blockConfig['card-style'];
-    indexConfig.facetStyle = blockConfig['facet-style'];
+    indexConfig.facetStyle = blockConfig['facet-style'] || 'taxonomyV1';
+    indexConfig.customLinkText = blockConfig['custom-link-text'];
+    indexConfig.excludeSearch = blockConfig['exclude-search'];
+    excludeSearch = indexConfig.excludeSearch;
   } else {
+    excludeSearch = 'yes';
     Object.keys(blockConfig).forEach((key) => {
       config[toCamelCase(key)] = blockConfig[key];
     });
@@ -442,17 +466,31 @@ export default async function decorate(block, blockName) {
     block.querySelector('#listing-results-count').textContent = getHRVSVisibleCount();
   };
 
+  const highlightResults = (res) => {
+    const fulltext = document.getElementById('fulltext').value;
+    if (fulltext) {
+      res.querySelectorAll('h4 a').forEach((title) => {
+        const content = title.textContent;
+        const offset = content.toLowerCase().indexOf(fulltext.toLowerCase());
+        if (offset >= 0) {
+          title.innerHTML = `${content.substr(0, offset)}<span class="highlight">${content.substr(offset, fulltext.length)}</span>${content.substr(offset + fulltext.length)}`;
+        }
+      });
+    }
+  };
+
   const displayResults = async (results) => {
     if (theme === 'hrvs') displayHRVSResults(results);
     else {
       resultsElement.innerHTML = '';
       results.forEach((product) => {
         if (indexConfig.cardStyle === 'article') {
-          const articleCard = createArticleCard(product, 'listing-article');
+          const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkText);
           resultsElement.append(articleCard);
           loadWistiaBlock(product, articleCard);
         } else resultsElement.append(createAppCard(product, blockName));
       });
+      highlightResults(resultsElement);
     }
 
     window.setTimeout(() => {
@@ -466,8 +504,7 @@ export default async function decorate(block, blockName) {
     let facets = {};
     if (indexConfig.facetStyle === 'taxonomyV1') {
       facets = {
-        topicPrimary: {},
-        topicSecondary: {},
+        topic: {},
         planType: {},
         productArea: {},
         contentType: {},
@@ -511,6 +548,7 @@ export default async function decorate(block, blockName) {
       if (filterConfig[facetKey]) filterConfig[facetKey] += `, ${facetValue}`;
       else filterConfig[facetKey] = facetValue;
     });
+    filterConfig.fulltext = document.getElementById('fulltext').value;
     return filterConfig;
   };
 
@@ -696,6 +734,16 @@ export default async function decorate(block, blockName) {
       }
     });
   };
+
+  // search box
+  const fulltextElement = block.querySelector('#fulltext');
+  fulltextElement.addEventListener('input', () => {
+    runSearch(createFilterConfig());
+  });
+  
+  if (excludeSearch && excludeSearch.toLowerCase() === 'yes') {
+    fulltextElement.style.display = 'none';
+  }
 
   runSearch(config);
 }

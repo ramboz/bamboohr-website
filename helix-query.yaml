@@ -288,12 +288,8 @@ indices:
         select: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      topicPrimary:
-        select: head > meta[name="topic-primary"]
-        value: |
-          attribute(el, 'content')
-      topicSecondary:
-        select: head > meta[name="topic-secondary"]
+      topic:
+        select: head > meta[name="topic"]
         value: |
           attribute(el, 'content')
       eventDate:
