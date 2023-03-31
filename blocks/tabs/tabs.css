@@ -562,11 +562,6 @@ main .tabs.style-4 .tabs-title h2 {
   font-family: unset;
 }
 
-main .tabs.style-4 .tabs-title .icon svg {
-  width: auto;
-  height: 35px;
-}
-
 main .tabs.style-4 .tabs-content {
   padding: 40px 50px;
   border: 2px solid var(--color-gray-1);
@@ -617,10 +612,15 @@ main .tabs.style-4 .tabs-content a.button.link:any-link::after {
 
   main .tabs.style-4 .tabs-title {
     text-align: left;
+    padding: 20px 40px;
   }
 
   main .tabs.style-4 .tabs-title[aria-selected="false"] {
     margin-bottom: 5px;
+  }
+
+  main .tabs.style-4 .tabs-title h2 {
+    margin-top: 0;
   }
 
   main .tabs.style-4 .tabs-title h2::before {
@@ -631,7 +631,7 @@ main .tabs.style-4 .tabs-content a.button.link:any-link::after {
     transition: transform 0.2s;
     width: 8px;
     position: absolute;
-    top: 51%;
+    top: 44%;
     left: 20px;
   }
   
@@ -645,6 +645,10 @@ main .tabs.style-4 .tabs-content a.button.link:any-link::after {
     padding: 20px;
     margin-bottom: 10px;
   }
+
+  main .tabs.style-4 .tabs-flex-content {
+    gap: unset;
+}
 }
 
 @media (min-width: 785px) {
