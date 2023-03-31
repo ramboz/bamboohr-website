@@ -1163,7 +1163,8 @@ async function loadEager(doc) {
   if (instantSegments.length) {
     // eslint-disable-next-line import/no-cycle
     const { runSegmentation } = await import('./experimentation.js');
-    await runSegmentation(instantSegments, SEGMENTATION_CONFIG);
+    const resolution = getMetadata('audience-resolution');
+    await runSegmentation(instantSegments, { ...SEGMENTATION_CONFIG, resolution });
   }
   
   const experiment = getMetadata('experiment');

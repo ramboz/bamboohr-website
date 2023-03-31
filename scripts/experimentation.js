@@ -162,12 +162,7 @@ async function getResolvedSegment(audiences, applicableSegments) {
     }
     return true;
   }));
-  return applicableSegments
-    .filter((_, i) => results[i])
-    .map((segment) => ({
-      ...segment,
-      ...audiences[segment.id]
-    }));
+  return applicableSegments.filter((_, i) => results[i]);
 }
 
 /**
@@ -341,10 +336,10 @@ export async function runSegmentation(segments, config = {}) {
     return;
   }
 
-  if (segment.redirect) {
+  // Fullpage segmentation
+  if (config.resolution === 'redirect') {
     window.location.replace(segmentPath);
   } else {
-    // Fullpage segmentation
     document.body.classList.add(`segment-${segment.id}`);
     await replaceInner(segmentPath, document.querySelector('main'));
   }
