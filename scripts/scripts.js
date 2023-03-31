@@ -14,20 +14,36 @@ const SEGMENTATION_CONFIG = {
   audiences: {
     'is-customer': {
       label: 'Is a Customer',
-      test: () => { 
-        let allCookies=  document.cookie.split(';');
-        const nameIndex = 0;
-        const valueIndex = 1;
-        
-        for (let  index = 0; index < allCookies.length; index++ ){
-          if (allCookies[index].split('=')[nameIndex] === 'bhr_features') {
-            const cookieValueObj= JSON.parse(allCookies[index].split('=')[valueIndex]);
-            return ( (cookieValueObj.is_admin === true) && (cookieValueObj.bhr_user === false ))
-            } 
-        }
-        return false;
+      test: () => {
+        // eslint-disable-next-line no-use-before-define
+        const features = getBhrFeatures();
+        return features.is_admin && !features.bhr_user;
       }
     },
+    'is-not-customer': {
+      label: 'Is not a Customer',
+      test: () => {
+        // eslint-disable-next-line no-use-before-define
+        const features = getBhrFeatures();
+        return !(features.is_admin && !features.bhr_user);
+      }
+    },
+  }
+}
+
+function readCookie(name) {
+  const [value] = document.cookie.split('; ')
+    .filter((cookieString) => cookieString.split('=')[0] === name)
+    .map((cookieString) => cookieString.split('=')[1]);
+  return value || null;
+}
+
+function getBhrFeatures() {
+  const value = readCookie('bhr_features');
+  try {
+    return JSON.parse(value);
+  } catch (err) {
+    return {};
   }
 }
 
