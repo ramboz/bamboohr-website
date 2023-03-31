@@ -32,6 +32,11 @@ const SEGMENTATION_CONFIG = {
   }
 }
 
+/**
+ * Gets the value for the specific cookie
+ * @param {string} name The name of the cookie
+ * @returns {string} the cookie value, or null
+ */
 function readCookie(name) {
   const [value] = document.cookie.split('; ')
     .filter((cookieString) => cookieString.split('=')[0] === name)
@@ -39,6 +44,10 @@ function readCookie(name) {
   return value || null;
 }
 
+/**
+ * Gets the BHR Features from the cookie
+ * @returns {object} the BHR features, or an empty object
+ */
 function getBhrFeatures() {
   const value = readCookie('bhr_features');
   try {
