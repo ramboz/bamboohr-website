@@ -15,20 +15,14 @@
     background-color: var(--theme-shade5);
 }
 
-.hr-101-guide main .callout {
-    background-image: url('./bg/green-cta.svg');
-    color: var(--color-1-tint-15);
-    box-shadow: 0 30px 60px -40px rgba(29 147 54 / 50%);
-  }
-
-  .hr-101-guide main .callout a.button {
+.hr-101-guide main .callout a.button {
     background-color: var(--theme-shade5);
-  }
+}
 
-  .hr-101-guide main .callout h3 {
+.hr-101-guide main .callout h3 {
     color: var(--color-gray-12);
-  }
+}
 
-  .hr-101-guide main .callout p {
+.hr-101-guide main .callout p {
     color: var(--color-gray-12);
-  }
+}

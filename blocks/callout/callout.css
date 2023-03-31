@@ -8,6 +8,12 @@ main .callout {
   box-shadow: 0 30px 60px -40px var(--category-box-shadow-color);
 }
 
+.hr-101-guide main .callout {
+  background-image: url('./bg/green-cta.svg');
+  color: var(--color-1-tint-15);
+  box-shadow: 0 30px 60px -40px rgba(29 147 54 / 50%);
+}
+
 main .callout.left,
 main .callout.right {
   text-align: left;
