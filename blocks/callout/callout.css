@@ -25,7 +25,7 @@ main .callout a.button {
 }
 
 .hr-101-guide main .callout a.button {
-  background-color: var(--color-1-shade-5);
+  background-color: var(--theme-shade5);
 }
 
 main .callout.left a.button,
@@ -43,7 +43,7 @@ main .callout h3 {
 }
 
 .hr-101-guide main .callout h3 {
-  color: var(--color-1-shade-5);
+  color: var(--color-gray-12);
 }
 
 main .callout.left h3,
@@ -60,7 +60,7 @@ main .callout p {
 }
 
 .hr-101-guide main .callout p {
-  color: var(--color-1-shade-10);
+  color: var(--color-gray-12);
 }
 
 .integrations.app-list main .callout {
