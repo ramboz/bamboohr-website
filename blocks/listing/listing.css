@@ -449,8 +449,7 @@ main .listing-results .hrvs-card-header {
     margin-bottom: 10px;
 }
 
-main .hrvs-card .hrvs-card-format::before,
-main .listing-article-card .listing-article-card-format::before {
+main .hrvs-card .hrvs-card-format::before {
     content: '•';
     display: inline-block;
     margin: 1px 8px 0 4px;
@@ -666,8 +665,8 @@ main .article-cards ul > div div p a::after {
 @media (min-width: 600px) {
     main .listing-results {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 30px;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 40px;
     }
 
     main .listing-results > li {
@@ -848,4 +847,16 @@ main .listing.no-controls .listing-results-count,
 main .listing.no-controls .listing-sortby,
 main .listing.no-controls .listing-search {
     display: none;
+}
+
+main .listing-article-card .listing-article-card-body p{
+    margin-bottom: 10px;
+}
+
+main .listing-article-card .listing-article-card-header span:not(:last-child)::after {
+    content: '•';
+    display: inline-block;
+    margin: 1px 4px 0 8px;
+    font-size: 10px;
+    vertical-align: top;
 }

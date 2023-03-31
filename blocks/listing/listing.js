@@ -90,9 +90,10 @@ export function createArticleCard(article, classPrefix, customLinkText = '', eag
   
 
   const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
+  const articleCategorySpan = articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
 
   card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
-    <span class="${classPrefix}-card-category">${articleCategory}</span> 
+    ${articleCategorySpan}
     ${articleFormatSpan}
     </div>
     ${articleImage}

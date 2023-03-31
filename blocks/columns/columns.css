@@ -688,12 +688,12 @@ div .tablet-center-image .column-flex-container.columns-align-start {
 
   .img-col {
     order: 1;
-    width: unset;
+    width: 100%;
   }
 
   .non-img-col {
     order: 2;
-    width: unset;
+    width: 100%;
   }
 
   .resources-guides .img-col {
