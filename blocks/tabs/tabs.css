@@ -532,7 +532,6 @@ main .tabs.style-4 h2 {
 main .tabs.style-4 .tabs-title {
   padding: 30px 40px;
   margin: 0;
-  background-color: var(--theme-tint10);
   font-family: var(--body-font-family);
   text-align: center;
 }
@@ -543,6 +542,7 @@ main .tabs.style-4 .tabs-title::after {
 
 main .tabs.style-4 .tabs-title[aria-selected="true"] {
   border-bottom: 4px solid var(--theme-base);
+  background: linear-gradient(180deg, var(--theme-tint15) 0%, var(--theme-tint10) 100%);
 }
 
 main .tabs.style-4 .tabs-title[aria-selected="false"] {
@@ -556,10 +556,15 @@ main .tabs.style-4 .tabs-title[aria-selected="false"]:hover {
 }
 
 main .tabs.style-4 .tabs-title h2 {
-  margin-top: 0;
+  margin-top: 10px;
   margin-bottom: 0;
   color: unset;
   font-family: unset;
+}
+
+main .tabs.style-4 .tabs-title .icon svg {
+  width: auto;
+  height: 35px;
 }
 
 main .tabs.style-4 .tabs-content {
@@ -596,10 +601,6 @@ main .tabs.style-4 .tabs-content a.button.link:any-link::after {
 }
 
 @media (max-width: 784px) {
-  main .tabs.style-4 {
-    row-gap: 5px;
-  }
-
   main .tabs.style-4 .tabs-flex-content {
     flex-flow: column;
   }
@@ -614,11 +615,35 @@ main .tabs.style-4 .tabs-content a.button.link:any-link::after {
     width: unset;
   }
 
+  main .tabs.style-4 .tabs-title {
+    text-align: left;
+  }
+
+  main .tabs.style-4 .tabs-title[aria-selected="false"] {
+    margin-bottom: 5px;
+  }
+
+  main .tabs.style-4 .tabs-title h2::before {
+    background: url('/icons/cta-list-button.svg') center center no-repeat;
+    content: '';
+    height: 8px;
+    transform: rotate(135deg);
+    transition: transform 0.2s;
+    width: 8px;
+    position: absolute;
+    top: 51%;
+    left: 20px;
+  }
+  
+  main .tabs.style-4 .tabs-title[aria-selected="true"] h2::before {
+    transform: rotate(0);
+  }
+
   main .tabs.style-4 .tabs-content {
-    border: none;
     box-shadow: none;
-    border-bottom: 4px solid var(--theme-base);
-    padding: 20px 5px;
+    border-radius: 0 0 9px 9px;
+    padding: 20px;
+    margin-bottom: 10px;
   }
 }
 
@@ -643,12 +668,6 @@ main .tabs.style-4 .tabs-content a.button.link:any-link::after {
     order: 2;
     width: 100%;
     border-radius: 0 0 16px 16px;
-  }
-}
-
-@media (min-width: 1600px) {
-  main .tabs.style-4 .tabs-content {
-    padding: 40px 80px;
   }
 }
 

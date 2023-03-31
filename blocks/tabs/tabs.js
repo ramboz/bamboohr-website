@@ -1,5 +1,6 @@
 // mobile vs desktop
 const mediaQueryPhone = window.matchMedia('(max-width: 599px)');
+const mediaQueryStacked = window.matchMedia('(max-width: 784px)');
 const mediaQueryTablet = window.matchMedia('(max-width: 1024px)');
 
 function getIconParent(elem) {
@@ -55,7 +56,8 @@ function openTab(e) {
     const content = parent.querySelector(`[aria-labelledby="${target.id}"]`);
     content.setAttribute('aria-hidden', false);
   } else if ((mediaQueryPhone.matches && !parent.classList.contains('style-1') && !parent.classList.contains('style-2'))
-    || parent.classList.contains('style-3')) {
+    || parent.classList.contains('style-3')
+    || (mediaQueryStacked.matches && parent.classList.contains('style-4'))) {
     target.setAttribute('aria-selected', false);
     const content = parent.querySelector(`[aria-labelledby="${target.id}"]`);
     content.setAttribute('aria-hidden', true);

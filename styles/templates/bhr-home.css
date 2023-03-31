@@ -38,7 +38,7 @@
 
 .bhr-home main .tabs.style-4 h2 {
     font-size: 14px;
-    line-height: 18px;
+    line-height: 22px;
 }
 
 .bhr-home .columns h3,
@@ -421,6 +421,11 @@
         width: unset;
     }
 
+    .bhr-home main .tabs.style-4 h2 {
+        font-size: 18px;
+        line-height: 24px;
+    }
+
     .bhr-home main .tabs.style-4 .tabs-title span.icon {
         display: none;
     }
@@ -439,13 +444,6 @@
 @media (min-width: 837px) {
     .bhr-home .image.bg-home-bottom-pudgy picture {
         bottom: 370px;
-    }
-}
-
-@media (min-width: 839px) {
-    .bhr-home main .tabs.style-4 h2 {
-        font-size: 16px;
-        line-height: 24px;
     }
 }
 
@@ -477,6 +475,7 @@
     .bhr-home main .tabs.style-4 .tabs-title {
         padding: 30px 20px;
         width: 19.6%;
+        padding-bottom: 20px;
     }
 }
 
@@ -587,24 +586,18 @@
 
 @media (min-width: 1306px) {
     .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
-        max-width: 1200px;
+        max-width: 1100px;
     }
 
     .bhr-home main .tabs.style-4 .tabs-title {
-        padding: 30px 40px;
+        padding: 30px 20px;
         width: 19.8%;
     }
 }
 
 @media (min-width: 1490px) {
     .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
-        max-width: 1410px;
-    }
-}
-
-@media (min-width: 1600px) {
-    .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
-        max-width: 1520px;
+        max-width: 1400px;
     }
 }
 
