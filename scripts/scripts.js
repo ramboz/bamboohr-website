@@ -20,13 +20,14 @@ const SEGMENTATION_CONFIG = {
         return features.is_admin && !features.bhr_user;
       }
     },
-    'is-not-customer': {
+    'not-customer': {
       label: 'Is not a Customer',
       test: () => {
         // eslint-disable-next-line no-use-before-define
         const features = getBhrFeatures();
         return !(features.is_admin && !features.bhr_user);
-      }
+      },
+      redirect: true,
     },
   }
 }
