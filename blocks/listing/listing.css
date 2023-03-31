@@ -618,13 +618,13 @@ main .article-cards ul > div div p a {
   font-weight: 700;
   line-height: 22px;
   display: inline-block;
-  color: var(--heading-color);
+  color: var(--color-1-shade-10);
   text-decoration: none;
 }
 
 main .article-cards ul > div div p a::after {
   content: "";
-  border: solid var(--heading-color);
+  border: solid var(--color-1-shade-10);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
