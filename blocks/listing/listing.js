@@ -13,6 +13,18 @@ import {
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 import decorateWistia from '../wistia/wistia.js';
 
+export function isUpcomingEvent(eventDateStr) {
+  let isUpcoming = false;
+  if (eventDateStr) {
+    const [year, month, day] = eventDateStr.split('-');
+    const eventDate = new Date(+year, +month - 1, +day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    isUpcoming = eventDate >= today;
+  }
+  return isUpcoming;
+}
+
 let gLoadWistiaCSS = true;
 
 function getLinkText(format, mediaType) {
@@ -208,6 +220,11 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
       filterMatches[key] = matched;
       return matched;
     });
+
+    const eventDateStr = row.eventDate;
+    if (eventDateStr && isUpcomingEvent(eventDateStr)) {
+      matchedAll = false;
+    }
 
     const isListing = () => !!row.publisher;
 

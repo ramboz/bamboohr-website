@@ -1,24 +1,12 @@
 import { buildBlock, getMetadata, toClassName, createOptimizedPicture } from './scripts.js';
-
-export function isUpcomingEvent() {
-  let isUpcoming = false;
-  const eventDateStr = getMetadata('event-date');
-  if (eventDateStr) {
-    const [year, month, day] = eventDateStr.split('-');
-    const eventDate = new Date(+year, +month - 1, +day);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    isUpcoming = eventDate >= today;
-  }
-  
-  return isUpcoming;
-}
+import { isUpcomingEvent } from '../blocks/listing/listing.js';
 
 function buildForm(main) {
   const blockContent = [];
   blockContent.push(main.querySelector(':scope > div').innerHTML);
 
-  const formTitle = isUpcomingEvent() ? 'Register for the Webinar' : 'Watch Now';
+  const eventDateStr = getMetadata('event-date');
+  const formTitle = isUpcomingEvent(eventDateStr) ? 'Register for the Webinar' : 'Watch Now';
   const formSubheading = getMetadata('form-subheading') || 'All you need to do is complete the form below.';
 
   let partners = getMetadata('partner');
