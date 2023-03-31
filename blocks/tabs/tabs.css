@@ -598,6 +598,7 @@ main .tabs.style-4 .tabs-content a.button.link:any-link::after {
 @media (max-width: 784px) {
   main .tabs.style-4 .tabs-flex-content {
     flex-flow: column;
+    gap: unset;
   }
 
   .tabs-img-col {
@@ -645,10 +646,6 @@ main .tabs.style-4 .tabs-content a.button.link:any-link::after {
     padding: 20px;
     margin-bottom: 10px;
   }
-
-  main .tabs.style-4 .tabs-flex-content {
-    gap: unset;
-}
 }
 
 @media (min-width: 785px) {
