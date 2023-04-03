@@ -28,6 +28,8 @@ function createProductSchema() {
       </div>
     </div>`;
   return (content);
+  console.log('helo world');
+
 }
 
 export default async function decorate(block) {
@@ -36,12 +38,12 @@ export default async function decorate(block) {
 
 
 
-const schemaProduct {
-  '@context': 'http://schema.org',
-  '@type': 'Product',
-  name: (getMetadata('title')) || document.title,
-  url: get,
-};
+// const schemaProduct {
+//   '@context': 'http://schema.org',
+//   '@type': 'Product',
+//   name: (getMetadata('title')) || document.title,
+//   url: get,
+// };
 
 
 
@@ -53,8 +55,7 @@ const schemaProduct {
 
 
 
-
-<script type="application/ld+json">
+/* <script type="application/ld+json">
 {
   "@context": "http://schema.org/",
   "@type": "Product",
@@ -90,4 +91,4 @@ const schemaProduct {
     "uploadDate": "{{ pageVars.getSystemProperties.getCreatedAt }}",
     "description": "{{ pageVars.getFeatureBand[0].getDescription }}"
   }
-</script>
+</script> */
