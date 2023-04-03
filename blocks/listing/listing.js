@@ -92,16 +92,17 @@ export function createArticleCard(article, classPrefix, customLinkText = '', eag
   const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
   const articleCategorySpan = articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
 
-  card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
-    ${articleCategorySpan}
-    ${articleFormatSpan}
-    </div>
+  card.innerHTML = `
     ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
     <h5>${article?.presenter || ''}</h5>
     <h3>${title}</h3>
     ${releaseDate}
     <p>${article.description}</p>
+    <div class="${classPrefix}-card-header category-color-${category}">
+    ${articleCategorySpan}
+    ${articleFormatSpan}
+    </div>
     <p><a href="${article.path}">${linkText}</a></p>
     </div>`;
   return (card);
