@@ -482,7 +482,7 @@ main .tabs.style-3 > .accordion .tabs-title[aria-selected="true"]::after {
 }
 
 main .tabs.style-3 > .accordion .tabs-content {
-  color: var(--color-gray-9);
+  color: var(--color-gray-12);
   font-family: var(--display-font-family);
   margin-top: calc(var(--padding) * -1.75);
   padding: var(--padding);
