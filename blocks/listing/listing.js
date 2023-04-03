@@ -13,6 +13,18 @@ import {
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 import decorateWistia from '../wistia/wistia.js';
 
+export function isUpcomingEvent(eventDateStr) {
+  let isUpcoming = false;
+  if (eventDateStr) {
+    const [year, month, day] = eventDateStr.split('-');
+    const eventDate = new Date(+year, +month - 1, +day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    isUpcoming = eventDate >= today;
+  }
+  return isUpcoming;
+}
+
 let gLoadWistiaCSS = true;
 
 function getLinkText(format, mediaType) {
@@ -78,9 +90,10 @@ export function createArticleCard(article, classPrefix, customLinkText = '', eag
   
 
   const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
+  const articleCategorySpan = articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
 
   card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
-    <span class="${classPrefix}-card-category">${articleCategory}</span> 
+    ${articleCategorySpan}
     ${articleFormatSpan}
     </div>
     ${articleImage}
@@ -195,19 +208,23 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
   /* filter */
   const results = listings.data.filter((row) => {
     const filterMatches = {};
-    let matchedAll = keys.every((key) => {
-      let matched = false;
-      if (row[key]) {
-        const rowValues = row[key].split(',').map((t) => t.trim());
-        matched = tokens[key].some((t) => rowValues.includes(t));
-      }
-      if (key === 'fulltext') {
-        const {fulltext} = config;
-        matched = row.title.toLowerCase().includes(fulltext.toLowerCase()) || row.description.toLowerCase().includes(fulltext.toLowerCase());
-      }
-      filterMatches[key] = matched;
-      return matched;
-    });
+    const eventDateStr = row.eventDate;
+    let matchedAll = false;
+    if (!eventDateStr || !isUpcomingEvent(eventDateStr)) {
+      matchedAll = keys.every((key) => {
+        let matched = false;
+        if (row[key]) {
+          const rowValues = row[key].split(',').map((t) => t.trim());
+          matched = tokens[key].some((t) => rowValues.includes(t));
+        }
+        if (key === 'fulltext') {
+          const {fulltext} = config;
+          matched = row.title.toLowerCase().includes(fulltext.toLowerCase()) || row.description.toLowerCase().includes(fulltext.toLowerCase());
+        }
+        filterMatches[key] = matched;
+        return matched;
+      });
+    }
 
     const isListing = () => !!row.publisher;
 

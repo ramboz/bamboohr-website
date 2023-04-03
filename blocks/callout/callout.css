@@ -24,10 +24,6 @@ main .callout a.button {
   margin: 40px 0 0;
 }
 
-.hr-101-guide main .callout a.button {
-  background-color: var(--color-1-shade-5);
-}
-
 main .callout.left a.button,
 main .callout.right a.button{
   margin: 0;
@@ -42,10 +38,6 @@ main .callout h3 {
   font-family: var(--heading-font-family);
 }
 
-.hr-101-guide main .callout h3 {
-  color: var(--color-1-shade-5);
-}
-
 main .callout.left h3,
 main .callout.right h3 {
   font-size: 20px;
@@ -57,10 +49,6 @@ main .callout.right h3 {
 
 main .callout p {
   color: var(--category-darker-color);
-}
-
-.hr-101-guide main .callout p {
-  color: var(--color-1-shade-10);
 }
 
 .integrations.app-list main .callout {
