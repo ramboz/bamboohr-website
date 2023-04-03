@@ -940,7 +940,7 @@ async function buildAutoBlocks(main) {
     let template = toClassName(getMetadata('template'));
     if (window.location.pathname.startsWith('/blog/') && !template) template = 'blog';
 
-    const templates = ['blog', 'integrations-listing', 'content-library', 'webinar', 'product-updates', 'live-demo-webinar-lp'];
+    const templates = ['blog', 'hr-software', 'integrations-listing', 'content-library', 'webinar', 'product-updates', 'live-demo-webinar-lp'];
     if (templates.includes(template)) {
       const mod = await import(`./${template}.js`);
       if (mod.default) {
@@ -1452,51 +1452,3 @@ sampleRUM.always.on('convert', (data) => {
     window.digitalData.push(evtDataLayer);
   }
 });
-
-export function createSchemaMarkup() {
-  const schemaVal = getMetadata('schema');
-  const name = document.getElementsByTagName('h1')[0].innerText;
-  const url = document.querySelector('meta[property="og:url"]').getAttribute('content');
-  const image = document.querySelector('meta[property="og:image"]').getAttribute('content');
-  const description = document.querySelector('meta[property="og:description"]').getAttribute('content');
-  // const review = document.querySelectorAll('.quote');
-
-  // const getQuote = (document) => {
-  //   document.querySelectorAll('.quote').forEach((quote) => {
-  //     const author = quote.querySelector('p')[0].innerHTML;
-  //     console.log(author, 'this is the quote author');
-  //     const quoteText = quote.querySelector('.byline');
-  //     console.log(quoteText, 'this is the quote text');
-  //   });
-  // };
-  const schemaProduct = {
-    '@context': 'http://schema.org/',
-    '@type': 'Product',
-    'name': name,
-    'url': url,
-    'image': image,
-    'description': description,
-    'brand': 'Bamboohr',
-    'aggregateRating': {
-      '@type': 'aggregateRating',
-      'ratingValue': '4.3',
-      'reviewCount': '593'
-    },
-    'review': [
-      {
-        'type': 'Review',
-        // 'author': getQuote.author,
-      }
-    ]
-  }
-  if (schemaVal === 'Product') {
-    console.log(schemaVal);
-    const $schemaProduct = document.createElement('script', { type: 'application/ld+json' });
-    $schemaProduct.innerHTML = JSON.stringify(schemaProduct);
-    const $head = document.head;
-    $head.append($schemaProduct);
-  }
-
-
-}
-createSchemaMarkup();
