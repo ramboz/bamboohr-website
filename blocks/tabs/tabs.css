@@ -85,14 +85,6 @@ main .tabs .tabs-content[aria-hidden="true"] {
     cursor: pointer;
   }
 
-  main .tabs.tabs.style-4 .tabs-title[aria-selected="false"] {
-    color: var(--color-gray-9);
-  }
-
-  main .tabs.tabs.style-4 .tabs-title[aria-selected="false"]:hover {
-    color: var(--theme-shade5);
-  }
-
   main .tabs .tabs-title[aria-selected="true"] {
     border-color: var(--theme-base);
   }
@@ -334,13 +326,8 @@ main .tabs.style-2 .tabs-title .tabs-title-title:hover {
 }
 
 main .tabs.style-2 .tabs-title[aria-selected="true"] .tabs-title-title,
-main .tabs.style-4 h2.tabs-title[aria-selected="true"] {
+main .tabs.style-4 .tabs-title[aria-selected="true"] {
   color: var(--theme-shade10);
-}
-
-main .tabs.style-4 h2.tabs-title[aria-selected="false"] {
-  color: var(--theme-shade5);
-  background: unset;
 }
 
 main .tabs.style-2 .tabs-title[aria-selected="true"] a.button.link:any-link:hover,
@@ -528,8 +515,7 @@ main .tabs.style-3 > .accordion .tabs-content ul li a:any-link {
 main .tabs.style-4 {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 main .tabs.style-4 .tabs-flex-content {
@@ -543,13 +529,44 @@ main .tabs.style-4 h2 {
   line-height: 24px;
 }
 
-main .tabs.style-4 h2.tabs-title {
-  padding: 10px 30px;
+main .tabs.style-4 .tabs-title {
+  padding: 30px 40px;
   margin: 0;
+  font-family: var(--body-font-family);
+  text-align: center;
+}
+
+main .tabs.style-4 .tabs-title::after {
+  border: 0;
+}
+
+main .tabs.style-4 .tabs-title[aria-selected="true"] {
+  border-bottom: 4px solid var(--theme-base);
+  background: linear-gradient(180deg, var(--theme-tint15) 0%, var(--theme-tint10) 100%);
+}
+
+main .tabs.style-4 .tabs-title[aria-selected="false"] {
+  color: var(--color-gray-9);
+  background-color: var(--color-gray-1);
+}
+
+main .tabs.style-4 .tabs-title[aria-selected="false"]:hover {
+  color: var(--theme-shade10);
+  background-color: var(--theme-tint15);
+}
+
+main .tabs.style-4 .tabs-title h2 {
+  margin-top: 10px;
+  margin-bottom: 0;
+  color: unset;
+  font-family: unset;
 }
 
 main .tabs.style-4 .tabs-content {
-  padding: 0 50px;
+  padding: 40px 50px;
+  border: 2px solid var(--color-gray-1);
+  box-shadow: var(--box-shadow-3-gray-shade5);
+  background-color: var(--color-white);
 }
 
 main .tabs.style-4 .tabs-content p {
@@ -558,6 +575,14 @@ main .tabs.style-4 .tabs-content p {
 
 main .tabs.style-4 .tabs-content .tabs-img-col img {
   width: 100%;
+}
+
+main .tabs.style-4 .tabs-content a.button:any-link {
+  overflow: visible;
+}
+
+main .tabs.style-4 .tabs-content a.button.link:any-link::after {
+  margin-right: -1rem;
 }
 
 @media (min-width: 600px) {
@@ -573,6 +598,7 @@ main .tabs.style-4 .tabs-content .tabs-img-col img {
 @media (max-width: 784px) {
   main .tabs.style-4 .tabs-flex-content {
     flex-flow: column;
+    gap: unset;
   }
 
   .tabs-img-col {
@@ -585,9 +611,40 @@ main .tabs.style-4 .tabs-content .tabs-img-col img {
     width: unset;
   }
 
+  main .tabs.style-4 .tabs-title {
+    text-align: left;
+    padding: 20px 40px;
+  }
+
+  main .tabs.style-4 .tabs-title[aria-selected="false"] {
+    margin-bottom: 5px;
+  }
+
+  main .tabs.style-4 .tabs-title h2 {
+    margin-top: 0;
+  }
+
+  main .tabs.style-4 .tabs-title h2::before {
+    background: url('/icons/cta-list-button.svg') center center no-repeat;
+    content: '';
+    height: 8px;
+    transform: rotate(135deg);
+    transition: transform 0.2s;
+    width: 8px;
+    position: absolute;
+    top: 44%;
+    left: 20px;
+  }
+  
+  main .tabs.style-4 .tabs-title[aria-selected="true"] h2::before {
+    transform: rotate(0);
+  }
+
   main .tabs.style-4 .tabs-content {
-    border-bottom: 4px solid var(--theme-base);
-    padding-bottom: 10px;
+    box-shadow: none;
+    border-radius: 0 0 9px 9px;
+    padding: 20px;
+    margin-bottom: 10px;
   }
 }
 
@@ -600,15 +657,18 @@ main .tabs.style-4 .tabs-content .tabs-img-col img {
     order: 1;
   }
 
+  main .tabs.style-4 .tabs-title:first-child {
+    border-radius: 16px 0 0;
+  }
+  
+  main .tabs.style-4 .tabs-title:nth-last-child(2) {
+    border-radius: 0 16px 0 0;
+  }
+
   main .tabs.style-4 .tabs-content {
     order: 2;
     width: 100%;
-  }
-}
-
-@media (min-width: 1600px) {
-  main .tabs.style-4 .tabs-content {
-    padding: 0 80px;
+    border-radius: 0 0 16px 16px;
   }
 }
 
