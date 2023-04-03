@@ -512,7 +512,8 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
         
-        form.onSuccess(() => {
+        form.onSuccess((successForm) => {
+          console.log(successForm);
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
           const eventType = form.getId() === 1240 ? 'demoRequest' : 'marketoForm';
@@ -530,9 +531,9 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
 		  });
 
 		  /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
-		  setTimeout(() => {
-			  if (successUrl && !chilipiper) window.location.href = successUrl;
-		  },1000);
+		  // setTimeout(() => {
+			//   if (successUrl && !chilipiper) window.location.href = successUrl;
+		  // },1000);
           
           return false;
         });
