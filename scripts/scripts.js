@@ -949,11 +949,13 @@ export async function loadHeader(header) {
   decorateBlock(headerBlock);
   await loadBlock(headerBlock);
   // Patch logo URL for is-customer audience
-  if (SEGMENTATION_CONFIG.audiences['is-customer'].test()) {
-    const usp = new URLSearchParams(window.location.search);
-    usp.append('segment', 'general');
-    document.querySelector('.nav-brand a').href += `?${usp.toString()}`;
-  }
+  if(getBhrFeatures()){
+	if (SEGMENTATION_CONFIG.audiences['is-customer'].test()) {
+	  const usp = new URLSearchParams(window.location.search);
+	  usp.append('segment', 'general');
+	  document.querySelector('.nav-brand a').href += `?${usp.toString()}`;
+	}		
+  }  
 }
 
 function loadFooter(footer) {
