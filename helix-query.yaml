@@ -312,6 +312,14 @@ indices:
         select: head > meta[name="media-type"]
         value: |
           attribute(el, 'content')
+      brandedContent:
+        select: head > meta[name="branded-content"]
+        value: |
+          attribute(el, 'content')
+      contentType:
+        select: head > meta[name="content-type"]
+        value: |
+          attribute(el, 'content')
       robots:
         select: head > meta[name="robots"]
         value: |
