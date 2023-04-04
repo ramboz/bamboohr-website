@@ -1,4 +1,4 @@
-import { decorateIcons } from '../../scripts/scripts.js';
+import { decorateIcons, getMetadata } from '../../scripts/scripts.js';
 
 /**
  * loads and decorates the footer
@@ -7,11 +7,19 @@ import { decorateIcons } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const hideBlog = !window.location.pathname.startsWith('/blog/');
-  const resp = await fetch('/blog/fixtures/footer.plain.html');
+  const navPath = getMetadata('nav');
+  let footerName = 'footer';
+  let styles = ['company', 'support', 'compare', 'links', 'blog', 'social', 'brand', 'legal'];
+
+  if (navPath === '/nav-limited') {
+    footerName = 'footer-limited';
+    block.parentElement.classList.add('footer-limited');
+    styles = ['links', 'brand', 'legal'];
+  }
+  const resp = await fetch(`/blog/fixtures/${footerName}.plain.html`);
   const html = await resp.text();
   block.innerHTML = html;
   decorateIcons(block);
-  const styles = ['company', 'support', 'compare', 'links', 'blog', 'social', 'brand', 'legal'];
   styles.forEach((style, i) => {
     if (block.children[i]) {
       block.children[i].classList.add(style);
