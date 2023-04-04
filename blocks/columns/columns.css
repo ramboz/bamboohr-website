@@ -696,6 +696,15 @@ div .tablet-center-image .column-flex-container.columns-align-start {
     width: unset;
   }
 
+  .columns.mobile-image-bottom .img-col {
+    order:2;
+  }
+
+  .columns.mobile-image-bottom .non-img-col {
+    order: 1;
+    margin-bottom: 80px;
+  }
+
   .resources-guides .img-col {
     max-width: 200px;
   }
