@@ -11,7 +11,7 @@ function createDateCard(article, classPrefix, eager = false, cardLink = {}) {
   const card = document.createElement('div');
   const articleCategory = article.category || article.topic || article.contentType
     || article.brandedContent || '';
-  const articleCategoryElement = articleCategory ? `<p>${articleCategory}</p>` : '';
+  const articleCategoryElement = articleCategory ? `<p class="upcoming-article-card-category">${articleCategory}</p>` : '';
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
