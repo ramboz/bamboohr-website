@@ -1226,9 +1226,11 @@ async function loadEager(doc) {
  */
 function createProductSchemaMarkup() {
   const pageTitle = document.querySelector('h1').textContent;
-  const pageUrl = document.querySelector('meta[property="og:url"]').getAttribute('content');
+  const pageUrl = document.querySelector('link[rel="canonical"]').getAttribute('href');
+  console.log(pageUrl, ' this is the page url');
   const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
-  const quoteAuthor = document.querySelector('.product-schema p:last-of-type').textContent.split(',')[0];
+  const quoteAuthor = document.querySelector('.product-schema p:last-of-type').textContent;
+  console.log(quoteAuthor, ' this is the quote author');
   const quoteText = document.querySelector('.product-schema div div p:first-of-type').textContent.replace(/["]+/g, '');
   const pageDescription = document.querySelector('meta[property="og:description"]').getAttribute('content');
   const quotePublishDate = document.lastModified;
@@ -1264,8 +1266,9 @@ function createVideoObjectSchemaMarkup() {
   const videoName = document.querySelector('h1').textContent;
   const wistiaThumb = getMetadata('wistia-video-thumbnail');
   const wistiaVideoId = getMetadata('wistia-video-id');
-  const wistiaVideoUrl = `https://bamboohr.wistia.com/medias/${wistiaVideoId}`;
-  const videoDescription = document.querySelector('.video-object-schema .non-img-col p:first-of-type').textContent;
+  const wistiaVideoUrl = `https://fast.wistia.net/embed/iframe/${wistiaVideoId}`;
+  console.log(wistiaVideoUrl, ' this is the wistia vid url');
+  const videoDescription = document.querySelector('meta[property="og:description"]').getAttribute('content');
   const videoUploadDate = document.lastModified;
   const videoObjectSchema = {
     '@context': "http://schema.org/",
