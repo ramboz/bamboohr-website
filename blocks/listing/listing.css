@@ -210,6 +210,26 @@ main .listing-results-count {
     text-align: center;
 }
 
+main .listing-search {
+    text-align: center;
+}
+
+main .listing-search input {
+    height: 36px;
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 400;
+    color: var(--color-gray-12);
+    padding: 16px 20px;
+    border-radius: 50px;
+    border: 2px solid var(--color-gray-8);
+    background-image: url('/icons/search.svg');
+    background-position: calc(100% - 16px) 50%;
+    background-repeat: no-repeat;
+    margin: 18px 0;
+    width: 100%;
+}
+
 main .listing-sortby {
     text-align: center;
     font-size: 16px;
@@ -430,8 +450,7 @@ main .listing-results .hrvs-card-header {
     margin-bottom: 10px;
 }
 
-main .hrvs-card .hrvs-card-format::before,
-main .listing-article-card .listing-article-card-format::before {
+main .hrvs-card .hrvs-card-format::before {
     content: '•';
     display: inline-block;
     margin: 1px 8px 0 4px;
@@ -561,6 +580,32 @@ main .article-cards ul > div div.block.wistia picture {
   border-radius: 15px;
 }
 
+main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+    border: 2px solid var(--color-gray-1);
+    background-color: var(--color-white);
+}
+
+@media (min-width: 600px) {
+    main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
+        height: 170px;
+    }
+}
+
+@media (min-width: 900px) {
+    main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
+        height: 236px;
+    }
+}
+
+@media (min-width: 1800px) {
+    main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
+        height: 220px;
+    }
+}
+
 main .article-cards ul > div div h3 {
   font-size: 20px;
   line-height: 1.4;
@@ -574,13 +619,13 @@ main .article-cards ul > div div p a {
   font-weight: 700;
   line-height: 22px;
   display: inline-block;
-  color: var(--heading-color);
+  color: var(--color-1-shade-10);
   text-decoration: none;
 }
 
 main .article-cards ul > div div p a::after {
   content: "";
-  border: solid var(--heading-color);
+  border: solid var(--color-1-shade-10);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
@@ -621,8 +666,8 @@ main .article-cards ul > div div p a::after {
 @media (min-width: 600px) {
     main .listing-results {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 30px;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 40px;
     }
 
     main .listing-results > li {
@@ -669,6 +714,9 @@ main .article-cards ul > div div p a::after {
 
     main .listing-results {
         grid-area: results;
+    }
+
+    .integrations main .listing-results {
         grid-template-columns: repeat(3, 1fr);
     }
 
@@ -679,12 +727,17 @@ main .article-cards ul > div div p a::after {
 
     main .listing {
         display: grid;
-        grid-template-areas: '- count sortby' 'facets results results';
+        grid-template-areas: 'count search sortby' 'facets results results';
         align-items: flex-start;
     }
 
     main .listing.horizontal-filters {
         grid-template-areas: 'count - sortby' 'facets facets facets' 'results results results';
+    }
+
+    main .listing-search {
+        grid-area: search;
+        text-align: left;
     }
 
     main .listing-sortby {
@@ -779,4 +832,33 @@ main .article-cards ul > div div p a::after {
     main .listing-facets  {
         margin-left: -70px;
     }
+}
+
+@media (min-width: 1800px) {
+    main .listing-results {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+main .listing-results [class*="-card"] [class*="-card-header"] {
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+main .listing.no-controls .listing-results-count,
+main .listing.no-controls .listing-sortby,
+main .listing.no-controls .listing-search {
+    display: none;
+}
+
+main .listing-article-card .listing-article-card-body p{
+    margin-bottom: 10px;
+}
+
+main .listing-article-card .listing-article-card-header span:not(:last-child)::after {
+    content: '•';
+    display: inline-block;
+    margin: 1px 4px 0 8px;
+    font-size: 10px;
+    vertical-align: top;
 }

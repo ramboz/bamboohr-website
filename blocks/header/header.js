@@ -131,6 +131,8 @@ export default async function decorate(block) {
   html = html.replaceAll('<ol>', '<ul>');
   html = html.replaceAll('</ol>', '</ul>');
 
+  if (navPath === '/nav-limited') block.classList.add('nav-limited');
+
   // decorate nav DOM
   const nav = document.createElement('div');
   nav.classList.add('nav');
@@ -143,7 +145,7 @@ export default async function decorate(block) {
     if (!i) {
       // first section is the brand section
       const brand = navSection;
-      if (navPath === '/nav') brand.classList.add('simple');
+      if (navPath === '/nav' || navPath === '/nav-limited') brand.classList.add('simple');
       brand.classList.add('nav-brand');
       nav.insertBefore(navSections, brand.nextElementSibling);
     } else {

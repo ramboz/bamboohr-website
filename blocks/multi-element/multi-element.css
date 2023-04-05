@@ -351,7 +351,7 @@ main .multi-element p {
 .multi-element.hero {
     --row-gap: 2rem;
 
-    color: var(--color-gray-11);
+    color: var(--color-gray-12);
 }
 
 @media (min-width: 769px) and (max-width: 1440px) {
