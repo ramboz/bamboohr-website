@@ -110,7 +110,7 @@
   display: none;
 }
 
-.hlx-badge.hlx-experiment-status-active {
+.hlx-badge.hlx-badge-status-active {
   background-color: #280;
 }
 
