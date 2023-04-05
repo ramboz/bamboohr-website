@@ -265,110 +265,6 @@ export async function fetchPlaceholders(prefix = 'default') {
   return window.placeholders[prefix];
 }
 
-
-
-// Schema markups
-function createProductSchemaMarkup() {
-  const pageTitle = document.querySelector('h1').textContent;
-  const pageUrl = document.querySelector('meta[property="og:url"]').getAttribute('content');
-  const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
-  const quoteAuthor = document.querySelector('.product-schema p:last-of-type').textContent.split(',')[0];
-  const quoteText = document.querySelector('.product-schema div div p:first-of-type').textContent.replace(/["]+/g, '');
-  const pageDescription = document.querySelector('meta[property="og:description"]').getAttribute('content');
-  const quotePublishDate = document.lastModified;
-  const productSchema = {
-    'schemeId': 'Product Schema',
-    '@context': 'http://schema.org/',
-    '@type': 'Product',
-    'name': pageTitle,
-    'url': pageUrl,
-    'image': socialImage,
-    'description': pageDescription,
-    'brand': 'Bamboohr',
-    'aggregateRating': {
-      '@type': 'aggregateRating',
-      'ratingValue': '4.3',
-      'reviewCount': '593'
-    },
-    'review': [
-      {
-        '@type': 'Review',
-        'author': quoteAuthor,
-        'datePublished': quotePublishDate,
-        'reviewBody': quoteText,
-      }
-    ]
-  }
-  const $productSchema = document.createElement('script', { type: 'application/ld+json' });
-  $productSchema.innerHTML = JSON.stringify(productSchema);
-  const $head = document.head;
-  $head.append($productSchema);
-}
-
-function createVideoObjectSchemaMarkup() {
-  const pageTitle = document.querySelector('h1').textContent;
-  const wistiaThumb = getMetadata('wistia-video-thumbnail');
-  const wistiaVideoId = getMetadata('wistia-video-id');
-  const wistiaVideoUrl = `https://bamboohr.wistia.com/medias/${wistiaVideoId}`;
-  const videoDescription = document.querySelector('.video-object-schema .non-img-col p:first-of-type').textContent;
-  const videoUploadDate = document.lastModified;
-    const videoObjectSchema = {
-    'schemeId': 'VideoObject Schema',
-    '@context': "http://schema.org/",
-    '@type': 'VideoObject',
-    'name': pageTitle,
-    'thumbnailUrl': wistiaThumb,
-    'embedUrl': wistiaVideoUrl,
-    'uploadDate': videoUploadDate,
-    'description': videoDescription,
-  }
-  const $videoObjectSchema = document.createElement('script', { type: 'application/ld+json' });
-  $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema);
-  const $head = document.head;
-  $head.append($videoObjectSchema);
-}
-
-function createFaqPageSchemaMarkup() {
-  const faqPageSchema = {
-    'schemeId': 'FAQPage Schema',
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [],
-  }
-  document.querySelectorAll('.faq-page-schema .accordion').forEach((tab) => {
-    const q = tab.querySelector('h2').textContent.trim();
-    const a = tab.querySelector('p').textContent.trim();
-    if (q && a) {
-      faqPageSchema.mainEntity.push({
-        name: q,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: a,
-        },
-      })
-    }
-  });
-  const $faqPageSchema = document.createElement('script', { type: 'application/ld+json' });
-  $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema);
-  const $head = document.head;
-  $head.append($faqPageSchema);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// END Schema markups
-
 /**
  * Decorates a block.
  * @param {Element} block The block element
@@ -1098,7 +994,7 @@ async function buildAutoBlocks(main) {
     let template = toClassName(getMetadata('template'));
     if (window.location.pathname.startsWith('/blog/') && !template) template = 'blog';
 
-    const templates = ['blog', 'hr-software', 'integrations-listing', 'content-library', 'webinar', 'product-updates', 'live-demo-webinar-lp'];
+    const templates = ['blog', 'integrations-listing', 'content-library', 'webinar', 'product-updates', 'live-demo-webinar-lp'];
     if (templates.includes(template)) {
       const mod = await import(`./${template}.js`);
       if (mod.default) {
@@ -1326,6 +1222,95 @@ async function loadEager(doc) {
 }
 
 /**
+ * Schema markup functions
+ */
+function createProductSchemaMarkup() {
+  const pageTitle = document.querySelector('h1').textContent;
+  const pageUrl = document.querySelector('meta[property="og:url"]').getAttribute('content');
+  const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
+  const quoteAuthor = document.querySelector('.product-schema p:last-of-type').textContent.split(',')[0];
+  const quoteText = document.querySelector('.product-schema div div p:first-of-type').textContent.replace(/["]+/g, '');
+  const pageDescription = document.querySelector('meta[property="og:description"]').getAttribute('content');
+  const quotePublishDate = document.lastModified;
+  const productSchema = {
+    'schemeId': 'Product Schema',
+    '@context': 'http://schema.org/',
+    '@type': 'Product',
+    'name': pageTitle,
+    'url': pageUrl,
+    'image': socialImage,
+    'description': pageDescription,
+    'brand': 'Bamboohr',
+    'aggregateRating': {
+      '@type': 'aggregateRating',
+      'ratingValue': '4.3',
+      'reviewCount': '593'
+    },
+    'review': [
+      {
+        '@type': 'Review',
+        'author': quoteAuthor,
+        'datePublished': quotePublishDate,
+        'reviewBody': quoteText,
+      }
+    ]
+  }
+  const $productSchema = document.createElement('script', { type: 'application/ld+json' });
+  $productSchema.innerHTML = JSON.stringify(productSchema);
+  const $head = document.head;
+  $head.append($productSchema);
+}
+
+function createVideoObjectSchemaMarkup() {
+  const pageTitle = document.querySelector('h1').textContent;
+  const wistiaThumb = getMetadata('wistia-video-thumbnail');
+  const wistiaVideoId = getMetadata('wistia-video-id');
+  const wistiaVideoUrl = `https://bamboohr.wistia.com/medias/${wistiaVideoId}`;
+  const videoDescription = document.querySelector('.video-object-schema .non-img-col p:first-of-type').textContent;
+  const videoUploadDate = document.lastModified;
+  const videoObjectSchema = {
+    'schemeId': 'VideoObject Schema',
+    '@context': "http://schema.org/",
+    '@type': 'VideoObject',
+    'name': pageTitle,
+    'thumbnailUrl': wistiaThumb,
+    'embedUrl': wistiaVideoUrl,
+    'uploadDate': videoUploadDate,
+    'description': videoDescription,
+  }
+  const $videoObjectSchema = document.createElement('script', { type: 'application/ld+json' });
+  $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema);
+  const $head = document.head;
+  $head.append($videoObjectSchema);
+}
+
+function createFaqPageSchemaMarkup() {
+  const faqPageSchema = {
+    'schemeId': 'FAQPage Schema',
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [],
+  }
+  document.querySelectorAll('.faq-page-schema .accordion').forEach((tab) => {
+    const q = tab.querySelector('h2').textContent.trim();
+    const a = tab.querySelector('p').textContent.trim();
+    if (q && a) {
+      faqPageSchema.mainEntity.push({
+        name: q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: a,
+        },
+      })
+    }
+  });
+  const $faqPageSchema = document.createElement('script', { type: 'application/ld+json' });
+  $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema);
+  const $head = document.head;
+  $head.append($faqPageSchema);
+}
+
+/**
  * loads everything that doesn't need to be delayed.
  */
 async function loadLazy(doc) {
@@ -1346,15 +1331,10 @@ async function loadLazy(doc) {
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
-
-
-
-
 /**
- * Calls the Schema Markup function
+ * Calls the Schema markup functions
  */
   const schemaVals = getMetadata('schema').split(',');
-  // console.log(schemaVals);
   schemaVals.forEach(val => {
     switch(val.trim()) {
       case 'Product':
@@ -1367,15 +1347,9 @@ async function loadLazy(doc) {
         createFaqPageSchemaMarkup();
         break;
       default:
+        break;
     }
   });
-
-
-
-
-
-
-
 
   const headerloaded = loadHeader(header);
   loadFooter(doc.querySelector('footer'));
