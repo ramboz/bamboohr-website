@@ -53,8 +53,9 @@ export function createArticleCard(article, classPrefix, customLinkText = '', eag
   const title = article.title.split(' | ')[0];
   const card = document.createElement('div');
   const productCategory = (article.planType && article.productArea) ? `${article.planType} | ${article.productArea}` : '';
-  const articleCategory = article.category || article.topic || productCategory
-    || article.contentType || article.brandedContent || '';
+  let articleCategory = [article.category, article.topic, productCategory, article.contentType, article.brandedContent];
+  articleCategory = articleCategory.filter((str) => (str !== '' && str !== undefined)).join(' | ');
+
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
