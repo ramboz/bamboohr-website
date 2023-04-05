@@ -27,7 +27,6 @@ const SEGMENTATION_CONFIG = {
         const features = getBhrFeatures();
         return !(features.is_admin && !features.bhr_user);
       },
-      redirect: true,
     },
   }
 }
@@ -1174,9 +1173,10 @@ async function loadMartech() {
  */
 async function loadEager(doc) {
   const instantSegments = [...document.head.querySelectorAll(`meta[property^="audience:"],meta[name^="audience-"]`)].map((meta) => {
-    const id = meta.name
-      ? meta.name.substring(9).replace(/^-+|-+$/g, '')
-      : meta.getAttribute('property').split(':')[1];
+    const id = (meta.name
+      ? meta.name.substring(9)
+      : meta.getAttribute('property').split(':')[1]
+    ).replace(/^-+|-+$/g, '');
     return { id, url: meta.getAttribute('content') };
   });
   if (instantSegments.length) {
