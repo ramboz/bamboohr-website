@@ -1173,8 +1173,10 @@ async function loadMartech() {
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
-  const instantSegments = [...document.head.querySelectorAll(`meta[property^="audience:"]`)].map((meta) => {
-    const [, id] = meta.getAttribute('property').split(':');
+  const instantSegments = [...document.head.querySelectorAll(`meta[property^="audience:"],meta[property^="audience-"]`)].map((meta) => {
+    const id = meta.name
+      ? meta.name.substring(9).replace(/^-+|-+$/g, '')
+      : meta.getAttribute('property').split(':')[1];
     return { id, url: meta.getAttribute('content') };
   });
   if (instantSegments.length) {
