@@ -52,8 +52,7 @@ function getLinkText(format, mediaType) {
 export function createArticleCard(article, classPrefix, customLinkText = '', eager = false) {
   const title = article.title.split(' | ')[0];
   const card = document.createElement('div');
-  const productCategory = (article.planType && article.productArea) ? `${article.planType} | ${article.productArea}` : '';
-  let articleCategory = [article.category, article.topic, productCategory, article.contentType, article.brandedContent];
+  let articleCategory = [article.category, article.topic, article.planType, article.productArea, article.contentType, article.brandedContent];
   articleCategory = articleCategory.filter((str) => (str !== '' && str !== undefined)).join(' | ');
 
   const articleFormat = article?.format || article?.mediaType || '';
