@@ -1233,7 +1233,6 @@ function createProductSchemaMarkup() {
   const pageDescription = document.querySelector('meta[property="og:description"]').getAttribute('content');
   const quotePublishDate = document.lastModified;
   const productSchema = {
-    'schemeId': 'Product Schema',
     '@context': 'http://schema.org/',
     '@type': 'Product',
     'name': pageTitle,
@@ -1256,37 +1255,35 @@ function createProductSchemaMarkup() {
     ]
   }
   const $productSchema = document.createElement('script', { type: 'application/ld+json' });
-  $productSchema.innerHTML = JSON.stringify(productSchema);
+  $productSchema.innerHTML = JSON.stringify(productSchema, null, 2);
   const $head = document.head;
   $head.append($productSchema);
 }
 
 function createVideoObjectSchemaMarkup() {
-  const pageTitle = document.querySelector('h1').textContent;
+  const videoName = document.querySelector('h1').textContent;
   const wistiaThumb = getMetadata('wistia-video-thumbnail');
   const wistiaVideoId = getMetadata('wistia-video-id');
   const wistiaVideoUrl = `https://bamboohr.wistia.com/medias/${wistiaVideoId}`;
   const videoDescription = document.querySelector('.video-object-schema .non-img-col p:first-of-type').textContent;
   const videoUploadDate = document.lastModified;
   const videoObjectSchema = {
-    'schemeId': 'VideoObject Schema',
     '@context': "http://schema.org/",
     '@type': 'VideoObject',
-    'name': pageTitle,
+    'name': videoName,
     'thumbnailUrl': wistiaThumb,
     'embedUrl': wistiaVideoUrl,
     'uploadDate': videoUploadDate,
     'description': videoDescription,
   }
   const $videoObjectSchema = document.createElement('script', { type: 'application/ld+json' });
-  $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema);
+  $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema, null, 2);
   const $head = document.head;
   $head.append($videoObjectSchema);
 }
 
 function createFaqPageSchemaMarkup() {
   const faqPageSchema = {
-    'schemeId': 'FAQPage Schema',
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [],
@@ -1296,6 +1293,7 @@ function createFaqPageSchemaMarkup() {
     const a = tab.querySelector('p').textContent.trim();
     if (q && a) {
       faqPageSchema.mainEntity.push({
+        '@type': 'Question',
         name: q,
         acceptedAnswer: {
           '@type': 'Answer',
@@ -1305,7 +1303,7 @@ function createFaqPageSchemaMarkup() {
     }
   });
   const $faqPageSchema = document.createElement('script', { type: 'application/ld+json' });
-  $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema);
+  $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema, null, 2);
   const $head = document.head;
   $head.append($faqPageSchema);
 }
