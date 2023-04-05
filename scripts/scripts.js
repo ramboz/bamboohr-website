@@ -222,19 +222,14 @@ export async function fetchPlaceholders(prefix = 'default') {
 
 
 // Schema markups
-const pageTitle = document.querySelector('h1').textContent;
-const pageUrl = document.querySelector('meta[property="og:url"]').getAttribute('content');
-const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
-const pageDescription = document.querySelector('meta[property="og:description"]').getAttribute('content');
-const author = document.querySelector('.quote div div p:nth-of-type(2)').textContent.split(',')[0];
-const datePublished = document.lastModified;
-const reviewBody = document.querySelector('.quote div div p:nth-of-type(1)').innerHTML.replace(/["]+/g, '');
-const wistiaThumb = getMetadata('wistia-video-thumbnail');
-const wistiaVideoId = getMetadata('wistia-video-id');
-const wistiaVideoUrl = `https://bamboohr.wistia.com/medias/${wistiaVideoId}`;
-const videoDescription = document.querySelector('.video-object-schema div div:nth-of-type(2) p:nth-of-type(1)').textContent;
-
 function createProductSchemaMarkup() {
+  const pageTitle = document.querySelector('h1').textContent;
+  const pageUrl = document.querySelector('meta[property="og:url"]').getAttribute('content');
+  const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
+  const quoteAuthor = document.querySelector('.product-schema p:last-of-type').textContent.split(',')[0];
+  const quoteText = document.querySelector('.product-schema div div p:first-of-type').textContent.replace(/["]+/g, '');
+  const pageDescription = document.querySelector('meta[property="og:description"]').getAttribute('content');
+  const quotePublishDate = document.lastModified;
   const productSchema = {
     'schemeId': 'Product Schema',
     '@context': 'http://schema.org/',
@@ -252,9 +247,9 @@ function createProductSchemaMarkup() {
     'review': [
       {
         '@type': 'Review',
-        'author': author,
-        'datePublished': datePublished,
-        'reviewBody': reviewBody,
+        'author': quoteAuthor,
+        'datePublished': quotePublishDate,
+        'reviewBody': quoteText,
       }
     ]
   }
@@ -265,14 +260,20 @@ function createProductSchemaMarkup() {
 }
 
 function createVideoObjectSchemaMarkup() {
-  const videoObjectSchema = {
+  const pageTitle = document.querySelector('h1').textContent;
+  const wistiaThumb = getMetadata('wistia-video-thumbnail');
+  const wistiaVideoId = getMetadata('wistia-video-id');
+  const wistiaVideoUrl = `https://bamboohr.wistia.com/medias/${wistiaVideoId}`;
+  const videoDescription = document.querySelector('.video-object-schema .non-img-col p:first-of-type').textContent;
+  const videoUploadDate = document.lastModified;
+    const videoObjectSchema = {
     'schemeId': 'VideoObject Schema',
     '@context': "http://schema.org/",
     '@type': 'VideoObject',
     'name': pageTitle,
     'thumbnailUrl': wistiaThumb,
     'embedUrl': wistiaVideoUrl,
-    'uploadDate': datePublished,
+    'uploadDate': videoUploadDate,
     'description': videoDescription,
   }
   const $videoObjectSchema = document.createElement('script', { type: 'application/ld+json' });
@@ -288,21 +289,17 @@ function createFaqPageSchemaMarkup() {
     '@type': 'FAQPage',
     mainEntity: [],
   }
-
   document.querySelectorAll('.faq-page-schema .accordion').forEach((tab) => {
     const q = tab.querySelector('h2').textContent.trim();
-    const a = tab.querySelector('p');
+    const a = tab.querySelector('p').textContent.trim();
     if (q && a) {
-      console.log(q,'\n', a);
       faqPageSchema.mainEntity.push({
-        // name: i,
         name: q,
-        // acceptedAnswer: {
-        //   '@type': 'Answer',
-        //   text: a.textContent.trim(),
-        // },
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: a,
+        },
       })
-      // console.log(i, ' what is this?');
     }
   });
   const $faqPageSchema = document.createElement('script', { type: 'application/ld+json' });
