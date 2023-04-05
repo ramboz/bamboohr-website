@@ -10,6 +10,52 @@
  * governing permissions and limitations under the License.
  */
 
+const SEGMENTATION_CONFIG = {
+  audiences: {
+    'is-customer': {
+      label: 'Is a Customer',
+      test: () => {
+        // eslint-disable-next-line no-use-before-define
+        const features = getBhrFeatures();
+        return features.is_admin && !features.bhr_user;
+      }
+    },
+    'not-customer': {
+      label: 'Is not a Customer',
+      test: () => {
+        // eslint-disable-next-line no-use-before-define
+        const features = getBhrFeatures();
+        return !(features.is_admin && !features.bhr_user);
+      },
+    },
+  }
+}
+
+/**
+ * Gets the value for the specific cookie
+ * @param {string} name The name of the cookie
+ * @returns {string} the cookie value, or null
+ */
+function readCookie(name) {
+  const [value] = document.cookie.split('; ')
+    .filter((cookieString) => cookieString.split('=')[0] === name)
+    .map((cookieString) => cookieString.split('=')[1]);
+  return value || null;
+}
+
+/**
+ * Gets the BHR Features from the cookie
+ * @returns {object} the BHR features, or an empty object
+ */
+function getBhrFeatures() {
+  const value = readCookie('bhr_features');
+  try {
+    return JSON.parse(value);
+  } catch (err) {
+    return {};
+  }
+}
+
 /**
  * log RUM if part of the sample.
  * @param {string} checkpoint identifies the checkpoint in funnel
@@ -1005,6 +1051,14 @@ export async function loadHeader(header) {
   header.append(headerBlock);
   decorateBlock(headerBlock);
   await loadBlock(headerBlock);
+  // Patch logo URL for is-customer audience
+  if(getBhrFeatures()){
+	if (SEGMENTATION_CONFIG.audiences['is-customer'].test()) {
+	  const usp = new URLSearchParams(window.location.search);
+	  usp.append('segment', 'general');
+	  document.querySelector('.nav-brand a').href += `?${usp.toString()}`;
+	}		
+  }  
 }
 
 function loadFooter(footer) {
@@ -1222,6 +1276,20 @@ async function loadMartech() {
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
+  const instantSegments = [...document.head.querySelectorAll(`meta[property^="audience:"],meta[name^="audience-"]`)].map((meta) => {
+    const id = (meta.name
+      ? meta.name.substring(9)
+      : meta.getAttribute('property').split(':')[1]
+    ).replace(/^-+|-+$/g, '');
+    return { id, url: meta.getAttribute('content') };
+  });
+  if (instantSegments.length) {
+    // eslint-disable-next-line import/no-cycle
+    const { runSegmentation } = await import('./experimentation.js');
+    const resolution = getMetadata('audience-resolution');
+    await runSegmentation(instantSegments, { ...SEGMENTATION_CONFIG, resolution });
+  }
+  
   const experiment = getMetadata('experiment');
   const instantExperiment = getMetadata('instant-experiment');
   if (instantExperiment || experiment) {

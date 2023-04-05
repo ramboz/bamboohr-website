@@ -155,6 +155,16 @@ function isValidAudience(audience) {
   return true;
 }
 
+async function getResolvedSegment(audiences, applicableSegments) {
+  const results = await Promise.all(applicableSegments.map((segment) => {
+    if (audiences[segment.id] && typeof audiences[segment.id].test === 'function') {
+      return audiences[segment.id].test();
+    }
+    return true;
+  }));
+  return applicableSegments.filter((_, i) => results[i]);
+}
+
 /**
  * Checks whether the current page is suitable to run an experiment.
  * It is a production or live domain, url does not contain a fragment preceded with a hash, and it is not a bot.
@@ -289,4 +299,48 @@ export async function runExperiment(experiment, instantExperiment) {
   document.body.classList.add(`experiment-${experimentConfig.id}`);
   document.body.classList.add(`variant-${experimentConfig.selectedVariant}`);
   await replaceInner(pages[0], document.querySelector('main'));
+}
+
+export async function runSegmentation(segments, config = {}) {
+  const usp = new URLSearchParams(window.location.search);
+  const forcedSegment = usp.get('segment');
+
+  const resolved = forcedSegment
+    ? segments.filter((s) => s.id === forcedSegment)
+    : await getResolvedSegment(config.audiences, segments);
+
+  const [segment] = resolved;
+  window.hlx = window.hlx || {};
+  window.hlx.segmentation = {
+    segments: [
+      { id: 'default', label: 'Default', url: window.location.href },
+      ...segments.map((s) => ({
+        ...s,
+        ...config.audiences[s.id],
+      }))
+    ],
+    resolvedSegment: segment,
+  };
+
+  if (!resolved.length) {
+    return;
+  }
+  
+  sampleRUM('segmentation', { source: segment.id, target: segment.url });
+  // eslint-disable-next-line no-console
+  console.debug(`running segmentation (${segment.id}) -> ${segment.url}`);
+
+  const currentPath = window.location.pathname;
+  const segmentPath = new URL(segment.url).pathname;
+  if (currentPath === segmentPath) {
+    return;
+  }
+
+  // Fullpage segmentation
+  if (config.resolution === 'redirect') {
+    window.location.replace(segmentPath);
+  } else {
+    document.body.classList.add(`segment-${segment.id}`);
+    await replaceInner(segmentPath, document.querySelector('main'));
+  }
 }
