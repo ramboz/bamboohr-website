@@ -122,7 +122,7 @@ main .form input[type="radio"] + label {
 }
 
 main .form .form-checkbox-option > label {
-  padding-left: 42px;
+  width: 26px;
 }
 
 main .form .form-checkbox-option > label::before {
