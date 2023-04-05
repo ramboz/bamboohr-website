@@ -219,6 +219,113 @@ export async function fetchPlaceholders(prefix = 'default') {
   return window.placeholders[prefix];
 }
 
+
+
+// Schema markups
+const pageTitle = document.querySelector('h1').textContent;
+const pageUrl = document.querySelector('meta[property="og:url"]').getAttribute('content');
+const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
+const pageDescription = document.querySelector('meta[property="og:description"]').getAttribute('content');
+const author = document.querySelector('.quote div div p:nth-of-type(2)').textContent.split(',')[0];
+const datePublished = document.lastModified;
+const reviewBody = document.querySelector('.quote div div p:nth-of-type(1)').innerHTML.replace(/["]+/g, '');
+const wistiaThumb = getMetadata('wistia-video-thumbnail');
+const wistiaVideoId = getMetadata('wistia-video-id');
+const wistiaVideoUrl = `https://bamboohr.wistia.com/medias/${wistiaVideoId}`;
+const videoDescription = document.querySelector('.video-object-schema div div:nth-of-type(2) p:nth-of-type(1)').textContent;
+
+function createProductSchemaMarkup() {
+  const productSchema = {
+    'schemeId': 'Product Schema',
+    '@context': 'http://schema.org/',
+    '@type': 'Product',
+    'name': pageTitle,
+    'url': pageUrl,
+    'image': socialImage,
+    'description': pageDescription,
+    'brand': 'Bamboohr',
+    'aggregateRating': {
+      '@type': 'aggregateRating',
+      'ratingValue': '4.3',
+      'reviewCount': '593'
+    },
+    'review': [
+      {
+        '@type': 'Review',
+        'author': author,
+        'datePublished': datePublished,
+        'reviewBody': reviewBody,
+      }
+    ]
+  }
+  const $productSchema = document.createElement('script', { type: 'application/ld+json' });
+  $productSchema.innerHTML = JSON.stringify(productSchema);
+  const $head = document.head;
+  $head.append($productSchema);
+}
+
+function createVideoObjectSchemaMarkup() {
+  const videoObjectSchema = {
+    'schemeId': 'VideoObject Schema',
+    '@context': "http://schema.org/",
+    '@type': 'VideoObject',
+    'name': pageTitle,
+    'thumbnailUrl': wistiaThumb,
+    'embedUrl': wistiaVideoUrl,
+    'uploadDate': datePublished,
+    'description': videoDescription,
+  }
+  const $videoObjectSchema = document.createElement('script', { type: 'application/ld+json' });
+  $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema);
+  const $head = document.head;
+  $head.append($videoObjectSchema);
+}
+
+function createFaqPageSchemaMarkup() {
+  const faqPageSchema = {
+    'schemeId': 'FAQPage Schema',
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [],
+  }
+
+  document.querySelectorAll('.faq-page-schema .accordion').forEach((tab) => {
+    const q = tab.querySelector('h2').textContent.trim();
+    const a = tab.querySelector('p');
+    if (q && a) {
+      console.log(q,'\n', a);
+      faqPageSchema.mainEntity.push({
+        // name: i,
+        name: q,
+        // acceptedAnswer: {
+        //   '@type': 'Answer',
+        //   text: a.textContent.trim(),
+        // },
+      })
+      // console.log(i, ' what is this?');
+    }
+  });
+  const $faqPageSchema = document.createElement('script', { type: 'application/ld+json' });
+  $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema);
+  const $head = document.head;
+  $head.append($faqPageSchema);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// END Schema markups
+
 /**
  * Decorates a block.
  * @param {Element} block The block element
@@ -1151,8 +1258,6 @@ async function loadEager(doc) {
     await decorateMain(main);
     await waitForLCP();
   }
-
-  // console.log('hello from over here');
 }
 
 /**
@@ -1175,6 +1280,37 @@ async function loadLazy(doc) {
   const { hash } = window.location;
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
+
+
+
+
+
+/**
+ * Calls the Schema Markup function
+ */
+  const schemaVals = getMetadata('schema').split(',');
+  // console.log(schemaVals);
+  schemaVals.forEach(val => {
+    switch(val.trim()) {
+      case 'Product':
+        createProductSchemaMarkup();
+        break;
+      case 'VideoObject':
+        createVideoObjectSchemaMarkup();
+        break;
+      case 'FAQPage':
+        createFaqPageSchemaMarkup();
+        break;
+      default:
+    }
+  });
+
+
+
+
+
+
+
 
   const headerloaded = loadHeader(header);
   loadFooter(doc.querySelector('footer'));
