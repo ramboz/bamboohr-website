@@ -840,3 +840,47 @@ main .listing-article-card .listing-article-card-header span:not(:last-child)::a
 main .listing.one-column .listing-results {
     display: block;
 }
+
+main .listing.one-column .listing-results .listing-article-card {
+    margin-bottom: 80px;
+}
+
+@media screen and (min-width: 600px) {
+    main .listing.one-column .listing-results .listing-article-card {
+        margin-bottom: 100px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    main .listing.one-column .listing-results .listing-article-card {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        align-content: stretch;
+    }
+
+    main .listing.one-column .listing-results .listing-article-card:nth-child(2n) {
+        flex-direction: row-reverse;
+    }
+}
+
+main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture {
+    margin-bottom: 40px;
+}
+
+@media screen and (min-width: 600px) {
+    main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture {
+        margin-bottom: 60px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture,
+    main .listing.one-column .listing-results .listing-article-card .listing-article-card-body,
+    main .listing.one-column .listing-results .listing-article-card .wistia {
+        margin-bottom: 0;
+        flex: 0 0 auto;
+        width: calc(50% - 20px);
+    }
+}
