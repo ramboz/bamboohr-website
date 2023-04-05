@@ -225,7 +225,7 @@ async function createSegments() {
   const segments = config?.segments;
   const resolvedSegment = config?.resolvedSegment;
   
-  if (!segments.length || !config) {
+  if (!segments || !segments.length || !config) {
     return null;
   }
   console.debug('preview segments', segments);
