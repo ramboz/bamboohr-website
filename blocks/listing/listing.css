@@ -512,7 +512,8 @@ main .listing-results .hrvs-card-body a::after {
     font-style: italic;
 }
 
-.listing-group .load-more-wrapper {
+.listing-group .load-more-wrapper,
+.listing-limited.load-more-wrapper {
     text-align: center;
     margin-top: 60px;
 }
