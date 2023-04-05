@@ -884,3 +884,19 @@ main .listing.one-column .listing-results .listing-article-card .listing-article
         width: calc(50% - 20px);
     }
 }
+
+main .listing.one-column.article-cards ul > div div h3 {
+    font-family: var(--heading-font-family);
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+@media screen and (min-width: 1200px) {
+    main .listing.one-column.article-cards ul > div div h3 {
+        font-size: 36px;
+        line-height: 44px;
+    }
+}
