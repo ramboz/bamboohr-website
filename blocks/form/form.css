@@ -122,7 +122,7 @@ main .form input[type="radio"] + label {
 }
 
 main .form .form-checkbox-option > label {
-  padding-left: 42px;
+  width: 24px;
 }
 
 main .form .form-checkbox-option > label::before {
@@ -149,7 +149,7 @@ main .form input[type="radio"] + label::before {
   width: 26px;
   height: 26px;
   padding: 2px;
-  margin-right: 16px;
+  margin-right: 10px;
   background-clip: content-box;
   border: 2px solid var(--color-gray-3);
   background-color: var(--color-white);
