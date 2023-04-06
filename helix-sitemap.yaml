@@ -20,3 +20,8 @@ sitemaps:
       origin: https://www.bamboohr.com
       source: /resources/query-index.json?sheet=resources
       destination: /resources/sitemap.xml
+  
+  productUpdates:
+      origin: https://www.bamboohr.com
+      source: /product-updates/query-index.json
+      destination: /product-updates/sitemap.xml
