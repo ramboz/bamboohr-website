@@ -505,6 +505,7 @@ export default async function decorate(block, blockName) {
     const pageEnd = limit ? indexConfig.limitOffset + indexConfig.limit : results.length;
     const offset = indexConfig.limitOffset || 0;
     const max = pageEnd > results.length ? results.length : pageEnd;
+    const listingWrapper = block.parentElement;
     for (let i = offset; i < max; i += 1) {
       const product = results[i];
 
@@ -518,7 +519,7 @@ export default async function decorate(block, blockName) {
     if (limit) indexConfig.limitOffset += indexConfig.limit;
 
     // Remove existing load more.
-    const existingLoadMore = resultsElement.parentElement.parentElement.lastElementChild;
+    const existingLoadMore = listingWrapper.lastElementChild;
     if (existingLoadMore.classList.contains('load-more-wrapper')) existingLoadMore.remove();
 
     /* add load more if needed */
@@ -530,7 +531,7 @@ export default async function decorate(block, blockName) {
       loadMore.href = '#';
       loadMore.textContent = 'Load More';
       loadMoreWrapper.append(loadMore);
-      resultsElement.parentElement.parentElement.append(loadMoreWrapper);
+      listingWrapper.append(loadMoreWrapper);
       loadMore.addEventListener('click', (event) => {
         event.preventDefault();
         loadMoreWrapper.remove();
