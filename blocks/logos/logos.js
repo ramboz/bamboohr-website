@@ -10,7 +10,8 @@ export default async function decorate(block) {
       partners = [...partners.split(', ')];
       const list = document.createElement('ul');
       partners.forEach((partner) => {
-        const imageSrc = `/assets/partner-logos/${toClassName(partner)}.svg`;
+        const imageFolder = block.classList.contains('grayscale') ? '/assets/partner-logos/grayscale/' : '/assets/partner-logos/'
+        const imageSrc = `${imageFolder}${toClassName(partner)}.svg`;
         const partnerLogo = createOptimizedPicture(imageSrc, partner, false, [{ width: '250' }]);
         const li = document.createElement('li');
         li.innerHTML = partnerLogo.outerHTML;
