@@ -11,6 +11,7 @@
  */
 
 
+
 const SEGMENTATION_CONFIG = {
   audiences: {
     'is-customer': {
