@@ -564,15 +564,18 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   margin: 0 -20px;
 }
 
-.columns.align-top .column-flex-container {
+.columns.align-top .column-flex-container,
+.columns.align-top  .column-small-icons-container {
   align-items: flex-start;
 }
 
-.columns.align-center .column-flex-container {
+.columns.align-center .column-flex-container,
+.columns.align-center .column-small-icons-container {
   align-items: center;
 }
 
-.columns.align-bottom .column-flex-container {
+.columns.align-bottom .column-flex-container,
+.columns.align-bottom .column-small-icons-container {
   align-items: flex-end;
 }
 
@@ -813,6 +816,10 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   color: var(--color-gray-12);
 }
 
+.columns.image-info.info-shade-10 .img-col em {
+  color: var(--theme-shade10)
+}
+
 .columns.image-info .img-col[data-align='center'],
 .columns .img-col[data-align='center'] {
   text-align: center;
@@ -855,6 +862,10 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   .columns.hero-subhead p:not(.button-container, :last-child) {
     font-size: 21px;
     line-height: 28px;
+  }
+
+  .columns.image-info.md-info-font-16 .img-col em {
+    font-size: 16px;
   }
 }
 
