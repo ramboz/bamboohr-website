@@ -1,5 +1,5 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
-import { isUpcomingEvent } from '../../scripts/webinar.js';
+import { isUpcomingEvent } from '../listing/listing.js';
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -493,9 +493,9 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         const formEl = form.getFormElem()[0];
 
         /* Adobe Form Start event tracking when user changes the first field */		  
-		formEl.firstElementChild.addEventListener('change', () => {			
-		  adobeEventTracking('Form Start', {"name": form.getId()});
-		});
+        formEl.firstElementChild.addEventListener('change', () => {			
+          adobeEventTracking('Form Start', {"name": form.getId()});
+        });
 		
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
@@ -508,7 +508,8 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         if (formSubmitText) {
           formSubmitBtn.textContent = formSubmitText;
         } else if (window.location.pathname.includes('/webinars/')) {
-          formSubmitBtn.textContent = isUpcomingEvent() ? 'Register for this event' : 'Watch Now';
+          const eventDateStr = getMetadata('event-date');
+          formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
         
         form.onSuccess(() => {
@@ -520,18 +521,19 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
             formName: form.getId(),
           });
 
-		  const formBusinessSize = formEl.querySelector('select[name="Employees_Text__c"]').value;
+          const empText = formEl.querySelector('select[name="Employees_Text__c"]');
+          const formBusinessSize = empText?.value || 'unknown';
 		  
           /* Adobe form complete events tracking */
           adobeEventTracking('Form Complete', {
-			  "name": form.getId(),
-			  "business_size": formBusinessSize
-		  });
+            "name": form.getId(),
+            "business_size": formBusinessSize
+		      });
 
-		  /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
-		  setTimeout(() => {
-			  if (successUrl && !chilipiper) window.location.href = successUrl;
-		  },1000);
+          /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
+          setTimeout(() => {
+            if (successUrl && !chilipiper) window.location.href = successUrl;
+          },1000);
           
           return false;
         });

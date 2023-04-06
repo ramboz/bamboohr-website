@@ -10,6 +10,53 @@
  * governing permissions and limitations under the License.
  */
 
+const SEGMENTATION_CONFIG = {
+  audiences: {
+    'is-customer': {
+      label: 'Is a Customer',
+      test: () => {
+        // eslint-disable-next-line no-use-before-define
+        const features = getBhrFeaturesCookie();
+        return features.is_admin && !features.bhr_user;
+      },
+    },
+    'not-customer': {
+      label: 'Is not a Customer',
+      test: () => {
+        // eslint-disable-next-line no-use-before-define
+        const features = getBhrFeaturesCookie();
+        return !(features.is_admin && !features.bhr_user);
+      },
+    },
+  },
+};
+
+/**
+ * Gets the value for the specific cookie
+ * @param {string} name The name of the cookie
+ * @returns {string} the cookie value, or null
+ */
+function readCookie(name) {
+  const [value] = document.cookie
+    .split('; ')
+    .filter((cookieString) => cookieString.split('=')[0] === name)
+    .map((cookieString) => cookieString.split('=')[1]);
+  return value || null;
+}
+
+/**
+ * Gets the BHR Features from the cookie
+ * @returns {object} the BHR features, or an empty object
+ */
+function getBhrFeaturesCookie() {
+  const value = readCookie('bhr_features');
+  try {
+    return JSON.parse(value);
+  } catch (err) {
+    return {};
+  }
+}
+
 /**
  * log RUM if part of the sample.
  * @param {string} checkpoint identifies the checkpoint in funnel
@@ -162,6 +209,7 @@ function loadTemplateCSS() {
       'paid-landing-page',
       'product-updates',
       'live-demo-webinar-lp',
+      'hr-101-guide',
     ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -964,7 +1012,7 @@ export async function lookupPages(pathnames, collection, sheet = '') {
     hrGlossary: '/resources/hr-glossary/query-index.json',
     hrvs: '/resources/events/hr-virtual/2022/query-index.json',
     blockInventory: '/blocks/query-index.json',
-    blockTracker: `/website-marketing-resources/block-inventory-tracker.json?sheet=${sheet}`,
+    blockTracker: `/website-marketing-resources/block-inventory-tracker2.json?sheet=${sheet}`,
     resources: `/resources/query-index.json?sheet=resources`,
     speakers: `/speakers/query-index.json`,
   };
@@ -991,6 +1039,14 @@ export async function loadHeader(header) {
   header.append(headerBlock);
   decorateBlock(headerBlock);
   await loadBlock(headerBlock);
+  // Patch logo URL for is-customer audience
+  if (getBhrFeaturesCookie()) {
+    if (SEGMENTATION_CONFIG.audiences['is-customer'].test()) {
+      const usp = new URLSearchParams(window.location.search);
+      usp.append('segment', 'general');
+      document.querySelector('.nav-brand a').href += `?${usp.toString()}`;
+    }
+  }
 }
 
 function loadFooter(footer) {
@@ -1232,6 +1288,21 @@ async function loadMartech() {
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
+  const instantSegments = [
+    ...document.head.querySelectorAll(`meta[property^="audience:"],meta[name^="audience-"]`),
+  ].map((meta) => {
+    const id = (
+      meta.name ? meta.name.substring(9) : meta.getAttribute('property').split(':')[1]
+    ).replace(/^-+|-+$/g, '');
+    return { id, url: meta.getAttribute('content') };
+  });
+  if (instantSegments.length && getBhrFeaturesCookie()) {
+    // eslint-disable-next-line import/no-cycle
+    const { runSegmentation } = await import('./experimentation.js');
+    const resolution = getMetadata('audience-resolution');
+    await runSegmentation(instantSegments, { ...SEGMENTATION_CONFIG, resolution });
+  }
+
   const experiment = getMetadata('experiment');
   const instantExperiment = getMetadata('instant-experiment');
   if (instantExperiment || experiment) {
@@ -1268,6 +1339,102 @@ async function loadEager(doc) {
 }
 
 /**
+ * Schema markup functions
+ */
+function createProductSchemaMarkup() {
+  const pageTitle = document.querySelector('h1').textContent;
+  const pageUrl = document.querySelector('link[rel="canonical"]').getAttribute('href');
+  const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
+  const quoteAuthor = document.querySelector('.product-schema p:last-of-type').textContent;
+  const quoteText = document
+    .querySelector('.product-schema div div p:first-of-type')
+    .textContent.replace(/["]+/g, '');
+  const pageDescription = document
+    .querySelector('meta[property="og:description"]')
+    .getAttribute('content');
+  const quotePublishDate = document.lastModified;
+  const productSchema = {
+    '@context': 'http://schema.org/',
+    '@type': 'Product',
+    name: pageTitle,
+    url: pageUrl,
+    image: socialImage,
+    description: pageDescription,
+    brand: 'Bamboohr',
+    aggregateRating: {
+      '@type': 'aggregateRating',
+      ratingValue: '4.3',
+      reviewCount: '593',
+    },
+    review: [
+      {
+        '@type': 'Review',
+        author: quoteAuthor,
+        datePublished: quotePublishDate,
+        reviewBody: quoteText,
+      },
+    ],
+  };
+  const $productSchema = document.createElement('script', { type: 'application/ld+json' });
+  $productSchema.innerHTML = JSON.stringify(productSchema, null, 2);
+  const $head = document.head;
+  $head.append($productSchema);
+}
+
+function createVideoObjectSchemaMarkup() {
+  const videoName = document.querySelector('h1').textContent;
+  const wistiaThumb = getMetadata('wistia-video-thumbnail');
+  const wistiaVideoId = getMetadata('wistia-video-id');
+  const wistiaVideoUrl = `https://fast.wistia.net/embed/iframe/${wistiaVideoId}`;
+  const videoDescription = document
+    .querySelector('meta[property="og:description"]')
+    .getAttribute('content');
+  const videoUploadDate = document.lastModified;
+  const videoObjectSchema = {
+    '@context': 'http://schema.org/',
+    '@type': 'VideoObject',
+    name: videoName,
+    thumbnailUrl: wistiaThumb,
+    embedUrl: wistiaVideoUrl,
+    uploadDate: videoUploadDate,
+    description: videoDescription,
+  };
+  const $videoObjectSchema = document.createElement('script', { type: 'application/ld+json' });
+  $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema, null, 2);
+  const $head = document.head;
+  $head.append($videoObjectSchema);
+}
+
+function createFaqPageSchemaMarkup() {
+  const faqPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [],
+  };
+  document.querySelectorAll('.faq-page-schema .accordion').forEach((tab) => {
+    const q = tab.querySelector('h2').textContent.trim();
+    const a = tab
+      .querySelector('.tabs-content')
+      .textContent.replace(/(\n|\n|\r)/gm, '')
+      .trim();
+    if (q && a) {
+      faqPageSchema.mainEntity.push({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: a,
+        },
+      });
+    }
+  });
+  const $faqPageSchema = document.createElement('script', { type: 'application/ld+json' });
+  $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema, null, 2);
+  const $head = document.head;
+  $head.append($faqPageSchema);
+}
+
+/**
  * loads everything that doesn't need to be delayed.
  */
 async function loadLazy(doc) {
@@ -1287,6 +1454,28 @@ async function loadLazy(doc) {
   const { hash } = window.location;
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
+
+  /**
+   * Calls the Schema markup functions
+   */
+  if (getMetadata('schema')) {
+    const schemaVals = getMetadata('schema').split(',');
+    schemaVals.forEach((val) => {
+      switch (val.trim()) {
+        case 'Product':
+          createProductSchemaMarkup();
+          break;
+        case 'VideoObject':
+          createVideoObjectSchemaMarkup();
+          break;
+        case 'FAQPage':
+          createFaqPageSchemaMarkup();
+          break;
+        default:
+          break;
+      }
+    });
+  }
 
   const headerloaded = loadHeader(header);
   loadFooter(doc.querySelector('footer'));

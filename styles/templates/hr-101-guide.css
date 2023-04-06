@@ -1,0 +1,28 @@
+.hr-101-guide main .call-to-action-container {
+    background-color: var(--color-1-tint-15);
+}
+
+.hr-101-guide main .call-to-action {
+    color: var(---color-gray-12);
+}
+
+.hr-101-guide main .call-to-action h2, .hr-101-guide main .call-to-action h3, .hr-101-guide main .call-to-action h4 {
+    color: var(--color-gray-12);
+}
+
+.hr-101-guide main .call-to-action a.button {
+    color: var(--color-white);
+    background-color: var(--theme-shade5);
+}
+
+.hr-101-guide main .callout a.button {
+    background-color: var(--theme-shade5);
+}
+
+.hr-101-guide main .callout h3 {
+    color: var(--color-gray-12);
+}
+
+.hr-101-guide main .callout p {
+    color: var(--color-gray-12);
+}

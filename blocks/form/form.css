@@ -95,7 +95,6 @@ main .form .form-checkbox-option {
   margin-right: 10px;
 }
 
-main .form .form-radio-option:not(:last-child),
 main .form .form-checkbox-option:not(:last-child) {
   display: flex;
   align-items: flex-start;
@@ -103,7 +102,7 @@ main .form .form-checkbox-option:not(:last-child) {
 }
 
 main .form .form-checkbox-option input,
-main .form .form-radio-option input {
+main .form input[type="radio"] {
   position: absolute;
   opacity: 0;
   height: 0;
@@ -111,13 +110,19 @@ main .form .form-radio-option input {
 }
 
 main .form .form-checkbox-option > label,
-main .form .form-radio-option > label {
+main .form .form-checkbox-flex label,
+main .form input[type="radio"] + label {
   position: relative;
   display: flex;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+  color: var(--color-gray-12);
 }
 
 main .form .form-checkbox-option > label {
-  padding-left: 42px;
+  width: 24px;
 }
 
 main .form .form-checkbox-option > label::before {
@@ -134,13 +139,17 @@ main .form .form-checkbox-option > label::before {
   cursor: pointer;
 }
 
-main .form .form-radio-option > label::before {
+main .form input[type="radio"] + label {
+  margin-bottom: 10px;
+}
+
+main .form input[type="radio"] + label::before {
   content: '';
   display: inline-block;
   width: 26px;
   height: 26px;
   padding: 2px;
-  margin-right: 16px;
+  margin-right: 10px;
   background-clip: content-box;
   border: 2px solid var(--color-gray-3);
   background-color: var(--color-white);
@@ -161,7 +170,7 @@ main .form .form-checkbox-option input:checked + label::after {
   box-sizing: border-box;
 }
 
-main .form .form-radio-option input:checked + label::before {
+main .form input[type="radio"]:checked + label::before {
   background-color: var(--color-1);
 }
 
@@ -254,6 +263,7 @@ main .form .mktoForm .mktoFieldWrap {
   margin-top: 16px;
 }
 
+main .form .mktoForm .mktoRadioList,
 main .form .mktoForm .mktoField,
 main .form .mktoForm .mktoLabel {
   width: 100% !important;

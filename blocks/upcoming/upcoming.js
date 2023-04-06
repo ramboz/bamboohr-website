@@ -4,14 +4,14 @@ import {
   readIndex,
 } from '../../scripts/scripts.js';
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
-import { createArticleCard, loadWistiaBlock } from '../listing/listing.js';
+import { createArticleCard, loadWistiaBlock, isUpcomingEvent } from '../listing/listing.js';
 
 function createDateCard(article, classPrefix, eager = false, cardLink = {}) {
   const title = article.title.split(' | ')[0];
   const card = document.createElement('div');
   const articleCategory = article.category || article.topic || article.contentType
     || article.brandedContent || '';
-  const articleCategoryElement = articleCategory ? `<p>${articleCategory}</p>` : '';
+  const articleCategoryElement = articleCategory ? `<p class="upcoming-article-card-category">${articleCategory}</p>` : '';
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
@@ -55,20 +55,13 @@ function createDateCard(article, classPrefix, eager = false, cardLink = {}) {
 
 function checkForMatch(row, key, defaultReturn) {
   if (key === 'futureOnly') {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const date = new Date(row.eventDate);
-    
-    if (date >= today) return true;
-
-    return false;
+    return isUpcomingEvent(row.eventDate);
   }
 
   if (row[key]) {
     if (key !== 'eventDateAndTime') return true;
     if (!row[key].toLowerCase().includes('demand')) return true;
   }
-
   return defaultReturn;
 }
 

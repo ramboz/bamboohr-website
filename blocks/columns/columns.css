@@ -691,12 +691,12 @@ div .tablet-center-image .column-flex-container.columns-align-start {
 
   .img-col {
     order: 1;
-    width: unset;
+    width: 100%;
   }
 
   .non-img-col {
     order: 2;
-    width: unset;
+    width: 100%;
   }
 
   .columns.mobile-image-bottom .img-col {
@@ -769,11 +769,6 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   font-weight: 400;
   line-height: 30px;
   font-style: normal;
-}
-
-.columns p:last-child > em {
-  font-size: 14px;
-  line-height: 24px;
 }
 
 .columns.title2-heading h3 {
