@@ -402,3 +402,11 @@ indices:
         select: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      eventDate:
+        select: head > meta[name="event-date"]
+        value: |
+          attribute(el, 'content')
+      eventDateAndTime:
+        select: head > meta[name="event-date-and-time"]
+        value: |
+          attribute(el, 'content')

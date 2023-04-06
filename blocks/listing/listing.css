@@ -512,7 +512,8 @@ main .listing-results .hrvs-card-body a::after {
     font-style: italic;
 }
 
-.listing-group .load-more-wrapper {
+.listing-group .load-more-wrapper,
+.listing-limited.load-more-wrapper {
     text-align: center;
     margin-top: 60px;
 }
@@ -832,8 +833,7 @@ main .listing-article-card .listing-article-card-body p{
 main .listing-article-card .listing-article-card-header span:not(:last-child)::after {
     content: '•';
     display: inline-block;
-    margin: 1px 4px 0 8px;
-    font-size: 10px;
+    margin: 0 2px 0 5px;
     vertical-align: top;
 }
 
