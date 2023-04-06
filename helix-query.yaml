@@ -406,3 +406,7 @@ indices:
         select: head > meta[name="event-date"]
         value: |
           attribute(el, 'content')
+      eventDateAndTime:
+        select: head > meta[name="event-date-and-time"]
+        value: |
+          attribute(el, 'content')
