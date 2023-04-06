@@ -307,7 +307,7 @@ export default async function decorate(block, blockName) {
     indexConfig.limit = +blockConfig.limit || 0;
     indexConfig.facetStyle = blockConfig['facet-style'] || 'taxonomyV1';
     indexConfig.customLinkText = blockConfig['custom-link-text'];
-    indexConfig.excludeMediaType = !!blockConfig['exclude-media-type'] && blockConfig['exclude-media-type'].toLowerCase() === 'yes';
+    indexConfig.excludeMediaType = blockConfig['exclude-media-type']?.toLowerCase() === 'yes';
     indexConfig.excludeSearch = blockConfig['exclude-search'];
     excludeSearch = indexConfig.excludeSearch;
   } else {
@@ -512,7 +512,7 @@ export default async function decorate(block, blockName) {
       const product = results[i];
 
       if (indexConfig.cardStyle === 'article') {
-        const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkText);
+        const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkText, indexConfig.excludeMediaType);
         resultsElement.append(articleCard);
         loadWistiaBlock(product, articleCard);
       } else resultsElement.append(createAppCard(product, blockName));
