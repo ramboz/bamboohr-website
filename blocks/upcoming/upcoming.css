@@ -106,7 +106,8 @@ main .upcoming-article-card .upcoming-article-card-picture img {
     main .upcoming-results {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-gap: 40px;
+        row-gap: 60px;
+        column-gap: 40px;
     }
 
     main .upcoming-article-card:first-child {
@@ -136,6 +137,7 @@ main .upcoming-article-card .upcoming-article-card-picture img {
     main .upcoming-results {
         grid-area: results;
         grid-template-columns: repeat(3, 1fr);
+        row-gap: 80px;
     }
 
     main .upcoming-results > div {
