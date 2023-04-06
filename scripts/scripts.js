@@ -10,13 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
+
 const SEGMENTATION_CONFIG = {
   audiences: {
     'is-customer': {
       label: 'Is a Customer',
       test: () => {
         // eslint-disable-next-line no-use-before-define
-        const features = getBhrFeatures();
+        const features = getBhrFeaturesCookie();
         return features.is_admin && !features.bhr_user;
       }
     },
@@ -24,7 +25,7 @@ const SEGMENTATION_CONFIG = {
       label: 'Is not a Customer',
       test: () => {
         // eslint-disable-next-line no-use-before-define
-        const features = getBhrFeatures();
+        const features = getBhrFeaturesCookie();
         return !(features.is_admin && !features.bhr_user);
       },
     },
@@ -47,7 +48,7 @@ function readCookie(name) {
  * Gets the BHR Features from the cookie
  * @returns {object} the BHR features, or an empty object
  */
-function getBhrFeatures() {
+function getBhrFeaturesCookie() {
   const value = readCookie('bhr_features');
   try {
     return JSON.parse(value);
@@ -948,7 +949,7 @@ export async function loadHeader(header) {
   decorateBlock(headerBlock);
   await loadBlock(headerBlock);
   // Patch logo URL for is-customer audience
-  if(getBhrFeatures()){
+  if(getBhrFeaturesCookie()){
 	if (SEGMENTATION_CONFIG.audiences['is-customer'].test()) {
 	  const usp = new URLSearchParams(window.location.search);
 	  usp.append('segment', 'general');
@@ -1179,7 +1180,7 @@ async function loadEager(doc) {
     ).replace(/^-+|-+$/g, '');
     return { id, url: meta.getAttribute('content') };
   });
-  if (instantSegments.length) {
+  if (instantSegments.length && getBhrFeaturesCookie()) {
     // eslint-disable-next-line import/no-cycle
     const { runSegmentation } = await import('./experimentation.js');
     const resolution = getMetadata('audience-resolution');
