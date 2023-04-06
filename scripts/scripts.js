@@ -1223,6 +1223,93 @@ async function loadEager(doc) {
 }
 
 /**
+ * Schema markup functions
+ */
+function createProductSchemaMarkup() {
+  const pageTitle = document.querySelector('h1').textContent;
+  const pageUrl = document.querySelector('link[rel="canonical"]').getAttribute('href');
+  const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
+  const quoteAuthor = document.querySelector('.product-schema p:last-of-type').textContent;
+  const quoteText = document.querySelector('.product-schema div div p:first-of-type').textContent.replace(/["]+/g, '');
+  const pageDescription = document.querySelector('meta[property="og:description"]').getAttribute('content');
+  const quotePublishDate = document.lastModified;
+  const productSchema = {
+    '@context': 'http://schema.org/',
+    '@type': 'Product',
+    'name': pageTitle,
+    'url': pageUrl,
+    'image': socialImage,
+    'description': pageDescription,
+    'brand': 'Bamboohr',
+    'aggregateRating': {
+      '@type': 'aggregateRating',
+      'ratingValue': '4.3',
+      'reviewCount': '593'
+    },
+    'review': [
+      {
+        '@type': 'Review',
+        'author': quoteAuthor,
+        'datePublished': quotePublishDate,
+        'reviewBody': quoteText,
+      }
+    ]
+  }
+  const $productSchema = document.createElement('script', { type: 'application/ld+json' });
+  $productSchema.innerHTML = JSON.stringify(productSchema, null, 2);
+  const $head = document.head;
+  $head.append($productSchema);
+}
+
+function createVideoObjectSchemaMarkup() {
+  const videoName = document.querySelector('h1').textContent;
+  const wistiaThumb = getMetadata('wistia-video-thumbnail');
+  const wistiaVideoId = getMetadata('wistia-video-id');
+  const wistiaVideoUrl = `https://fast.wistia.net/embed/iframe/${wistiaVideoId}`;
+  const videoDescription = document.querySelector('meta[property="og:description"]').getAttribute('content');
+  const videoUploadDate = document.lastModified;
+  const videoObjectSchema = {
+    '@context': "http://schema.org/",
+    '@type': 'VideoObject',
+    'name': videoName,
+    'thumbnailUrl': wistiaThumb,
+    'embedUrl': wistiaVideoUrl,
+    'uploadDate': videoUploadDate,
+    'description': videoDescription,
+  }
+  const $videoObjectSchema = document.createElement('script', { type: 'application/ld+json' });
+  $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema, null, 2);
+  const $head = document.head;
+  $head.append($videoObjectSchema);
+}
+
+function createFaqPageSchemaMarkup() {
+  const faqPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [],
+  }
+  document.querySelectorAll('.faq-page-schema .accordion').forEach((tab) => {
+    const q = tab.querySelector('h2').textContent.trim();
+    const a = tab.querySelector('.tabs-content').textContent.replace(/(\n|\n|\r)/gm,"").trim();
+    if (q && a) {
+      faqPageSchema.mainEntity.push({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: a,
+        },
+      })
+    }
+  });
+  const $faqPageSchema = document.createElement('script', { type: 'application/ld+json' });
+  $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema, null, 2);
+  const $head = document.head;
+  $head.append($faqPageSchema);
+}
+
+/**
  * loads everything that doesn't need to be delayed.
  */
 async function loadLazy(doc) {
@@ -1242,6 +1329,26 @@ async function loadLazy(doc) {
   const { hash } = window.location;
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
+
+/**
+ * Calls the Schema markup functions
+ */
+  const schemaVals = getMetadata('schema').split(',');
+  schemaVals.forEach(val => {
+    switch(val.trim()) {
+      case 'Product':
+        createProductSchemaMarkup();
+        break;
+      case 'VideoObject':
+        createVideoObjectSchemaMarkup();
+        break;
+      case 'FAQPage':
+        createFaqPageSchemaMarkup();
+        break;
+      default:
+        break;
+    }
+  });
 
   const headerloaded = loadHeader(header);
   loadFooter(doc.querySelector('footer'));
