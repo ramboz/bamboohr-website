@@ -1244,7 +1244,7 @@ function createProductSchemaMarkup() {
     'aggregateRating': {
       '@type': 'aggregateRating',
       'ratingValue': '4.3',
-      'reviewCount': '593'
+      'reviewCount': '593',
     },
     'review': [
       {
@@ -1333,22 +1333,24 @@ async function loadLazy(doc) {
 /**
  * Calls the Schema markup functions
  */
-  const schemaVals = getMetadata('schema').split(',');
-  schemaVals.forEach(val => {
-    switch(val.trim()) {
-      case 'Product':
-        createProductSchemaMarkup();
-        break;
-      case 'VideoObject':
-        createVideoObjectSchemaMarkup();
-        break;
-      case 'FAQPage':
-        createFaqPageSchemaMarkup();
-        break;
-      default:
-        break;
-    }
-  });
+  if (getMetadata('schema')) {
+    const schemaVals = getMetadata('schema').split(',');
+    schemaVals.forEach(val => {
+      switch(val.trim()) {
+        case 'Product':
+          createProductSchemaMarkup();
+          break;
+        case 'VideoObject':
+          createVideoObjectSchemaMarkup();
+          break;
+        case 'FAQPage':
+          createFaqPageSchemaMarkup();
+          break;
+        default:
+          break;
+      }
+    });
+  };
 
   const headerloaded = loadHeader(header);
   loadFooter(doc.querySelector('footer'));
