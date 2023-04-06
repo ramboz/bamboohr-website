@@ -921,7 +921,7 @@ export async function lookupPages(pathnames, collection, sheet = '') {
     hrGlossary: '/resources/hr-glossary/query-index.json',
     hrvs: '/resources/events/hr-virtual/2022/query-index.json',
     blockInventory: '/blocks/query-index.json',
-    blockTracker: `/website-marketing-resources/block-inventory-tracker.json?sheet=${sheet}`,
+    blockTracker: `/website-marketing-resources/block-inventory-tracker2.json?sheet=${sheet}`,
     resources: `/resources/query-index.json?sheet=resources`,
     speakers: `/speakers/query-index.json`
   };
