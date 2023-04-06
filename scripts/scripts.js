@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
+
 const SEGMENTATION_CONFIG = {
   audiences: {
     'is-customer': {
