@@ -304,6 +304,7 @@ export default async function decorate(block, blockName) {
     indexConfig.indexPath = blockConfig['index-path'];
     indexConfig.indexName = blockConfig['index-name'];
     indexConfig.cardStyle = blockConfig['card-style'];
+    indexConfig.limit = +blockConfig.limit || 0;
     indexConfig.facetStyle = blockConfig['facet-style'] || 'taxonomyV1';
     indexConfig.customLinkText = blockConfig['custom-link-text'];
     indexConfig.excludeMediaType = !!blockConfig['exclude-media-type'] && blockConfig['exclude-media-type'].toLowerCase() === 'yes';
@@ -499,18 +500,55 @@ export default async function decorate(block, blockName) {
     }
   };
 
+  const displayLimitedResults = (results) => {
+    const currentSelected = getSelectedFilters();
+    // If there's a filter on and the results are <100 disable the limit.
+    const limit = currentSelected.length && results.length < 100 ? 0 : indexConfig.limit;
+    const pageEnd = limit ? indexConfig.limitOffset + indexConfig.limit : results.length;
+    const offset = indexConfig.limitOffset || 0;
+    const max = pageEnd > results.length ? results.length : pageEnd;
+    const listingWrapper = block.parentElement;
+    for (let i = offset; i < max; i += 1) {
+      const product = results[i];
+
+      if (indexConfig.cardStyle === 'article') {
+        const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkText);
+        resultsElement.append(articleCard);
+        loadWistiaBlock(product, articleCard);
+      } else resultsElement.append(createAppCard(product, blockName));
+    }
+
+    if (limit) indexConfig.limitOffset += indexConfig.limit;
+
+    // Remove existing load more.
+    const existingLoadMore = listingWrapper.lastElementChild;
+    if (existingLoadMore.classList.contains('load-more-wrapper')) existingLoadMore.remove();
+
+    /* add load more if needed */
+    if (results.length > pageEnd) {
+      const loadMoreWrapper = document.createElement('div');
+      loadMoreWrapper.className = 'listing-limited load-more-wrapper';
+      const loadMore = document.createElement('a');
+      loadMore.className = 'load-more button small light';
+      loadMore.href = '#';
+      loadMore.textContent = 'Load More';
+      loadMoreWrapper.append(loadMore);
+      listingWrapper.append(loadMoreWrapper);
+      loadMore.addEventListener('click', (event) => {
+        event.preventDefault();
+        loadMoreWrapper.remove();
+        displayLimitedResults(results);
+      });
+    }
+
+    highlightResults(resultsElement);
+  };
+
   const displayResults = async (results) => {
     if (theme === 'hrvs') displayHRVSResults(results);
     else {
       resultsElement.innerHTML = '';
-      results.forEach((product) => {
-        if (indexConfig.cardStyle === 'article') {
-          const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkTextm, indexConfig.excludeMediaType);
-          resultsElement.append(articleCard);
-          loadWistiaBlock(product, articleCard);
-        } else resultsElement.append(createAppCard(product, blockName));
-      });
-      highlightResults(resultsElement);
+      displayLimitedResults(results);
     }
 
     window.setTimeout(() => {
@@ -546,6 +584,8 @@ export default async function decorate(block, blockName) {
         locationRestrictions: {},
       };
     }
+
+    if (indexConfig.limit) indexConfig.limitOffset = 0;
     
     const results = await filterResults(theme, filterConfig, facets, indexConfig);
     // eslint-disable-next-line no-nested-ternary

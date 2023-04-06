@@ -512,7 +512,8 @@ main .listing-results .hrvs-card-body a::after {
     font-style: italic;
 }
 
-.listing-group .load-more-wrapper {
+.listing-group .load-more-wrapper,
+.listing-limited.load-more-wrapper {
     text-align: center;
     margin-top: 60px;
 }
@@ -578,32 +579,6 @@ main .article-cards ul > div div a img,
 main .article-cards ul > div div.block.wistia picture {
   box-shadow: var(--box-shadow-2);
   border-radius: 15px;
-}
-
-main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
-    width: 100%;
-    height: 240px;
-    object-fit: contain;
-    border: 2px solid var(--color-gray-1);
-    background-color: var(--color-white);
-}
-
-@media (min-width: 600px) {
-    main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
-        height: 170px;
-    }
-}
-
-@media (min-width: 900px) {
-    main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
-        height: 236px;
-    }
-}
-
-@media (min-width: 1800px) {
-    main .listing.fixed-image-height .listing-results .listing-article-card .listing-article-card-picture img {
-        height: 220px;
-    }
 }
 
 main .article-cards ul > div div h3 {
@@ -860,4 +835,68 @@ main .listing-article-card .listing-article-card-header span:not(:last-child)::a
     display: inline-block;
     margin: 0 2px 0 5px;
     vertical-align: top;
+}
+
+main .listing.one-column .listing-results {
+    display: block;
+}
+
+main .listing.one-column .listing-results .listing-article-card {
+    margin-bottom: 80px;
+}
+
+@media screen and (min-width: 600px) {
+    main .listing.one-column .listing-results .listing-article-card {
+        margin-bottom: 100px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    main .listing.one-column .listing-results .listing-article-card {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        align-content: stretch;
+    }
+
+    main .listing.one-column .listing-results .listing-article-card:nth-child(2n) {
+        flex-direction: row-reverse;
+    }
+}
+
+main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture {
+    margin-bottom: 40px;
+}
+
+@media screen and (min-width: 600px) {
+    main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture {
+        margin-bottom: 60px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture,
+    main .listing.one-column .listing-results .listing-article-card .listing-article-card-body,
+    main .listing.one-column .listing-results .listing-article-card .wistia {
+        margin-bottom: 0;
+        flex: 0 0 auto;
+        width: calc(50% - 20px);
+    }
+}
+
+main .listing.one-column.article-cards ul > div div h3 {
+    font-family: var(--heading-font-family);
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+@media screen and (min-width: 1200px) {
+    main .listing.one-column.article-cards ul > div div h3 {
+        font-size: 36px;
+        line-height: 44px;
+    }
 }

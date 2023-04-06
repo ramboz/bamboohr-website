@@ -8,8 +8,8 @@
 }
 
 @media (min-width: 900px) {
-  .product-updates .section .default-content-wrapper :is(h2, h3, h4, h5, h6, p){
-    width: 83.33%;
+  .product-updates .section .default-content-wrapper :is(h2, h3, h4, h5, h6, p, ul, ol){
+    width: 67.66%;
     margin-left: auto;
     margin-right: auto;
   }
