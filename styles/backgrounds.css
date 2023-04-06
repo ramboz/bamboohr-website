@@ -374,6 +374,17 @@
   /* uses defaults */
 }
 
+/* multi 4 */
+.has-bg > span.bg-right-multi-4 {
+  /* uses defaults */
+}
+
+/* multi 5 */
+.has-bg > span.bg-right-multi-5 {
+  max-width: 100%;
+  max-height: 88%;
+}
+
 @media (max-width: 599px) {
   .has-bg > span.bg-right-multi-3 > svg {
     flex: 1 0 0;
