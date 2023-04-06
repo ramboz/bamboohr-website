@@ -106,14 +106,14 @@ main .upcoming-article-card .upcoming-article-card-picture img {
     main .upcoming-results {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-gap: 30px;
+        grid-gap: 40px;
     }
 
     main .upcoming-article-card:first-child {
         grid-column: 1 / -1;
         display: flex;
         column-gap: 40px;
-        margin-bottom: 20px;
+        margin-bottom: 50px;
         align-items: center;
     }
 
@@ -141,11 +141,9 @@ main .upcoming-article-card .upcoming-article-card-picture img {
     main .upcoming-results > div {
         width: calc(100% / 3);
     }
-}
 
-@media (min-width: 1800px) {
     main .upcoming-article-card:first-child {
-        margin-bottom: 50px;
+        margin-bottom: 100px;
     }
 }
 
