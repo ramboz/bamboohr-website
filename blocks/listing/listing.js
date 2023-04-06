@@ -49,13 +49,14 @@ function getLinkText(format, mediaType) {
   return linkText;
 }
 
-export function createArticleCard(article, classPrefix, customLinkText = '', eager = false) {
+export function createArticleCard(article, classPrefix, customLinkText = '', excludeMediaType = false, eager = false) {
   const title = article.title.split(' | ')[0];
   const card = document.createElement('div');
   let articleCategory = [article.category, article.topic, article.planType, article.productArea, article.contentType, article.brandedContent];
   articleCategory = articleCategory.filter((str) => (str !== '' && str !== undefined)).join(' | ');
 
-  const articleFormat = article?.format || article?.mediaType || '';
+  const articleMediaType = excludeMediaType === false ? article.mediaType : '';
+  const articleFormat = article?.format || articleMediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
   let articlePicture = '';
@@ -305,6 +306,7 @@ export default async function decorate(block, blockName) {
     indexConfig.cardStyle = blockConfig['card-style'];
     indexConfig.facetStyle = blockConfig['facet-style'] || 'taxonomyV1';
     indexConfig.customLinkText = blockConfig['custom-link-text'];
+    indexConfig.excludeMediaType = !!blockConfig['exclude-media-type'] && blockConfig['exclude-media-type'].toLowerCase() === 'yes';
     indexConfig.excludeSearch = blockConfig['exclude-search'];
     excludeSearch = indexConfig.excludeSearch;
   } else {
@@ -503,7 +505,7 @@ export default async function decorate(block, blockName) {
       resultsElement.innerHTML = '';
       results.forEach((product) => {
         if (indexConfig.cardStyle === 'article') {
-          const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkText);
+          const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkTextm, indexConfig.excludeMediaType);
           resultsElement.append(articleCard);
           loadWistiaBlock(product, articleCard);
         } else resultsElement.append(createAppCard(product, blockName));
