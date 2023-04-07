@@ -1,3 +1,5 @@
+import { adobeEventTracking } from '../form/form.js';
+
 // mobile vs desktop
 const mediaQueryPhone = window.matchMedia('(max-width: 599px)');
 const mediaQueryStacked = window.matchMedia('(max-width: 784px)');
@@ -55,6 +57,11 @@ function openTab(e) {
     target.setAttribute('aria-selected', true);
     const content = parent.querySelector(`[aria-labelledby="${target.id}"]`);
     content.setAttribute('aria-hidden', false);
+
+     /* Adobe tab name click events tracking */
+     adobeEventTracking('Tab Name Click', {
+       "tab_title": target.innerText
+     });
   } else if ((mediaQueryPhone.matches && !parent.classList.contains('style-1') && !parent.classList.contains('style-2'))
     || parent.classList.contains('style-3')
     || (mediaQueryStacked.matches && parent.classList.contains('style-4'))) {
