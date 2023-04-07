@@ -171,6 +171,9 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
   cols.forEach((col, i) => {
     if (splitVals) col.classList.add(`column${splitVals[i + extraSplits]}`);
 
+    const anchor = col.querySelector('a');
+    // const hRef = col.querySelector('a')?.href;
+
     if (col.innerText.toLowerCase() === 'title span') {
       if (colParent.nextElementSibling) {
         const secondRowCols = [...colParent.nextElementSibling.children];
@@ -179,7 +182,7 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
 
       cols[1].classList.add('columns-title-span');
       colsToRemove.push(col);
-    } else if (col.querySelector('a')?.href?.includes('wistia')) {
+    } else if (anchor?.href?.includes('wistia')) {
       addWistia(col, loadWistiaCSS);
       loadWistiaCSS = false;
       hasImage = true;
@@ -188,6 +191,25 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
       if (!col.parentElement.classList.contains('column-flex-container')) {
         col.parentElement.classList.add('column-flex-container', 'columns-align-start');
       }
+    } else if (anchor?.href?.endsWith('.mp4')) {
+      const video = document.createElement('video');
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      // video.videoWidth = 740;
+      const videoSrc = document.createElement('source');
+      //<source src="movie.mp4" type="video/mp4"></source>
+      // videoSrc.src = anchor.pathname;
+      videoSrc.src = anchor.innerText;
+      videoSrc.setAttribute('type', 'video/mp4');
+
+      video.append(videoSrc);
+
+      col.append(video);
+
+      anchor.remove();
+
+      hasImage = true;
     } else if (col.querySelector('img')) {
       col.classList.add('img-col');
       hasImage = true;
