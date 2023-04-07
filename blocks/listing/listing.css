@@ -900,3 +900,8 @@ main .listing.one-column.article-cards ul > div div h3 {
         line-height: 44px;
     }
 }
+
+main .listing.one-column .listing-results .listing-article-card .listing-article-card-header {
+    margin-top: 20px;
+    color: var(--color-1-shade-10);
+}
