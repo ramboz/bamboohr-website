@@ -1,6 +1,7 @@
 import { hasClassStartsWith, getValuesFromClassName, loadCSS } from '../../scripts/scripts.js';
 import decorateWistia from '../wistia/wistia.js';
 import { buildPicture } from '../multi-hero/multi-hero.js';
+import decorateVideo from '../video/video.js';
 
 function addBreakpointImages(col, block) {
   if (block.classList.contains('has-breakpoint-images')) {
@@ -95,6 +96,25 @@ function addIconContainer(col) {
       if (iconContainer.children) col.appendChild(iconContainer);
     }
   }
+}
+
+function addVideo(col) {
+  const videoBlock = document.createElement('div');
+  videoBlock.classList.add('video', 'block');
+
+  const colChildren = [...col.children];
+
+  colChildren?.forEach((child) => {
+    if ((child.tagName === 'A' && child.href?.endsWith('.mp4')) ||
+        child.querySelector('a')?.href?.endsWith('.mp4')) {
+      videoBlock.append(child);
+    }
+  });
+
+  col.append(videoBlock);
+  decorateVideo(videoBlock);
+
+  col.classList.add('img-col');
 }
 
 function hasOnlyWistiaChildren(colChildren) {
@@ -192,24 +212,12 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
         col.parentElement.classList.add('column-flex-container', 'columns-align-start');
       }
     } else if (anchor?.href?.endsWith('.mp4')) {
-      const video = document.createElement('video');
-      video.autoplay = true;
-      video.muted = true;
-      video.loop = true;
-      // video.videoWidth = 740;
-      const videoSrc = document.createElement('source');
-      //<source src="movie.mp4" type="video/mp4"></source>
-      // videoSrc.src = anchor.pathname;
-      videoSrc.src = anchor.innerText;
-      videoSrc.setAttribute('type', 'video/mp4');
-
-      video.append(videoSrc);
-
-      col.append(video);
-
-      anchor.remove();
-
+      addVideo(col);
       hasImage = true;
+
+      if (!col.parentElement.classList.contains('column-flex-container')) {
+        col.parentElement.classList.add('column-flex-container', 'columns-align-start');
+      }
     } else if (col.querySelector('img')) {
       col.classList.add('img-col');
       hasImage = true;
