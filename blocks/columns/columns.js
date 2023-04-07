@@ -192,7 +192,6 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
     if (splitVals) col.classList.add(`column${splitVals[i + extraSplits]}`);
 
     const anchor = col.querySelector('a');
-    // const hRef = col.querySelector('a')?.href;
 
     if (col.innerText.toLowerCase() === 'title span') {
       if (colParent.nextElementSibling) {
