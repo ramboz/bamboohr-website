@@ -98,6 +98,11 @@ body.pricing-quote {
   background-color: var(--color-1-tint-10);
 }
 
+.pricing-quote main .multi-cta-cards .button-container a[data-modal].button {
+  color: var(--color-1-shade-10);
+  background-color: unset;
+}
+
 /* Quote */
 .pricing-quote main .section.bg-bottom-single-1 .quote {
   margin-top: 100px;
