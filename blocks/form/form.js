@@ -515,10 +515,12 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           formEl.querySelector('input[name="readyTalkMeetingID"]').value = readyTalkMeetingID;
         }
 
-        const modalUrl = formEl.closest('.modal-wrapper').dataset.url;
-        const searchParams = getUrlSearchParams(modalUrl);
-        const requestTypeInput = formEl.querySelector('input[name="Request_Type__c"]');
-        if (requestTypeInput && searchParams?.requestType) requestTypeInput.value = searchParams.requestType;
+        const modalUrl = formEl.closest('.modal-wrapper')?.dataset.url;
+        if (modalUrl) {
+          const searchParams = getUrlSearchParams(modalUrl);
+          const requestTypeInput = formEl.querySelector('input[name="Request_Type__c"]');
+          if (requestTypeInput && searchParams?.requestType) requestTypeInput.value = searchParams.requestType;
+        }
 
         const formSubmitText = getMetadata('form-submit-text');
         const formSubmitBtn = formEl.querySelector('.mktoButton');
