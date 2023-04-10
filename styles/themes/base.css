@@ -621,6 +621,13 @@
   line-height: 36px;
 }
 
+#base .title-size-title-1 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font-family);
+	font-weight: 700;
+	font-size: 26px;
+	line-height: 30px;
+}
+
 #base .title-color-gray-9 :is(h1, h2, h3, h4, h5, h6) {
   color: var(--color-gray-9);
 }
