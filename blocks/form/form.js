@@ -483,6 +483,18 @@ export function adobeEventTracking(event, componentData) {
   });
 }
 
+function getUrlSearchParams(url) {
+  const modalUrl = new URL(url);
+  const requestType = modalUrl.searchParams?.get('requestType');
+  let searchParamObj = {};
+  if (requestType) {
+    searchParamObj = {
+      requestType
+    };
+  }
+  return searchParamObj;
+}
+
 function loadFormAndChilipiper(formId, successUrl, chilipiper) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -502,6 +514,11 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         if (readyTalkMeetingID && readyTalkEl) {
           formEl.querySelector('input[name="readyTalkMeetingID"]').value = readyTalkMeetingID;
         }
+
+        const modalUrl = formEl.closest('.modal-wrapper').dataset.url;
+        const searchParams = getUrlSearchParams(modalUrl);
+        const requestTypeInput = formEl.querySelector('input[name="Request_Type__c"]');
+        if (requestTypeInput && searchParams?.requestType) requestTypeInput.value = searchParams.requestType;
 
         const formSubmitText = getMetadata('form-submit-text');
         const formSubmitBtn = formEl.querySelector('.mktoButton');
