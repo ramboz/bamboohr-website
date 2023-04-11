@@ -7,7 +7,7 @@ const loadVideo = (block) => {
 
   if (anchor?.href?.endsWith('.mp4')) {
     block.innerHTML = `
-      <video autoplay muted loop>
+      <video autoplay muted loop playsinline>
         <source src="${anchor.innerText}" type="video/mp4">
       </video>`;
 
