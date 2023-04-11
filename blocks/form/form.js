@@ -483,9 +483,9 @@ export function adobeEventTracking(event, componentData) {
   });
 }
 
-function getUrlSearchParams(url) {
-  const modalUrl = new URL(url);
-  const requestType = modalUrl.searchParams?.get('requestType');
+function getMktoSearchParams(url) {
+  const link = new URL(url);
+  const requestType = link.searchParams?.get('requestType');
   let searchParamObj = {};
   if (requestType) {
     searchParamObj = {
@@ -517,7 +517,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
 
         const modalUrl = formEl.closest('.modal-wrapper')?.dataset.url;
         if (modalUrl) {
-          const searchParams = getUrlSearchParams(modalUrl);
+          const searchParams = getMktoSearchParams(modalUrl);
           const requestTypeInput = formEl.querySelector('input[name="Request_Type__c"]');
           if (requestTypeInput && searchParams?.requestType) requestTypeInput.value = searchParams.requestType;
         }
