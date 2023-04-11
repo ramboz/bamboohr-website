@@ -384,6 +384,10 @@ indices:
         select: head > meta[name="wistia-video-id"]
         value: |
           attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
 
   virtual-user-groups:
     include:
@@ -410,3 +414,11 @@ indices:
         select: head > meta[name="event-date-and-time"]
         value: |
           attribute(el, 'content')
+      hideFromLibrary:
+        select: head > meta[name="hide-from-library"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
