@@ -281,6 +281,19 @@
     border-radius: 1rem;
 }
 
+.cards.background.hover-background > .card {
+    background-color: transparent;
+}
+
+.cards.background.hover-background > .card:hover {
+    background-color: var(--color-white);
+}
+
+.cards.background.asymmetric-border-1 > .card {
+    border-radius: 40px 15px 100px;
+}
+
+
 .cards.background > .card:not(.full) {
     --padding: 2.5rem;
 }
