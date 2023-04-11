@@ -8,13 +8,14 @@ function getModalId(path) {
 export default async function decorate(block) {
 
   if (block.innerHTML === '') {
-    const openModal = async (a, url) => {
+    const openModal = async (a, url, hasSearchParam = false) => {
       a.addEventListener('click', async (e) => {
         e.preventDefault();
         const path = new URL(url).pathname;
         const modalId = getModalId(path);
         const elem = document.getElementById(modalId);
-        if (!elem) {
+        if (!elem || hasSearchParam) {
+          if (hasSearchParam) block.innerHTML = '';
           const wrapper = document.createElement('div');
           wrapper.className = 'modal-wrapper';
           wrapper.id = modalId;
@@ -59,7 +60,8 @@ export default async function decorate(block) {
         a.dataset.modal = modalId;
         const url = a.href;
         a.href = '#';
-        openModal(a, url);
+        const hasSearchParam = new URL(url).search.length > 0;
+        openModal(a, url, hasSearchParam);
       }
     });
   }
