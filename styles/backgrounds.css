@@ -661,7 +661,8 @@
 }
 
 /* gradient industry */
-.has-bg > span[class*='bg-gradient-'] {
+.has-bg > span[class*='bg-gradient-'],
+.has-bg > span[class*='bg-solid-'] {
   top: 0;
   bottom: 0;
   z-index: -2;
@@ -686,4 +687,8 @@
 
 .has-bg > span.bg-gradient-tint-15-reverse {
   background-image: linear-gradient(var(--theme-tint15) 50%, var(--color-white) 100%);
+}
+
+.has-bg > span.bg-solid-gray-1 {
+  background-color: var(--color-gray-1);
 }
