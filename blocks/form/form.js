@@ -614,7 +614,7 @@ export default async function decorate(block) {
       ) {
         formUrl = entry.Form;
         let fbTracking = '';
-        if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php'
+        if ((entry.Success === '' && window.location.pathname.includes('/resources/')) || (entry.Success === '' && window.location.pathname.includes('/webinars/'))) fbTracking = '&fbTracking=success.php'
         successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
         chilipiper = entry.Chilipiper;
       }
