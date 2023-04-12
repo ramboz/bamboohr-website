@@ -214,6 +214,10 @@
     box-shadow: var(--box-shadow-3);
 }
 
+.bhr-home .columns .block.video video {
+    max-width: 140%;
+}
+
 .bhr-home .section-2 {
     margin-top: -1450px;
 }
@@ -490,7 +494,7 @@
       margin: 0 auto 20px;
     }
 
-    .bhr-home .columns.img-stacked-80 .img-col {
+    .bhr-home .columns.img-stacked-80 .img-col:not(.video-col) {
         width: 80%;
     }
   

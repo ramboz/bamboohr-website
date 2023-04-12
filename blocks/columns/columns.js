@@ -114,7 +114,8 @@ function addVideo(col) {
   col.append(videoBlock);
   decorateVideo(videoBlock);
 
-  col.classList.add('img-col');
+  col.classList.remove('button-container');
+  col.classList.add('img-col', 'video-col');
 }
 
 function hasOnlyWistiaChildren(colChildren) {
