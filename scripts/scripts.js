@@ -50,9 +50,15 @@ function readCookie(name) {
  */
 function getBhrFeaturesCookie() {
   const value = readCookie('bhr_features');
+  const decryptedValue = atob(value);
   try {
-    return JSON.parse(value);
-  } catch (err) {
+    return JSON.parse(decryptedValue);
+  } catch (err) {	  
+	  try{
+		  return JSON.parse(value);
+	  } catch (err) {
+		  return {};
+	  }
     return {};
   }
 }
