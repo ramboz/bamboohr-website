@@ -50,8 +50,8 @@ function readCookie(name) {
  */
 function getBhrFeaturesCookie() {
   const value = readCookie('bhr_features');
-  const decryptedValue = atob(value);
   try {
+  	const decryptedValue = atob(value);
     return JSON.parse(decryptedValue);
   } catch (err) {	  
 	  try{
