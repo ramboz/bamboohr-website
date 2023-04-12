@@ -514,3 +514,91 @@ main .carousel.style-3 ~ .carousel-controls button.disabled::after {
 main .carousel.style-3 ~ .carousel-controls button.prev {
   transform: rotate(180deg);
 }
+
+/* style 5 */
+main .carousel.style-5 picture {
+  position: unset;
+}
+
+main .carousel.style-5 img {
+  width: auto;
+  height: auto;
+}
+
+main .carousel.style-5 .carousel-image {
+  margin: 0 90px;
+  margin-bottom: -100px;
+  z-index: 1;
+}
+
+main .carousel.style-5 {
+  box-shadow: unset;
+  border-radius: unset;
+  margin-right: calc(calc(calc(100vw - 100%) - var(--scrollbar-width)) / -2);
+}
+
+main .carousel.style-5 > div {
+  height: unset;
+  max-height: unset;
+
+  flex-direction: column;
+  max-width: 360px;
+  margin-right: 40px;
+  background-image: unset;
+}
+
+main .carousel.style-5 div.carousel-text {
+  width: unset;
+  height: 100%;
+
+  background-color: var(--color-gray-1);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow-2);
+  margin-bottom: 40px;
+  padding: 32px;
+  text-align: left;
+  color: var(--color-gray-12);
+}
+
+main .carousel.style-5 div.carousel-text h2 {
+  margin: 0;
+}
+
+main .carousel.style-5 div.carousel-text h4 {
+  color: var(--theme-shade10);
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+main .carousel.style-5 div.carousel-text h5:first-of-type {
+  color: var(--theme-shade10);
+  text-align: center;
+  margin-top: 90px;
+}
+
+main .carousel.style-5 div.carousel-text h5 {
+  font-family: var(--body-font-family);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+main .carousel.style-5 div.carousel-text p {
+  margin-bottom: 0;
+}
+
+main .carousel-buttons.style-5 button {
+  height: 6px;
+  width: 85px;
+  margin: 10px 1px;
+  border-radius: unset;
+  background-color: var(--color-gray-3);
+}
+
+main .carousel-buttons.style-5 button.selected {
+  background-color: var(--color-1);
+}

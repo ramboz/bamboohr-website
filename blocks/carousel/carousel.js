@@ -48,14 +48,28 @@ export default function decorate(block) {
   const buttons = document.createElement('div');
   const autoPlayList = [];
   let carouselInterval = null;
+  const isStyle5 = block.classList.contains('style-5');
 
   // dots
   buttons.className = 'carousel-buttons';
+  if (isStyle5) buttons.classList.add('style-5');
   [...block.children].forEach((row, i) => {
     // set classes
     [...row.children].forEach((child) => {
-      if (child.querySelector('picture')) {
-        child.classList.add('carousel-image');
+      const pic = child.querySelector('picture');
+      if (pic) {
+        if (isStyle5) {
+          const picOrigParent = pic.parentElement;
+          const picDiv = document.createElement('div');
+          picDiv.classList.add('carousel-image');
+          picDiv.append(pic);
+          if (picOrigParent.children.length === 0) picOrigParent.remove();
+          child.parentElement.insertBefore(picDiv, child);
+
+          child.classList.add('carousel-text');
+        } else {
+          child.classList.add('carousel-image');
+        }
       } else {
         child.classList.add('carousel-text');
       }
