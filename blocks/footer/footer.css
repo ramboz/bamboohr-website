@@ -13,6 +13,10 @@ footer .footer {
   display: grid;
 }
 
+footer.footer-limited .footer {
+	grid-template-areas: 'links' 'brand' 'legal';
+}
+
 footer .footer h3 {
 	color: var(--color-white);
     font-size: 20px;
@@ -22,7 +26,8 @@ footer .footer h3 {
     margin: 0 0 20px;
 }
 
-footer .footer p {
+footer .footer p,
+footer.footer-limited .links ul {
 	margin: 0;
 	font-size: 14px;
 	line-height: 24px;
@@ -138,6 +143,17 @@ footer .footer div[aria-hidden="true"] {
 		margin-right: 20px;
 	}
 }
+@media (min-width: 800px) {
+	footer.footer-limited .footer {
+		grid-template-areas: 'links brand' 'legal legal';
+		column-gap: 40px;
+	}
+
+	footer.footer-limited .footer .links {
+		margin-bottom: 0;
+	}
+}
+
 @media (min-width: 900px) {
 	footer .footer {
 		grid-template-areas: 'company support compare blog' 'links links links social' 'links links links brand' 'legal legal legal legal';
@@ -150,6 +166,10 @@ footer .footer div[aria-hidden="true"] {
 @media (min-width: 1200px) {
 	footer {
 		padding: 120px 30px 60px;
+	}
+
+	footer.footer-limited {
+		padding: 40px 30px 60px;
 	}
 
 	footer .footer .blog,

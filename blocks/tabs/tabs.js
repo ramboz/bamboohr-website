@@ -1,14 +1,42 @@
+import { adobeEventTracking } from '../form/form.js';
+
 // mobile vs desktop
 const mediaQueryPhone = window.matchMedia('(max-width: 599px)');
+const mediaQueryStacked = window.matchMedia('(max-width: 784px)');
 const mediaQueryTablet = window.matchMedia('(max-width: 1024px)');
+
+function getIconParent(elem) {
+  let e = elem;
+  if (e.tagName === 'path') e = e.parentNode;
+  if (e.tagName === 'g') e = e.parentNode;
+  if (e.tagName === 'svg') e = e.parentNode;
+
+  return e;
+}
+
+function isIconElem(elem) {
+  if (elem.tagName === 'path' || elem.tagName === 'g' || elem.tagName === 'svg') return true;
+
+  return false;
+}
 
 function openTab(e) {
   let { target } = e;
   let parent = target.parentNode;
   const twoup = parent.parentNode;
-  if (twoup?.classList.contains('click-not-hover') && parent.classList.contains('tabs-title')) {
+  if ((twoup?.classList.contains('click-not-hover') || twoup?.classList.contains('style-4'))
+      && parent.classList.contains('tabs-title')) {
     target = parent;
     parent = target.parentNode;
+  } else if (isIconElem(target)) {
+    const iconTarget = getIconParent(target);
+    const iconParent = iconTarget?.parentNode;
+    const iconTwoup = iconParent?.parentNode;
+
+    if (iconTwoup?.classList.contains('style-4') && iconParent?.classList.contains('tabs-title')) {
+      target = iconParent;
+      parent = target.parentNode;
+    }
   }
   const selected = target.getAttribute('aria-selected') === 'true';
 
@@ -29,8 +57,14 @@ function openTab(e) {
     target.setAttribute('aria-selected', true);
     const content = parent.querySelector(`[aria-labelledby="${target.id}"]`);
     content.setAttribute('aria-hidden', false);
+
+     /* Adobe tab name click events tracking */
+     adobeEventTracking('Tab Name Click', {
+       "tab_title": target.innerText
+     });
   } else if ((mediaQueryPhone.matches && !parent.classList.contains('style-1') && !parent.classList.contains('style-2'))
-    || parent.classList.contains('style-3')) {
+    || parent.classList.contains('style-3')
+    || (mediaQueryStacked.matches && parent.classList.contains('style-4'))) {
     target.setAttribute('aria-selected', false);
     const content = parent.querySelector(`[aria-labelledby="${target.id}"]`);
     content.setAttribute('aria-hidden', true);
@@ -123,6 +157,7 @@ export default function decorate(block) {
     const title = tab.querySelector('h2');
     const anchor = title.querySelector('a');
     const open = title.querySelector('strong') !== null; // bold title indicates auto-open tab
+    const icon = tab.querySelector('span.icon');
     let titleElement;
     const content = tab.querySelector('div');
 
@@ -162,6 +197,16 @@ export default function decorate(block) {
       if (block.classList.contains('click-not-hover')) {
         titleElement.addEventListener('click', openTab);
       } else titleElement.addEventListener('mouseover', openTab);
+    } else if (icon && block.classList.contains('style-4')) {
+
+      titleElement = document.createElement('div');
+
+      titleElement.setAttribute('id', title.getAttribute('id'));
+      title.removeAttribute('id');
+      titleElement.append(icon, title);
+      titleElement.addEventListener('click', openTab);
+      
+
     } else {
       titleElement = title;
       titleElement.innerHTML = title.textContent;
