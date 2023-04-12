@@ -53,13 +53,12 @@ function getBhrFeaturesCookie() {
   try {
   	const decryptedValue = atob(value);
     return JSON.parse(decryptedValue);
-  } catch (err) {	  
+  } catch (err1) {	  
 	  try{
 		  return JSON.parse(value);
-	  } catch (err) {
+	  } catch (err2) {
 		  return {};
 	  }
-    return {};
   }
 }
 
