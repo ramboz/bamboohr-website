@@ -843,6 +843,10 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   margin-bottom: -72px;
 }
 
+.columns.first-heading-no-margin .non-img-col :is(h2:first-of-type, h3:first-of-type, h4:first-of-type, h5:first-of-type, h6:first-of-type) {
+  margin-top: 0;
+}
+
 .columns[class*='background-card-color-'] {
   padding: 10px 60px;
   margin: 0 -60px;
