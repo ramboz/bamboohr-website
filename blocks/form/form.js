@@ -237,7 +237,7 @@ function createTextarea(fd) {
   return textarea;
 }
 
-function createLabel(fd) {
+export function createLabel(fd) {
   const label = document.createElement('label');
   if (fd.Label) {
     label.setAttribute('for', fd.Field);
