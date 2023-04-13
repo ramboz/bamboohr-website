@@ -186,7 +186,7 @@ function createButton(fd) {
   return button;
 }
 
-function createInput(fd) {
+export function createInput(fd) {
   const input = document.createElement('input');
   input.type = fd.Type;
   input.id = fd.Field;
