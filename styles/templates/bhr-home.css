@@ -630,14 +630,14 @@
 }
 
 /* even out card cta icons */
-.bhr-home .homepagev2 .cards.cta .icon.icon-clipboard-heart svg {
+.bhr-home .homepagev2 .cards.cta .icon.icon-clipboard-heart {
     height: 2.5rem;
-    width: auto;
+    width: 3rem;
 }
 
-.bhr-home .homepagev2 .cards.cta .icon.icon-video-call svg {
+.bhr-home .homepagev2 .cards.cta .icon.icon-video-call {
     height: 2rem;
-    width: auto;
+    width: 3rem;
 }
 
 .bhr-home main .logos.partner-logos ul li picture {

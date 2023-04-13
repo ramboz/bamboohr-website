@@ -1339,6 +1339,7 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     await decorateMain(main);
+    if (window.innerWidth >= 900) loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
     await waitForLCP();
   }
 }
@@ -1484,7 +1485,8 @@ async function loadLazy(doc) {
 
   const headerloaded = loadHeader(header);
   loadFooter(doc.querySelector('footer'));
-
+  
+  loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon('https://www.bamboohr.com/favicon.ico');
 

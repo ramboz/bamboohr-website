@@ -9,6 +9,11 @@
   padding: 9px;
   color: #9CA393;
 }
+.nav-search-btn .icon-search {
+  height: 18px;
+  width: 18px;
+  display: inline-block;
+}
 
 .nav-search-btn .icon-search svg {
   color: var(--color-1);
