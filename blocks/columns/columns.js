@@ -1,6 +1,7 @@
 import { hasClassStartsWith, getValuesFromClassName, loadCSS } from '../../scripts/scripts.js';
 import decorateWistia from '../wistia/wistia.js';
 import { buildPicture } from '../multi-hero/multi-hero.js';
+import decorateVideo from '../video/video.js';
 
 function addBreakpointImages(col, block) {
   if (block.classList.contains('has-breakpoint-images')) {
@@ -97,6 +98,26 @@ function addIconContainer(col) {
   }
 }
 
+function addVideo(col) {
+  const videoBlock = document.createElement('div');
+  videoBlock.classList.add('video', 'block');
+
+  const colChildren = [...col.children];
+
+  colChildren?.forEach((child) => {
+    if ((child.tagName === 'A' && child.href?.endsWith('.mp4')) ||
+        child.querySelector('a')?.href?.endsWith('.mp4')) {
+      videoBlock.append(child);
+    }
+  });
+
+  col.append(videoBlock);
+  decorateVideo(videoBlock);
+
+  col.classList.remove('button-container');
+  col.classList.add('img-col', 'video-col');
+}
+
 function hasOnlyWistiaChildren(colChildren) {
   let hasWistiaChildrenOnly = false;
   // Assumption: wistia block content is thumbnail (picture) + wistia link or just wistia link 
@@ -171,6 +192,8 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
   cols.forEach((col, i) => {
     if (splitVals) col.classList.add(`column${splitVals[i + extraSplits]}`);
 
+    const anchor = col.querySelector('a');
+
     if (col.innerText.toLowerCase() === 'title span') {
       if (colParent.nextElementSibling) {
         const secondRowCols = [...colParent.nextElementSibling.children];
@@ -179,11 +202,18 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
 
       cols[1].classList.add('columns-title-span');
       colsToRemove.push(col);
-    } else if (col.querySelector('a')?.href?.includes('wistia')) {
+    } else if (anchor?.href?.includes('wistia')) {
       addWistia(col, loadWistiaCSS);
       loadWistiaCSS = false;
       hasImage = true;
       hasWistia = true;
+
+      if (!col.parentElement.classList.contains('column-flex-container')) {
+        col.parentElement.classList.add('column-flex-container', 'columns-align-start');
+      }
+    } else if (anchor?.href?.endsWith('.mp4')) {
+      addVideo(col);
+      hasImage = true;
 
       if (!col.parentElement.classList.contains('column-flex-container')) {
         col.parentElement.classList.add('column-flex-container', 'columns-align-start');

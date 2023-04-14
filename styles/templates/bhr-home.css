@@ -36,6 +36,11 @@
     margin-bottom: 50px;
 }
 
+.bhr-home main .tabs.style-4 h2 {
+    font-size: 14px;
+    line-height: 22px;
+}
+
 .bhr-home .columns h3,
 .bhr-home .tabs.style-4 .tabs-content h3 {
     margin-top: 0;
@@ -106,6 +111,11 @@
     line-height: 30px;
     color: var(--color-white);
 }
+
+.bhr-home .columns p:last-child > em {
+    font-size: 14px;
+    line-height: 24px;
+  }
 
 .bhr-home .columns.stacked-spacing > div > div:last-of-type {
     margin-top: 50px;
@@ -202,6 +212,10 @@
 .bhr-home .block.wistia picture {
     --radius: 1rem;
     box-shadow: var(--box-shadow-3);
+}
+
+.bhr-home .columns .block.video video {
+    max-width: 140%;
 }
 
 .bhr-home .section-2 {
@@ -406,6 +420,19 @@
     .bhr-home .image.bg-home-section-2-middle-1 {
         display: none;
     }
+
+    .bhr-home main .tabs.style-4 .tabs-title {
+        width: unset;
+    }
+
+    .bhr-home main .tabs.style-4 h2 {
+        font-size: 18px;
+        line-height: 24px;
+    }
+
+    .bhr-home main .tabs.style-4 .tabs-title span.icon {
+        display: none;
+    }
 }
 
 @media (min-width: 785px) {
@@ -448,6 +475,14 @@
     }
 }
 
+@media (min-width: 785px) {
+    .bhr-home main .tabs.style-4 .tabs-title {
+        padding: 30px 20px;
+        width: 19.6%;
+        padding-bottom: 20px;
+    }
+}
+
 @media (max-width: 1024px) {
     .bhr-home div .column-flex-container {
       flex-flow: column;
@@ -459,7 +494,7 @@
       margin: 0 auto 20px;
     }
 
-    .bhr-home .columns.img-stacked-80 .img-col {
+    .bhr-home .columns.img-stacked-80 .img-col:not(.video-col) {
         width: 80%;
     }
   
@@ -531,6 +566,10 @@
         column-gap: 1rem;
       grid-template-columns: 1fr 1fr;
     }
+
+    .bhr-home main .tabs.style-4 .tabs-title {
+        width: 19.7%;
+    }
 }
 
 @media (min-width: 1200px) {
@@ -538,21 +577,31 @@
         margin-top: 13%;
     }
 
+    .bhr-home .columns.title1-heading h1 {
+        font-size: 60px;
+        line-height: 70px;
+      }
+
     .bhr-home .columns.bottom-cta h2 {
         font-size: 48px;
         line-height: 60px;
     }
 }
 
-@media (min-width: 1490px) {
+@media (min-width: 1306px) {
     .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
-        max-width: 1410px;
+        max-width: 1100px;
+    }
+
+    .bhr-home main .tabs.style-4 .tabs-title {
+        padding: 30px 20px;
+        width: 19.8%;
     }
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1490px) {
     .bhr-home main .section.homepagev2 > .tabs-wrapper.variable-width {
-        max-width: 1520px;
+        max-width: 1400px;
     }
 }
 
