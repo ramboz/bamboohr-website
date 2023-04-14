@@ -83,10 +83,10 @@ function formSubmitHandler(form) {
 
 	if (form.id === 'individual-form') {
 		const newEmployeeSalary = form.elements.newEmployeeSalary.value
-		const hoursSpendOnOnboarding = form.elements.hoursSpendOnOnboarding.value
-		const hrSalaryForOnboardingTasks = form.elements.hrSalaryForOnboardingTasks.value
-		const hrHoursSpentOnboarding = form.elements.hrHoursSpentOnboarding.value
-		const salarayManagerNewEmployee = form.elements.salarayManagerNewEmployee.value
+		const newEmployeeHoursSpendOnboarding = form.elements.newEmployeeHoursSpendOnboarding.value
+		const hrStaffSalaryForOnboardingTasks = form.elements.hrStaffSalaryForOnboardingTasks.value
+		const hrHoursSpentOnboardingProcess = form.elements.hrHoursSpentOnboardingProcess.value
+		const salarayManagerOfNewEmployee = form.elements.salarayManagerOfNewEmployee.value
 		const managerHoursSpentOnboarding = form.elements.managerHoursSpentOnboarding.value
 		const newEmployeeRelocationCost = form.elements.newEmployeeRelocationCost.value
 		const workstationCost = form.elements.workstationCost.value
