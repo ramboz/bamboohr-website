@@ -1340,6 +1340,10 @@ async function loadEager(doc) {
   if (main) {
     await decorateMain(main);
     if (window.innerWidth >= 900) loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
+    if (sessionStorage.getItem('lazy-styles-loaded')) {
+      loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
+      loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+    }
     await waitForLCP();
   }
 }
@@ -1488,6 +1492,7 @@ async function loadLazy(doc) {
   
   loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('lazy-styles-loaded', 'true');
   addFavIcon('https://www.bamboohr.com/favicon.ico');
 
   if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === 'localhost') {
