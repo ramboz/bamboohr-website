@@ -198,6 +198,7 @@ function loadTemplateCSS() {
       'bhr-comparison',
       'bhr-home',
       'ee-solution',
+      'events',
       'hr-glossary',
       'hr-software',
       'hr-software-payroll',

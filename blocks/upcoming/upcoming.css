@@ -48,7 +48,15 @@ main .upcoming-results .upcoming-article-card:first-child h4 {
     letter-spacing: 2px;
 }
 
-main .upcoming-results h5:empty {
+main .upcoming-article-card h6 {
+  font-family: var(--body-font-family);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+  margin: 0;
+}
+
+main .upcoming-results :is(h5, h6):empty {
     display: none;
 }
 
@@ -149,7 +157,8 @@ main .upcoming-article-card .upcoming-article-card-picture img {
     }
 }
 
-main .upcoming .upcoming-results .upcoming-article-card .upcoming-article-card-category {
+main .upcoming .upcoming-results .upcoming-article-card .upcoming-article-card-category,
+main .upcoming .upcoming-results .upcoming-article-card .info-option-4 {
     font-size: 14px;
     line-height: 1.3;
     margin-bottom: 20px;
