@@ -164,8 +164,8 @@ function createFields(fields) {
 	
 		switch (Type) {
 			case 'range': 
-			divFieldItem.append(createLabel(item))
-			divFieldItem.append(createRangeInput(Type, Options, Field))
+				divFieldItem.append(createLabel(item))
+				divFieldItem.append(createRangeInput(Type, Options, Field))
 			break;
 			default:
 				divFieldItem.append(createLabel(item))
