@@ -64,8 +64,65 @@ function calcOrganisationCost(onboardingData) {
 }
 
 function calcIndividualCost(employeeOnboardingData) {
-	const {newEmployeeSalary, hoursSpendOnOnboarding, hrSalaryForOnboardingTasks, hrHoursSpentOnboarding, salarayManagerNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost} = employeeOnboardingData
+	const {newEmployeeSalary, newEmployeeHoursSpendOnboarding, hrStaffSalaryForOnboardingTasks, hrHoursSpentOnboardingProcess, salarayManagerOfNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost} = employeeOnboardingData
+	const {workingHoursPerYear} = getFormular(organisationForm)
+
+	/**
+	 * HR salary(per hour)
+	 * hrStaffSalaryForOnboardingTasks / yearly working hours = HR salary(per hour)
+	 */
+	const hrSalaryperHour = (hrStaffSalaryForOnboardingTasks / workingHoursPerYear).toFixed(2)
+	console.log(`hrSalaryperHour: ${hrSalaryperHour}`);
 	
+	/**
+	 * Manager Salary(per hour)
+	 * salarayManagerOfNewEmployee / yearly working hours = Manager Salary(per hour)
+	 */
+	const managerSalaryPerHour = (salarayManagerOfNewEmployee / workingHoursPerYear).toFixed(2)
+	console.log(`managerSalaryPerHour: ${managerSalaryPerHour}`);
+
+	/**
+	 * Employee Salary(per hour)
+	 * newEmployeeSalary / yearly working hours = Employee Salary(per hour)
+	 */
+	const employeeSalaryPerHour = (newEmployeeSalary / workingHoursPerYear).toFixed(2)
+	console.log(`employeeSalaryPerHour: ${employeeSalaryPerHour}`);
+
+	/**
+	 * Total HR Onboarding Hour Cost
+	 * HR salary * hrHoursSpentOnboardingProcess
+	 */
+	const totalHrOnboardingHourCost = (hrSalaryperHour * hrHoursSpentOnboardingProcess).toFixed(2)
+	console.log(`totalHrOnboardingHourCost: ${totalHrOnboardingHourCost}`);
+
+	/**
+	 * Total Manager Hour Cost
+	 * Manager Salary * managerHoursSpentOnboarding
+	 */
+	const totalManagerHourCost = (managerSalaryPerHour * managerHoursSpentOnboarding).toFixed(2)
+	console.log(`totalManagerHourCost: ${totalManagerHourCost}`);
+
+	/**
+	 * Total Employee Onboarding Hour Cost
+	 * Employee Salary * newEmployeeHoursSpendOnboarding
+	 */
+	const totalEmployeeOnboardingHourCost = (employeeSalaryPerHour * newEmployeeHoursSpendOnboarding).toFixed(2)
+	console.log(`totalEmployeeOnboardingHourCost: ${totalEmployeeOnboardingHourCost}`);
+
+	console.log(`newEmployeeRelocationCost: ${newEmployeeRelocationCost}`);
+	console.log(`workstationCost: ${workstationCost}`);
+
+	/**
+	 * Final cost of new employee
+	 * (Total HR Onboarding Hour Cost + Total Manager Hour Cost + Total Employee Onboarding Hour Cost) + newEmployeeRelocationCost + workstationCost
+	 */
+	const finalCostOfNewEmployee = totalHrOnboardingHourCost + totalManagerHourCost + totalEmployeeOnboardingHourCost
+	console.log(`finalCostOfNewEmployee: ${finalCostOfNewEmployee}`);
+
+	/**
+	 * TODO:
+	 * Convert all values use to calculate finalCostOfNewEmployee to number. Return finalCostOfNewEmployee
+	 */
 }
 
 function formSubmitHandler(form) {
