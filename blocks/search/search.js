@@ -57,7 +57,7 @@ async function displaySearchResults(terms, results) {
     || e.searchTags.toLowerCase().includes(terms.toLowerCase()));
   
 
-  if  (collection === 'integrations') {
+  if  (collection === 'integrations' && filtered.length) {
     const hasIndirectIntegrationOnly = filtered.every((listing) => listing.partnerConnectionLibrary.toLowerCase().includes(terms.toLowerCase()));
     
     if (hasIndirectIntegrationOnly === true) {
