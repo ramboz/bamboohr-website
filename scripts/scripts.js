@@ -215,6 +215,7 @@ function loadTemplateCSS() {
       'product-updates',
       'live-demo-webinar-lp',
       'hr-101-guide',
+      'customer-homepage'
     ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
