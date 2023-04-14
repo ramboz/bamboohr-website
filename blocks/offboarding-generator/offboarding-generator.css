@@ -1,0 +1,474 @@
+/* Container */
+main .offboarding-generator-container {
+  margin: 4rem auto;
+}
+
+/* Container Overlay Variation*/
+main .offboarding-generator-container.offboarding-generator-container--overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+main .offboarding-generator-container.offboarding-generator-container--overlay::before {
+  content: '';
+  background: #041B35;
+  opacity: 0.9;
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Wrapper */
+main .offboarding-generator {
+  width: 100%;
+  max-width: 50rem;
+  min-height: 40rem; /* 33.75rem */
+  margin: 5rem auto;
+  background: #F6FAFD;
+  box-shadow: 0px 4px 12px 4px rgba(134, 134, 134, 0.14);
+  border-radius: 0.5rem;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* Wrapper Overlay Variation */
+main .offboarding-generator-container.offboarding-generator-container--overlay .offboarding-generator {
+  max-width: 62.5rem;
+  min-height: 50rem;
+  z-index: 3;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  margin: 0;
+}
+
+/* Navigation */
+main .offboarding-generator-step nav {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 1rem 0 0 0;
+}
+
+main .offboarding-generator-step nav .button {
+  flex: 0 0 auto;
+}
+
+/* Steps */
+main .offboarding-generator-step {
+  display: none;
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+main .offboarding-generator-step--active {
+  display: block;
+}
+
+/* Overlay Steps */
+main .offboarding-generator-step--overlay > div {
+  width: 400px;
+  position: absolute;
+  top: 2.5rem;
+  left: 2.5rem;
+  z-index: 3;
+}
+
+main .offboarding-generator-step--overlay::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 1.95rem;
+  width: 517px;
+  height: 733px;
+  background: url('./offboarding-generator-2.png') no-repeat;
+  background-position: 0 bottom;
+  background-size: 100%;
+  z-index: 2;
+}
+
+main .offboarding-generator-step--overlay svg {
+  position: absolute;
+  width: 726px;
+  height: 732px;
+  left: 375px;
+  top: 104px;
+}
+
+main .offboarding-generator-step--overlay .button {
+  width: 100%;
+}
+
+/* Step 1 Specific */
+main .offboarding-generator-step[data-step="0"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('./offboarding-generator-1.png') no-repeat;
+  background-position: 1.5rem bottom;
+  z-index: 2;
+}
+
+main .offboarding-generator-step[data-step="0"] > div {
+  width: 100%;
+  max-width: 21.25rem;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 4.5rem;
+  z-index: 3;
+}
+
+main .offboarding-generator-step[data-step="0"] svg {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  top: -50px;
+  left: -90px;
+  z-index: 1;
+}
+
+/* Step 2 Specific */
+main .offboarding-generator-step[data-step="1"] > div {
+  margin: 2.5rem;
+}
+
+main .offboarding-generator-step[data-step="1"] .form-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+main .offboarding-generator-step[data-step="1"] .form-wrap > div {
+  flex: 0 0 48%;
+}
+
+/* Step 3 Specific */
+main .offboarding-generator-step[data-step="2"] > div {
+  margin: 2.5rem;
+}
+
+main .offboarding-generator-step[data-step="2"] .tone-selection {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview {
+  margin: 1.5rem 0 1.75rem 0;
+  max-height: 220px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar {
+  width: 40px;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb,
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb:hover {
+  background: #E7E7E7;
+  width: 8px;
+  border: 16px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 88px;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview p {
+  max-width: 95%;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview p > span{
+  color: #1A87C9;
+}
+
+/* Step 4 Specific */
+main .offboarding-generator-step[data-step="3"] .form-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+main .offboarding-generator-step[data-step="3"] .form-wrap > div {
+  flex: 0 0 100%;
+}
+
+main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(1),
+main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(2),
+main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(7),
+main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(8) {
+  flex: 0 0 48%;
+}
+
+/* Typography */
+main .offboarding-generator *:not(h2), main {
+  font-family: 'Red Hat Display', sans-serif;
+  font-style: normal;
+  color: #041B35;
+}
+
+main .offboarding-generator h2 {
+  font-family: 'Fira Sans';
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 36px;
+  color: #041B35;
+  margin: 0 0 0.5rem 0;
+}
+
+main .offboarding-generator p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  margin: 0 0 1rem 0;
+  
+}
+
+main .offboarding-generator div p:last-of-type {
+  margin-bottom: 0 !important;
+}
+
+main .offboarding-generator strong {
+  font-weight: 500;
+}
+
+/* Button */
+main .offboarding-generator .button {
+  appearance: none;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+  background: #1A87C9;
+  color: #ffffff;
+  display: inline-block;
+}
+
+/* Button Hover State */
+main .offboarding-generator .button:hover {
+  filter: brightness(85%);
+}
+
+/* Outline Button */
+main .offboarding-generator .button.button--outline {
+  color: #1A87C9;
+  border: 1px solid #1A87C9;
+  background: transparent;
+}
+
+/* Outline Button Hover State */
+main .offboarding-generator .button.button--outline:hover {
+  background: #1A87C9;
+  color: white;
+}
+
+/* Teal Button */
+main .offboarding-generator-step .button.button--teal {
+  width: 100%;
+  background: #71C9C0;
+  color: #041B35;
+}
+
+/* Teal Button Hover State */
+main .offboarding-generator .button.button--teal:hover {
+  filter: brightness(85%);
+}
+
+/* Teal Outline Button */
+main .offboarding-generator .button.button--outline.button--teal {
+  border: 1px solid #71c9c0;
+  background: transparent;
+}
+
+/* Teal Outline Button Hover State */
+main .offboarding-generator .button.button--outline.button--teal:hover {
+  color: #041B35;
+  background: #71c9c0;
+  filter: brightness(100%);
+}
+
+/* Form Labels */
+main .offboarding-generator label {
+  display: block;
+  font-weight: 500;
+  font-size: 14px !important;
+  line-height: 20px;
+  margin: 0 0 0.5rem 0;
+  
+}
+
+/* Select Elements */
+main .offboarding-generator select {
+  background-image: url('../../icons/select-arrow.svg');
+  background-size: 10px;
+  background-position: calc(100% - 1rem);
+  background-repeat: no-repeat;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #E5EFF6;
+  margin-bottom :1rem;
+  width: 100%;
+  display: block;
+  appearance: none;
+  transition: border-color 0.25s ease-in-out;
+  outline: none;
+}
+
+/* Input Elements */
+main .offboarding-generator input {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #E5EFF6;
+  margin: 0 0 1rem 0;
+  width: 100%;
+  display: block;
+  appearance: none;
+  transition: border-color 0.25s ease-in-out;
+  outline: none;
+}
+
+main.offboarding-generator input::placeholder {
+  color: #667085; 
+}
+
+/* Select / Input Focus State */
+main .offboarding-generator select:focus-visible,
+main .offboarding-generator input:focus-visible {
+  border-color: #1A87C9;
+  transition: border-color 0.25s ease-in-out;
+}
+
+/* Radio Elements */
+main .offboarding-generator input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  top: -99999px;
+  left: -99999px;
+
+}
+
+/* Radio Element Labels */
+main .offboarding-generator input[type="radio"] + label {
+  flex: 0 0 auto;
+  border: 1px solid #fff;
+  background: #fff;
+  color: #041B35;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  font-size: 16px;
+  cursor: pointer;
+  flex: 1 0 0;
+}
+
+/* Radio Element Checked State */
+main .offboarding-generator input[type="radio"]:checked + label {
+  border-color: #041B35;
+}
+
+/* ToolTip Indicator */
+main .offboarding-generator .tooltip {
+  position: relative;
+  display: inline-block;
+  margin-left: 0.25rem;
+  width: 14px;
+  height: 14px;
+  background: #1A87C9;
+  cursor: help;
+  border-radius: 50%;
+  top: 2px;
+}
+
+/* Tooltip Hidden Text (for Screen Readers - required?) */
+main .offboarding-generator .tooltip > span {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Tooltip 'i' */
+main .offboarding-generator .tooltip::before,
+main .offboarding-generator .tooltip::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  background: white;
+}
+
+main .offboarding-generator .tooltip::before {
+  height: 2px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-220%);
+}
+
+main .offboarding-generator .tooltip::after {
+  top: 50%;
+  left: 50%;
+  height: 5px;
+  transform: translate(-50%,-15%);
+  width: 2px;
+}
+
+/* Tooltip Text */
+main .offboarding-generator .tooltip__text {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+  bottom: 1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background:#1A87C9;
+  border-radius: 0.5rem;
+  color: white;
+  width: 10rem;
+  padding: 0.25rem;
+  text-align: center;
+  font-size: 0.75rem;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Show Tooltip on indicator hover */
+main .offboarding-generator .tooltip:hover .tooltip__text {
+  opacity: 1;
+  bottom: 1.25rem;
+  transition: all 0.3s ease;
+}
