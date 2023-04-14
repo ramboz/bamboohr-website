@@ -5,6 +5,9 @@ let currentTab = 0
 let totalCost = 0
 const jsonUrl = '/website-marketing-resources/roi-calculator-form.json'
 
+const organisationForm = []
+const individualForm = []
+
 async function fetchData(url) {
 	const resp = await fetch(url);
 	const json = await resp.json()
@@ -303,9 +306,6 @@ export default async function decorate(block) {
 
 	const data = await fetchData(jsonUrl)
 	const firstDiv = block.firstElementChild
-
-	const organisationForm = []
-	const individualForm = []
 
 	Object.assign(firstDiv, {
 		classList: ['onboarding-calculator__content'],
