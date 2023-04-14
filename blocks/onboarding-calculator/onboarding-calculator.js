@@ -1,8 +1,125 @@
 import { createElem } from '../../scripts/scripts.js';
 import { createLabel, createInput } from '../form/form.js';
 
-function nextPrev(index) {
-	console.log(index);
+let currentTab = 0
+let totalCost = 0
+const jsonUrl = '/website-marketing-resources/roi-calculator-form.json'
+
+async function fetchData(url) {
+	const resp = await fetch(url);
+	const json = await resp.json()
+	const {data} = json
+
+	return data
+}
+
+function calcOrganisationCost() {
+	console.log('calcOrganisationCost');
+	totalCost = 20
+	console.log(totalCost);
+}
+
+function calcIndividualCost() {
+	console.log('calcIndividualCost');
+	totalCost = 20
+	console.log(totalCost);
+}
+
+function formSubmitHandler(form) {
+	if (form.id === 'organisation-form') {
+		const avgAnnualEmployeeSalary = form.elements.avgAnnualEmployeeSalary.value
+		const avgOnboardHours = form.elements.avgOnboardHours.value
+		const avgAdditionalCosts = form.elements.avgAdditionalCosts.value
+		const newEmployeesPerYear = form.elements.newEmployeesPerYear.value
+
+		calcIndividualCost()
+	}
+
+	if (form.id === 'individual-form') {
+		const newEmployeeSalary = form.elements.newEmployeeSalary.value
+		const hoursSpendOnOnboarding = form.elements.hoursSpendOnOnboarding.value
+		const hrSalaryForOnboardingTasks = form.elements.hrSalaryForOnboardingTasks.value
+		const hrHoursSpentOnboarding = form.elements.hrHoursSpentOnboarding.value
+		const salarayManagerNewEmployee = form.elements.salarayManagerNewEmployee.value
+		const managerHoursSpentOnboarding = form.elements.managerHoursSpentOnboarding.value
+		const newEmployeeRelocationCost = form.elements.newEmployeeRelocationCost.value
+		const workstationCost = form.elements.workstationCost.value
+	}
+}
+
+function showTab(index, form) {
+	const tabs = form.querySelectorAll('.tab')
+	tabs[index].style.display = 'block'
+
+	// if (index === (tabs.length - 1)) {
+	// 	form.getElementById('nextBtn').innerText = 'Submit'
+	// }
+	// console.log(tabs.length);
+	// console.log(index);
+}
+
+function resetForm(block) {
+	const formsArr = block.querySelectorAll('form')
+	const tabsArr = block.querySelectorAll('.tab')
+	const navBtnArr = block.querySelectorAll('.navBtn-wrapper')
+	currentTab = 0
+
+	formsArr.forEach(form => {
+		form.classList.remove('active')
+		form.reset()
+	});
+
+	tabsArr.forEach(tab => {
+		tab.style.display = ''
+	});
+
+	navBtnArr.forEach(btn => {
+		btn.style.display = ''
+	});
+
+	showTab(currentTab, block)
+}
+
+function nextPrev(index, form) {
+	const tabsArr = form.querySelectorAll('.tab')
+	const secondToLastTab = tabsArr[tabsArr.length - 2];
+	const navBtn = form.querySelector('.navBtn-wrapper')
+
+	tabsArr[currentTab].style.display ='none'
+
+	currentTab += index
+
+	if (currentTab < 0) {
+		resetForm(navBtn.parentElement.parentElement)
+	}
+
+	if (currentTab >= (tabsArr.length - 1)) {
+		formSubmitHandler(form)
+		navBtn.style.display ='none'
+	}
+
+	showTab(currentTab, form)
+}
+
+function createCalcResultHtml() {
+	const divWrapper = document.createElement('div')
+	divWrapper.classList.add('tab')
+
+	const contentHtml = `<div class="result__wrapper">
+	<div class="result__left">
+	<div id="calc-result"></div>
+	<p>Is the estimated cost of onboarding this new employee.</p>
+	<button type="button" class="reset-calc-btn">Calculate Again</button>
+	</div>
+	<div class="result__right">
+	<p>Get the right HR software to build for the future</p>
+	<a class="button accent" href="/hr-software/video-tour">Video Product Tour</a>
+	</div>
+	</div>`
+
+	divWrapper.innerHTML = contentHtml
+
+	return divWrapper
 }
 
 function createNavBtn() {
@@ -81,7 +198,25 @@ function createIndividualForm(fields) {
 		form.append(createFields(grouped[group]))
 	}
 
+	form.append(createCalcResultHtml())
 	form.append(createNavBtn())
+
+	// Select prevBtn and nextBtn
+	const btnArr = form.querySelectorAll('button')
+
+	btnArr.forEach(btn => {
+		btn.addEventListener('click', e => {
+			if (e.target.id === 'nextBtn') {
+				nextPrev(1, form)
+			}
+
+			if (e.target.id === 'prevBtn') {
+				nextPrev(-1, form)
+			}
+		})
+	});
+
+	showTab(currentTab, form)
 	
 	return form
 }
@@ -96,6 +231,7 @@ function createOrganisationForm(fields) {
 	form.classList.add('d-none')
 
 	form.append(createFields(fields))
+	form.append(createCalcResultHtml())
 	form.append(createNavBtn())
 
 	// Select prevBtn and nextBtn
@@ -104,22 +240,25 @@ function createOrganisationForm(fields) {
 	btnArr.forEach(btn => {
 		btn.addEventListener('click', e => {
 			if (e.target.id === 'nextBtn') {
-				nextPrev(1)
+				nextPrev(1, form)
 			}
 
 			if (e.target.id === 'prevBtn') {
-				nextPrev(-1)
+				nextPrev(-1, form)
 			}
 		})
 	});
+
+	showTab(currentTab, form)
 	
 	return form
 }
 
-// 
 function toggleForm(formId) {
 	const form = document.getElementById(formId)
 	form.classList.add('active')
+
+	showTab(currentTab, form)
 }
 
 function createCtaContainer() {
@@ -136,15 +275,16 @@ function createCtaContainer() {
 	Object.assign(indidualBtn, {
 		classList: ['button accent'],
 		type: 'button',
-		'data-form': 'individual-form',
 		title: 'Individually'
 	})
 	Object.assign(organisationBtn, {
 		classList: ['button accent'],
 		type: 'button',
-		'data-form': 'organisation-form',
 		title: 'Organisation'
 	})
+
+	indidualBtn.setAttribute('data-form', 'individual-form')
+	organisationBtn.setAttribute('data-form', 'organisation-form')
 
 	ctaContainer.append(indidualBtn, organisationBtn)
 
@@ -161,15 +301,19 @@ function createCtaContainer() {
 
 export default async function decorate(block) {
 
-	const resp = await fetch('/website-marketing-resources/roi-calculator-form.json');
-	const json = await resp.json()
-	const map = json.data
+	const data = await fetchData(jsonUrl)
+	const firstDiv = block.firstElementChild
 
 	const organisationForm = []
 	const individualForm = []
 
+	Object.assign(firstDiv, {
+		classList: ['onboarding-calculator__content'],
+		id: 'roi-intro',
+	})
+
 	// Sort fields for each form
-	map.forEach(item => {
+	data.forEach(item => {
 		if (item.form === "Organisation") {
 			organisationForm.push(item)
 		}
@@ -178,7 +322,6 @@ export default async function decorate(block) {
 			individualForm.push(item)
 		}
 	});
-
 	
 	const cols = [...block.firstElementChild.children]
 	// 1st collumn
@@ -186,6 +329,15 @@ export default async function decorate(block) {
 	// 2nd collumn
 	cols[1].classList.add('hello-2')
 
-	block.append(createCtaContainer());
+	firstDiv.append(createCtaContainer())
 	block.append(createOrganisationForm(organisationForm), createIndividualForm(individualForm))
+
+	const resetBtnArr = document.querySelectorAll('.reset-calc-btn')
+
+	resetBtnArr.forEach(btn => {
+		btn.addEventListener('click', () => {
+			resetForm(block)
+		})
+	});
+
 }
