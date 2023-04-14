@@ -52,7 +52,8 @@
   padding: 16px;
 }
 
-.multi-cta-cards > div > div > h4 + .button-container {
+.multi-cta-cards > div > div > h4 + .button-container,
+.multi-cta-cards > div > div > h4 + p + .button-container {
   border-bottom: none;
   margin: 0;
   padding: 0;
@@ -267,4 +268,24 @@
   main .section > .multi-cta-wrapper-extended .multi-cta-cards {
     max-width: 75%;
   }
+}
+
+.multi-cta-cards.has-top-cta-button > div > div > h4 + p,
+.multi-cta-cards.has-top-cta-button > div > div > h6 + p {
+  border-bottom: none;
+}
+
+.multi-cta-cards.has-top-cta-button > div > div > h4 + p + .button-container,
+.multi-cta-cards.has-top-cta-button > div > div > h6 + p + .button-container {
+  border-bottom: 1px solid var(--color-gray-1);
+}
+
+.multi-cta-cards.has-top-cta-button > div > div > h4 + p + .button-container .button,
+.multi-cta-cards.has-top-cta-button > div > div > h6 + p + .button-container .button{
+  color: var(--color-white);
+  background-color: var(--theme-shade10);
+  margin-top: 0;
+  padding: 10px 30px;
+  font-size: 15px;
+  line-height: 1.2;
 }
