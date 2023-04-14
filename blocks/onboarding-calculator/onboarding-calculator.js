@@ -23,7 +23,7 @@ function appendCalcResultToDom(calcResult) {
 /**
  * Gets Options value from the form
  * Create an object array using the field name and option value
- * @param {*} form 
+ * @param {array} form contains fields data
  * @returns 
  */
 function getFormular(form) {
@@ -42,7 +42,7 @@ function getFormular(form) {
 
 /**
  * Calculate total anuual onboarding costs for organisation
- * @param {*} onboardingData 
+ * @param {object} onboardingData data from form fields
  * @returns 
  */
 function calcOrganisationCost(onboardingData) {
@@ -54,7 +54,6 @@ function calcOrganisationCost(onboardingData) {
 	const totalAnuualOnboardingCosts = ((onboardingHoursCost + avgAdditionalCosts) * newEmployeesPerYear).toFixed(2)
 
 	return totalAnuualOnboardingCosts
-
 }
 
 function calcIndividualCost(employeeOnboardingData) {
@@ -70,7 +69,7 @@ function formSubmitHandler(form) {
 		const newEmployeesPerYear = form.elements.newEmployeesPerYear.value
 
 		const organisationOnboardingData = {avgAnnualEmployeeSalary, avgOnboardHours, avgAdditionalCosts, newEmployeesPerYear}
-		const totalAnuualOnboardingCosts = calcOrganisationCost(organisationOnboardingData, organisationForm)
+		const totalAnuualOnboardingCosts = calcOrganisationCost(organisationOnboardingData)
 		
 		appendCalcResultToDom(totalAnuualOnboardingCosts)
 	}
@@ -382,5 +381,4 @@ export default async function decorate(block) {
 			resetForm(block)
 		})
 	});
-
 }
