@@ -2,7 +2,6 @@ import { createElem } from '../../scripts/scripts.js';
 import { createLabel, createInput } from '../form/form.js';
 
 let currentTab = 0
-let totalCost = 0
 const jsonUrl = '/website-marketing-resources/roi-calculator-form.json'
 
 const organisationForm = []
@@ -16,8 +15,16 @@ async function fetchData(url) {
 	return data
 }
 
-function appendCalcResultToDom(calcResult) {
-	
+/**
+ * Display the calcResult to the front-end
+ * @param {number} calcResult 
+ * @param {string} formId 
+ */
+function appendCalcResultToDom(calcResult, formId) {
+	const form = document.getElementById(formId)
+	const resultDiv = form.querySelector('#calc-result')
+
+	resultDiv.innerText = `$ ${calcResult}`
 }
 
 /**
@@ -51,7 +58,7 @@ function calcOrganisationCost(onboardingData) {
 
 	const avgHourlyRate = (avgAnnualEmployeeSalary / workingHoursPerYear).toFixed(2)
 	const onboardingHoursCost = (avgHourlyRate * avgOnboardHours).toFixed(2)
-	const totalAnuualOnboardingCosts = ((onboardingHoursCost + avgAdditionalCosts) * newEmployeesPerYear).toFixed(2)
+	const totalAnuualOnboardingCosts = ((onboardingHoursCost + avgAdditionalCosts) * newEmployeesPerYear).toFixed(0)
 
 	return totalAnuualOnboardingCosts
 }
@@ -71,7 +78,7 @@ function formSubmitHandler(form) {
 		const organisationOnboardingData = {avgAnnualEmployeeSalary, avgOnboardHours, avgAdditionalCosts, newEmployeesPerYear}
 		const totalAnuualOnboardingCosts = calcOrganisationCost(organisationOnboardingData)
 		
-		appendCalcResultToDom(totalAnuualOnboardingCosts)
+		appendCalcResultToDom(totalAnuualOnboardingCosts, form.id)
 	}
 
 	if (form.id === 'individual-form') {
