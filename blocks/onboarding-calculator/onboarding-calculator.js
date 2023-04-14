@@ -148,9 +148,14 @@ function formSubmitHandler(form) {
 		const newEmployeeRelocationCost = form.elements.newEmployeeRelocationCost.value
 		const workstationCost = form.elements.workstationCost.value
 
-		const employeeOnboardingData = {newEmployeeSalary, hoursSpendOnOnboarding, hrSalaryForOnboardingTasks, hrHoursSpentOnboarding, salarayManagerNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost}
+		const employeeOnboardingData = {newEmployeeSalary, newEmployeeHoursSpendOnboarding, hrStaffSalaryForOnboardingTasks, hrHoursSpentOnboardingProcess, salarayManagerOfNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost}
 
 		calcIndividualCost(employeeOnboardingData)
+
+		/**
+		 * TODO:
+		 * Store value return from calcIndividualCost(). Call appendCalcResultToDom()
+		 */
 	}
 }
 
