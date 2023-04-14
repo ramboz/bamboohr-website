@@ -16,16 +16,50 @@ async function fetchData(url) {
 	return data
 }
 
-function calcOrganisationCost() {
-	console.log('calcOrganisationCost');
-	totalCost = 20
-	console.log(totalCost);
+function appendCalcResultToDom(calcResult) {
+	
 }
 
-function calcIndividualCost() {
-	console.log('calcIndividualCost');
-	totalCost = 20
-	console.log(totalCost);
+/**
+ * Gets Options value from the form
+ * Create an object array using the field name and option value
+ * @param {*} form 
+ * @returns 
+ */
+function getFormular(form) {
+	const formularArr = form.reduce((acc, obj) => {
+		if (obj.Type === 'formular') {
+			const key = obj.Field;
+			if (!acc[key]) {
+				acc[key] = obj.Options
+			}
+		}
+		return acc;
+	}, []);
+
+	return formularArr
+}
+
+/**
+ * Calculate total anuual onboarding costs for organisation
+ * @param {*} onboardingData 
+ * @returns 
+ */
+function calcOrganisationCost(onboardingData) {
+	const {avgAnnualEmployeeSalary, avgOnboardHours, avgAdditionalCosts, newEmployeesPerYear} = onboardingData
+	const {workingHoursPerYear} = getFormular(organisationForm)
+
+	const avgHourlyRate = (avgAnnualEmployeeSalary / workingHoursPerYear).toFixed(2)
+	const onboardingHoursCost = (avgHourlyRate * avgOnboardHours).toFixed(2)
+	const totalAnuualOnboardingCosts = ((onboardingHoursCost + avgAdditionalCosts) * newEmployeesPerYear).toFixed(2)
+
+	return totalAnuualOnboardingCosts
+
+}
+
+function calcIndividualCost(employeeOnboardingData) {
+	const {newEmployeeSalary, hoursSpendOnOnboarding, hrSalaryForOnboardingTasks, hrHoursSpentOnboarding, salarayManagerNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost} = employeeOnboardingData
+	
 }
 
 function formSubmitHandler(form) {
@@ -35,7 +69,10 @@ function formSubmitHandler(form) {
 		const avgAdditionalCosts = form.elements.avgAdditionalCosts.value
 		const newEmployeesPerYear = form.elements.newEmployeesPerYear.value
 
-		calcIndividualCost()
+		const organisationOnboardingData = {avgAnnualEmployeeSalary, avgOnboardHours, avgAdditionalCosts, newEmployeesPerYear}
+		const totalAnuualOnboardingCosts = calcOrganisationCost(organisationOnboardingData, organisationForm)
+		
+		appendCalcResultToDom(totalAnuualOnboardingCosts)
 	}
 
 	if (form.id === 'individual-form') {
@@ -47,6 +84,10 @@ function formSubmitHandler(form) {
 		const managerHoursSpentOnboarding = form.elements.managerHoursSpentOnboarding.value
 		const newEmployeeRelocationCost = form.elements.newEmployeeRelocationCost.value
 		const workstationCost = form.elements.workstationCost.value
+
+		const employeeOnboardingData = {newEmployeeSalary, hoursSpendOnOnboarding, hrSalaryForOnboardingTasks, hrHoursSpentOnboarding, salarayManagerNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost}
+
+		calcIndividualCost(employeeOnboardingData)
 	}
 }
 
