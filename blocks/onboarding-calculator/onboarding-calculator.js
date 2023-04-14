@@ -167,6 +167,8 @@ function createFields(fields) {
 				divFieldItem.append(createLabel(item))
 				divFieldItem.append(createRangeInput(Type, Options, Field))
 			break;
+			case 'formular':
+				return
 			default:
 				divFieldItem.append(createLabel(item))
 				divFieldItem.append(createInput(item))
