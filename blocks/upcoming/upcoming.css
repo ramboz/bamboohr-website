@@ -149,11 +149,11 @@ main .upcoming-article-card .upcoming-article-card-picture img {
   }
 
   main .upcoming-results > div {
-      width: calc(100% / 3);
+    width: calc(100% / 3);
   }
 
   main .upcoming-article-card:first-child {
-      margin-bottom: 100px;
+    margin-bottom: 100px;
   }
 }
 
