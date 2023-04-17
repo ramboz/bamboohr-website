@@ -428,12 +428,12 @@ indices:
       - '/customers/**'
     target: /customers/query-index
     properties:
-      name:
-        select: head > meta[property="og:name"]
+      customerName:
+        select: head > meta[name="og:customer-name"]
         value: |
           attribute(el, 'content')
       jobTitle:
-        select: head > meta[property="og:job-title"]
+        select: head > meta[name="og:job-title"]
         value: |
           attribute(el, 'content')
       description:
