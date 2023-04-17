@@ -31,24 +31,22 @@ function createDateCard(article, classPrefix, eager = false, cardLink = {}) {
     ).outerHTML;
 
     articlePicture = `<div class="${classPrefix}-card-picture">
-        <a href="${article.path || article.link}">${pictureString}</a>
+        <a href="${article.path}">${pictureString}</a>
       </div>`;
   }
   const articleImage = articlePicture || wistiaBlock;
   const articleLinkText = cardLink.text || article.linkText || 'Register for this event';
-  const articlePath = cardLink.link || article.path || article.link || '';
+  const articlePath = cardLink.link || article.path || '';
 
   const articleLink = articlePath ? `<p><a href="${articlePath}">${articleLinkText}</a></p>` : '';
 
   card.innerHTML = `
     ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
-    <h4>${article?.eventDateAndTime || article.infoOption2}</h4>
+    <h4>${article.eventDateAndTime}</h4>
     <h5>${article?.presenter || ''}</h5>
     <h3>${title}</h3>
-    <h6>${article?.infoOption3 || ''}</h6>
     <p>${article.description}</p>
-    <p class="info-option-4">${article?.infoOption4 || ''}</p>
     ${articleCategoryElement}
     ${articleLink}
     </div>`;
