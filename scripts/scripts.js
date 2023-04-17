@@ -814,8 +814,10 @@ async function loadPage(doc) {
   await loadEager(doc);
   // eslint-disable-next-line no-use-before-define
   await loadLazy(doc);
+  const setupAnalytics = setupAnalyticsTrackingWithAlloy(document);
   // eslint-disable-next-line no-use-before-define
   loadDelayed(doc);
+  await setupAnalytics;
 }
 
 export function initHlx(forceMultiple = false) {
@@ -1334,8 +1336,6 @@ async function loadEager(doc) {
   $head.append($script);
   // }
   /* This is the end of the temporary convert test code */
-
-  await setupAnalyticsTrackingWithAlloy(document);
 
   decorateTemplateAndTheme();
   document.documentElement.lang = 'en';
