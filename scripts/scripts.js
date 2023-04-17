@@ -1335,6 +1335,8 @@ async function loadEager(doc) {
   // }
   /* This is the end of the temporary convert test code */
 
+  await setupAnalyticsTrackingWithAlloy(document);
+
   decorateTemplateAndTheme();
   document.documentElement.lang = 'en';
   const main = doc.querySelector('main');

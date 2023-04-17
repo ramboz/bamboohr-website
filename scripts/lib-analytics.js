@@ -51,7 +51,7 @@ function getAlloyInitScript() {
  */
 function getDatastreamConfiguration() {
   const isProdSite = /^(marketplace|partners|www)\.bamboohr\.com$/i.test(document.location.hostname);
-  // TODO: before merging replace with non prod with BambooHR stage 48e64dbd-346e-45e9-8f8d-c82715e21301
+  // TODO: before merging replace non prod with BambooHR stage 48e64dbd-346e-45e9-8f8d-c82715e21301
   const edgeConfigId = isProdSite ? '3f2b3209-7600-4a37-8bb5-0d91f8f7f7e7' : '05576f9e-140b-4dcc-bccd-d73d97d94690';
   return {
     edgeConfigId,
