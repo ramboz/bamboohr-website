@@ -158,6 +158,10 @@
   border-radius: 0;
 }
 
+.columns.small-icons.link-gray-12 a.button:any-link {
+  color: var(--color-gray-12);
+}
+
 .home-more .columns a.button:any-link::after {
   content: '';
   border: solid var(--heading-color);
