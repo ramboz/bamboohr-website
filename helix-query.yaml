@@ -429,11 +429,11 @@ indices:
     target: /customers/query-index
     properties:
       customerName:
-        select: head > meta[name="og:customer-name"]
+        select: head > meta[name="customer-name"]
         value: |
           attribute(el, 'content')
       jobTitle:
-        select: head > meta[name="og:job-title"]
+        select: head > meta[name="job-title"]
         value: |
           attribute(el, 'content')
       description:
