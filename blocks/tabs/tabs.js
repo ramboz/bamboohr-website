@@ -58,10 +58,10 @@ function openTab(e) {
     const content = parent.querySelector(`[aria-labelledby="${target.id}"]`);
     content.setAttribute('aria-hidden', false);
 
-     /* Adobe tab name click events tracking */
-     adobeEventTracking('Tab Name Click', {
-       "tab_title": target.innerText
-     });
+     // /* Adobe tab name click events tracking */
+     // adobeEventTracking('Tab Name Click', {
+     //   "tab_title": target.innerText
+     // });
   } else if ((mediaQueryPhone.matches && !parent.classList.contains('style-1') && !parent.classList.contains('style-2'))
     || parent.classList.contains('style-3')
     || (mediaQueryStacked.matches && parent.classList.contains('style-4'))) {
@@ -184,7 +184,7 @@ export default function decorate(block) {
         titleElement.append(activeSubtitleContent);
         [...content.children].forEach(child => {
           const pic = child.querySelector('picture');
-  
+
           if (!pic && child.tagName !== 'H2') {
             activeSubtitleContent.append(child);
           }
@@ -205,7 +205,7 @@ export default function decorate(block) {
       title.removeAttribute('id');
       titleElement.append(icon, title);
       titleElement.addEventListener('click', openTab);
-      
+
 
     } else {
       titleElement = title;

@@ -506,7 +506,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
 
         /* Adobe Form Start event tracking when user changes the first field */
         formEl.firstElementChild.addEventListener('change', () => {
-          adobeEventTracking('Form Start', {"name": form.getId()});
+          //adobeEventTracking('Form Start', {"name": form.getId()});
         });
 
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
@@ -544,10 +544,10 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           const formBusinessSize = empText?.value || 'unknown';
 
           /* Adobe form complete events tracking */
-          adobeEventTracking('Form Complete', {
-            "name": form.getId(),
-            "business_size": formBusinessSize
-		      });
+          // adobeEventTracking('Form Complete', {
+          //   "name": form.getId(),
+          //   "business_size": formBusinessSize
+		  //     });
 
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {

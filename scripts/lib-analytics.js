@@ -85,7 +85,7 @@ function getAlloyConfiguration(document) {
     // disable when clicks are also tracked via sendEvent with additional details
     clickCollectionEnabled: false,
     // adjust default based on customer use case
-    defaultConsent: 'pending',
+    //defaultConsent: 'pending',
     ...getDatastreamConfiguration(),
     onBeforeEventSend: (options) => enhanceAnalyticsEvent(options),
   };
