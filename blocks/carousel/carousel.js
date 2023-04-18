@@ -79,6 +79,7 @@ function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause,
   if (buttonCount === buttons.children.length) return;
 
   [...buttons.children].forEach(b => b.remove());
+  // eslint-disable-next-line no-param-reassign
   carouselIntervalPause = true;
   autoPlayList.length = 0;
 
@@ -96,6 +97,7 @@ function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause,
     }
   });
 
+  // eslint-disable-next-line no-param-reassign
   carouselIntervalPause = false;
 }
 
@@ -103,6 +105,7 @@ export default function decorate(block) {
   const buttons = document.createElement('div');
   const autoPlayList = [];
   let carouselInterval = null;
+  // eslint-disable-next-line
   let carouselIntervalPause = false;
   const isStyle5 = block.classList.contains('style-5');
   block.dataset.scrollToOffset = -1;
