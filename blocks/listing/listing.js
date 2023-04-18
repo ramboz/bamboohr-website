@@ -209,24 +209,22 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
 
   /* filter */
   const results = listings.data.filter((row) => {
+    if (isUpcomingEvent(row.eventDate)) return false;
     const filterMatches = {};
-    const eventDateStr = row.eventDate;
     let matchedAll = false;
-    if (!eventDateStr || !isUpcomingEvent(eventDateStr)) {
-      matchedAll = keys.every((key) => {
-        let matched = false;
-        if (row[key]) {
-          const rowValues = row[key].split(',').map((t) => t.trim());
-          matched = tokens[key].some((t) => rowValues.includes(t));
-        }
-        if (key === 'fulltext') {
-          const {fulltext} = config;
-          matched = row.title.toLowerCase().includes(fulltext.toLowerCase()) || row.description.toLowerCase().includes(fulltext.toLowerCase());
-        }
-        filterMatches[key] = matched;
-        return matched;
-      });
-    }
+    matchedAll = keys.every((key) => {
+      let matched = false;
+      if (row[key]) {
+        const rowValues = row[key].split(',').map((t) => t.trim());
+        matched = tokens[key].some((t) => rowValues.includes(t));
+      }
+      if (key === 'fulltext') {
+        const {fulltext} = config;
+        matched = row.title.toLowerCase().includes(fulltext.toLowerCase()) || row.description.toLowerCase().includes(fulltext.toLowerCase());
+      }
+      filterMatches[key] = matched;
+      return matched;
+    });
 
     const isListing = () => !!row.publisher;
 

@@ -151,9 +151,10 @@ export default async function decorateTemplate(main) {
   const urlParams = new URLSearchParams(queryString);
   const formSubmit = urlParams.get('formSubmit');
   const webinarTitle = main.querySelector('h1');
+  const eventDateStr = getMetadata('event-date');
 
   if (formSubmit && formSubmit === 'success') {
-    if (isUpcomingEvent()) {
+    if (eventDateStr && isUpcomingEvent(eventDateStr)) {
       main.innerHTML = '';
       document.body.classList.add('webinar-success-upcoming');
       upcomingSuccess(main, webinarTitle);
