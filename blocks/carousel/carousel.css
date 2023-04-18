@@ -541,9 +541,13 @@ main .carousel.style-5 > div {
   height: unset;
   max-height: unset;
   flex-direction: column;
-  max-width: 360px;
-  margin-right: 40px;
+  max-width: 280px;
+  margin-right: 20px;
   background-image: unset;
+}
+
+main .carousel.style-5 > div:last-of-type {
+  margin-right: 40px;
 }
 
 main .carousel.style-5 div.carousel-text {
@@ -599,4 +603,22 @@ main .carousel-buttons.style-5 button {
 
 main .carousel-buttons.style-5 button.selected {
   background-color: var(--color-1);
+}
+
+@media (min-width: 500px) {
+  main .carousel.style-5 > div {
+    max-width: 300px;
+    margin-right: 30px;
+  }
+
+  main .carousel.style-5 > div:last-of-type {
+    margin-right: 80px;
+  }
+}
+
+@media (min-width: 900px) {
+  main .carousel.style-5 > div {
+    max-width: 360px;
+    margin-right: 40px;
+  }
 }

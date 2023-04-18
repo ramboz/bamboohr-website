@@ -5,10 +5,20 @@ function calculateScrollbarWidth() {
   );
 }
 
-function selectButton(block, button, row, buttons) {
+function getStyle5CardCount(block) {
+  const cardStyle = block.firstElementChild.currentStyle || window.getComputedStyle(block.firstElementChild);
+  const cardMargin = parseFloat(cardStyle.marginLeft) + parseFloat(cardStyle.marginRight);
+  const cardWidth = (block.firstElementChild.offsetWidth + cardMargin) - 5;
+  const cardCnt = Math.floor(block.offsetWidth / cardWidth);
+
+  return cardCnt;
+}
+
+function selectButton(block, button, row, buttons, rememberScrollToOffset = true) {
   const index = [...buttons].indexOf(button);
   const arrows = block.parentNode.querySelector('.carousel-controls');
 
+  if (rememberScrollToOffset) block.dataset.scrollToOffset = row.offsetLeft - row.parentNode.offsetLeft;
   block.scrollTo({ top: 0, left: row.offsetLeft - row.parentNode.offsetLeft, behavior: 'smooth' });
   buttons.forEach((r) => r.classList.remove('selected'));
   button.classList.add('selected');
@@ -26,29 +36,76 @@ function selectButton(block, button, row, buttons) {
 
 function getVisibleSlide(event) {
   const { target } = event;
+  const isStyle5 = target.classList.contains('style-5');
   const buttons = target.nextElementSibling.querySelectorAll('button');
   const slides = target.querySelectorAll(':scope > div');
   const leftPosition = target.scrollLeft;
+  const rightEnd = target.scrollWidth - target.offsetWidth;
   let leftPadding = 0;
+
+  const scrollToOffset = +target.dataset.scrollToOffset;
+  if (scrollToOffset !== -1 
+      && scrollToOffset !== leftPosition 
+      && (leftPosition !== rightEnd || scrollToOffset < rightEnd)) { 
+    return; 
+  }
+  target.dataset.scrollToOffset = -1;
 
   slides.forEach((slide, key) => {
     const offset = slide.offsetLeft;
+    const cardCnt = getStyle5CardCount(target);
+    const btnGroup = isStyle5 ? Math.floor(key/cardCnt) : key;
 
     // set first offset (extra padding?)
     if (key === 0) leftPadding = offset;
 
-    if (offset - leftPadding === leftPosition) {
+    if (offset - leftPadding === leftPosition ||
+        (isStyle5 && btnGroup === buttons.length - 1 && leftPosition === rightEnd)) {
       // trigger default functionality
-      selectButton(target, buttons[key], slide, buttons);
+      selectButton(target, buttons[btnGroup], slide, buttons, false);
     }
   });
+}
+
+function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause, autoPlayList) {
+  const block = carouselWrapper.firstElementChild;
+  const buttons = block.nextElementSibling;
+
+  if (!block.offsetWidth) return;
+
+  const cardCnt = getStyle5CardCount(block);
+  const buttonCount = Math.ceil(block.children.length / cardCnt);
+
+  if (buttonCount === buttons.children.length) return;
+
+  [...buttons.children].forEach(b => b.remove());
+  carouselIntervalPause = true;
+  autoPlayList.length = 0;
+
+  [...block.children].forEach((row, i) => {
+    /* buttons */
+    if (i % cardCnt === 0) {
+      const button = document.createElement('button');
+      if (!i) button.classList.add('selected');
+      button.addEventListener('click', () => {
+        window.clearInterval(carouselInterval);
+        selectButton(block, button, row, [...buttons.children]);
+      });
+      buttons.append(button);
+      autoPlayList.push({ row, button });
+    }
+  });
+
+  carouselIntervalPause = false;
 }
 
 export default function decorate(block) {
   const buttons = document.createElement('div');
   const autoPlayList = [];
   let carouselInterval = null;
+  let carouselIntervalPause = false;
   const isStyle5 = block.classList.contains('style-5');
+  block.dataset.scrollToOffset = -1;
 
   // dots
   buttons.className = 'carousel-buttons';
@@ -120,15 +177,25 @@ export default function decorate(block) {
 
   calculateScrollbarWidth();
   window.addEventListener('resize', calculateScrollbarWidth, false);
+  if (isStyle5) {
+    const resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach(e => {
+        updateButtons(e.target, carouselInterval, carouselIntervalPause, autoPlayList);
+      });
+    });
+    resizeObserver.observe(block.parentElement);
+  }
 
   // skip for new styles
   if ((block.classList.contains('style-1')
       || block.classList.contains('style-2')
       || block.classList.contains('style-3') 
-      || block.classList.contains('style-4')) 
+      || block.classList.contains('style-4')
+      || block.classList.contains('style-5')) 
     && !block.classList.contains('auto-play')) return;
 
   carouselInterval = window.setInterval(() => {
+    if (carouselIntervalPause) return;
     autoPlayList.some((b, i) => {
       const isSelected = b.button.classList.contains('selected');
       if (isSelected) {
