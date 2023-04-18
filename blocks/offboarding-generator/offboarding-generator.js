@@ -13,6 +13,8 @@ const interviewDateTime = sessionStorage.getItem('generator-interview-datetime')
 const equipmentDate = sessionStorage.getItem('generator-equipment-date');
 const equipmentAddress = sessionStorage.getItem('generator-equipment-address');
 
+const formUrl = '/website-marketing-resources/offboarding-calculator-form.json'
+
 // Generate Tooltip
 function createTooltip(content) {
   let output = '<div class="tooltip"><span>More information</span><div class="tooltip__text">' + content + '</div></div>';

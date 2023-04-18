@@ -8,9 +8,10 @@ https://docs.google.com/document/d/1MGzTs2BfVB773CEZWaBJAfBl9iGaiuLIzBpBSslwg4I/
 
 # To Do
 
-- Form Validation
-- Form Spacing - accommodate extra fields for each template
-- Step Transitions
-- Generate Template (for copy/paste) - not exporting to PDF!
-- Progress Bar
-- Marketo Form Hookup - See this thread: https://bamboohr.slack.com/archives/C0446S2UXC5/p1680549168891609
+- Move forms into Google spreadsheet
+- Form Validation - Is this for every fields or only for fields that are mandatory?
+- Form Spacing - accommodate extra fields for each template - Style fix
+- Step Transitions - Nicer animation between tabs (Optional)
+- Generate Template (for copy/paste) - not exporting to PDF! - Copy fields value into Clipboard
+- Progress Bar - Create step indicators?
+- Marketo Form Hookup on Your template is ready(modal) - See this thread: https://bamboohr.slack.com/archives/C0446S2UXC5/p1680549168891609
