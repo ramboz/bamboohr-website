@@ -50,7 +50,7 @@ function getLinkText(format, mediaType) {
 }
 
 export function createArticleCard(article, classPrefix, customLinkText = '', excludeMediaType = false, eager = false) {
-  const title = article.title.split(' | ')[0];
+  const title = article.jobTitle || article.title.split(' | ')[0];
   const card = document.createElement('div');
   let articleCategory = [article.category, article.topic, article.planType, article.productArea, article.contentType, article.brandedContent];
   articleCategory = articleCategory.filter((str) => (str !== '' && str !== undefined)).join(' | ');
@@ -88,7 +88,6 @@ export function createArticleCard(article, classPrefix, customLinkText = '', exc
     const [year, month, day] = article.publicationDate.split('-');
     releaseDate = `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>`;
   } 
-  
 
   const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
   const articleCategorySpan = articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
@@ -96,7 +95,7 @@ export function createArticleCard(article, classPrefix, customLinkText = '', exc
   card.innerHTML = `
     ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
-    <h5>${article?.presenter || ''}</h5>
+    <h5>${article?.presenter || article?.customerName || ''}</h5>
     <h3>${title}</h3>
     ${releaseDate}
     <p>${article.description}</p>
@@ -571,7 +570,7 @@ export default async function decorate(block, blockName) {
         industry: {},
         companySize: {},
         companyGrowthStage: {},
-        userRole: {},
+        jobTitleCategory: {},
       };
     } else {
       facets = {
