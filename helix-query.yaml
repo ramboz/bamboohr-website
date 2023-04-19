@@ -444,8 +444,8 @@ indices:
         select: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      category:
-        select: head > meta[name="category"]
+      topic:
+        select: head > meta[name="topic"]
         value: |
           attribute(el, 'content')
       hideFromLibrary:
