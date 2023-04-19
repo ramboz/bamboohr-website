@@ -505,7 +505,13 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         const formEl = form.getFormElem()[0];
 
         /* Adobe Form Start event tracking when user changes the first field */		  
-        formEl.firstElementChild.addEventListener('change', () => {			
+        formEl.firstElementChild.addEventListener('change', () => {
+		  try {
+		    // eslint-disable-next-line
+			formEl.querySelector('input[name="ECID"]').value = s.marketingCloudVisitorID;
+		  } catch (e) {
+			formEl.querySelector('input[name="ECID"]').value = '';
+		  }
           adobeEventTracking('Form Start', {"name": form.getId()});
         });
 		

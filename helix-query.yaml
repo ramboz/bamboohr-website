@@ -428,11 +428,11 @@ indices:
       - '/customers/**'
     target: /customers/query-index
     properties:
-      customerName:
-        select: head > meta[name="customer-name"]
+      presenter:
+        select: head > meta[name="presenter"]
         value: |
           attribute(el, 'content')
-      jobTitle:
+      title:
         select: head > meta[name="job-title"]
         value: |
           attribute(el, 'content')
@@ -444,12 +444,16 @@ indices:
         select: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      category:
-        select: head > meta[name="category"]
+      topic:
+        select: head > meta[name="topic"]
         value: |
           attribute(el, 'content')
       hideFromLibrary:
         select: head > meta[name="hide-from-library"]
+        value: |
+          attribute(el, 'content')
+      publicationDate:
+        select: head > meta[name="publication-date"]
         value: |
           attribute(el, 'content')
       lastModified:
