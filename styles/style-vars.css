@@ -75,20 +75,20 @@
   /* body */
   --body-background-color: var(--color-white);
   --body-alt-background-color: var(--color-gray-10);
-  --body-font-family: 'Red Hat Text', 'Arial', 'Helvetica', sans-serif;
+  --body-font-family: 'Red Hat Text', 'Red Hat Text-fallback';
   --body-font-weight: 400;
   --body-color: var(--color-gray-12);
 
   /* headings */
   --heading-font-weight: 700;
   --heading-color: var(--color-gray-12);
-  --heading-font-family: 'Fira Sans', 'Arial', 'Helvetica', 'Trebuchet', sans-serif;
+  --heading-font-family: 'Fira Sans', 'Fira Sans-fallback';
 
   /* stylized font */
-  --stylized-font-family: 'Permanent Marker', sans-serif;
+  --stylized-font-family: 'Permanent Marker', 'Permanent Marker-fallback';
 
   /* display font */
-  --display-font-family: 'Red Hat Display', 'Arial', 'Helvetica', sans-serif;
+  --display-font-family: 'Red Hat Display', 'Red Hat Display-fallback';
 
   /* box-shadow */
   --box-shadow-transition-default: 0 0 0 0 rgb(0 0 0 / 0%);

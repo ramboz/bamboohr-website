@@ -625,6 +625,31 @@
     }
 }
 
+@media (min-width: 2200px) {
+    .bhr-home .image.bg-home-bottom picture {
+        top: unset;
+        bottom: 335px;
+    }
+
+    .bhr-home main .section.bottom-section {
+        padding-top: 300px;
+    }
+
+    .bhr-home .image.bg-home-bottom-pudgy picture {
+        bottom: 440px;
+    }
+}
+
+@media (min-width: 3000px) {
+    .bhr-home main .section.bottom-section {
+        padding-top: 360px;
+    }
+
+    .bhr-home .image.bg-home-bottom-pudgy picture {
+        bottom: 500px;
+    }
+}
+
 .bhr-home div .column-flex-container.columns-align-start {
     align-items: flex-start;
 }
