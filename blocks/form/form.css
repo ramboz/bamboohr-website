@@ -95,6 +95,8 @@ main .form .form-checkbox-option:not(:last-child) {
   display: flex;
   align-items: flex-start;
   margin-bottom: 15px;
+  width: 24px;
+  margin-right: 10px;
 }
 
 main .form .form-checkbox-option input,
@@ -118,7 +120,7 @@ main .form input[type="radio"] + label {
 }
 
 main .form .form-checkbox-option > label {
-  padding-left: 30px;
+  padding-left: 34px;
 }
 
 main .form .form-checkbox-option > label::before {
