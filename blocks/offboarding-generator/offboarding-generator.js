@@ -14,6 +14,23 @@ const equipmentDate = sessionStorage.getItem('generator-equipment-date');
 const equipmentAddress = sessionStorage.getItem('generator-equipment-address');
 
 const formUrl = '/website-marketing-resources/offboarding-calculator-form.json'
+let formsNameArr = null
+
+// Forms
+const resignationAcknowledgementForm = []
+const resignationAnnouncementForm = []
+const exitInterviewForm = []
+const returningEquipmentForm = []
+const leavingConfirmationForm = []
+const offboardingDismissalForm = []
+
+async function fetchData(url) {
+	const resp = await fetch(url);
+	const json = await resp.json()
+	const {data} = json
+
+	return data
+}
 
 // Generate Tooltip
 function createTooltip(content) {
@@ -31,6 +48,14 @@ function createInput(id, type, label, placeholder, value, tooltip) {
 }
 
 function createSelect(id, label, options, tooltip) {
+  const divWrapper = document.createElement('div')
+  divWrapper.classList.add('template-options__wrapper')
+  const labelHtml = `<label for="${id}"> ${label} ${tooltip ? createTooltip(tooltip) : ''}</label>`
+  const selectHtml = document.createElement('select')
+  selectHtml.setAttribute('id', id)
+
+  divWrapper.innerHTML = labelHtml
+  divWrapper.innerHTML = selectHtml
   let input = '<div>';
   input += '<label for="' + id + '">' + label + (tooltip ? createTooltip(tooltip) : '') + '</label>';
   input += '<select id="' + id + '">';
@@ -39,6 +64,17 @@ function createSelect(id, label, options, tooltip) {
   });
   input += '</select>';
   input += '</div>';
+
+  // const inputHtml = `<div><label for="${id}">${label} ${tooltip ? createTooltip(tooltip) : ''}</label>
+  // <select id="${id}">
+  //   ${options.map(option => {
+  //     return (
+  //       `<p></p>`
+  //     )
+  //   })}
+  // </select>
+  // </div>`
+
   return input;
 }
 
@@ -105,9 +141,7 @@ const templateOptions = [
 
 // Content Selection Template
 function templateSelection() {
-  const selected = sessionStorage.getItem('generator-template');
-  let output = createSelect('template-options', 'Choose your template', templateOptions, 'Select template tooltip');
-  output += '<button data-step="0" data-next class="button button--teal" id="select-template">Get started</button>';
+  const output = `${createSelect('template-options', 'Choose your template', templateOptions, 'Select template tooltip')}<button data-step="0" data-next class="button button--teal" id="select-template">Get started</button>`
   return output;
 }
 
@@ -228,7 +262,10 @@ function prevStep(el) {
   document.querySelector('[data-step="' + (--current) + '"]').classList.add('offboarding-generator-step--active');   
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
+  
+  const data = await fetchData(formUrl)
+
   // Set template defaults
   sessionStorage.setItem('generator-template', 'resignation-acknowledgement');
   sessionStorage.setItem('generator-tone', 'formal');
@@ -244,6 +281,65 @@ export default function decorate(block) {
       children[i].classList = 'offboarding-generator-step offboarding-generator-step--overlay';
     }
   }
+
+  // Sort fields for each forms
+	data.forEach(item => {
+    const {Form} = item
+
+    switch(Form) {
+      case "resignation letter acknowledgement":
+        resignationAcknowledgementForm.push(item);
+        resignationAcknowledgementForm.formLabel = item.Form
+        resignationAcknowledgementForm.formValue = item.Form.replace(/ /g, '-')
+        break;
+      case "resignation announcement":
+        resignationAnnouncementForm.push(item);
+        resignationAnnouncementForm.formLabel = item.Form
+        resignationAnnouncementForm.formValue = item.Form.replace(/ /g, '-')
+        break;
+      case "exit interview":
+        exitInterviewForm.push(item);
+        exitInterviewForm.formLabel = item.Form
+        exitInterviewForm.formValue = item.Form.replace(/ /g, '-')
+        break;
+      case "returning equipment/company property":
+        returningEquipmentForm.push(item);
+        returningEquipmentForm.formLabel = item.Form
+        returningEquipmentForm.formValue = item.Form.replace(/[ /]/g, '-')
+        break;
+      case "confirmation of leaving date":
+        leavingConfirmationForm.push(item);
+        leavingConfirmationForm.formLabel = item.Form
+        leavingConfirmationForm.formValue = item.Form.replace(/ /g, '-')
+        break;
+      case "offboarding for dismissal":
+        offboardingDismissalForm.push(item);
+        offboardingDismissalForm.formLabel = item.Form
+        offboardingDismissalForm.formValue = item.Form.replace(/ /g, '-')
+        break;
+      default:
+        // do nothing for other form types
+        break;
+    }
+  });
+
+  formsNameArr = data.reduce((acc, obj) => {
+    const {Form} = obj
+    if (!acc.includes(Form)) {
+      acc.push(Form)
+    }
+    return acc
+  }, [])
+
+  /**
+   * Store all forms in array
+   */
+  const formsArr = [resignationAcknowledgementForm, resignationAnnouncementForm, exitInterviewForm, returningEquipmentForm, leavingConfirmationForm, offboardingDismissalForm]
+
+  /**
+   * Concept: Getting the correct fields for the selected form
+   */
+  const ix = formsArr.find(form => form.formValue === 'offboarding-for-dismissal' )
 
   // Add SVG's
   const svgOne = '<svg width="313" height="404" viewBox="0 0 313 404" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M211.451 -36.908L46.9479 -81.3319C20.2268 -88.5622 -8.31543 -80.8583 -27.8774 -61.1249L-148.295 60.3383C-167.888 80.0717 -175.518 108.835 -168.359 135.767L-124.274 301.654C-117.115 328.618 -96.2344 349.678 -69.4819 356.876L95.0521 401.332C121.773 408.562 150.315 400.858 169.877 381.125L290.295 259.693C309.888 239.96 317.518 211.196 310.359 184.264L266.274 18.3772C259.115 -8.5866 238.203 -29.6461 211.513 -36.8764L211.451 -36.908Z" fill="#E8F6F9"/></svg>';
@@ -276,6 +372,9 @@ export default function decorate(block) {
         break;
       case '[generator-download-confirmed]':
         item.innerHTML = downloadConfirmed();
+        break;
+      default:
+        // do nothing none paragraphs
         break;
     }
   });
