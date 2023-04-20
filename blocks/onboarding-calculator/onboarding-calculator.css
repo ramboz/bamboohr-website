@@ -30,3 +30,31 @@ button {
 .tab {
 	display: none;
 }
+
+.field-item__range {
+	position: relative;
+}
+
+.field-item__range .range-value {
+	background: var(--color-5);
+	color: white;
+	padding: 4px 12px;
+	position: absolute;
+	border-radius: 4px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.field-item__range .range-value::after {
+	content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-bottom: 10px solid var(--color-5);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    top: -5px;
+    left: 50%;
+    margin-left: -5px;
+    margin-top: -1px;
+}  

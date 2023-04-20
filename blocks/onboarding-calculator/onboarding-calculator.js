@@ -56,9 +56,9 @@ function calcOrganisationCost(onboardingData) {
 	const {avgAnnualEmployeeSalary, avgOnboardHours, avgAdditionalCosts, newEmployeesPerYear} = onboardingData
 	const {workingHoursPerYear} = getFormular(organisationForm)
 
-	const avgHourlyRate = (avgAnnualEmployeeSalary / workingHoursPerYear).toFixed(2)
-	const onboardingHoursCost = (avgHourlyRate * avgOnboardHours).toFixed(2)
-	const totalAnuualOnboardingCosts = ((onboardingHoursCost + avgAdditionalCosts) * newEmployeesPerYear).toFixed(0)
+	const avgHourlyRate = parseFloat((avgAnnualEmployeeSalary / workingHoursPerYear).toFixed(2))
+	const onboardingHoursCost = parseFloat((avgHourlyRate * avgOnboardHours).toFixed(2))
+	const totalAnuualOnboardingCosts = ((onboardingHoursCost + avgAdditionalCosts) * newEmployeesPerYear).toFixed(2)
 
 	return totalAnuualOnboardingCosts
 }
@@ -71,58 +71,45 @@ function calcIndividualCost(employeeOnboardingData) {
 	 * HR salary(per hour)
 	 * hrStaffSalaryForOnboardingTasks / yearly working hours = HR salary(per hour)
 	 */
-	const hrSalaryperHour = (hrStaffSalaryForOnboardingTasks / workingHoursPerYear).toFixed(2)
-	console.log(`hrSalaryperHour: ${hrSalaryperHour}`);
+	const hrSalaryperHour = parseFloat((hrStaffSalaryForOnboardingTasks / workingHoursPerYear).toFixed(2))
 	
 	/**
 	 * Manager Salary(per hour)
 	 * salarayManagerOfNewEmployee / yearly working hours = Manager Salary(per hour)
 	 */
-	const managerSalaryPerHour = (salarayManagerOfNewEmployee / workingHoursPerYear).toFixed(2)
-	console.log(`managerSalaryPerHour: ${managerSalaryPerHour}`);
+	const managerSalaryPerHour = parseFloat((salarayManagerOfNewEmployee / workingHoursPerYear).toFixed(2))
 
 	/**
 	 * Employee Salary(per hour)
 	 * newEmployeeSalary / yearly working hours = Employee Salary(per hour)
 	 */
-	const employeeSalaryPerHour = (newEmployeeSalary / workingHoursPerYear).toFixed(2)
-	console.log(`employeeSalaryPerHour: ${employeeSalaryPerHour}`);
+	const employeeSalaryPerHour = parseFloat(newEmployeeSalary / workingHoursPerYear).toFixed(2)
 
 	/**
 	 * Total HR Onboarding Hour Cost
 	 * HR salary * hrHoursSpentOnboardingProcess
 	 */
-	const totalHrOnboardingHourCost = (hrSalaryperHour * hrHoursSpentOnboardingProcess).toFixed(2)
-	console.log(`totalHrOnboardingHourCost: ${totalHrOnboardingHourCost}`);
+	const totalHrOnboardingHourCost = parseFloat((hrSalaryperHour * hrHoursSpentOnboardingProcess).toFixed(2))
 
 	/**
 	 * Total Manager Hour Cost
 	 * Manager Salary * managerHoursSpentOnboarding
 	 */
-	const totalManagerHourCost = (managerSalaryPerHour * managerHoursSpentOnboarding).toFixed(2)
-	console.log(`totalManagerHourCost: ${totalManagerHourCost}`);
+	const totalManagerHourCost = parseFloat((managerSalaryPerHour * managerHoursSpentOnboarding).toFixed(2))
 
 	/**
 	 * Total Employee Onboarding Hour Cost
 	 * Employee Salary * newEmployeeHoursSpendOnboarding
 	 */
-	const totalEmployeeOnboardingHourCost = (employeeSalaryPerHour * newEmployeeHoursSpendOnboarding).toFixed(2)
-	console.log(`totalEmployeeOnboardingHourCost: ${totalEmployeeOnboardingHourCost}`);
-
-	console.log(`newEmployeeRelocationCost: ${newEmployeeRelocationCost}`);
-	console.log(`workstationCost: ${workstationCost}`);
+	const totalEmployeeOnboardingHourCost = parseFloat((employeeSalaryPerHour * newEmployeeHoursSpendOnboarding).toFixed(2))
 
 	/**
 	 * Final cost of new employee
 	 * (Total HR Onboarding Hour Cost + Total Manager Hour Cost + Total Employee Onboarding Hour Cost) + newEmployeeRelocationCost + workstationCost
 	 */
-	const finalCostOfNewEmployee = totalHrOnboardingHourCost + totalManagerHourCost + totalEmployeeOnboardingHourCost
-	console.log(`finalCostOfNewEmployee: ${finalCostOfNewEmployee}`);
+	const finalCostOfNewEmployee = (totalHrOnboardingHourCost + totalManagerHourCost + totalEmployeeOnboardingHourCost) + parseFloat(newEmployeeRelocationCost) + parseFloat(workstationCost)
 
-	/**
-	 * TODO:
-	 * Convert all values use to calculate finalCostOfNewEmployee to number. Return finalCostOfNewEmployee
-	 */
+	return finalCostOfNewEmployee
 }
 
 function formSubmitHandler(form) {
@@ -150,12 +137,9 @@ function formSubmitHandler(form) {
 
 		const employeeOnboardingData = {newEmployeeSalary, newEmployeeHoursSpendOnboarding, hrStaffSalaryForOnboardingTasks, hrHoursSpentOnboardingProcess, salarayManagerOfNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost}
 
-		calcIndividualCost(employeeOnboardingData)
+		const totalEmployeeOnboardingCosts = calcIndividualCost(employeeOnboardingData)
 
-		/**
-		 * TODO:
-		 * Store value return from calcIndividualCost(). Call appendCalcResultToDom()
-		 */
+		appendCalcResultToDom(totalEmployeeOnboardingCosts, form.id)
 	}
 }
 
@@ -246,8 +230,26 @@ function createNavBtn() {
 	return fieldWrapper
 }
 
+function setRangeValueBubble(rangeValue, rangeValueBubble) {
+	const val = rangeValue.value;
+	const min = rangeValue.min ? rangeValue.min : 0;
+	const max = rangeValue.max ? rangeValue.max : 100;
+	const newVal = Number(((val - min) * 100) / (max - min));
+	rangeValueBubble.innerHTML = val;
+
+	rangeValueBubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+}
+
+function createRangeInputIndicator() {
+	const output = document.createElement('output')
+	output.classList.add('range-value')
+
+	return output
+}
+
 function createRangeInput(type, options, field) {
 	const input = document.createElement('input');
+	input.classList.add('input-range')
 	const [minValue, maxValue] = options.split('|')
 	input.type = type;
 	input.id = field
@@ -273,8 +275,10 @@ function createFields(fields) {
 	
 		switch (Type) {
 			case 'range': 
+				divFieldItem.classList.add('field-item__range')
 				divFieldItem.append(createLabel(item))
 				divFieldItem.append(createRangeInput(Type, Options, Field))
+				divFieldItem.append(createRangeInputIndicator())
 			break;
 			case 'formular':
 				return
@@ -444,10 +448,21 @@ export default async function decorate(block) {
 	block.append(createOrganisationForm(organisationForm), createIndividualForm(individualForm))
 
 	const resetBtnArr = document.querySelectorAll('.reset-calc-btn')
+	const allRangeInputs = document.querySelectorAll(".field-item__range");
 
 	resetBtnArr.forEach(btn => {
 		btn.addEventListener('click', () => {
 			resetForm(block)
 		})
-	});
+	})
+
+	allRangeInputs.forEach(item => {
+		const inputRangeField = item.querySelector(".input-range");
+		const rangeValueBubble = item.querySelector(".range-value");
+
+		inputRangeField.addEventListener("input", () => {
+			setRangeValueBubble(inputRangeField, rangeValueBubble);
+		})
+		setRangeValueBubble(inputRangeField, rangeValueBubble);
+	})
 }
