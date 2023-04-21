@@ -15,6 +15,12 @@ async function fetchData(url) {
 	return data
 }
 
+function createProgressIndicatorHtml() {
+	const spanHtml = createElem('span', 'step')
+
+	return spanHtml
+}
+
 /**
  * Display the calcResult to the front-end
  * @param {number} calcResult 
@@ -319,6 +325,7 @@ function createFields(fields) {
 function createIndividualForm(fields) {
 	// Create form element
 	const form = createElem('form',)
+	const div = createElem('div', 'progress-bar')
 
 	// Setup form attributes
 	form.setAttribute('id', 'individual-form')
@@ -341,6 +348,13 @@ function createIndividualForm(fields) {
 
 	form.append(createCalcResultHtml())
 	form.append(createNavBtn())
+	form.append(div)
+	
+	const tabsArr = form.querySelectorAll('.tab')
+	
+	tabsArr.forEach(() => {
+		div.append(createProgressIndicatorHtml())
+	})
 
 	// Select prevBtn and nextBtn
 	const btnArr = form.querySelectorAll('button')
@@ -366,6 +380,7 @@ function createIndividualForm(fields) {
 function createOrganisationForm(fields) {
 	// Create form element
 	const form = createElem('form',)
+	const div = createElem('div', 'progress-bar')
 
 	// Setup form attributes
 	form.setAttribute('id', 'organisation-form')
@@ -374,6 +389,13 @@ function createOrganisationForm(fields) {
 	form.append(createFields(fields))
 	form.append(createCalcResultHtml())
 	form.append(createNavBtn())
+	form.append(div)
+
+	const tabsArr = form.querySelectorAll('.tab')
+
+	tabsArr.forEach(() => {
+		div.append(createProgressIndicatorHtml())
+	})
 
 	// Select prevBtn and nextBtn
 	const btnArr = form.querySelectorAll('button')
