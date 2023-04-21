@@ -334,11 +334,6 @@ function createFields(fields) {
 		const {Field, Type, Options, Tooltip} = item
 		const divFieldItem = document.createElement('div')
 		divFieldItem.classList.add('field-item')
-
-		if (Tooltip) {
-			const tooltipHtml = `<div class="tooltip"><span class="tooltip__text">${Tooltip}</span></div>`
-			divFieldItem.insertAdjacentHTML('beforeend', tooltipHtml);
-		}
 	
 		switch (Type) {
 			case 'range': 
@@ -352,6 +347,12 @@ function createFields(fields) {
 			default:
 				divFieldItem.append(createLabel(item))
 				divFieldItem.append(createInput(item))
+		}
+
+		if (Tooltip) {
+			const label = divFieldItem.querySelector('label')
+			const tooltipHtml = `<div class="tooltip"><span class="tooltip__text">${Tooltip}</span></div>`
+			label.insertAdjacentHTML('beforeend', tooltipHtml);
 		}
 
 		fieldWrapper.append(divFieldItem)
