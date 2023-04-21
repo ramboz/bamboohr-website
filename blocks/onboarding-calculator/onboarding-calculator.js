@@ -328,6 +328,17 @@ function createRangeInput(type, options, field) {
 	return input
 }
 
+function test(i) {
+	const n = i.querySelector('input')
+	const moveMeElement = createElem('div');
+
+	const x = `<div>${n.min}</div><div>${n.max}</div>`
+	moveMeElement.innerHTML = x
+	n.insertAdjacentElement('beforebegin', moveMeElement)
+	console.log(n.min);
+	console.log(n.max);
+}
+
 function createFields(fields) {
 	const fieldWrapper = document.createElement('div')
 	fieldWrapper.classList.add('tab')
@@ -341,6 +352,7 @@ function createFields(fields) {
 				divFieldItem.classList.add('field-item__range')
 				divFieldItem.append(createLabel(item))
 				divFieldItem.append(createRangeInput(Type, Options, Field))
+				test(divFieldItem)
 				divFieldItem.append(createRangeInputIndicator())
 			break;
 			case 'formular':
