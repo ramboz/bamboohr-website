@@ -1,5 +1,6 @@
-const mediaQueryLarge = window.matchMedia('(min-width: 908px)');
-const mediaQuerySmall = window.matchMedia('(max-width: 767px)');
+const mediaQueryLarge = window.matchMedia('(min-width: 1800px)');
+const mediaQueryMedium = window.matchMedia('(min-width: 1098px)');
+const mediaQuerySmall = window.matchMedia('(max-width: 707px)');
 
 function calculateScrollbarWidth() {
   document.documentElement.style.setProperty(
@@ -9,10 +10,11 @@ function calculateScrollbarWidth() {
 }
 
 function getStyle5CardMinWidth() {
-  if (mediaQuerySmall.matches) return 280;
+  if (mediaQuerySmall.matches) return 260;
   if (mediaQueryLarge.matches) return 360;
+  if (mediaQueryMedium.matches) return 300;
 
-  return 300;
+  return 280;
 }
 
 function getStyle5CardCount(block) {
@@ -89,7 +91,7 @@ function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause,
   const cardStyle = block.firstElementChild.currentStyle || window.getComputedStyle(block.firstElementChild);
   const cardMargin = parseFloat(cardStyle.marginLeft) + parseFloat(cardStyle.marginRight);
   const cardCnt = getStyle5CardCount(block);
-  const newCardWidth = (Math.round(block.offsetWidth / cardCnt) - cardMargin) + 5;
+  const newCardWidth = (Math.round(block.offsetWidth / cardCnt) - cardMargin);
   const cards = block.querySelectorAll(':scope > div');
 
   // Size the cards to cover entire block width

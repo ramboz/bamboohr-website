@@ -603,7 +603,7 @@ main .carousel-buttons.style-5 button.selected {
   background-color: var(--color-1);
 }
 
-@media (min-width: 500px) {
+@media (min-width: 1038px) {
   main .carousel.style-5 > div {
     max-width: 300px;
     padding: 0 15px;
@@ -611,7 +611,7 @@ main .carousel-buttons.style-5 button.selected {
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1800px) {
   main .carousel.style-5 > div {
     max-width: 360px;
     padding: 0 20px;
