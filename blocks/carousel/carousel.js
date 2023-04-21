@@ -116,6 +116,7 @@ function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause,
   const cards = block.querySelectorAll(':scope > div');
 
   // Size the cards to cover entire block width
+  // eslint-disable-next-line no-return-assign
   cards.forEach(card => card.style.maxWidth = `${newCardWidth}px`);
 
   if (cardCnt > 1) carouselControls.style.display = 'flex';
