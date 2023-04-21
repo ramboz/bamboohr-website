@@ -479,19 +479,22 @@ main .carousel.style-3 ~ .carousel-controls {
 }
 
 @media (min-width: 600px) {
-  main .carousel.style-3 ~ .carousel-controls {
+  main .carousel.style-3 ~ .carousel-controls,
+  main .carousel.style-5 ~ .carousel-controls {
     display: flex;
   }
 }
 
-main .carousel.style-3 ~ .carousel-controls button {
+main .carousel.style-3 ~ .carousel-controls button,
+main .carousel.style-5 ~ .carousel-controls button {
   background: transparent;
   border: 0;
   cursor: pointer;
   padding: .5rem;
 }
 
-main .carousel.style-3 ~ .carousel-controls button::after {
+main .carousel.style-3 ~ .carousel-controls button::after,
+main .carousel.style-5 ~ .carousel-controls button::after {
   background-color: var(--theme-shade10);
   content: '';
   display: block;
@@ -503,15 +506,18 @@ main .carousel.style-3 ~ .carousel-controls button::after {
   width: 1.875rem;
 }
 
-main .carousel.style-3 ~ .carousel-controls button.disabled {
+main .carousel.style-3 ~ .carousel-controls button.disabled,
+main .carousel.style-5 ~ .carousel-controls button.disabled {
   cursor: auto;
 }
 
-main .carousel.style-3 ~ .carousel-controls button.disabled::after {
+main .carousel.style-3 ~ .carousel-controls button.disabled::after,
+main .carousel.style-5 ~ .carousel-controls button.disabled::after {
   background-color: var(--color-gray-5);
 }
 
-main .carousel.style-3 ~ .carousel-controls button.prev {
+main .carousel.style-3 ~ .carousel-controls button.prev,
+main .carousel.style-5 ~ .carousel-controls button.prev {
   transform: rotate(180deg);
 }
 
@@ -601,6 +607,24 @@ main .carousel-buttons.style-5 button {
 
 main .carousel-buttons.style-5 button.selected {
   background-color: var(--color-1);
+}
+
+main .carousel.style-5 ~ .carousel-controls button.prev {
+  --extra-padding: 64px;
+
+  flex-direction: column;
+  left: -45px;
+  position: absolute;
+  top: calc(50% - var(--extra-padding));
+}
+
+main .carousel.style-5 ~ .carousel-controls button.next {
+  --extra-padding: 64px;
+
+  flex-direction: column;
+  right: -45px;
+  position: absolute;
+  top: calc(50% - var(--extra-padding));
 }
 
 @media (min-width: 1038px) {

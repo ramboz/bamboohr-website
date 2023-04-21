@@ -27,12 +27,32 @@ function getStyle5CardCount(block) {
   return cardCnt;
 }
 
+function isStyle5ScrolledToFirstCardInGroup(block, activeButtonIndex) {
+  const cards = block.querySelectorAll(':scope > div');
+  const cardCnt = getStyle5CardCount(block);
+  let isFirst = false;
+  let isLast = false;
+
+  cards.forEach((card, index) => {
+    if (card.offsetLeft >= block.scrollLeft - 5 && card.offsetLeft <= block.scrollLeft + 5) {
+      const btnGroup = Math.floor(index/cardCnt);
+
+      if (activeButtonIndex !== btnGroup) isLast = true;
+      else if (index % cardCnt === 0) isFirst = true;
+    }
+  });
+
+  return isFirst || isLast;
+}
+
 function selectButton(block, button, row, buttons, rememberScrollToOffset = true) {
   const index = [...buttons].indexOf(button);
   const arrows = block.parentNode.querySelector('.carousel-controls');
+  const isStyle5 = block.classList.contains('style-5');
 
-  if (rememberScrollToOffset) block.dataset.scrollToOffset = row.offsetLeft - row.parentNode.offsetLeft;
-  block.scrollTo({ top: 0, left: row.offsetLeft - row.parentNode.offsetLeft, behavior: 'smooth' });
+  const newScrollPos = row.offsetLeft - row.parentNode.offsetLeft;
+  if (rememberScrollToOffset) block.dataset.scrollToOffset = newScrollPos;
+  block.scrollTo({ top: 0, left: newScrollPos, behavior: 'smooth' });
   buttons.forEach((r) => r.classList.remove('selected'));
   button.classList.add('selected');
 
@@ -40,7 +60,7 @@ function selectButton(block, button, row, buttons, rememberScrollToOffset = true
   [...arrows.children].forEach((arrow) => arrow.classList.remove('disabled'));
 
   // disable arrows
-  if (index === 0) {
+  if ((!isStyle5 && index === 0) || (isStyle5 && newScrollPos === 0)) {
     arrows.querySelector('.prev').classList.add('disabled');
   } else if (index >= buttons.length - 1) {
     arrows.querySelector('.next').classList.add('disabled');
@@ -54,6 +74,7 @@ function getVisibleSlide(event) {
   const slides = target.querySelectorAll(':scope > div');
   const leftPosition = target.scrollLeft;
   const rightEnd = target.scrollWidth - target.offsetWidth;
+  const cardCnt = getStyle5CardCount(target);
   let leftPadding = 0;
 
   const scrollToOffset = +target.dataset.scrollToOffset;
@@ -66,7 +87,6 @@ function getVisibleSlide(event) {
 
   slides.forEach((slide, key) => {
     const offset = slide.offsetLeft;
-    const cardCnt = getStyle5CardCount(target);
     let btnGroup = isStyle5 ? Math.floor(key/cardCnt) : key;
 
     // set first offset (extra padding?)
@@ -85,6 +105,7 @@ function getVisibleSlide(event) {
 function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause, autoPlayList) {
   const block = carouselWrapper.firstElementChild;
   const buttons = block.nextElementSibling;
+  const carouselControls = buttons.nextElementSibling;
 
   if (!block.offsetWidth) return;
 
@@ -96,6 +117,9 @@ function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause,
 
   // Size the cards to cover entire block width
   cards.forEach(card => card.style.maxWidth = `${newCardWidth}px`);
+
+  if (cardCnt > 1) carouselControls.style.display = 'flex';
+  else carouselControls.style.display = 'none';
 
   const buttonCount = Math.ceil(block.children.length / cardCnt);
 
@@ -191,7 +215,10 @@ export default function decorate(block) {
     if (target.classList.contains('disabled')) return;
 
     if (target.classList.contains('prev')) {
-      [...buttons.children].at(index - 1).click();
+      let clickIndex = index - 1;
+      if (isStyle5 && !isStyle5ScrolledToFirstCardInGroup(block, index)) clickIndex = index;
+
+      [...buttons.children].at(clickIndex).click();
     } else if (target.classList.contains('next')) {
       [...buttons.children].at(index + 1).click();
     }
