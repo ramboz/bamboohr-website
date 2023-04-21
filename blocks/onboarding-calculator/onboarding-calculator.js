@@ -63,6 +63,11 @@ function calcOrganisationCost(onboardingData) {
 	return totalAnuualOnboardingCosts
 }
 
+/**
+ * Calculate the total costs of onboarding an employee
+ * @param {object} employeeOnboardingData data from form fields
+ * @returns 
+ */
 function calcIndividualCost(employeeOnboardingData) {
 	const {newEmployeeSalary, newEmployeeHoursSpendOnboarding, hrStaffSalaryForOnboardingTasks, hrHoursSpentOnboardingProcess, salarayManagerOfNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost} = employeeOnboardingData
 	const {workingHoursPerYear} = getFormular(organisationForm)
@@ -112,6 +117,10 @@ function calcIndividualCost(employeeOnboardingData) {
 	return finalCostOfNewEmployee
 }
 
+/**
+ * Handle form submission
+ * @param {object} form 
+ */
 function formSubmitHandler(form) {
 	if (form.id === 'organisation-form') {
 		const avgAnnualEmployeeSalary = form.elements.avgAnnualEmployeeSalary.value
@@ -143,6 +152,11 @@ function formSubmitHandler(form) {
 	}
 }
 
+/**
+ * Show the next form tab
+ * @param {number} index 
+ * @param {object} form current active form
+ */
 function showTab(index, form) {
 	const tabs = form.querySelectorAll('.tab')
 	tabs[index].style.display = 'flex'
@@ -154,6 +168,10 @@ function showTab(index, form) {
 	// console.log(index);
 }
 
+/**
+ * Reset forms value
+ * @param {object} block 
+ */
 function resetForm(block) {
 	const formsArr = block.querySelectorAll('form')
 	const tabsArr = block.querySelectorAll('.tab')
@@ -176,6 +194,11 @@ function resetForm(block) {
 	showTab(currentTab, block)
 }
 
+/**
+ * Handle next and prev buttons behaviour
+ * @param {number} index 
+ * @param {object} form 
+ */
 function nextPrev(index, form) {
 	const tabsArr = form.querySelectorAll('.tab')
 	const secondToLastTab = tabsArr[tabsArr.length - 2];
