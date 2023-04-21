@@ -2,7 +2,6 @@
 	background-color: #F6FAFD;
 	border-radius: 12px;
 	box-shadow: 0 4px 12px 4px #86868624;
-	max-width: 50rem;
 	margin: 0 auto;
 	position: relative;
 }
@@ -105,6 +104,7 @@ button {
 	width: 100%;
 	background-color: #F6FAFD;
 	align-content: center;
+	padding: 0 2.5em;
 }
 
 .onboarding-calculator form.active {
@@ -120,7 +120,39 @@ button {
 }
 
 .tab .field-item {
-	width: 45%;
+	width: 48%;
+}
+
+.tab .field-item input[type="number"]{
+	height: 52px;
+	border: 1px solid #B1BFCA;
+    border-radius: 8px;
+}
+
+.tab .field-item.invalid input[type="number"]{
+	background-color: #ffdddd;
+}
+
+.tab .field-item input[type="range"]{
+	--percent: 50%;
+    background-color: #B6E0FA;
+    background-image: linear-gradient(#1A87C9,#1A87C9);
+    background-size: var(--percent) 100%;
+    background-repeat: no-repeat;
+    border-radius: 0;
+    display: block;
+    height: 0.5em;
+    transition: background-color 0.3s;
+    appearance: none;
+
+}
+
+.tab .field-item label {
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 20px;
+	margin-bottom: 8px;
+	display: block;
 }
 
 .tab .field-item input {
@@ -159,6 +191,7 @@ button {
 	display: flex;
     position: absolute;
     top: 0;
+	left: 0;
     width: 100%;
 }
 
@@ -166,4 +199,84 @@ button {
 	height: 8px;
     background-color: #E8F3FA;
     flex: 1;
+}
+
+.step.step-active {
+	background-color: #1A87C9;
+}
+
+.step.finish {
+	background-color: #1A87C9;
+}
+
+.onboarding-calculator .tooltip {
+	position: relative;
+	display: inline-block;
+	margin-left: 0.25rem;
+	width: 14px;
+	height: 14px;
+	background: #1A87C9;
+	cursor: help;
+	border-radius: 50%;
+	top: 2px;
+}
+
+.onboarding-calculator .tooltip::before,
+.onboarding-calculator .tooltip::after {
+	content: '';
+	position: absolute;
+	width: 2px;
+	background: white;
+}
+
+.onboarding-calculator .tooltip::before {
+	height: 2px;
+	border-radius: 50%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-220%);
+}
+
+.onboarding-calculator .tooltip::after {
+	top: 50%;
+	left: 50%;
+	height: 5px;
+	transform: translate(-50%,-15%);
+	width: 2px;
+}
+
+.onboarding-calculator .tooltip__text {
+	position: absolute;
+	display: block;
+	pointer-events: none;
+	opacity: 0;
+	top: 1.4rem;
+	left: 50%;
+	transform: translateX(-50%);
+	background:#1A87C9;
+	border-radius: 0.5rem;
+	color: white;
+	width: 10rem;
+	padding: 0.25rem;
+	text-align: center;
+	font-size: 0.75rem;
+	transition: all 0.3s ease-in-out;
+}
+
+.onboarding-calculator .tooltip:hover .tooltip__text {
+	opacity: 1;
+	top: 1.25rem;
+	transition: all 0.3s ease;
+}
+
+.onboarding-calculator .navBtn-wrapper {
+	width: 100%;
+	display: flex;
+    justify-content: space-between;
+}
+
+.onboarding-calculator #prevBtn {
+	border: 1px solid #1A87C9;
+	color: #1A87C9;
+	background-color: transparent;
 }
