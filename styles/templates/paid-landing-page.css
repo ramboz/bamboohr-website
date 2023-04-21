@@ -23,18 +23,10 @@
 .paid-landing-page main .form h2 {
   font-family: var(--body-font-family);
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 26px;
-  margin: 20px 0 0;
+  margin: 24px 0 0;
   color: var(--theme-shade10);
-}
-
-@media (min-width: 600px) {
-  .paid-landing-page main .form h2 {
-    font-size: 21px;
-    line-height: 28px;
-    margin: 30px 0 0;
-  }
 }
 
 @media (max-width: 1199px) {
