@@ -305,6 +305,7 @@ function setRangeValueBubble(rangeValue, rangeValueBubble) {
 	rangeValueBubble.innerHTML = val;
 
 	rangeValueBubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+	rangeValue.style = `--percent:calc(${newVal}% + (${8 - newVal * 0.15}px))`;
 }
 
 function createRangeInputIndicator() {
