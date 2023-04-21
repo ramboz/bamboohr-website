@@ -1,3 +1,6 @@
+const mediaQueryLarge = window.matchMedia('(min-width: 908px)');
+const mediaQuerySmall = window.matchMedia('(max-width: 767px)');
+
 function calculateScrollbarWidth() {
   document.documentElement.style.setProperty(
     '--scrollbar-width',
@@ -5,11 +8,19 @@ function calculateScrollbarWidth() {
   );
 }
 
+function getStyle5CardMinWidth() {
+  if (mediaQuerySmall.matches) return 280;
+  if (mediaQueryLarge.matches) return 360;
+
+  return 300;
+}
+
 function getStyle5CardCount(block) {
+  const cardMinWidth = getStyle5CardMinWidth();
   const cardStyle = block.firstElementChild.currentStyle || window.getComputedStyle(block.firstElementChild);
   const cardMargin = parseFloat(cardStyle.marginLeft) + parseFloat(cardStyle.marginRight);
-  const cardWidth = (block.firstElementChild.offsetWidth + cardMargin) - 5;
-  const cardCnt = Math.floor(block.offsetWidth / cardWidth);
+  const cardPadding = parseFloat(cardStyle.paddingLeft) + parseFloat(cardStyle.paddingRight);
+  const cardCnt = Math.floor(block.offsetWidth / (cardMinWidth + cardMargin + cardPadding));
 
   return cardCnt;
 }
@@ -54,14 +65,16 @@ function getVisibleSlide(event) {
   slides.forEach((slide, key) => {
     const offset = slide.offsetLeft;
     const cardCnt = getStyle5CardCount(target);
-    const btnGroup = isStyle5 ? Math.floor(key/cardCnt) : key;
+    let btnGroup = isStyle5 ? Math.floor(key/cardCnt) : key;
 
     // set first offset (extra padding?)
-    if (key === 0) leftPadding = offset;
+    if (key === 0 && !isStyle5) leftPadding = offset;
 
     if (offset - leftPadding === leftPosition ||
         (isStyle5 && btnGroup === buttons.length - 1 && leftPosition === rightEnd)) {
       // trigger default functionality
+      if (isStyle5 && offset >= rightEnd - 20) btnGroup = buttons.length - 1;
+
       selectButton(target, buttons[btnGroup], slide, buttons, false);
     }
   });
@@ -73,7 +86,15 @@ function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause,
 
   if (!block.offsetWidth) return;
 
+  const cardStyle = block.firstElementChild.currentStyle || window.getComputedStyle(block.firstElementChild);
+  const cardMargin = parseFloat(cardStyle.marginLeft) + parseFloat(cardStyle.marginRight);
   const cardCnt = getStyle5CardCount(block);
+  const newCardWidth = (Math.round(block.offsetWidth / cardCnt) - cardMargin) + 5;
+  const cards = block.querySelectorAll(':scope > div');
+
+  // Size the cards to cover entire block width
+  cards.forEach(card => card.style.maxWidth = `${newCardWidth}px`);
+
   const buttonCount = Math.ceil(block.children.length / cardCnt);
 
   if (buttonCount === buttons.children.length) return;
