@@ -153,4 +153,17 @@ button {
     left: 50%;
     margin-left: -5px;
     margin-top: -1px;
-}  
+}
+
+.progress-bar {
+	display: flex;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.step {
+	height: 8px;
+    background-color: #E8F3FA;
+    flex: 1;
+}

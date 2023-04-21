@@ -21,6 +21,26 @@ function createProgressIndicatorHtml() {
 	return spanHtml
 }
 
+function validateForm(form) {
+	let valid = true
+	const tabsArr = form.querySelectorAll('.tab')
+	const activeTab = tabsArr[currentTab].querySelectorAll('input')
+
+	activeTab.forEach(input => {
+		if (input.value === '') {
+			const inputContainer = input.parentElement
+			inputContainer.classList.add('invalid')
+			valid = false
+		}
+	})
+
+	if (valid) {
+		form.querySelectorAll('.step')[currentTab].className += " finish";
+	}
+	
+	return valid
+}
+
 /**
  * Display the calcResult to the front-end
  * @param {number} calcResult 
@@ -158,6 +178,16 @@ function formSubmitHandler(form) {
 	}
 }
 
+function progressIndicator(index, form) {
+	const stepsArr = form.querySelectorAll(".step");
+
+	stepsArr.forEach(item => {
+		item.classList.remove('step-active')
+	})
+
+	stepsArr[index].classList.add('step-active')
+}
+
 /**
  * Show the next form tab
  * @param {number} index 
@@ -182,11 +212,16 @@ function resetForm(block) {
 	const formsArr = block.querySelectorAll('form')
 	const tabsArr = block.querySelectorAll('.tab')
 	const navBtnArr = block.querySelectorAll('.navBtn-wrapper')
+	const invalidFieldsArr = block.querySelectorAll('.field-item.invalid')
 	currentTab = 0
 
 	formsArr.forEach(form => {
 		form.classList.remove('active')
 		form.reset()
+	});
+
+	invalidFieldsArr.forEach(item => {
+		item.classList.remove('invalid')
 	});
 
 	tabsArr.forEach(tab => {
@@ -210,6 +245,8 @@ function nextPrev(index, form) {
 	const secondToLastTab = tabsArr[tabsArr.length - 2];
 	const navBtn = form.querySelector('.navBtn-wrapper')
 
+	if (index === 1 && !validateForm(form)) return;
+
 	tabsArr[currentTab].style.display ='none'
 
 	currentTab += index
@@ -224,6 +261,7 @@ function nextPrev(index, form) {
 	}
 
 	showTab(currentTab, form)
+	progressIndicator(currentTab, form)
 }
 
 function createCalcResultHtml() {
@@ -422,6 +460,7 @@ function toggleForm(formId) {
 	form.classList.add('active')
 
 	showTab(currentTab, form)
+	progressIndicator(currentTab, form)
 }
 
 function createCtaContainer() {
