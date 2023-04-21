@@ -145,7 +145,7 @@ function formSubmitHandler(form) {
 
 function showTab(index, form) {
 	const tabs = form.querySelectorAll('.tab')
-	tabs[index].style.display = 'block'
+	tabs[index].style.display = 'flex'
 
 	// if (index === (tabs.length - 1)) {
 	// 	form.getElementById('nextBtn').innerText = 'Submit'
@@ -440,15 +440,15 @@ export default async function decorate(block) {
 	
 	const cols = [...block.firstElementChild.children]
 	// 1st collumn
-	cols[0].classList.add('hello')
+	cols[0].classList.add('onboarding-calculator__content-left')
 	// 2nd collumn
-	cols[1].classList.add('hello-2')
+	cols[1].classList.add('onboarding-calculator__content-right')
 
-	firstDiv.append(createCtaContainer())
+	cols[1].append(createCtaContainer())
 	block.append(createOrganisationForm(organisationForm), createIndividualForm(individualForm))
 
 	const resetBtnArr = document.querySelectorAll('.reset-calc-btn')
-	const allRangeInputs = document.querySelectorAll(".field-item__range");
+	const rangeInputsArr = document.querySelectorAll(".field-item__range");
 
 	resetBtnArr.forEach(btn => {
 		btn.addEventListener('click', () => {
@@ -456,7 +456,7 @@ export default async function decorate(block) {
 		})
 	})
 
-	allRangeInputs.forEach(item => {
+	rangeInputsArr.forEach(item => {
 		const inputRangeField = item.querySelector(".input-range");
 		const rangeValueBubble = item.querySelector(".range-value");
 
