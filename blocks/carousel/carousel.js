@@ -150,6 +150,11 @@ function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause,
 }
 
 export default function decorate(block) {
+  const zIndex1 = 'z-index-1';
+  if (block.classList.contains(zIndex1)) {
+    block.parentElement.classList.add(zIndex1);
+    block.classList.remove(zIndex1);
+  }
   const buttons = document.createElement('div');
   const autoPlayList = [];
   let carouselInterval = null;

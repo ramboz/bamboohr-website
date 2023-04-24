@@ -541,6 +541,7 @@ main .carousel.style-5 {
   box-shadow: unset;
   border-radius: unset;
   margin: 64px 0;
+  background-color: unset;
 }
 
 main .carousel.style-5 > div {
