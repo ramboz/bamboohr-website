@@ -685,6 +685,14 @@
   background-image: linear-gradient(var(--color-white) 0%, var(--theme-tint10) 100%);
 }
 
+.has-bg > span.bg-gradient-tint-10-reverse {
+  background-image: linear-gradient(var(--theme-tint10) 0%, var(--color-white) 100%);
+}
+
+.has-bg > span.bg-gradient-tint-10-reverse-v2 {
+  background-image: linear-gradient(var(--theme-tint10) 0%, var(--color-white) 60%);
+}
+
 .has-bg > span.bg-gradient-tint-15-reverse {
   background-image: linear-gradient(var(--theme-tint15) 50%, var(--color-white) 100%);
 }
