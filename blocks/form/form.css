@@ -391,7 +391,7 @@ main .form.white-container .form-col {
 main .form.has-content .content-col {
   max-width: 83%;
   margin: 0 auto 40px;
-  text-align: left;
+  text-align: center;
 }
 
 main .form.has-content .content-col h1 {
@@ -402,6 +402,7 @@ main .form.has-content .content-col ul {
   max-width: 480px;
   margin: 48px auto 0;
   padding-left: 0;
+  text-align: left;
 }
 
 main .form.has-content ul li {
@@ -423,6 +424,7 @@ main .form.has-content ul li {
     max-width: inherit;
     grid-column: span 6;
     margin-bottom: 0;
+    text-align: left;
   }
 
   main .form.has-content .form-col {
@@ -436,10 +438,6 @@ main .form.has-content ul li {
 
   main .form.has-content.grid-7-5 .form-col {
     grid-column: span 5;
-  }
-
-  main .form.has-content .content-col {
-    text-align: left;
   }
 
   main .form.has-content .content-col ul {
