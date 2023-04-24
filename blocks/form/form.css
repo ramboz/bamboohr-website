@@ -362,7 +362,7 @@ main .form .form-col p strong {
 @media (min-width: 600px) and (max-width: 1199px) {
   main .form.has-content .form-col,
   main .form.has-content h2 {
-    max-width: 64%;
+    max-width: 480px;
     margin: 0 auto;
   }
 }
@@ -391,6 +391,7 @@ main .form.white-container .form-col {
 main .form.has-content .content-col {
   max-width: 83%;
   margin: 0 auto 40px;
+  text-align: left;
 }
 
 main .form.has-content .content-col h1 {
@@ -398,9 +399,10 @@ main .form.has-content .content-col h1 {
 }
 
 main .form.has-content .content-col ul {
-  max-width: 64%;
+  max-width: 480px;
   text-align: left;
   margin: 48px auto 0;
+  padding-left: 0;
 }
 
 main .form.has-content ul li {
@@ -439,6 +441,7 @@ main .form.has-content ul li {
 
   main .form.has-content .content-col ul {
     max-width: inherit;
+    padding-left: 0;
   }
 }
 
@@ -466,6 +469,13 @@ main .form.with-google-map .content-col iframe {
 @media (min-width: 600px) {
   main .form.with-google-map .content-col iframe {
     height: 300px;
+  }
+  main .form.has-content .content-col {
+    text-align: center;
+  }
+
+  main .form.has-content .content-col ul {
+    padding-left: 40px;
   }
 }
 
