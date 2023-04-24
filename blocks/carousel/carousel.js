@@ -51,7 +51,7 @@ function selectButton(block, button, row, buttons, rememberScrollToOffset = true
   const isStyle5 = block.classList.contains('style-5');
 
   const newScrollPos = row.offsetLeft - row.parentNode.offsetLeft;
-  if (rememberScrollToOffset) block.dataset.scrollToOffset = newScrollPos;
+  if (isStyle5 && rememberScrollToOffset) block.dataset.scrollToOffset = newScrollPos;
   block.scrollTo({ top: 0, left: newScrollPos, behavior: 'smooth' });
   buttons.forEach((r) => r.classList.remove('selected'));
   button.classList.add('selected');
