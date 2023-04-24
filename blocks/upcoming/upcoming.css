@@ -68,6 +68,7 @@ main .upcoming-article-card .upcoming-article-card-format::before {
 
 main .upcoming ul > div {
   width: 100%;
+  margin-bottom: 30px;
 }
 
 main .upcoming ul > div div a img,
@@ -103,7 +104,11 @@ main .upcoming-article-card .upcoming-article-card-picture img {
 }
 
 @media (min-width: 1025px) {
-    main .upcoming-results {
+      main .upcoming ul > div {
+        margin-bottom: 0;
+      }
+
+      main .upcoming-results {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         row-gap: 60px;
