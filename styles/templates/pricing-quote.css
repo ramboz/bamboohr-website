@@ -45,7 +45,7 @@ body.pricing-quote {
 }
 
 .pricing-quote main .title-container .button-container a.button {
-  color: var(--color-1-shade-10);
+  color: var(--color-1-shade-15);
   background-color: unset;
 }
 
@@ -99,8 +99,8 @@ body.pricing-quote {
 }
 
 .pricing-quote main .multi-cta-cards .button-container a[data-modal].button {
-  color: var(--color-1-shade-10);
-  background-color: unset;
+  color: var(--color-white);
+  background-color: var(--theme-shade10);
 }
 
 /* Quote */
