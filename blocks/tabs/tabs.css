@@ -458,6 +458,10 @@ main .tabs.style-3 > .accordion .tabs-title {
   padding: var(--padding);
 }
 
+main .tabs.style-3.spacing-right > .accordion .tabs-title {
+  column-gap: 4rem;
+}
+
 @media (min-width: 600px) {
   main .tabs.style-3 > .accordion .tabs-title {
     min-height: auto;
@@ -489,6 +493,10 @@ main .tabs.style-3 > .accordion .tabs-content {
   font-family: var(--display-font-family);
   margin-top: calc(var(--padding) * -1.75);
   padding: var(--padding);
+}
+
+main .tabs.style-3.spacing-right > .accordion .tabs-content {
+  padding-right: calc(var(--padding)* 2);
 }
 
 @media (min-width: 1025px) {
