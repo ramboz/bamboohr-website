@@ -46,7 +46,7 @@ body.pricing-quote {
 
 .pricing-quote main .title-container .button-container a.button {
   color: var(--color-1-shade-10);
-  background-color: unset;
+  background-color: var(--color-1-tint-15);
 }
 
 .pricing-quote main .tabs-wrapper p a:any-link {
@@ -140,6 +140,10 @@ body.pricing-quote {
 .pricing-quote .multi-cta-cards > div > div > h6 + p {
   font-size: 16px;
   line-height: 24px;
+}
+
+.pricing-quote main .title-container.multi-cta-cards-container .multi-cta-cards .button-container a.button {
+  background-color: unset;
 }
 
 @media (max-width: 440px) {
