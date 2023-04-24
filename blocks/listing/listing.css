@@ -573,6 +573,7 @@ main .listing-results .hrvs-card-body a::after {
 
 main .article-cards ul > div {
   width: 100%;
+  margin-bottom: 30px;
 }
 
 main .article-cards ul > div div a img,
@@ -643,6 +644,11 @@ main .article-cards ul > div div p a::after {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 40px;
+    }
+
+
+    main .article-cards ul > div {
+        margin-bottom: 0;
     }
 
     main .listing-results > li {
