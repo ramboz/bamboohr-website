@@ -428,6 +428,9 @@ main .tabs.style-3 > .accordion {
 
   background: var(--color-white);
   border-radius: 1rem;
+}
+
+main .tabs.style-3 > .accordion[aria-selected="true"] {
   box-shadow: var(--theme-shadow2-shade5);
 }
 
