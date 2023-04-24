@@ -214,7 +214,8 @@ function loadTemplateCSS() {
       'paid-landing-page',
       'product-updates',
       'live-demo-webinar-lp',
-      'hr-101-guide'
+      'hr-101-guide',
+      'customers'
     ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
