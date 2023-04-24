@@ -479,19 +479,22 @@ main .carousel.style-3 ~ .carousel-controls {
 }
 
 @media (min-width: 600px) {
-  main .carousel.style-3 ~ .carousel-controls {
+  main .carousel.style-3 ~ .carousel-controls,
+  main .carousel.style-5 ~ .carousel-controls {
     display: flex;
   }
 }
 
-main .carousel.style-3 ~ .carousel-controls button {
+main .carousel.style-3 ~ .carousel-controls button,
+main .carousel.style-5 ~ .carousel-controls button {
   background: transparent;
   border: 0;
   cursor: pointer;
   padding: .5rem;
 }
 
-main .carousel.style-3 ~ .carousel-controls button::after {
+main .carousel.style-3 ~ .carousel-controls button::after,
+main .carousel.style-5 ~ .carousel-controls button::after {
   background-color: var(--theme-shade10);
   content: '';
   display: block;
@@ -503,14 +506,140 @@ main .carousel.style-3 ~ .carousel-controls button::after {
   width: 1.875rem;
 }
 
-main .carousel.style-3 ~ .carousel-controls button.disabled {
+main .carousel.style-3 ~ .carousel-controls button.disabled,
+main .carousel.style-5 ~ .carousel-controls button.disabled {
   cursor: auto;
 }
 
-main .carousel.style-3 ~ .carousel-controls button.disabled::after {
+main .carousel.style-3 ~ .carousel-controls button.disabled::after,
+main .carousel.style-5 ~ .carousel-controls button.disabled::after {
   background-color: var(--color-gray-5);
 }
 
-main .carousel.style-3 ~ .carousel-controls button.prev {
+main .carousel.style-3 ~ .carousel-controls button.prev,
+main .carousel.style-5 ~ .carousel-controls button.prev {
   transform: rotate(180deg);
+}
+
+/* style 5 */
+main .carousel.style-5 picture {
+  position: unset;
+}
+
+main .carousel.style-5 img {
+  width: auto;
+  height: auto;
+}
+
+main .carousel.style-5 .carousel-image {
+  margin: 0 auto;
+  margin-bottom: -100px;
+  z-index: 1;
+}
+
+main .carousel.style-5 {
+  box-shadow: unset;
+  border-radius: unset;
+  margin: 64px 0;
+  background-color: unset;
+}
+
+main .carousel.style-5 > div {
+  height: unset;
+  max-height: unset;
+  flex-direction: column;
+  max-width: 280px;
+  padding: 0 10px;
+  margin: 5px 0;
+  background-image: unset;
+}
+
+main .carousel.style-5 div.carousel-text {
+  width: unset;
+  height: 100%;
+  background-color: var(--color-gray-1);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow-1);
+  margin-left: 5px;
+  margin-bottom: 10px;
+  padding: 32px;
+  text-align: left;
+  color: var(--color-gray-12);
+}
+
+main .carousel.style-5 div.carousel-text h2 {
+  margin: 0;
+}
+
+main .carousel.style-5 div.carousel-text h4 {
+  color: var(--theme-shade10);
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+main .carousel.style-5 div.carousel-text h5:first-of-type {
+  color: var(--theme-shade10);
+  text-align: center;
+  margin-top: 90px;
+}
+
+main .carousel.style-5 div.carousel-text h5 {
+  font-family: var(--body-font-family);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+main .carousel.style-5 div.carousel-text p {
+  margin-bottom: 0;
+}
+
+main .carousel-buttons.style-5 button {
+  height: 6px;
+  width: 85px;
+  margin: 10px 1px;
+  border-radius: unset;
+  background-color: var(--color-gray-3);
+}
+
+main .carousel-buttons.style-5 button.selected {
+  background-color: var(--color-1);
+}
+
+main .carousel.style-5 ~ .carousel-controls button.prev {
+  --extra-padding: 64px;
+
+  flex-direction: column;
+  left: -45px;
+  position: absolute;
+  top: calc(50% - var(--extra-padding));
+}
+
+main .carousel.style-5 ~ .carousel-controls button.next {
+  --extra-padding: 64px;
+
+  flex-direction: column;
+  right: -45px;
+  position: absolute;
+  top: calc(50% - var(--extra-padding));
+}
+
+@media (min-width: 1038px) {
+  main .carousel.style-5 > div {
+    max-width: 300px;
+    padding: 0 15px;
+    margin: 5px 0;
+  }
+}
+
+@media (min-width: 1800px) {
+  main .carousel.style-5 > div {
+    max-width: 360px;
+    padding: 0 20px;
+    margin: 5px 0;
+  }
 }

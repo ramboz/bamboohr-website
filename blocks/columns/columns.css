@@ -11,11 +11,6 @@
   max-width: 1000px;
 }
 
-.columns-wrapper.z-index-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .columns img {
   width: 100%;
 }
