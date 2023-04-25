@@ -520,7 +520,15 @@ function createOrganisationForm(fields) {
 
 function toggleForm(formId) {
 	const form = document.getElementById(formId)
+	const tabs = form.querySelectorAll('.tab')
 	form.classList.add('active')
+
+	tabs.forEach((item, index) => {
+		if (Object.is(tabs.length - 1, index)) {
+			// add class last-tab to the last tab div
+			item.classList.add('last-tab')
+		}
+	});
 
 	showTab(currentTab, form)
 	progressIndicator(currentTab, form)
@@ -597,8 +605,8 @@ export default async function decorate(block) {
 	cols[1].append(createCtaContainer())
 	block.append(createOrganisationForm(organisationForm), createIndividualForm(individualForm))
 
-	const resetBtnArr = document.querySelectorAll('.reset-calc-btn')
-	const rangeInputsArr = document.querySelectorAll(".field-item__range");
+	const resetBtnArr = block.querySelectorAll('.reset-calc-btn')
+	const rangeInputsArr = block.querySelectorAll(".field-item__range");
 
 	resetBtnArr.forEach(btn => {
 		btn.addEventListener('click', () => {
