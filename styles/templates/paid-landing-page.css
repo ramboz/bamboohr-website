@@ -6,10 +6,41 @@
   color: var(--theme-shade10);
 }
 
+.paid-landing-page main .form.has-content .content-col {
+  max-width: 83%;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.paid-landing-page main .form.has-content .content-col ul {
+  max-width: 480px;
+  margin: 48px auto 0;
+  padding-left: 0;
+  text-align: left;
+}
+
+.paid-landing-page main .form.has-content ul li {
+  list-style: none;
+  background-image: url('/icons/bullets/level1-check.svg');
+  background-repeat: no-repeat;
+  padding-inline-start: 48px;
+  line-height: 32px;
+}
+
 @media (min-width: 900px) {
   .paid-landing-page main .form h1 {
     font-size: 54px;
     line-height: 60px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .paid-landing-page main .form.has-content .content-col {
+    max-width: inherit;
+    text-align: left;
+  }
+  .paid-landing-page  main .form.has-content .content-col ul {
+    max-width: inherit;
   }
 }
 
@@ -47,5 +78,13 @@
 @media (max-width: 899px) {
   .paid-landing-page .has-bg > span.bg-right-multi-3 {
     display: none;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1199px) {
+  .paid-landing-page main .form.has-content .form-col,
+  .paid-landing-page main .form.has-content h2 {
+    max-width: 480px;
+    margin: 0 auto;
   }
 }

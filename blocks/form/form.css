@@ -360,9 +360,8 @@ main .form .form-col p strong {
 }
 
 @media (min-width: 600px) and (max-width: 1199px) {
-  main .form.has-content .form-col,
-  main .form.has-content h2 {
-    max-width: 480px;
+  main .form.has-content .form-col {
+    max-width: 83.33%;
     margin: 0 auto;
   }
 }
@@ -381,7 +380,6 @@ main .form.white-container .form-col {
   height: fit-content;
 }
 
-
 .form .content-col a:not(.button):not(form) {
   font-weight: var(--heading-font-weight);
   color: var(--theme-shade10);
@@ -389,28 +387,11 @@ main .form.white-container .form-col {
 }
 
 main .form.has-content .content-col {
-  max-width: 83%;
-  margin: 0 auto 40px;
-  text-align: center;
+  margin-bottom: 30px;
 }
 
 main .form.has-content .content-col h1 {
   font-style: normal;
-}
-
-main .form.has-content .content-col ul {
-  max-width: 480px;
-  margin: 48px auto 0;
-  padding-left: 0;
-  text-align: left;
-}
-
-main .form.has-content ul li {
-  list-style: none;
-  background-image: url('/icons/bullets/level1-check.svg');
-  background-repeat: no-repeat;
-  padding-inline-start: 48px;
-  line-height: 32px;
 }
 
 @media (min-width: 1200px) {
@@ -421,10 +402,8 @@ main .form.has-content ul li {
   }
 
   main .form.has-content .content-col {
-    max-width: inherit;
     grid-column: span 6;
     margin-bottom: 0;
-    text-align: left;
   }
 
   main .form.has-content .form-col {
