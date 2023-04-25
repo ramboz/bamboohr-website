@@ -418,10 +418,6 @@ main .form.has-content .content-col h1 {
   main .form.has-content.grid-7-5 .form-col {
     grid-column: span 5;
   }
-
-  main .form.has-content .content-col ul {
-    max-width: inherit;
-  }
 }
 
 main .form .form-col .form-logos {
