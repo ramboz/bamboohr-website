@@ -320,6 +320,10 @@
     height: 180px;
 }
 
+.bhr-home main .carousel.style-5 div.carousel-text {
+    background-color: var(--color-white);
+}
+
 @media (min-width: 319px) {
     .bhr-home main .section:first-of-type {
         padding-bottom: 1500px;
