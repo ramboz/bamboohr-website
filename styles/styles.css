@@ -154,6 +154,7 @@ a.button.link:any-link {
   padding: 0;
   text-align: left;
   white-space: revert;
+  overflow: visible;
 }
 
 /* button link caret */
@@ -163,6 +164,7 @@ a.button.link:any-link::after {
   display: inline-block;
   height: 0.8125rem;
   margin-left: 0.5rem;
+  margin-right: -1rem;
   mask-image: url('../styles/caret-right.svg');
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-mask-image: url('../styles/caret-right.svg');
