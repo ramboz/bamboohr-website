@@ -197,11 +197,9 @@ function showTab(index, form) {
 	const tabs = form.querySelectorAll('.tab')
 	tabs[index].style.display = 'flex'
 
-	// if (index === (tabs.length - 1)) {
-	// 	form.getElementById('nextBtn').innerText = 'Submit'
-	// }
-	// console.log(tabs.length);
-	// console.log(index);
+	if (index === (tabs.length - 2)) {
+		form.querySelector('#nextBtn').innerText = 'Calculate'
+	}
 }
 
 /**
@@ -222,6 +220,7 @@ function resetForm(block) {
 
 	formsArr.forEach(form => {
 		form.classList.remove('active')
+		form.querySelector('#nextBtn').innerText = 'Next'
 		form.reset()
 	});
 
@@ -256,7 +255,6 @@ function resetForm(block) {
  */
 function nextPrev(index, form) {
 	const tabsArr = form.querySelectorAll('.tab')
-	// const secondToLastTab = tabsArr[tabsArr.length - 2];
 	const navBtn = form.querySelector('.navBtn-wrapper')
 
 	if (index === 1 && !validateForm(form)) return;
@@ -305,7 +303,7 @@ function createNavBtn() {
 	const fieldWrapper = document.createElement('div')
 	fieldWrapper.classList.add('navBtn-wrapper')
 
-	const btns = `<button type="button" id="prevBtn">Previous</button>
+	const btns = `<button type="button" id="prevBtn">Back</button>
     <button type="button" id="nextBtn">Next</button>`
 
 	fieldWrapper.innerHTML = btns
@@ -461,8 +459,6 @@ function createIndividualForm(fields) {
 			}
 		})
 	});
-
-	showTab(currentTab, form)
 	
 	return form
 }
@@ -502,8 +498,6 @@ function createOrganisationForm(fields) {
 			}
 		})
 	});
-
-	showTab(currentTab, form)
 	
 	return form
 }
@@ -530,12 +524,12 @@ function createCtaContainer() {
 	Object.assign(indidualBtn, {
 		classList: ['button accent'],
 		type: 'button',
-		title: 'Individually'
+		title: 'Employee'
 	})
 	Object.assign(organisationBtn, {
 		classList: ['button accent'],
 		type: 'button',
-		title: 'Organisation'
+		title: 'Organization'
 	})
 
 	indidualBtn.setAttribute('data-form', 'individual-form')
