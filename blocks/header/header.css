@@ -10,6 +10,12 @@
   color: #9CA393;
 }
 
+.nav-search-btn .icon-search {
+  height: 18px;
+  width: 18px;
+  display: inline-block;
+}
+
 .nav-search-btn .icon-search svg {
   color: var(--color-1);
 }
@@ -459,6 +465,43 @@ header .nav-section.nav-section-subscribe button {
 
 header .nav-section.nav-section-subscribe form {
   position: relative;
+}
+
+/* nav limited styles */
+header .nav-limited .nav {
+  overflow: unset;
+  grid-template-areas: "brand sections buttons";
+  grid-template-columns: 155px 1fr 105px;
+  background-color: var(--color-white);
+}
+
+header .nav-limited .nav-hamburger {
+  display: none;
+}
+
+header .nav-limited .nav-buttons {
+  margin: auto 0;
+  display: inline-block;
+  width: 100%;
+  text-align: right;
+}
+
+header .nav-limited .nav-buttons .button {
+  padding: 5px 20px;
+  min-width: 60px;
+  margin: 0 5px;
+  box-sizing: unset;
+  width: auto;
+}
+
+header .nav-limited .nav-buttons .button.small {
+  padding: 8px 20px;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.5px;
+  font-weight: 900;
+  font-family: var(--body-font-family);
+  border: solid 2px var(--color-1);
 }
 
 /* desktop nav styles */

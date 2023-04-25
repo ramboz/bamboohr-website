@@ -80,7 +80,7 @@
   background-color: var(--color-white);
   font-size: 14px;
   line-height: 20px;
-  color: var(--color-gray-9);
+  color: var(--color-gray-12);
   font-weight: 400;
   border: none;
   padding: 14px;
@@ -262,4 +262,8 @@ main .section .table-tooltip-container p.button-container {
   .table-tooltip-container h3 {
     font-size: 26px;
   }
+}
+
+.table.vertical-align-top table td {
+  vertical-align: top;
 }

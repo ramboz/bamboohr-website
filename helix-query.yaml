@@ -288,12 +288,8 @@ indices:
         select: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      topicPrimary:
-        select: head > meta[name="topic-primary"]
-        value: |
-          attribute(el, 'content')
-      topicSecondary:
-        select: head > meta[name="topic-secondary"]
+      topic:
+        select: head > meta[name="topic"]
         value: |
           attribute(el, 'content')
       eventDate:
@@ -304,12 +300,24 @@ indices:
         select: head > meta[name="event-date-and-time"]
         value: |
           attribute(el, 'content')
-      publishDate:
-        select: head > meta[name="publish-date"]
+      publicationDate:
+        select: head > meta[name="publication-date"]
         value: |
           attribute(el, 'content')
       hideFromLibrary:
         select: head > meta[name="hide-from-library"]
+        value: |
+          attribute(el, 'content')
+      mediaType:
+        select: head > meta[name="media-type"]
+        value: |
+          attribute(el, 'content')
+      brandedContent:
+        select: head > meta[name="branded-content"]
+        value: |
+          attribute(el, 'content')
+      contentType:
+        select: head > meta[name="content-type"]
         value: |
           attribute(el, 'content')
       robots:
@@ -342,3 +350,113 @@ indices:
         select: head > meta[name="bio"]
         value: |
           attribute(el, 'content')
+
+  product-updates:
+    include:
+      - '/product-updates/**'
+    target: /product-updates/query-index
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[property="og:description"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      planType:
+        select: head > meta[name="plan-type"]
+        value: |
+          attribute(el, 'content')
+      productArea:
+        select: head > meta[name="product-area"]
+        value: |
+          attribute(el, 'content')
+      publicationDate:
+        select: head > meta[name="publication-date"]
+        value: |
+          attribute(el, 'content')
+      wistiaVideoId:
+        select: head > meta[name="wistia-video-id"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+
+  virtual-user-groups:
+    include:
+      - '/virtual-user-groups/**'
+    target: /virtual-user-groups/query-index
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[property="og:description"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      eventDate:
+        select: head > meta[name="event-date"]
+        value: |
+          attribute(el, 'content')
+      eventDateAndTime:
+        select: head > meta[name="event-date-and-time"]
+        value: |
+          attribute(el, 'content')
+      hideFromLibrary:
+        select: head > meta[name="hide-from-library"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+
+  customers:
+    include:
+      - '/customers/**'
+    target: /customers/query-index
+    properties:
+      presenter:
+        select: head > meta[name="presenter"]
+        value: |
+          attribute(el, 'content')
+      title:
+        select: head > meta[name="job-title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[property="og:description"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      topic:
+        select: head > meta[name="topic"]
+        value: |
+          attribute(el, 'content')
+      hideFromLibrary:
+        select: head > meta[name="hide-from-library"]
+        value: |
+          attribute(el, 'content')
+      publicationDate:
+        select: head > meta[name="publication-date"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')

@@ -1,5 +1,5 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
-import { isUpcomingEvent } from '../../scripts/webinar.js';
+import { isUpcomingEvent } from '../listing/listing.js';
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -476,13 +476,23 @@ function mktoFormReset(form, moreStyles) {
 }
 
 /* Adobe event tracking */
-function adobeEventTracking(event, name) {
+export function adobeEventTracking(event, componentData) {
   window.digitalData.push({
-    event,
-    component: {
-      name
-    }
+    "event": event,
+    "component" : componentData
   });
+}
+
+function getMktoSearchParams(url) {
+  const link = new URL(url);
+  const requestType = link.searchParams?.get('requestType');
+  let searchParamObj = {};
+  if (requestType) {
+    searchParamObj = {
+      requestType
+    };
+  }
+  return searchParamObj;
 }
 
 function loadFormAndChilipiper(formId, successUrl, chilipiper) {
@@ -494,38 +504,62 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
 
-        /* Adobe Form Start event tracking when user click into the first field */
-        form.getFormElem()[0].firstElementChild.addEventListener('click', () => {
-          window.setTimeout(() => adobeEventTracking('Form Start', form.getId()), 4000);
+        /* Adobe Form Start event tracking when user changes the first field */		  
+        formEl.firstElementChild.addEventListener('change', () => {
+		  try {
+		    // eslint-disable-next-line
+			formEl.querySelector('input[name="ECID"]').value = s.marketingCloudVisitorID;
+		  } catch (e) {
+			formEl.querySelector('input[name="ECID"]').value = '';
+		  }
+          adobeEventTracking('Form Start', {"name": form.getId()});
         });
-
+		
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
         if (readyTalkMeetingID && readyTalkEl) {
           formEl.querySelector('input[name="readyTalkMeetingID"]').value = readyTalkMeetingID;
         }
 
+        const modalUrl = formEl.closest('.modal-wrapper')?.dataset.url;
+        if (modalUrl) {
+          const searchParams = getMktoSearchParams(modalUrl);
+          const requestTypeInput = formEl.querySelector('input[name="Request_Type__c"]');
+          if (requestTypeInput && searchParams?.requestType) requestTypeInput.value = searchParams.requestType;
+        }
+
         const formSubmitText = getMetadata('form-submit-text');
-        const eventDateStr = getMetadata('event-date');
         const formSubmitBtn = formEl.querySelector('.mktoButton');
         if (formSubmitText) {
           formSubmitBtn.textContent = formSubmitText;
-        } else if (eventDateStr && window.location.pathname.includes('/webinars/')) {
-          formSubmitBtn.textContent = isUpcomingEvent() ? 'Register' : 'Watch Now';
+        } else if (window.location.pathname.includes('/webinars/')) {
+          const eventDateStr = getMetadata('event-date');
+          formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
-
+        
         form.onSuccess(() => {
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
+          const eventType = form.getId() === 1240 ? 'demoRequest' : 'marketoForm';
           window.dataLayer.push({
-            event: 'marketoForm',
+            event: eventType,
             formName: form.getId(),
           });
 
+          const empText = formEl.querySelector('select[name="Employees_Text__c"]');
+          const formBusinessSize = empText?.value || 'unknown';
+		  
           /* Adobe form complete events tracking */
-          adobeEventTracking('Form Complete', form.getId());
+          adobeEventTracking('Form Complete', {
+            "name": form.getId(),
+            "business_size": formBusinessSize
+		      });
 
-          if (successUrl && !chilipiper) window.location.href = successUrl;
+          /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
+          setTimeout(() => {
+            if (successUrl && !chilipiper) window.location.href = successUrl;
+          },1000);
+          
           return false;
         });
       }
@@ -586,7 +620,7 @@ export default async function decorate(block) {
       ) {
         formUrl = entry.Form;
         let fbTracking = '';
-        if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php'
+        if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php';
         successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
         chilipiper = entry.Chilipiper;
       }

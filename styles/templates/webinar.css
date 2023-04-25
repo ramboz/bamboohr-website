@@ -1,6 +1,7 @@
 .webinar main .form-container {
   background-color: var(--color-gray-1);
-  padding: 20px 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 @media (min-width: 1200px) {
@@ -32,12 +33,12 @@
   margin: 50px 0;
 }
 
-.webinar-success-ondemand .wistia-columns .column7,
-.webinar-success-ondemand .slide-share-columns .column7 {
+.webinar-success-ondemand .wistia-columns .img-col .wistia picture,
+.webinar-success-ondemand .slide-share-columns .img-col .wistia picture {
   box-shadow: var(--box-shadow-2);
 }
 
-.webinar-success-ondemand .title-container {
+.webinar-success-ondemand .title-container .title {
   text-align: center;
 }
 
