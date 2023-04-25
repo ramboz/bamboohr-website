@@ -496,7 +496,7 @@ main .tabs.style-3 > .accordion .tabs-content {
 }
 
 main .tabs.style-3.spacing-right > .accordion .tabs-content {
-  padding-right: calc(var(--padding)* 2);
+  padding-right: calc(var(--padding) * 2);
 }
 
 @media (min-width: 1025px) {
