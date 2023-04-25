@@ -50,7 +50,7 @@ function appendCalcResultToDom(calcResult, formId) {
 	const form = document.getElementById(formId)
 	const resultDiv = form.querySelector('#calc-result')
 
-	resultDiv.innerText = `$ ${calcResult}`
+	resultDiv.innerText = `$${calcResult}`
 }
 
 /**
@@ -213,7 +213,12 @@ function resetForm(block) {
 	const tabsArr = block.querySelectorAll('.tab')
 	const navBtnArr = block.querySelectorAll('.navBtn-wrapper')
 	const invalidFieldsArr = block.querySelectorAll('.field-item.invalid')
+	const outputRangeArr = block.querySelectorAll('.range-value')
+	const inputRangeArr = block.querySelectorAll('.input-range')
+	const contentElement = block.querySelector('.onboarding-calculator__content')
 	currentTab = 0
+	
+	contentElement.style.display = ''
 
 	formsArr.forEach(form => {
 		form.classList.remove('active')
@@ -232,6 +237,15 @@ function resetForm(block) {
 		btn.style.display = ''
 	});
 
+	outputRangeArr.forEach(item => {
+		item.style.left = `calc(0% + 8px)`;
+		item.innerHTML = item.previousSibling.min
+	})
+
+	inputRangeArr.forEach(item => {
+		item.style = `--percent:calc(0% + 8px)`;
+	})
+
 	showTab(currentTab, block)
 }
 
@@ -242,7 +256,7 @@ function resetForm(block) {
  */
 function nextPrev(index, form) {
 	const tabsArr = form.querySelectorAll('.tab')
-	const secondToLastTab = tabsArr[tabsArr.length - 2];
+	// const secondToLastTab = tabsArr[tabsArr.length - 2];
 	const navBtn = form.querySelector('.navBtn-wrapper')
 
 	if (index === 1 && !validateForm(form)) return;
@@ -270,13 +284,15 @@ function createCalcResultHtml() {
 
 	const contentHtml = `<div class="result__wrapper">
 	<div class="result__left">
-	<div id="calc-result"></div>
+	<p id="calc-result"></p>
 	<p>Is the estimated cost of onboarding this new employee.</p>
 	<button type="button" class="reset-calc-btn">Calculate Again</button>
 	</div>
 	<div class="result__right">
+	<div class="result__right-text">
 	<p>Get the right HR software to build for the future</p>
 	<a class="button accent" href="/hr-software/video-tour">Video Product Tour</a>
+	</div>
 	</div>
 	</div>`
 
@@ -297,12 +313,20 @@ function createNavBtn() {
 	return fieldWrapper
 }
 
+function formatNumber(num) {
+	if (num > 1000) {
+		const abbreviated = `${num / 1000}k`;
+		return abbreviated;
+	}
+	return num;
+}
+
 function setRangeValueBubble(rangeValue, rangeValueBubble) {
 	const val = rangeValue.value;
 	const min = rangeValue.min ? rangeValue.min : 0;
 	const max = rangeValue.max ? rangeValue.max : 100;
 	const newVal = Number(((val - min) * 100) / (max - min));
-	rangeValueBubble.innerHTML = val;
+	rangeValueBubble.innerHTML = formatNumber(val);
 
 	rangeValueBubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
 	rangeValue.style = `--percent:calc(${newVal}% + (${8 - newVal * 0.15}px))`;
@@ -318,32 +342,45 @@ function createRangeInputIndicator() {
 function createRangeInput(type, options, field) {
 	const input = document.createElement('input');
 	input.classList.add('input-range')
-	const [minValue, maxValue] = options.split('|')
+	const [minValue, maxValue, step] = options.split('|')
 	input.type = type;
 	input.id = field
-	input.value = 0
+	input.setAttribute('value', 0)
 	input.min = minValue.trim()
 	input.max = maxValue.trim()
+
+	if (step) {
+		input.setAttribute('step', step.trim())
+	}
 
 	return input
 }
 
-function test(i) {
-	const n = i.querySelector('input')
-	const moveMeElement = createElem('div');
+function addMinMaxLabels(el, displayCurrency) {
+	const inputField = el.querySelector('input');
+	const labelElement = createElem('div', 'range-container');
 
-	const x = `<div>${n.min}</div><div>${n.max}</div>`
-	moveMeElement.innerHTML = x
-	n.insertAdjacentElement('beforebegin', moveMeElement)
-	console.log(n.min);
-	console.log(n.max);
+	const rangeMinMaxHtml = `<div class="range-min">${displayCurrency ? '$' : ''}${formatNumber(inputField.min)}</div>
+	<div class="range-max">${displayCurrency ? '$' : ''}${formatNumber(inputField.max)}</div>`
+	labelElement.innerHTML = rangeMinMaxHtml
+	inputField.insertAdjacentElement('beforebegin', labelElement)
+}
+
+function addDescribtion(el, descriptionText) {
+	const labelField = el.querySelector('label');
+	if (descriptionText) {
+		const descriptionElement = createElem('p', 'description-text');
+
+		descriptionElement.textContent = descriptionText
+		labelField.insertAdjacentElement('afterend', descriptionElement)
+	}
 }
 
 function createFields(fields) {
 	const fieldWrapper = document.createElement('div')
 	fieldWrapper.classList.add('tab')
 	fields.forEach(item => {
-		const {Field, Type, Options, Tooltip} = item
+		const {Field, Type, Options, Tooltip, Currency, Description} = item
 		const divFieldItem = document.createElement('div')
 		divFieldItem.classList.add('field-item')
 	
@@ -351,14 +388,16 @@ function createFields(fields) {
 			case 'range': 
 				divFieldItem.classList.add('field-item__range')
 				divFieldItem.append(createLabel(item))
+				addDescribtion(divFieldItem, Description)
 				divFieldItem.append(createRangeInput(Type, Options, Field))
-				test(divFieldItem)
+				addMinMaxLabels(divFieldItem, Currency)
 				divFieldItem.append(createRangeInputIndicator())
 			break;
 			case 'formular':
 				return
 			default:
 				divFieldItem.append(createLabel(item))
+				addDescribtion(divFieldItem, Description)
 				divFieldItem.append(createInput(item))
 		}
 
@@ -506,6 +545,9 @@ function createCtaContainer() {
 
 	// Click event for buttons
 	ctaContainer.addEventListener('click', (e) => {
+		const grandparentContainer = ctaContainer.parentElement.parentElement
+		grandparentContainer.style.display = 'none'
+
 		const id = e.target.dataset.form
 		if (id) {
 			toggleForm(id)
