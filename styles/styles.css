@@ -814,6 +814,127 @@ main .section > div {
   margin-right: auto;
 }
 
+main .section >  div.width-full {
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* TEST: responsive block wrapper/containers */
+/* mobile and up */
+main .section > div.width-xs {
+  max-width: var(--width-xs) 
+}
+
+main .section > div.width-sm {
+  max-width:var(--width-sm) 
+}
+
+main .section > div.width-md {
+  max-width:var(--width-md) 
+}
+
+main .section > div.width-lg{
+  max-width:var(--width-lg) 
+}
+
+main .section > div.width-xl{
+  max-width:var(--width-xl) 
+}
+
+main .section > div.width-2xl{
+  max-width:var(--width-2xl) 
+}
+
+@media(min-width: 600px) {
+  /* tablet sizes and up */
+  /* changing padding to non-mobile */
+  main .section > div.width-xs,
+  main .section > div.tablet-width-xs {
+    max-width: var(--width-xs) 
+  } 
+
+  main .section > div.width-sm,
+  main .section > div.tablet-width-sm {
+    max-width:var(--width-sm) 
+  }
+  
+  main .section > div.width-md,
+  main .section > div.tablet-width-md {
+    max-width:var(--width-md) 
+  }
+  
+  main .section > div.width-lg,
+  main .section > div.tablet-width-lg{
+    max-width:var(--width-lg) 
+  }
+  
+  main .section > div.width-xl,
+  main .section > div.tablet-width-xl{
+    max-width:var(--width-xl) 
+  }
+  
+  main .section > div.width-2xl,
+  main .section > div.tablet-width-2xl{
+    max-width:var(--width-2xl) 
+  }
+}
+
+@media(min-width: 900px) {
+  /* laptop sizes and up */
+  main .section > div.laptop-width-xs {
+    max-width: var(--width-xs) 
+  } 
+
+  main .section > div.laptop-width-sm {
+    max-width:var(--width-sm) 
+  }
+  
+  main .section > div.laptop-width-md {
+    max-width:var(--width-md) 
+  }
+  
+  main .section > div.laptop-width-lg{
+    max-width:var(--width-lg) 
+  }
+  
+  main .section > div.laptop-width-xl{
+    max-width:var(--width-xl) 
+  }
+  
+  main .section > div.laptop-width-2xl{
+    max-width:var(--width-2xl) 
+  }
+}
+
+@media(min-width: 1200px) {
+  /* desktop sizes and up */
+  main .section > div.desktop-width-xs {
+    max-width: var(--width-xs) 
+  } 
+
+  main .section > div.desktop-width-sm {
+    max-width:var(--width-sm) 
+  }
+  
+  main .section > div.desktop-width-md {
+    max-width:var(--width-md) 
+  }
+  
+  main .section > div.desktop-width-lg{
+    max-width:var(--width-lg) 
+  }
+  
+  main .section > div.desktop-width-xl{
+    max-width:var(--width-xl) 
+  }
+  
+  main .section > div.desktop-width-2xl{
+    max-width:var(--width-2xl) 
+  }
+}
+
+
 main .section > div:empty {
   padding: 0;
 }

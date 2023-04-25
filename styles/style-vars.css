@@ -84,6 +84,14 @@
   --heading-color: var(--color-gray-12);
   --heading-font-family: 'Fira Sans', 'Fira Sans-fallback';
 
+  /* wrappers/containers sizes */
+  --width-xs: 560px;
+  --width-sm: 760px;
+  --width-md: 960px;
+  --width-lg: 1160px;
+  --width-xl: 1360px;
+  --width-2xl: 1560px;
+
   /* stylized font */
   --stylized-font-family: 'Permanent Marker', 'Permanent Marker-fallback';
 
