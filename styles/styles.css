@@ -849,32 +849,26 @@ main .section > div.width-2xl{
 @media(min-width: 600px) {
   /* tablet sizes and up */
   /* changing padding to non-mobile */
-  main .section > div.width-xs,
   main .section > div.tablet-width-xs {
     max-width: var(--width-xs) 
   } 
 
-  main .section > div.width-sm,
   main .section > div.tablet-width-sm {
     max-width:var(--width-sm) 
   }
   
-  main .section > div.width-md,
   main .section > div.tablet-width-md {
     max-width:var(--width-md) 
   }
   
-  main .section > div.width-lg,
   main .section > div.tablet-width-lg{
     max-width:var(--width-lg) 
   }
   
-  main .section > div.width-xl,
   main .section > div.tablet-width-xl{
     max-width:var(--width-xl) 
   }
   
-  main .section > div.width-2xl,
   main .section > div.tablet-width-2xl{
     max-width:var(--width-2xl) 
   }
