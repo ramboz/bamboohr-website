@@ -112,12 +112,18 @@
 
 .onboarding-calculator .tab .field-item {
 	width: 100%;
+	position: relative;
+}
+
+.onboarding-calculator .tab .field-item.has-icon input[type="number"] {
+	padding-left: 3.5em;
 }
 
 .onboarding-calculator .tab .field-item input[type="number"]{
 	height: 52px;
 	border: 1px solid #B1BFCA;
     border-radius: 8px;
+	padding-left: 1.2em;
 }
 
 .onboarding-calculator .tab .field-item.invalid input[type="number"]{
@@ -380,6 +386,23 @@
 
 .onboarding-calculator #organisation-form .tab:nth-child(1) .field-item__range:nth-child(4){
 	margin-top: 20px;
+}
+
+.onboarding-calculator .icon-dollar {
+	position: absolute;
+    left: 0;
+}
+
+.onboarding-calculator .icon-dollar::before {
+	content: '';
+	background-image: url('./dollar-logo.svg');
+	position: relative;
+    left: 0px;
+    top: 20px;
+    background-repeat: no-repeat;
+	background-position: center;
+	padding-right: 35px;
+	border-right: 1px solid #D6DDEA;
 }
 
 @media screen and (min-width: 782px) {

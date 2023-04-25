@@ -370,12 +370,12 @@ function createRangeInput(type, options, field) {
 	return input
 }
 
-function addMinMaxLabels(el, displayCurrency) {
+function addMinMaxLabels(el, icon) {
 	const inputField = el.querySelector('input');
 	const labelElement = createElem('div', 'range-container');
 
-	const rangeMinMaxHtml = `<div class="range-min">${displayCurrency ? '$' : ''}${formatNumber(inputField.min)}</div>
-	<div class="range-max">${displayCurrency ? '$' : ''}${formatNumber(inputField.max)}</div>`
+	const rangeMinMaxHtml = `<div class="range-min">${icon ? '$' : ''}${formatNumber(inputField.min)}</div>
+	<div class="range-max">${icon ? '$' : ''}${formatNumber(inputField.max)}</div>`
 	labelElement.innerHTML = rangeMinMaxHtml
 	inputField.insertAdjacentElement('beforebegin', labelElement)
 }
@@ -390,11 +390,21 @@ function addDescribtion(el, descriptionText) {
 	}
 }
 
+function addIcon(el, icon) {
+	const inputField = el.querySelector('input')
+
+	if (icon) {
+		const descriptionElement = createElem('i', 'icon-dollar');
+
+		inputField.insertAdjacentElement('afterend', descriptionElement)
+	}
+}
+
 function createFields(fields) {
 	const fieldWrapper = document.createElement('div')
 	fieldWrapper.classList.add('tab')
 	fields.forEach(item => {
-		const {Field, Type, Options, Tooltip, Currency, Description} = item
+		const {Field, Type, Options, Tooltip, Icon, Description} = item
 		const divFieldItem = document.createElement('div')
 		divFieldItem.classList.add('field-item')
 	
@@ -404,7 +414,7 @@ function createFields(fields) {
 				divFieldItem.append(createLabel(item))
 				addDescribtion(divFieldItem, Description)
 				divFieldItem.append(createRangeInput(Type, Options, Field))
-				addMinMaxLabels(divFieldItem, Currency)
+				addMinMaxLabels(divFieldItem, Icon)
 				divFieldItem.append(createRangeInputIndicator())
 			break;
 			case 'formular':
@@ -413,12 +423,17 @@ function createFields(fields) {
 				divFieldItem.append(createLabel(item))
 				addDescribtion(divFieldItem, Description)
 				divFieldItem.append(createInput(item))
+				addIcon(divFieldItem, Icon)
 		}
 
 		if (Tooltip) {
 			const label = divFieldItem.querySelector('label')
 			const tooltipHtml = `<div class="tooltip"><span class="tooltip__text">${Tooltip}</span></div>`
 			label.insertAdjacentHTML('beforeend', tooltipHtml);
+		}
+
+		if (Icon) {
+			divFieldItem.classList.add('has-icon')
 		}
 
 		fieldWrapper.append(divFieldItem)
