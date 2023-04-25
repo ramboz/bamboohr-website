@@ -315,6 +315,11 @@
     line-height: 44px;
 }
 
+.bhr-home main .carousel.style-5 img {
+    width: 180px;
+    height: 180px;
+}
+
 @media (min-width: 319px) {
     .bhr-home main .section:first-of-type {
         padding-bottom: 1500px;
