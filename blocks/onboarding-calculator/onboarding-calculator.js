@@ -82,11 +82,27 @@ function calcOrganisationCost(onboardingData) {
 	const {avgAnnualEmployeeSalary, avgOnboardHours, avgAdditionalCosts, newEmployeesPerYear} = onboardingData
 	const {workingHoursPerYear} = getFormular(organisationForm)
 
-	const avgHourlyRate = parseFloat((avgAnnualEmployeeSalary / workingHoursPerYear).toFixed(2))
-	const onboardingHoursCost = parseFloat((avgHourlyRate * avgOnboardHours).toFixed(2))
-	const totalAnuualOnboardingCosts = ((onboardingHoursCost + avgAdditionalCosts) * newEmployeesPerYear).toFixed(2)
+	/**
+	 * Average hourly rate(hourly rate)
+	 * Average employee salary / working hours per year
+	 */
+	const avgHourlyRate = (avgAnnualEmployeeSalary / workingHoursPerYear).toFixed(2)
 
-	return totalAnuualOnboardingCosts
+	/**
+	 * Onboarding hours cost
+	 * Average hourly rate x average hours needed to onboard new employee
+	 */
+	const onboardingHoursCost = parseFloat(avgHourlyRate * avgOnboardHours).toFixed(2)
+
+	/**
+	 * Total annual onboarding costs
+	 * Onboarding hours cost + average additional costs x number of new employees per year
+	 */
+	const i = (parseFloat(onboardingHoursCost) + parseFloat(avgAdditionalCosts)).toFixed(2)
+
+	const totalAnuualOnboardingCosts = parseFloat(i * newEmployeesPerYear)
+
+	return totalAnuualOnboardingCosts.toFixed(0)
 }
 
 /**
