@@ -821,7 +821,9 @@ main .section >  div.width-full {
 }
 
 /* TEST: responsive block wrapper/containers */
+
 /* mobile and up */
+
 main .section > div.width-xs {
   max-width: var(--width-xs) 
 }
@@ -848,7 +850,7 @@ main .section > div.width-2xl{
 
 @media(min-width: 600px) {
   /* tablet sizes and up */
-  /* changing padding to non-mobile */
+
   main .section > div.tablet-width-xs {
     max-width: var(--width-xs) 
   } 
