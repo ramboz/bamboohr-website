@@ -578,7 +578,7 @@ header .nav-limited .nav-buttons .button.small {
   }
 
   header .nav-section {
-    padding: 0 22px;
+    padding: 0 20px;
     position: relative;
     border-width: 3px 0 0;
     border-style: solid;
@@ -766,7 +766,11 @@ header .nav-limited .nav-buttons .button.small {
 }
 
 @media (min-width: 1300px) {
-  header .nav.extra-buttons {
+  header .nav-section {
+    padding: 0 22px;
+  }
+
+	header .nav.extra-buttons {
     grid-template-columns: 180px 1fr 425px;
   }
 
