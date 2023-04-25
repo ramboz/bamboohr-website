@@ -407,7 +407,7 @@ main .form.has-content .content-col ul {
 
 main .form.has-content ul li {
   list-style: none;
-  background-image: url(/icons/bullets/level1-check.svg);
+  background-image: url('/icons/bullets/level1-check.svg');
   background-repeat: no-repeat;
   padding-inline-start: 48px;
   line-height: 32px;
