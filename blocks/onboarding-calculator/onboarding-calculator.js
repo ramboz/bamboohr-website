@@ -50,7 +50,7 @@ function appendCalcResultToDom(calcResult, formId) {
 	const form = document.getElementById(formId)
 	const resultDiv = form.querySelector('#calc-result')
 
-	resultDiv.innerText = `$${calcResult}`
+	resultDiv.innerText = `${calcResult}`
 }
 
 /**
@@ -101,8 +101,9 @@ function calcOrganisationCost(onboardingData) {
 	const i = (parseFloat(onboardingHoursCost) + parseFloat(avgAdditionalCosts)).toFixed(2)
 
 	const totalAnuualOnboardingCosts = parseFloat(i * newEmployeesPerYear)
+	const formattedNum = totalAnuualOnboardingCosts.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
-	return totalAnuualOnboardingCosts.toFixed(0)
+	return formattedNum
 }
 
 /**
@@ -156,7 +157,9 @@ function calcIndividualCost(employeeOnboardingData) {
 	 */
 	const finalCostOfNewEmployee = (totalHrOnboardingHourCost + totalManagerHourCost + totalEmployeeOnboardingHourCost) + parseFloat(newEmployeeRelocationCost) + parseFloat(workstationCost)
 
-	return finalCostOfNewEmployee
+	const formattedNum = finalCostOfNewEmployee.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+	return formattedNum
 }
 
 /**
@@ -556,8 +559,8 @@ function createCtaContainer() {
 	const organisationBtn = createElem('button')
 
 	// Setup btn inner text
-	indidualBtn.innerText = 'Individually'
-	organisationBtn.innerText = 'Organisation'
+	indidualBtn.innerText = 'Employee'
+	organisationBtn.innerText = 'Organization'
 
 	// Setup btn attributes
 	Object.assign(indidualBtn, {
