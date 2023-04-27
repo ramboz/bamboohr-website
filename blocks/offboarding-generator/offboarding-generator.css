@@ -348,6 +348,7 @@ main .offboarding-generator select {
   appearance: none;
   transition: border-color 0.25s ease-in-out;
   outline: none;
+  text-transform: capitalize;
 }
 
 /* Input Elements */
