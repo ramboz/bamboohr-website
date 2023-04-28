@@ -461,10 +461,10 @@ indices:
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   
-  virtual-ebooks:
+  virtual-ebook:
     include:
-      - '/virtual-ebooks/**'
-    target: /virtual-ebooks/query-index
+      - '/virtual-ebook/**'
+    target: /virtual-ebook/query-index
     properties:
       title:
         select: head > meta[property="og:title"]
