@@ -1,5 +1,6 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
+import {analyticsTrackFormStart} from "../../scripts/lib-analytics.js";
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -506,7 +507,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
 
         /* Adobe Form Start event tracking when user changes the first field */
         formEl.firstElementChild.addEventListener('change', () => {
-          //adobeEventTracking('Form Start', {"name": form.getId()});
+			analyticsTrackFormStart(formEl);
         });
 
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');

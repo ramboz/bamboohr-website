@@ -214,6 +214,10 @@ export async function analyticsTrackLinkClicks(element, linkType = 'other', addi
  * @returns {Promise<*>}
  */
 export async function analyticsTrackFormSubmission(element, additionalXdmFields = {}) {
+	
+	const empText = element.querySelector('select[name="Employees_Text__c"]');
+	const formBusinessSize = empText?.value || 'unknown';
+	
   // eslint-disable-next-line no-undef
   return alloy('sendEvent', {
     documentUnloading: true,
@@ -223,6 +227,7 @@ export async function analyticsTrackFormSubmission(element, additionalXdmFields 
         form: {
           formId: `${element.id}`,
           formComplete: 1,
+		  businessSize: formBusinessSize
         },
         ...additionalXdmFields,
       },
@@ -307,4 +312,20 @@ export async function analyticsTrackVideo(
     });
   }
   return Promise.resolve();
+}
+
+export async function analyticsTrackFormStart(form) {
+	// eslint-disable-next-line no-undef
+	return alloy('sendEvent', {
+		documentUnloading: true,
+		xdm: {
+			eventType: 'web.formStarted',
+			[CUSTOM_SCHEMA_NAMESPACE]: {
+				form: {
+					formId: `${form.id}`,
+					formStart: 1,
+				}
+			},
+		},
+	});
 }

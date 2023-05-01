@@ -1178,8 +1178,9 @@ function findConversionValue(parent, fieldName) {
  * Registers conversion listeners according to the metadata configured in the document.
  * @param {Element} parent element where to find potential event conversion sources
  * @param {string} path fragment path when the parent element is coming from a fragment
+ * @param {Element} a element used as CTA for conversion
  */
-export async function initConversionTracking(parent, path) {
+export async function initConversionTracking(parent, path, ctaElement) {
   const conversionElements = {
     form: () => {
       // Track all forms
@@ -1196,7 +1197,11 @@ export async function initConversionTracking(parent, path) {
             ['submit']
           );
         }
-        const formConversionName = section.dataset.conversionName || getMetadata('conversion-name');
+        const formConversionName = 
+			section.dataset.conversionName || 
+			getMetadata(`conversion-name--${getLinkLabel(ctaElement)}-`) || 
+			getMetadata('conversion-name');
+		
         if (formConversionName) {
           sampleRUM.convert(formConversionName, undefined, element, ['submit']);
         } else {
