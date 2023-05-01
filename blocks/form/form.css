@@ -410,6 +410,10 @@ main .form.has-content .content-col h1 {
     grid-column: span 6;
     max-width: 100%;
   }
+  
+  main .form.has-content.form-center .form-col {
+    grid-column: 4 / 10;
+  }
 
   main .form.has-content.grid-7-5 .content-col {
     grid-column: span 7;

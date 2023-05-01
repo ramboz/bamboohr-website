@@ -1,0 +1,246 @@
+.gallery .gallery-container {
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  --gap-interval: 4px;
+}
+
+/* Miscellaneous */
+
+/* Misc - Logo Cards */
+.gallery.logo-cards img {
+  max-width: 9rem;
+  max-height: 3rem;
+  object-fit: contain;
+}
+
+.gallery.logo-cards picture {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: var(--color-white);
+  border-radius: 1rem;
+  box-shadow: var(--theme-shadow1-shade5);
+  height: 3rem;
+}
+@media(min-width:600px) {
+  .gallery.logo-cards picture {
+    height: 4.5rem;
+  } 
+}
+
+/* Gallery Styles ⬇ */
+
+/* GAP */
+.gallery.gap-1 .gallery-container {
+  gap: var(--gap-interval);
+}
+.gallery.gap-2 .gallery-container {
+  gap: calc(var(--gap-interval) * 2);
+}
+.gallery.gap-3 .gallery-container {
+  gap: calc(var(--gap-interval) * 3);
+}
+.gallery.gap-4 .gallery-container {
+  gap: calc(var(--gap-interval) * 4);
+}
+.gallery.gap-5 .gallery-container {
+  gap: calc(var(--gap-interval) * 5);
+}
+.gallery.gap-6 .gallery-container {
+  gap: calc(var(--gap-interval) * 6);
+}
+.gallery.gap-7 .gallery-container {
+  gap: calc(var(--gap-interval) * 7);
+}
+.gallery.gap-8 .gallery-container {
+  gap: calc(var(--gap-interval) * 8);
+}
+.gallery.gap-9 .gallery-container {
+  gap: calc(var(--gap-interval) * 9);
+}
+.gallery.gap-10 .gallery-container {
+  gap: calc(var(--gap-interval) * 10);
+}
+@media(min-width: 600px){
+  .gallery.tablet-gap-1 .gallery-container {
+    gap: var(--gap-interval);
+  }
+  .gallery.tablet-gap-2 .gallery-container {
+    gap: calc(var(--gap-interval) * 2);
+  }
+  .gallery.tablet-gap-3 .gallery-container {
+    gap: calc(var(--gap-interval) * 3);
+  }
+  .gallery.tablet-gap-4 .gallery-container {
+    gap: calc(var(--gap-interval) * 4);
+  }
+  .gallery.tablet-gap-5 .gallery-container {
+    gap: calc(var(--gap-interval) * 5);
+  }
+  .gallery.tablet-gap-6 .gallery-container {
+    gap: calc(var(--gap-interval) * 6);
+  }
+  .gallery.tablet-gap-7 .gallery-container {
+    gap: calc(var(--gap-interval) * 7);
+  }
+  .gallery.tablet-gap-8 .gallery-container {
+    gap: calc(var(--gap-interval) * 8);
+  }
+  .gallery.tablet-gap-9 .gallery-container {
+    gap: calc(var(--gap-interval) * 9);
+  }
+  .gallery.tablet-gap-10 .gallery-container {
+    gap: calc(var(--gap-interval) * 10);
+  }
+}
+@media(min-width: 900px){
+  .gallery.laptop-gap-1 .gallery-container {
+    gap: var(--gap-interval);
+  }
+  .gallery.laptop-gap-2 .gallery-container {
+    gap: calc(var(--gap-interval) * 2);
+  }
+  .gallery.laptop-gap-3 .gallery-container {
+    gap: calc(var(--gap-interval) * 3);
+  }
+  .gallery.laptop-gap-4 .gallery-container {
+    gap: calc(var(--gap-interval) * 4);
+  }
+  .gallery.laptop-gap-5 .gallery-container {
+    gap: calc(var(--gap-interval) * 5);
+  }
+  .gallery.laptop-gap-6 .gallery-container {
+    gap: calc(var(--gap-interval) * 6);
+  }
+  .gallery.laptop-gap-7 .gallery-container {
+    gap: calc(var(--gap-interval) * 7);
+  }
+  .gallery.laptop-gap-8 .gallery-container {
+    gap: calc(var(--gap-interval) * 8);
+  }
+  .gallery.laptop-gap-9 .gallery-container {
+    gap: calc(var(--gap-interval) * 9);
+  }
+  .gallery.laptop-gap-10 .gallery-container {
+    gap: calc(var(--gap-interval) * 10);
+  }
+}
+@media(min-width: 1200px){
+  .gallery.desktop-gap-1 .gallery-container {
+    gap: var(--gap-interval);
+  }
+  .gallery.desktop-gap-2 .gallery-container {
+    gap: calc(var(--gap-interval) * 2);
+  }
+  .gallery.desktop-gap-3 .gallery-container {
+    gap: calc(var(--gap-interval) * 3);
+  }
+  .gallery.desktop-gap-4 .gallery-container {
+    gap: calc(var(--gap-interval) * 4);
+  }
+  .gallery.desktop-gap-5 .gallery-container {
+    gap: calc(var(--gap-interval) * 5);
+  }
+  .gallery.desktop-gap-6 .gallery-container {
+    gap: calc(var(--gap-interval) * 6);
+  }
+  .gallery.desktop-gap-7 .gallery-container {
+    gap: calc(var(--gap-interval) * 7);
+  }
+  .gallery.desktop-gap-8 .gallery-container {
+    gap: calc(var(--gap-interval) * 8);
+  }
+  .gallery.desktop-gap-9 .gallery-container {
+    gap: calc(var(--gap-interval) * 9);
+  }
+  .gallery.desktop-gap-10 .gallery-container {
+    gap: calc(var(--gap-interval) * 10);
+  }
+}
+
+/* Columns */
+.gallery .gallery-container.cols-1 {
+  grid-template-columns: 1fr;
+}
+.gallery .gallery-container.cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.gallery .gallery-container.cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.gallery .gallery-container.cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+.gallery .gallery-container.cols-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+.gallery .gallery-container.cols-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+.gallery .gallery-container.cols-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+@media (min-width: 600px) {
+  .gallery .gallery-container.tablet-cols-1 {
+    grid-template-columns: 1fr;
+  }
+  .gallery .gallery-container.tablet-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gallery .gallery-container.tablet-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .gallery .gallery-container.tablet-cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .gallery .gallery-container.tablet-cols-5 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .gallery .gallery-container.tablet-cols-6 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .gallery .gallery-container.laptop-cols-1 {
+    grid-template-columns: 1fr;
+  }
+  .gallery .gallery-container.laptop-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gallery .gallery-container.laptop-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .gallery .gallery-container.laptop-cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .gallery .gallery-container.laptop-cols-5 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .gallery .gallery-container.laptop-cols-6 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .gallery .gallery-container.desktop-cols-1 {
+    grid-template-columns: 1fr;
+  }
+  .gallery .gallery-container.desktop-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gallery .gallery-container.desktop-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .gallery .gallery-container.desktop-cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .gallery .gallery-container.desktop-cols-5 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .gallery .gallery-container.desktop-cols-6 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
