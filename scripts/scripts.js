@@ -51,14 +51,14 @@ function readCookie(name) {
 function getBhrFeaturesCookie() {
   const value = readCookie('bhr_features');
   try {
-  	const decryptedValue = atob(value);
+    const decryptedValue = atob(value);
     return JSON.parse(decryptedValue);
-  } catch (err1) {	  
-	  try{
-		  return JSON.parse(value);
-	  } catch (err2) {
-		  return {};
-	  }
+  } catch (err1) {
+    try {
+      return JSON.parse(value);
+    } catch (err2) {
+      return {};
+    }
   }
 }
 
@@ -214,7 +214,8 @@ function loadTemplateCSS() {
       'paid-landing-page',
       'product-updates',
       'live-demo-webinar-lp',
-      'hr-101-guide'
+      'hr-101-guide',
+      'customers'
     ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -335,9 +336,10 @@ export function decorateBlock(block) {
 
   const blockWrapper = block.parentElement;
   blockWrapper.classList.add(`${shortBlockName}-wrapper`);
+  const regex = /\b(?:tablet-|laptop-|desktop)?(?:content-)?width-(?:xs|sm|md|lg|xl|2xl|full)\b/g;
 
   [...block.classList]
-    .filter((filter) => filter.match(/^content-width-/g))
+    .filter((filter) => filter.match(regex))
     .forEach((style) => {
       block.parentElement.classList.add(style);
       block.classList.remove(style);

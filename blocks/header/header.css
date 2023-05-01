@@ -145,6 +145,7 @@ header .nav-hamburger {
   height: 22px;
   padding-top: 3px;
   color: var(--color-gray3);
+  cursor: pointer;
 }
 
 header .nav[aria-expanded="false"] .nav-hamburger-icon,
@@ -266,6 +267,7 @@ header .nav[aria-expanded="true"] {
 
 header .nav-sections h2 {
   border-bottom: 2px solid var(--color-gray-2);
+  cursor: default;
 }
 
 header .nav-sections h2,
@@ -297,6 +299,7 @@ header .nav-section li {
   font-size: 14px;
   color: var(--color-gray-8);
   padding: 10px 0;
+  cursor: default;
 }
 
 header .nav-section li a:any-link {
@@ -575,7 +578,7 @@ header .nav-limited .nav-buttons .button.small {
   }
 
   header .nav-section {
-    padding: 0 22px;
+    padding: 0 20px;
     position: relative;
     border-width: 3px 0 0;
     border-style: solid;
@@ -611,7 +614,7 @@ header .nav-limited .nav-buttons .button.small {
   header .nav-section ul,
   header .nav-section .nav-section-wrapper {
     opacity: 0;
-    padding-bottom: 30px;
+    padding-bottom: 38px;
     padding-top: 18px;
     max-height: 0;
     position: absolute;
@@ -763,7 +766,11 @@ header .nav-limited .nav-buttons .button.small {
 }
 
 @media (min-width: 1300px) {
-  header .nav.extra-buttons {
+  header .nav-section {
+    padding: 0 22px;
+  }
+
+	header .nav.extra-buttons {
     grid-template-columns: 180px 1fr 425px;
   }
 

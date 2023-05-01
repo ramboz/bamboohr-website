@@ -380,7 +380,6 @@ main .form.white-container .form-col {
   height: fit-content;
 }
 
-
 .form .content-col a:not(.button):not(form) {
   font-weight: var(--heading-font-weight);
   color: var(--theme-shade10);
