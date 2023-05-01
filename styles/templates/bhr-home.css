@@ -55,12 +55,12 @@
     color: var(--theme-shade10);
 }
 
-.bhr-home .columns .icon svg {
+.bhr-home .columns:not(.mixed-icon-link) .icon svg {
     width: 5rem;
     height: auto;
 }
 
-.bhr-home .columns .column-small-icons-container.column-multi-element p.button-container {
+.bhr-home .columns:not(.mixed-icon-link) .column-small-icons-container.column-multi-element p.button-container {
     line-height: 12px;
 }
 
@@ -526,6 +526,10 @@
       
     .bhr-home .columns.columns-2-cols:not(.title2-heading) .column-flex-container .non-img-col p.button-container.left {
         text-align: center;
+    }
+
+    .bhr-home .columns .non-img-col .mixed-icon-link-container {
+        justify-content: center;
     }
 }
 

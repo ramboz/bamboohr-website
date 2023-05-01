@@ -64,22 +64,31 @@ function addLinkToIconSVG(icon, link) {
   } 
 }
 
-function addIconContainer(col) {
+function addIconContainer(col, block) {
+  const mixedIconLink = block.classList.contains('mixed-icon-link');
   if (!col.classList.contains('columns-title-span')) {
     const icons = col.querySelectorAll('span.icon');
     if (icons.length) {
       const iconContainer = document.createElement('div');
-      iconContainer.classList.add('column-small-icons-container', 'column-multi-element');
+      if (mixedIconLink) iconContainer.classList.add('mixed-icon-link-container');
+      else iconContainer.classList.add('column-small-icons-container', 'column-multi-element');
 
       icons.forEach(icon => {
         let link = icon.parentElement.querySelector('a');
-        if (link) {
+        if (mixedIconLink && link && icon.parentElement.tagName === 'P') {
+          const nonImageContainer = document.createElement('div');
+          nonImageContainer.classList.add('mix-non-img-container');
+          nonImageContainer.append(icon.parentElement);
+
+          iconContainer.append(icon);
+          iconContainer.append(nonImageContainer);
+        } else if (link) {
           const buttonContainer = document.createElement('p');
           buttonContainer.classList.add('button-container');
           buttonContainer.append(link);
           icon.parentElement.append(buttonContainer);
 
-          addLinkToIconSVG(icon, link);
+          if (!mixedIconLink) addLinkToIconSVG(icon, link);
           addIconBtnClass(buttonContainer, icon);
         } else if (icon.parentElement.nextElementSibling?.tagName === 'P'
             && icon.parentElement.nextElementSibling.classList.contains('button-container')) {
@@ -90,7 +99,7 @@ function addIconContainer(col) {
           icon.parentElement.append(icon.parentElement.nextElementSibling);
         }
 
-        if (link) iconContainer.append(icon.parentElement);
+        if (link && !mixedIconLink) iconContainer.append(icon.parentElement);
       });
 
       if (iconContainer.children) col.appendChild(iconContainer);
@@ -226,7 +235,7 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
     
     addButtonClasses(col, block);
 
-    addIconContainer(col);
+    addIconContainer(col, block);
   });
 
   colsToRemove.forEach((col) => col.remove());

@@ -590,7 +590,7 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   margin-bottom: 0;
 }
 
-.columns .column-small-icons-container.column-multi-element p.button-container {
+.columns:not(.mixed-icon-link) .column-small-icons-container.column-multi-element p.button-container {
   max-width: 145px;
   text-align: center;
 }
@@ -899,4 +899,36 @@ div .tablet-center-image .column-flex-container.columns-align-start {
 
 .columns.image-auto-width .img-col img {
   width: auto;
+}
+
+/* mixed-icon-link */
+.columns .non-img-col .mixed-icon-link-container {
+  display: flex;
+  margin-top: 1em;
+}
+
+.columns .non-img-col .mixed-icon-link-container .icon {
+  margin-right: 15px;
+}
+
+.columns .non-img-col .mixed-icon-link-container .mix-non-img-container p {
+  margin-top: 0;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: left;
+}
+
+.columns .non-img-col .mixed-icon-link-container .mix-non-img-container a:not(.button) {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  text-decoration: underline;
+  background-image: unset;
+}
+
+.columns .mixed-icon-link-container .button-container {
+  display: inline;
 }
