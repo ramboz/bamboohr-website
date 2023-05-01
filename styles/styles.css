@@ -1103,7 +1103,8 @@ main .section.app-cards-container {
   margin-bottom: 120px;
 }
 
-main .default-content-wrapper a:any-link {
+main .default-content-wrapper a:any-link,
+main .table-wrapper a:any-link {
   --category-color: var(--color-1-shade-5);
   --category-bg-color: var(--color-1-tint-15);
 
