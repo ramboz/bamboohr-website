@@ -566,7 +566,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
     });
   });
   if (chilipiper) {
-    const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper-pricing-timeout-success' : '/chilipiper-demo-timeout-success';
+    const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper/pricing-timeout-success' : '/live-demo-timeout-success';
     loadScript('https://js.chilipiper.com/marketing.js', () => {
       function redirectTimeout() {
         return setTimeout(() => { window.location.href = timeoutSuccessUrl; }, '240000');
