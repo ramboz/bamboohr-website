@@ -285,7 +285,7 @@ header .nav-section .nav-section-wrapper {
   opacity: 0;
   max-height: 0;
   position: absolute;
-  display: block;
+  display: none;
   box-sizing: border-box;
   transform: translate(0, -1000px);
 }
