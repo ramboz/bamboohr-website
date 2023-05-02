@@ -18,6 +18,7 @@ import { setObject } from './set-object.min.js';
 sampleRUM('cwv');
 
 function initESW(gslbBaseURL) {
+  // eslint-disable-next-line
   embedded_svc.settings.displayHelpButton = true; //Or false
   embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
   //embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
@@ -113,18 +114,8 @@ function loadSalesforceChatScript() {
   }`);
   loadScript('footer', 'https://service.force.com/embeddedservice/5.0/esw.min.js', null, 'text/javascript');
   loadScript('footer', 'https://bamboohr.my.salesforce.com/embeddedservice/5.0/esw.min.js', async () => {
-    if (!window.embedded_svc) {
-      //var s = document.createElement('script');
-      // s.setAttribute('src', 'https://bamboohr.my.salesforce.com/embeddedservice/5.0/esw.min.js');
-      // s.onload = function() {
-      // 	initESW(null);
-      // };
-      // document.body.appendChild(s);
-
-      initESW(null);
-    } else {
-      initESW('https://service.force.com');
-    }
+    if (!window.embedded_svc) initESW(null);
+    else initESW('https://service.force.com');
   }, 'text/javascript');
 }
 
