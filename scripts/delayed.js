@@ -20,6 +20,7 @@ sampleRUM('cwv');
 function initESW(gslbBaseURL) {
   // eslint-disable-next-line
   embedded_svc.settings.displayHelpButton = true; //Or false
+  // eslint-disable-next-line
   embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
   //embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
   //embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
@@ -33,8 +34,11 @@ function initESW(gslbBaseURL) {
   //embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
   //embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
   //embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+  // eslint-disable-next-line
   embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+  // eslint-disable-next-line
   embedded_svc.settings.entryFeature = 'LiveAgent';
+  // eslint-disable-next-line
   embedded_svc.init(
     'https://bamboohr.my.salesforce.com',
     'https://bamboohr.my.site.com/surveys',
