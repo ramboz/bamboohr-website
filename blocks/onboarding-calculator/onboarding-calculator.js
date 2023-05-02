@@ -429,14 +429,23 @@ function createFields(fields) {
 				addIcon(divFieldItem, Icon)
 		}
 
+		// Add Tooltip HTML if field label has tootltip description
 		if (Tooltip) {
 			const label = divFieldItem.querySelector('label')
 			const tooltipHtml = `<div class="tooltip"><span class="tooltip__text">${Tooltip}</span></div>`
 			label.insertAdjacentHTML('beforeend', tooltipHtml);
 		}
 
+		// Add CSS class has-icon if field need to display dollar symbol $ 
 		if (Icon) {
 			divFieldItem.classList.add('has-icon')
+		}
+
+		// Set min and max value for number fields
+		if (Type === 'number') {
+			const inputField = divFieldItem.querySelector('input')
+			inputField.setAttribute('min', 0)
+			inputField.setAttribute('max', 1000000)
 		}
 
 		fieldWrapper.append(divFieldItem)
@@ -581,11 +590,12 @@ function createCtaContainer() {
 
 	// Click event for buttons
 	ctaContainer.addEventListener('click', (e) => {
+		e.preventDefault()
 		const grandparentContainer = ctaContainer.parentElement.parentElement
-		grandparentContainer.style.display = 'none'
-
 		const id = e.target.dataset.form
+
 		if (id) {
+			grandparentContainer.style.display = 'none'
 			toggleForm(id)
 		}
 	})
@@ -638,6 +648,12 @@ export default async function decorate(block) {
 
 		inputRangeField.addEventListener("input", () => {
 			setRangeValueBubble(inputRangeField, rangeValueBubble);
+		})
+
+		inputRangeField.addEventListener("keyup", (e) => {
+			if (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105) {
+				console.log('Number key pressed:', e.key);
+			}
 		})
 		setRangeValueBubble(inputRangeField, rangeValueBubble);
 	})

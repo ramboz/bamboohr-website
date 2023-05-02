@@ -12,7 +12,7 @@
 .onboarding-calculator h2 {
 	font-size: 20px;
 	line-height: 26.5px;
-	margin: 20px 0 15px;
+	margin: 0 0 15px;
 }
 
 .onboarding-calculator p {
@@ -44,10 +44,15 @@
 	padding: 3em 25px 0;
 }
 
+.onboarding-calculator__content-right p:first-child {
+	margin-bottom: 20px;
+}
+
 .onboarding-calculator__content-right .form-cta-container {
 	display: flex;
 	gap: 17px;
 	justify-content: center;
+	margin-top: 40px;
 }
 
 .onboarding-calculator button {
@@ -57,17 +62,22 @@
 	padding: 16px 23px;
 	text-align: center;
 	font-size: 14px;
-	font-family: var(--heading-font-family);
+	font-family: var(--display-font-family);
 	font-weight: 500;
 	cursor: pointer;
 	color: var(--color-white);
 	background-color: #1A87C9;
-	margin: 16px 0;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: inline-block;
 	transition: background-color 0.1s;
+	transition: all 0.3s;
+}
+
+.onboarding-calculator button:hover {
+	background-color: #177AB5;
+	box-shadow: 0 4px 12px 4px #86868624;
 }
 
 .onboarding-calculator .d-none {
@@ -161,7 +171,7 @@
 }
 
 .onboarding-calculator .field-item__range .range-value {
-	background: var(--color-5);
+	background: #1A87C9;
 	color: white;
 	padding: 2px 12px;
 	position: absolute;
@@ -176,7 +186,7 @@
     position: absolute;
     width: 0;
     height: 0;
-    border-bottom: 10px solid var(--color-5);
+    border-bottom: 10px solid #1A87C9;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     top: -5px;
@@ -273,13 +283,18 @@
 	display: flex;
     justify-content: space-between;
 	grid-row: 2;
-	padding: 2em 25px;
+	padding: 0 25px 2em;
 }
 
 .onboarding-calculator #prevBtn {
 	border: 1px solid #1A87C9;
 	color: #1A87C9;
 	background-color: transparent;
+}
+
+.onboarding-calculator #prevBtn:hover {
+	border-color:#177AB5;
+	color:#177AB5;
 }
 
 .onboarding-calculator .range-container {
@@ -374,7 +389,7 @@
 
 .onboarding-calculator .navBtn-wrapper button {
 	padding: 16px 0;
-	width: 8rem;
+	width: 6rem;
 }
 
 .onboarding-calculator #organisation-form .tab:nth-child(1) .field-item {
@@ -467,6 +482,14 @@
 		border-top-left-radius: 10px;
 		border-bottom-left-radius: 10px;
 		height: 100%;
+	}
+
+	.onboarding-calculator__content-right .form-cta-container {
+		margin-top: 20px;
+	}
+
+	.onboarding-calculator .navBtn-wrapper button {
+		width: 8rem;
 	}
 }
 
