@@ -668,11 +668,6 @@ export default async function decorate(block) {
 			setRangeValueBubble(inputRangeField, rangeValueBubble);
 		})
 
-		inputRangeField.addEventListener("keyup", (e) => {
-			if (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105) {
-				console.log('Number key pressed:', e.key);
-			}
-		})
 		setRangeValueBubble(inputRangeField, rangeValueBubble);
 	})
 }
