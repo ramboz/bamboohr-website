@@ -75,7 +75,8 @@
 	transition: all 0.3s;
 }
 
-.onboarding-calculator button:hover {
+.onboarding-calculator button:hover, 
+.onboarding-calculator .result__wrapper .result__right .button:hover {
 	background-color: #177AB5;
 	box-shadow: 0 4px 12px 4px #86868624;
 }
@@ -137,7 +138,13 @@
 }
 
 .onboarding-calculator .tab .field-item.invalid input[type="number"]{
-	background-color: #ffdddd;
+	border-color: red;
+}
+
+.onboarding-calculator .error {
+	position: absolute;
+    font-size: 12px;
+    color: red;
 }
 
 .onboarding-calculator .tab .field-item input[type="range"]{
@@ -315,10 +322,6 @@
 	width: 100%;
 }
 
-.onboarding-calculator .result__wrapper .result__left {
-	padding-bottom: 3.7em;
-}
-
 .onboarding-calculator .result__wrapper .result__left,
 .onboarding-calculator .result__wrapper .result__right {
 	flex: 0 0 50%;
@@ -326,6 +329,10 @@
     margin: 0 auto;
 	text-align: start;
 	word-break: break-word;
+}
+
+.onboarding-calculator .result__wrapper .result__left {
+	padding-bottom: 3.7em;
 }
 
 .onboarding-calculator .result__wrapper .result__left .reset-calc-btn {
@@ -338,6 +345,10 @@
 	line-height: 24px;
 }
 
+.onboarding-calculator .result__wrapper .result__left .reset-calc-btn:hover {
+	box-shadow: unset;
+}
+
 .onboarding-calculator .result__wrapper .result__right .button {
 	padding: 16px 48px;
 	background: #1A87C9;
@@ -345,6 +356,7 @@
 	font-weight: 500;
 	font-size: 14px;
 	line-height: 20px;
+	transition: all 0.3s;
 }
 
 .onboarding-calculator .result__wrapper .result__right {
@@ -490,6 +502,10 @@
 
 	.onboarding-calculator .navBtn-wrapper button {
 		width: 8rem;
+	}
+
+	.onboarding-calculator .result__wrapper .result__left {
+		padding-bottom: 0;
 	}
 }
 

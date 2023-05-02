@@ -21,21 +21,39 @@ function createProgressIndicatorHtml() {
 	return spanHtml
 }
 
+function getMessage(field) {
+	return `Please enter a number between ${field.min} and ${field.max}`
+}
+
 function validateForm(form) {
 	let valid = true
 	const tabsArr = form.querySelectorAll('.tab')
 	const activeTab = tabsArr[currentTab].querySelectorAll('input')
 
 	activeTab.forEach(input => {
+		const inputContainer = input.parentElement
+		const errorBox = document.createElement('div')
+		errorBox.classList.add('error')
+
 		if (input.value === '') {
-			const inputContainer = input.parentElement
+			const message = getMessage(input)
 			inputContainer.classList.add('invalid')
+			input.insertAdjacentElement('afterend', errorBox)
+			errorBox.textContent = message
 			valid = false
+		} else {
+			inputContainer.classList.remove('invalid')
+			errorBox.textContent = ''
 		}
 	})
 
 	if (valid) {
+		const errorFields = form.querySelectorAll('.error')
 		form.querySelectorAll('.step')[currentTab].className += " finish";
+
+		errorFields.forEach(field => {
+			field.textContent = ''
+		})
 	}
 	
 	return valid
