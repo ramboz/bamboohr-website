@@ -263,6 +263,7 @@ function resetForm(block) {
 	formsArr.forEach(form => {
 		form.classList.remove('active')
 		form.querySelector('#nextBtn').innerText = 'Next'
+		form.querySelector('#nextBtn').setAttribute('type', 'button')
 		form.reset()
 	});
 
