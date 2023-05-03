@@ -143,9 +143,8 @@ export async function analyticsTrackPageViews(document, additionalXdmFields = {}
       web: {
         webPageDetails: {
           name: `${document.title}`,
-		  URL: document.URL,
 		  _bamboohr: {
-		    urlNoQueryString: document.URL.split('?')[0]
+		    fullUrl: document.URL
 		  },
           pageViews: {
             value: 1,
