@@ -142,10 +142,14 @@ export async function analyticsTrackPageViews(document, additionalXdmFields = {}
       eventType: 'web.webpagedetails.pageViews',
       web: {
         webPageDetails: {
+          name: `${document.title}`,
+		  URL: document.URL,
+		  _bamboohr: {
+		    urlNoQueryString: document.URL.split('?')[0]
+		  },
           pageViews: {
             value: 1,
           },
-          name: `${document.title}`,
         },
       },
       [CUSTOM_SCHEMA_NAMESPACE]: {
