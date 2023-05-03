@@ -26,12 +26,14 @@ function hideSearchInput(navSearchBtn, phoneNumElem, navButtons) {
   navSearchBtn.parentElement.classList.remove('search-open');
   navSearchBtn.parentElement.parentElement.parentElement.classList.remove('search-open');
   // eslint-disable-next-line no-return-assign
-  if (mediaQuerySearchOpen.matches) navButtons?.forEach(b => b.style.display = '');
+  if (mediaQuerySearchOpen.matches) navButtons?.forEach((b) => (b.style.display = ''));
   else if (mediaQueryDesktop.matches && phoneNumElem) phoneNumElem.style.display = '';
 }
 
 function addSearch(buttonsContainer) {
-  const search = [...buttonsContainer.children].find(b => b.textContent?.toLowerCase() === '[search]');
+  const search = [...buttonsContainer.children].find(
+    (b) => b.textContent?.toLowerCase() === '[search]'
+  );
   if (search) {
     buttonsContainer.parentElement.classList.add('has-search');
     // Build search.
@@ -66,7 +68,7 @@ function addSearch(buttonsContainer) {
       navSearchBtn.parentElement.parentElement.parentElement.classList.add('search-open');
       navSearchBtn.classList.add('hide-btn');
       // eslint-disable-next-line no-return-assign
-      if (mediaQuerySearchOpen.matches) navButtons?.forEach(b => b.style.display = 'none');
+      if (mediaQuerySearchOpen.matches) navButtons?.forEach((b) => (b.style.display = 'none'));
       else if (mediaQueryDesktop.matches && phoneNumElem) phoneNumElem.style.display = 'none';
       navSearchBtn.nextElementSibling.classList.add('show-input');
       navSearchInput.focus();
@@ -102,13 +104,43 @@ const submenuAction = (nav, li, delayed = true) => {
 
   if (delayed) {
     submenuActionTimer = window.setTimeout(() => {
-      [...nav.querySelectorAll('li.show-sub-menu')].forEach(e => e.classList.remove('show-sub-menu'));
+      [...nav.querySelectorAll('li.show-sub-menu')].forEach((e) =>
+        e.classList.remove('show-sub-menu')
+      );
       li?.classList.add('show-sub-menu');
     }, 300);
   } else {
-    [...nav.querySelectorAll('li.show-sub-menu')].forEach(e => e.classList.remove('show-sub-menu'));
+    [...nav.querySelectorAll('li.show-sub-menu')].forEach((e) =>
+      e.classList.remove('show-sub-menu')
+    );
   }
 };
+
+function addSlideDown() {
+  const container = document.createElement('div');
+  container.setAttribute('id', 'slide-down');
+  container.setAttribute('role', 'alert');
+  const paragraph = document.createElement('p');
+  container.appendChild(paragraph);
+  document.body.appendChild(container);
+}
+
+/**
+ *
+ * @param {String} text - text displayed by the slideDown
+ * @param {'success' | 'error' | 'info'} type - "success" | "error" | "info"
+ * @param {Number} [dismissTimer] - ms to dismiss the timer. 3500 default
+ */
+export function showSlideDown(text, type = 'success', dismissTimer = 3500) {
+  const slideDown = document.getElementById('slide-down');
+  slideDown.setAttribute('aria-live', 'polite');
+  slideDown.classList.add('show', type);
+  const paragraph = slideDown.querySelector('p');
+  paragraph.innerText = text;
+  setTimeout(() => {
+    slideDown.classList.remove('show');
+  }, dismissTimer);
+}
 
 /**
  * decorates the header, mainly the nav
@@ -263,8 +295,12 @@ export default async function decorate(block) {
 
   block.append(nav);
 
+  // Adds hidden slideDown
+  addSlideDown();
+
   insertNewsletterForm(block, () => {
     collapseAll([...nav.querySelectorAll('[aria-expanded="true"]')]);
+    showSlideDown('Your form has been submitted successfully.', 'success');
   });
 
   let collection = 'prelogin';
