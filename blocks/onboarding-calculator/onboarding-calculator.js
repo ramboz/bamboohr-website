@@ -484,6 +484,7 @@ function createIndividualForm(fields) {
 
 	// Setup form attributes
 	form.setAttribute('id', 'individual-form')
+	form.setAttribute('method', 'POST')
 	form.classList.add('d-none')
 
 	// Grouping fields into different tab
