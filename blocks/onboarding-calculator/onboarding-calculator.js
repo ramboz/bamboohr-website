@@ -28,32 +28,28 @@ function getMessage(field) {
 function validateForm(form) {
 	let valid = true
 	const tabsArr = form.querySelectorAll('.tab')
-	const activeTab = tabsArr[currentTab].querySelectorAll('input')
+	const inputFields = tabsArr[currentTab].querySelectorAll('input')
 
-	activeTab.forEach(input => {
+	inputFields.forEach(input => {
 		const inputContainer = input.parentElement
-		const errorBox = document.createElement('div')
-		errorBox.classList.add('error')
+		const errorBox = inputContainer.querySelector('.error')
 
-		if (input.value === '') {
-			const message = getMessage(input)
-			inputContainer.classList.add('invalid')
-			input.insertAdjacentElement('afterend', errorBox)
-			errorBox.textContent = message
-			valid = false
-		} else {
+		if (errorBox) {
+			if (input.value.length === 0) {
+				const message = getMessage(input)
+				errorBox.classList.remove('hidden')
+				inputContainer.classList.add('invalid')
+				errorBox.textContent = message
+				valid = false
+			} else {
+				errorBox.classList.add('hidden')
+			}
 			inputContainer.classList.remove('invalid')
-			errorBox.textContent = ''
 		}
 	})
 
 	if (valid) {
-		const errorFields = form.querySelectorAll('.error')
 		form.querySelectorAll('.step')[currentTab].className += " finish";
-
-		errorFields.forEach(field => {
-			field.textContent = ''
-		})
 	}
 	
 	return valid
@@ -417,6 +413,16 @@ function addDescribtion(el, descriptionText) {
 	}
 }
 
+function createErrorBox(el) {
+	const inputField = el.querySelector('input')
+	const errorBox = document.createElement('div')
+	errorBox.classList.add('error', 'hidden')
+	const message = getMessage(inputField)
+	errorBox.textContent = message
+
+	inputField.insertAdjacentElement('afterend', errorBox)
+}
+
 function addIcon(el, icon) {
 	const inputField = el.querySelector('input')
 
@@ -450,6 +456,7 @@ function createFields(fields) {
 				divFieldItem.append(createLabel(item))
 				addDescribtion(divFieldItem, Description)
 				divFieldItem.append(createInput(item))
+				createErrorBox(divFieldItem)
 				addIcon(divFieldItem, Icon)
 		}
 
@@ -518,6 +525,7 @@ function createIndividualForm(fields) {
 
 	btnArr.forEach(btn => {
 		btn.addEventListener('click', e => {
+			e.preventDefault()
 			if (e.target.id === 'nextBtn') {
 				nextPrev(1, form)
 			}
@@ -558,6 +566,7 @@ function createOrganisationForm(fields) {
 
 	btnArr.forEach(btn => {
 		btn.addEventListener('click', e => {
+			e.preventDefault()
 			if (e.target.id === 'nextBtn') {
 				nextPrev(1, form)
 			}
