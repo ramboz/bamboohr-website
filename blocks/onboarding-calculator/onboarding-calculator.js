@@ -33,9 +33,11 @@ function validateForm(form) {
 	inputFields.forEach(input => {
 		const inputContainer = input.parentElement
 		const errorBox = inputContainer.querySelector('.error')
+		const parsedInputValue = parseInt(input.value, 10)
+		const parsedInputMax = parseInt(input.max, 10)
 
 		if (errorBox) {
-			if (input.value.length === 0) {
+			if (input.value.length === 0 || parsedInputValue > parsedInputMax ) {
 				const message = getMessage(input)
 				errorBox.classList.remove('hidden')
 				inputContainer.classList.add('invalid')
