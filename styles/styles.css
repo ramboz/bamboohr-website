@@ -824,6 +824,16 @@ main .section > div.width-full {
 
 /* TEST: responsive block wrapper/containers */
 
+/* 
+For reference
+--width-xs: 560px;
+--width-sm: 760px;
+--width-md: 960px;
+--width-lg: 1160px;
+--width-xl: 1360px;
+--width-2xl: 1560px; 
+*/
+
 /* mobile and up */
 
 main .section > div.width-xs {
@@ -849,6 +859,16 @@ main .section > div.width-xl {
 main .section > div.width-2xl {
   max-width: var(--width-2xl);
 }
+
+/* 
+For reference
+--width-xs: 560px;
+--width-sm: 760px;
+--width-md: 960px;
+--width-lg: 1160px;
+--width-xl: 1360px;
+--width-2xl: 1560px; 
+*/
 
 @media (min-width: 600px) {
   /* tablet sizes and up */
@@ -878,6 +898,16 @@ main .section > div.width-2xl {
   }
 }
 
+/* 
+For reference
+--width-xs: 560px;
+--width-sm: 760px;
+--width-md: 960px;
+--width-lg: 1160px;
+--width-xl: 1360px;
+--width-2xl: 1560px; 
+*/
+
 @media (min-width: 900px) {
   /* laptop sizes and up */
   main .section > div.laptop-width-xs {
@@ -904,6 +934,16 @@ main .section > div.width-2xl {
     max-width: var(--width-2xl);
   }
 }
+
+/* 
+For reference
+--width-xs: 560px;
+--width-sm: 760px;
+--width-md: 960px;
+--width-lg: 1160px;
+--width-xl: 1360px;
+--width-2xl: 1560px; 
+*/
 
 @media (min-width: 1200px) {
   /* desktop sizes and up */
