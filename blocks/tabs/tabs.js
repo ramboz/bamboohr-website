@@ -1,4 +1,4 @@
-import { adobeEventTracking } from '../form/form.js';
+import {analyticsTrackTabClicks} from "../../scripts/lib-analytics.js";
 
 // mobile vs desktop
 const mediaQueryPhone = window.matchMedia('(max-width: 599px)');
@@ -59,9 +59,7 @@ function openTab(e) {
     content.setAttribute('aria-hidden', false);
 
      // /* Adobe tab name click events tracking */
-     // adobeEventTracking('Tab Name Click', {
-     //   "tab_title": target.innerText
-     // });
+	  analyticsTrackTabClicks(target.innerText);	 
   } else if ((mediaQueryPhone.matches && !parent.classList.contains('style-1') && !parent.classList.contains('style-2'))
     || parent.classList.contains('style-3')
     || (mediaQueryStacked.matches && parent.classList.contains('style-4'))) {

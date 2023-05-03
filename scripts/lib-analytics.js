@@ -329,3 +329,20 @@ export async function analyticsTrackFormStart(form) {
 		},
 	});
 }
+
+export async function analyticsTrackTabClicks(clickedTabText) {
+	// eslint-disable-next-line no-undef
+	return alloy('sendEvent', {
+		documentUnloading: true,
+		xdm: {
+			eventType: 'web.webinteraction.linkClicks',
+			web: {
+				webInteraction: {
+					_bamboohr: {
+						clickedTab: clickedTabText,
+					},
+				},
+			},
+		},
+	});
+}
