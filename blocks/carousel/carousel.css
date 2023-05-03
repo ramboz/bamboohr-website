@@ -567,6 +567,11 @@ main .carousel.style-5 div.carousel-text {
   color: var(--color-gray-12);
 }
 
+main .carousel.style-5.flat-theme-border div.carousel-text {
+  border: 2px solid var(--theme-base);
+  box-shadow: unset;
+}
+
 main .carousel.style-5 div.carousel-text h2 {
   margin: 0;
 }
