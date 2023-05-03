@@ -126,7 +126,6 @@
   max-height: 150px;
   width: 100%;
   transition: top 0.5s ease-in-out;
-
   max-width: var(--width-lg);
   left: 50%;
   transform: translateX(-50%);
