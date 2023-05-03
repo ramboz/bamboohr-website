@@ -538,6 +538,7 @@ function createOrganisationForm(fields) {
 
 	// Setup form attributes
 	form.setAttribute('id', 'organisation-form')
+	form.setAttribute('method', 'POST')
 	form.classList.add('d-none')
 
 	form.append(createFields(fields))
