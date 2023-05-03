@@ -232,10 +232,15 @@ function progressIndicator(index, form) {
  */
 function showTab(index, form) {
 	const tabs = form.querySelectorAll('.tab')
+	const nextBtn = form.querySelector('#nextBtn')
 	tabs[index].style.display = 'flex'
 
 	if (index === (tabs.length - 2)) {
-		form.querySelector('#nextBtn').innerText = 'Calculate'
+		nextBtn.setAttribute('type', 'submit')
+		nextBtn.innerText = 'Calculate'
+	} else {
+		nextBtn.setAttribute('type', 'button')
+		nextBtn.innerText = 'Next'
 	}
 }
 
