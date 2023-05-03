@@ -215,7 +215,7 @@ function loadTemplateCSS() {
       'product-updates',
       'live-demo-webinar-lp',
       'hr-101-guide',
-      'customers'
+      'customers',
     ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -1341,7 +1341,8 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     await decorateMain(main);
-    if (window.innerWidth >= 900) loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
+    if (window.innerWidth >= 900)
+      loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
     if (sessionStorage.getItem('lazy-styles-loaded')) {
       loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
       loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
@@ -1491,10 +1492,11 @@ async function loadLazy(doc) {
 
   const headerloaded = loadHeader(header);
   loadFooter(doc.querySelector('footer'));
-  
+
   loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('lazy-styles-loaded', 'true');
+  if (!window.location.hostname.includes('localhost'))
+    sessionStorage.setItem('lazy-styles-loaded', 'true');
   addFavIcon('https://www.bamboohr.com/favicon.ico');
 
   if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === 'localhost') {
@@ -1602,6 +1604,7 @@ export function insertNewsletterForm(elem, submitCallback) {
       newsletterSubscribe(input.value);
       e.preventDefault();
       submitCallback();
+      input.value = '';
     });
     a.replaceWith(formDiv);
   });
