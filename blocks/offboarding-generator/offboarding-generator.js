@@ -232,10 +232,8 @@ function leadGenTemplate() {
 
 // Lead Gen Shortcode Template
 function downloadConfirmed() {
-  let output = '<div>';
-  output += '<a href="https://bamboohr.com/blog" class="button button--teal">Go to blog</a>';
-  output += '<button data-close data-step="4" class="button button--outline button--teal">Close and return to page</button>';
-  output += '</div>';
+  const output = `<div><a href="https://bamboohr.com/blog" class="button button--teal">Go to blog</a><button data-close data-step="4" class="button button--outline button--teal">Close and return to page</button></div>`
+
   return output;
 }
 
@@ -412,9 +410,9 @@ export default async function decorate(block) {
       case '[generator-lead-gen]':
         item.innerHTML = leadGenTemplate();
         break;
-      // case '[generator-download-confirmed]':
-      //   item.innerHTML = downloadConfirmed();
-      //   break;
+      case '[generator-download-confirmed]':
+        item.innerHTML = downloadConfirmed();
+        break;
       default:
         // do nothing none paragraphs
         break;
