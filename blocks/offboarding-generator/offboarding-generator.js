@@ -224,11 +224,6 @@ function leadGenTemplate() {
   output += createInput('lead-business', 'text', 'Company name', 'Please enter your company name', businessName);
   output += createInput('lead-phone', 'tel', 'Phone Number', 'Please enter your phone number', null);
   output += countrySelect;
-  /**
-   * TODO:
-   * Fix the below as it outputing [object HTMLDivElement]
-   * Possible fix: create new form element and append item
-   */
   output += createSelect('lead-employees', 'Employee Count ', employeeCount);
   output += '</form>';
   output += '<nav><button data-step="3" class="button button--teal" id="download-confirmed">Download my template</button></nav>';
