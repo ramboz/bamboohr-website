@@ -113,6 +113,44 @@
   transform: rotate(-45deg);
 }
 
+/* SlideDown */
+#slide-down {
+  z-index: 999;
+  font-size: 22px;
+  position: fixed;
+  top: -150px;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  font-weight: 600;
+  max-height: 150px;
+  width: 100%;
+  transition: top 0.5s ease-in-out;
+  max-width: var(--width-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+#slide-down.success {
+  background-color: var(--color-1-shade-5);
+  color: var(--color-white);
+}
+
+#slide-down.error {
+  background-color: var(--color-2-shade-5);
+  color: var(--color-white);
+}
+
+#slide-down.info {
+  background-color: var(--color-5-shade-10);
+  color: var(--color-white);
+}
+
+#slide-down.show {
+  top:0;
+}
+
 /* header and nav layout */
 
 header {
