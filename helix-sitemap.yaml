@@ -30,3 +30,8 @@ sitemaps:
       origin: https://www.bamboohr.com
       source: /product-updates/query-index.json
       destination: /product-updates/sitemap.xml
+  
+  virtualEbook:
+      origin: https://www.bamboohr.com
+      source: /virtual-ebook/query-index.json
+      destination: /virtual-ebook/sitemap.xml
