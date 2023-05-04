@@ -1063,7 +1063,7 @@ function loadFooter(footer) {
   const footerBlockName = queryParams.header ? 'megafooter' : 'footer';
 
   const footerBlock = buildBlock(footerBlockName, '');
-  footer.append(footerBlock);
+  if (footer) footer.append(footerBlock);
   decorateBlock(footerBlock);
   loadBlock(footerBlock);
 }
@@ -1388,8 +1388,9 @@ function createProductSchemaMarkup() {
       },
     ],
   };
-  const $productSchema = document.createElement('script', { type: 'application/ld+json' });
+  const $productSchema = document.createElement('script');
   $productSchema.innerHTML = JSON.stringify(productSchema, null, 2);
+  $productSchema.setAttribute('type', 'application/ld+json');
   const $head = document.head;
   $head.append($productSchema);
 }
