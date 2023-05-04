@@ -405,8 +405,7 @@ export default async function decorate(block) {
   paragraphs.forEach( item => {
     switch(item.innerText) {
       case '[generator-template-selection]':
-        item.innerHTML = '';
-        item.append(templateSelection(item, formsArr));
+        item.innerHTML = templateSelection(item, formsArr);
         break;
       case '[generator-template-population]':
         item.innerHTML = templateFormWrapper();
