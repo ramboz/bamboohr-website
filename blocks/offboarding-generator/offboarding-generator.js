@@ -152,13 +152,10 @@ const templateOptions = [
 
 // Content Selection Template
 function templateSelection(el, forms) {
-  const divWrapper = createElem('div', 'hello')
-  const btnHtml = `<button data-step="0" data-next class="button button--teal" id="select-template">Get started</button>`
+  const selectHtml = createSelect('template-options', 'Choose your template', forms, 'Select template tooltip')
+  const selectionHtml = `<div>${selectHtml}<button data-step="0" data-next class="button button--teal" id="select-template">Get started</button></div>`
 
-  divWrapper.append(createSelect('template-options', 'Choose your template', forms, 'Select template tooltip'))
-  divWrapper.insertAdjacentHTML('beforeend', btnHtml)
-
-  return divWrapper;
+  return selectionHtml;
 }
 
 // Content Input Shortcode Template
