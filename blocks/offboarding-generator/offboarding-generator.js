@@ -260,53 +260,11 @@ function downloadConfirmed() {
  * Add a 2nd param to get data from form
  * Pass placeholder from Google spreadsheet to createInput()
  */
-function generateInputs(type, template) {
-  const resignationDateInput = createInput('resignation-date', 'date', 'Date resignation letter was submitted', null, resignationDate, 'Tooltip!');
-  const departureDateInput = createInput('departure-date', 'date', 'Last day working for the business', null, departureDate, 'Tooltip!');
-  const equipmentDateInput = createInput('equipment-date', 'date', 'Date to return company equipment', null, equipmentDate, 'Tooltip!');
-  const equipmentAddressInput = createInput('equipment-address', 'text', 'Address to return equipment', 'Please enter the address equipment is to be returned to', equipmentAddress, 'Tooltip!');
-  const departureReasonInput = createInput('departure-reason', 'text', 'Enter a reason for the departure', 'Please enter the departure reason', departureReason, 'Tooltip!');
-
-  let output = '';
-  output += createInput('first-name', 'text', 'Your first name', 'Please enter your first name', firstName);
-  output += createInput('second-name', 'text', 'Your second name', 'Please enter your second name', secondName);
-  output += createInput('employee-name', 'text', 'Employee\'s Name', 'Please your employee\'s full name', employeeName, 'Tooltip!');
-  output += createInput('business-name', 'text', 'Business name', 'Please your business name', businessName);
-
-  switch(type) {
-    case 'resignation-letter-acknowledgement':
-      output += resignationDateInput;
-      output += departureDateInput;
-      break;
-    case 'resignation-announcement':
-      output += createInput('department-name', 'text', 'Enter the department/team name', 'Please enter the team name', departmentName, 'This is a tooltip about the department name field!');
-      output += resignationDateInput;
-      output += departureDateInput;
-      output += departureReasonInput;
-      output += createInput('replacement-name', 'text', 'Enter the name of the replacement', 'Please enter the replacement name', replacementName, 'Tooltip!');
-      break;
-    case 'exit-interview':
-      output += createInput('interview-details', 'text', 'Enter interview details', 'Please enter interview details', interviewDetails, 'Tooltip!');
-      output += createInput('interview-date', 'datetime-local', 'Enter exit interview date and time', null, interviewDateTime, 'Tooltip!');
-      break;
-    case 'returning-equipment-company-property':
-      output += departureDateInput;
-      output += equipmentDateInput
-      output += equipmentAddressInput;
-      break;
-    case 'confirmation-of-leaving-date':
-      output += departureDateInput;
-      break;
-    case 'offboarding-for-dismissal':
-      output += departureDateInput;
-      output += departureReasonInput;
-      output += equipmentDateInput
-      output += equipmentAddressInput;
-      break;
-    default:
-        // do nothing none paragraphs
-        break;
-  }
+function generateInputs(template) {
+  const output = template.map(item => {
+    const {Field, Label, Placeholder, Tooltip, Type} = item
+    return `${createInput(Field, Type, Label, Placeholder, null, Tooltip)}`
+  })
   return output;
 }
 
@@ -332,7 +290,7 @@ function templateSelectHandler(el) {
     const templates = formsArr.find(item => item.formValue === selectedTemplate);
     const formatTemp = getTemplatesTone(templates)
     // document.getElementById('template-preview').innerHTML = formatTemp[0][sessionStorage.getItem('generator-tone')];
-    el.querySelector('#template-form').innerHTML = generateInputs(selectedTemplate, templates);
+    el.querySelector('#template-form').innerHTML = generateInputs(templates);
     // sessionStorage.setItem('generator-template', selectedTemplate);
     addToSessionStorage(selectedTemplate, templates);
     templatePreview.innerHTML = formatTemp[0].TemplateFormal
