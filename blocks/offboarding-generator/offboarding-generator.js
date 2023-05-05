@@ -256,10 +256,6 @@ function downloadConfirmed() {
 }
 
 // Generate Inputs
-/** TODO:
- * Add a 2nd param to get data from form
- * Pass placeholder from Google spreadsheet to createInput()
- */
 function generateInputs(template) {
   const output = template.map(item => {
     const {Field, Label, Placeholder, Tooltip, Type} = item
@@ -302,10 +298,6 @@ function templateSelectHandler(el) {
 export default async function decorate(block) {
   
   const data = await fetchData(formUrl)
-
-  // Set template defaults
-  sessionStorage.setItem('generator-template', 'resignation-letter-acknowledgement');
-  sessionStorage.setItem('generator-tone', 'TemplateFormal');
 
   // Add classes to generator step wrapping divs
   const children = block.children;
@@ -414,16 +406,6 @@ export default async function decorate(block) {
 
   // Store template selection
   templateSelectHandler(block)
-  // block.querySelector('#select-template').addEventListener('click', (el) => {
-  //   const selectedTemplate = document.getElementById('template-options').value;
-  //   const templates = formsArr.find(item => item.formValue === selectedTemplate);
-  //   const formatTemp = getTemplatesTone(templates)
-  //   document.getElementById('template-preview').innerHTML = formatTemp[0][sessionStorage.getItem('generator-tone')];
-  //   document.getElementById('template-form').innerHTML = generateInputs(selectedTemplate, templates);
-  //   sessionStorage.setItem('generator-template', selectedTemplate);
-  //   addToSessionStorage(selectedTemplate, templates);
-  //   nextStep(el);
-  // });
 
   // Store template inputs
   document.getElementById('populate-template').addEventListener('click', (el) => {
