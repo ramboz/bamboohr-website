@@ -1063,7 +1063,7 @@ function loadFooter(footer) {
   const footerBlockName = queryParams.header ? 'megafooter' : 'footer';
 
   const footerBlock = buildBlock(footerBlockName, '');
-  footer.append(footerBlock);
+  if (footer) footer.append(footerBlock);
   decorateBlock(footerBlock);
   loadBlock(footerBlock);
 }
@@ -1358,10 +1358,15 @@ function createProductSchemaMarkup() {
   const pageTitle = document.querySelector('h1').textContent;
   const pageUrl = document.querySelector('link[rel="canonical"]').getAttribute('href');
   const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
-  const quoteAuthor = document.querySelector('.product-schema p:last-of-type').textContent;
-  const quoteText = document
-    .querySelector('.product-schema div div p:first-of-type')
-    .textContent.replace(/["]+/g, '');
+
+  const quoteAuthorElement = document.querySelector('.product-schema p:last-of-type');
+  let quoteAuthor = '';
+  if (quoteAuthorElement) quoteAuthor = quoteAuthorElement.textContent;
+
+  const quoteTextElement = document.querySelector('.product-schema div div p:first-of-type');
+  let quoteText = '';
+  if (quoteTextElement) quoteText = quoteTextElement.textContent.replace(/["]+/g, '');
+
   const pageDescription = document
     .querySelector('meta[property="og:description"]')
     .getAttribute('content');
@@ -1388,8 +1393,9 @@ function createProductSchemaMarkup() {
       },
     ],
   };
-  const $productSchema = document.createElement('script', { type: 'application/ld+json' });
+  const $productSchema = document.createElement('script');
   $productSchema.innerHTML = JSON.stringify(productSchema, null, 2);
+  $productSchema.setAttribute('type', 'application/ld+json');
   const $head = document.head;
   $head.append($productSchema);
 }
@@ -1412,8 +1418,9 @@ function createVideoObjectSchemaMarkup() {
     uploadDate: videoUploadDate,
     description: videoDescription,
   };
-  const $videoObjectSchema = document.createElement('script', { type: 'application/ld+json' });
+  const $videoObjectSchema = document.createElement('script');
   $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema, null, 2);
+  $videoObjectSchema.setAttribute('type', 'application/ld+json');
   const $head = document.head;
   $head.append($videoObjectSchema);
 }
@@ -1441,8 +1448,9 @@ function createFaqPageSchemaMarkup() {
       });
     }
   });
-  const $faqPageSchema = document.createElement('script', { type: 'application/ld+json' });
+  const $faqPageSchema = document.createElement('script');
   $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema, null, 2);
+  $faqPageSchema.setAttribute('type', 'application/ld+json');
   const $head = document.head;
   $head.append($faqPageSchema);
 }
