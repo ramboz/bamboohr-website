@@ -700,3 +700,7 @@
 .has-bg > span.bg-solid-gray-1 {
   background-color: var(--color-gray-1);
 }
+
+.has-bg > span.bg-solid-shade-10 {
+  background-color: var(--theme-shade10);
+}

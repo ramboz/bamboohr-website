@@ -1,0 +1,22 @@
+.trade-show .form .content-col {
+  text-align: center;
+}
+
+.trade-show .form .content-col :is(h1) {
+  font-family: var(--heading-font-family);
+  font-size: 40px;
+  font-weight: 900;
+  line-height: 48px;
+  color: var(--theme-tint10);
+}
+
+.trade-show .form .content-col p {
+  color: var(--color-white);
+  font-weight: 500;
+}
+
+@media(min-width: 1200px){
+  .trade-show .form .content-col {
+    text-align:left;
+  } 
+}
