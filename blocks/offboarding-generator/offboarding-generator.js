@@ -19,6 +19,24 @@ const formUrl = '/website-marketing-resources/offboarding-calculator-form.json'
 let formsNameArr = null
 let formsArr = null
 
+function getSessionStorage() {
+  return sessionStorage.getItem("forms")
+    ? JSON.parse(sessionStorage.getItem("forms"))
+    : [];
+}
+
+function addToSessionStorage(id, data) {
+  const form = { id, data };
+  const forms = getSessionStorage();
+  
+  // Check if a form with the same id already exists
+  const formExists = forms.some(item => item.id === id);
+  if (!formExists) {
+    forms.push(form);
+    sessionStorage.setItem("forms", JSON.stringify(forms));
+  }
+}
+
 // Forms
 const resignationAcknowledgementForm = []
 const resignationAnnouncementForm = []
