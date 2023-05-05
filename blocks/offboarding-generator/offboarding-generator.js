@@ -264,8 +264,8 @@ function generateInputs(template) {
   const output = template.map(item => {
     const {Field, Label, Placeholder, Tooltip, Type} = item
     return `${createInput(Field, Type, Label, Placeholder, null, Tooltip)}`
-  })
-  return output;
+  }).join('')
+  return output
 }
 
 // Next Step
