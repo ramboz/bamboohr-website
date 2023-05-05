@@ -312,6 +312,10 @@ export default async function decorate(block) {
   
   const data = await fetchData(formUrl)
 
+  // Set template defaults
+  sessionStorage.setItem('generator-template', 'resignation-letter-acknowledgement');
+  sessionStorage.setItem('generator-tone', 'TemplateFormal');
+
   // Add classes to generator step wrapping divs
   const children = block.children;
   for(var i = 0; i < children.length; i++) {
