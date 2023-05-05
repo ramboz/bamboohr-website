@@ -1358,7 +1358,11 @@ function createProductSchemaMarkup() {
   const pageTitle = document.querySelector('h1').textContent;
   const pageUrl = document.querySelector('link[rel="canonical"]').getAttribute('href');
   const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
-  const quoteAuthor = document.querySelector('.product-schema p:last-of-type').textContent;
+
+  const quoteAuthorElement = document.querySelector('.product-schema p:last-of-type');
+  let quoteAuthor = '';
+  if (quoteAuthorElement) quoteAuthor = quoteAuthorElement.textContent;
+
   const quoteText = document
     .querySelector('.product-schema div div p:first-of-type')
     .textContent.replace(/["]+/g, '');
@@ -1413,8 +1417,9 @@ function createVideoObjectSchemaMarkup() {
     uploadDate: videoUploadDate,
     description: videoDescription,
   };
-  const $videoObjectSchema = document.createElement('script', { type: 'application/ld+json' });
+  const $videoObjectSchema = document.createElement('script');
   $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema, null, 2);
+  $videoObjectSchema.setAttribute('type', 'application/ld+json');
   const $head = document.head;
   $head.append($videoObjectSchema);
 }
@@ -1442,8 +1447,9 @@ function createFaqPageSchemaMarkup() {
       });
     }
   });
-  const $faqPageSchema = document.createElement('script', { type: 'application/ld+json' });
+  const $faqPageSchema = document.createElement('script');
   $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema, null, 2);
+  $faqPageSchema.setAttribute('type', 'application/ld+json');
   const $head = document.head;
   $head.append($faqPageSchema);
 }
