@@ -1363,9 +1363,10 @@ function createProductSchemaMarkup() {
   let quoteAuthor = '';
   if (quoteAuthorElement) quoteAuthor = quoteAuthorElement.textContent;
 
-  const quoteText = document
-    .querySelector('.product-schema div div p:first-of-type')
-    .textContent.replace(/["]+/g, '');
+  const quoteTextElement = document.querySelector('.product-schema div div p:first-of-type');
+  let quoteText = '';
+  if (quoteTextElement) quoteText = quoteTextElement.textContent.replace(/["]+/g, '');
+
   const pageDescription = document
     .querySelector('meta[property="og:description"]')
     .getAttribute('content');
