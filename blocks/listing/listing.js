@@ -210,8 +210,8 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
   const results = listings.data.filter((row) => {
     if (isUpcomingEvent(row.eventDate)) return false;
     const filterMatches = {};
-    let matchedAll = false;
-    matchedAll = keys.every((key) => {
+    let matchedAll = true;
+    keys.forEach((key) => {
       let matched = false;
       if (row[key]) {
         const rowValues = row[key].split(',').map((t) => t.trim());
@@ -222,6 +222,7 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
         matched = row.title.toLowerCase().includes(fulltext.toLowerCase()) || row.description.toLowerCase().includes(fulltext.toLowerCase());
       }
       filterMatches[key] = matched;
+      if (!matched) matchedAll = false;
       return matched;
     });
 
@@ -237,17 +238,12 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
           includeInFacet = false;
 
           if (filterKey !== facetKey) {
-            keys.every((key) => {
+            includeInFacet = keys.every((key) => {
               let matched = false;
 
               if (row[key]) {
                 const rowValues = row[key].split(',').map((t) => t.trim());
                 matched = tokens[key].some((t) => rowValues.includes(t));
-
-                if (matched) {
-                  includeInFacet = true;
-                }
-                includeInFacet = false;
               }
 
               return matched;
@@ -652,7 +648,8 @@ export default async function decorate(block, blockName) {
       span.className = 'listing-filters-tag';
       span.textContent = tag;
       span.addEventListener('click', () => {
-        document.getElementById(`listing-filter-${tag}`).checked = false;
+        const selFilter = document.getElementById(`listing-filter-${tag}`);
+        if (selFilter) selFilter.checked = false;
         const filterConfig = createFilterConfig();
 
         runSearch(filterConfig);
@@ -684,7 +681,8 @@ export default async function decorate(block, blockName) {
         block.querySelector('#listing-results-count').textContent = getHRVSVisibleCount();
       } else {
         selected.forEach((tag) => {
-          document.getElementById(`listing-filter-${tag}`).checked = false;
+          const selFilter = document.getElementById(`listing-filter-${tag}`);
+          if (selFilter) selFilter.checked = false;
         });
 
         const filterConfig = createFilterConfig();
