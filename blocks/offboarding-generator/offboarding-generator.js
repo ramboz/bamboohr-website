@@ -324,6 +324,23 @@ function prevStep(el) {
   document.querySelector('[data-step="' + (--current) + '"]').classList.add('offboarding-generator-step--active');   
 }
 
+
+function templateSelectHandler(el) {
+  el.querySelector('#select-template').addEventListener('click', (e) => {
+    const selectedTemplate = el.querySelector('#template-options').value;
+    const templatePreview = el.querySelector('#template-preview')
+    const templates = formsArr.find(item => item.formValue === selectedTemplate);
+    const formatTemp = getTemplatesTone(templates)
+    // document.getElementById('template-preview').innerHTML = formatTemp[0][sessionStorage.getItem('generator-tone')];
+    el.querySelector('#template-form').innerHTML = generateInputs(selectedTemplate, templates);
+    // sessionStorage.setItem('generator-template', selectedTemplate);
+    addToSessionStorage(selectedTemplate, templates);
+    templatePreview.innerHTML = formatTemp[0].TemplateFormal
+
+    nextStep(e);
+  });
+}
+
 export default async function decorate(block) {
   
   const data = await fetchData(formUrl)
@@ -438,15 +455,17 @@ export default async function decorate(block) {
   });
 
   // Store template selection
-  block.querySelector('#select-template').addEventListener('click', (el) => {
-    const selectedTemplate = document.getElementById('template-options').value;
-    const templates = formsArr.find(item => item.formValue === selectedTemplate);
-    const formatTemp = getTemplatesTone(templates)
-    document.getElementById('template-preview').innerHTML = formatTemp[0][sessionStorage.getItem('generator-tone')];
-    document.getElementById('template-form').innerHTML = generateInputs(selectedTemplate);
-    sessionStorage.setItem('generator-template', selectedTemplate);
-    nextStep(el);
-  });
+  templateSelectHandler(block)
+  // block.querySelector('#select-template').addEventListener('click', (el) => {
+  //   const selectedTemplate = document.getElementById('template-options').value;
+  //   const templates = formsArr.find(item => item.formValue === selectedTemplate);
+  //   const formatTemp = getTemplatesTone(templates)
+  //   document.getElementById('template-preview').innerHTML = formatTemp[0][sessionStorage.getItem('generator-tone')];
+  //   document.getElementById('template-form').innerHTML = generateInputs(selectedTemplate, templates);
+  //   sessionStorage.setItem('generator-template', selectedTemplate);
+  //   addToSessionStorage(selectedTemplate, templates);
+  //   nextStep(el);
+  // });
 
   // Store template inputs
   document.getElementById('populate-template').addEventListener('click', (el) => {
