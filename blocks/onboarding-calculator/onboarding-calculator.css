@@ -357,6 +357,7 @@
 	font-size: 14px;
 	line-height: 20px;
 	transition: all 0.3s;
+	font-family: var(--body-font-family);
 }
 
 .onboarding-calculator .result__wrapper .result__right {
