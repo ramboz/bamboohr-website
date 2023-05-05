@@ -278,6 +278,19 @@ function prevStep(el) {
   document.querySelector('[data-step="' + (--current) + '"]').classList.add('offboarding-generator-step--active');   
 }
 
+function radioBtnHandler(el) {
+  // Store tone selection
+  const toneSelection = el.querySelectorAll('input[type=radio][name="select-tone"]');
+  toneSelection.forEach(radio => radio.addEventListener('change', () => {
+    const tone = radio.value;
+    sessionStorage.setItem('generator-tone', tone);
+    const template = sessionStorage.getItem('generator-template');
+    const templates = formsArr.find(item => item.formValue === template);
+    const formatTemp = getTemplatesTone(templates)
+  
+    el.querySelector('#template-preview').innerHTML = formatTemp[0][tone];
+  }));
+}
 
 function templateSelectHandler(el) {
   el.querySelector('#select-template').addEventListener('click', (e) => {
@@ -433,17 +446,7 @@ export default async function decorate(block) {
     nextStep(el);
   });
 
-  // Store tone selection
-  const toneSelection = document.querySelectorAll('input[type=radio][name="select-tone"]');
-  toneSelection.forEach(radio => radio.addEventListener('change', () => {
-    const tone = radio.value;
-    sessionStorage.setItem('generator-tone', tone);
-    const template = sessionStorage.getItem('generator-template');
-    const templates = formsArr.find(item => item.formValue === template);
-    const formatTemp = getTemplatesTone(templates)
-  
-    document.getElementById('template-preview').innerHTML = formatTemp[0][tone];
-  }));
+  radioBtnHandler(block)
 
   // Progress to lead gen
   document.getElementById('lead-gen').addEventListener('click', (el) => {
