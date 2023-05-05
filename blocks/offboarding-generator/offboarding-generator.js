@@ -260,7 +260,7 @@ function downloadConfirmed() {
  * Add a 2nd param to get data from form
  * Pass placeholder from Google spreadsheet to createInput()
  */
-function generateInputs(type) {
+function generateInputs(type, template) {
   const resignationDateInput = createInput('resignation-date', 'date', 'Date resignation letter was submitted', null, resignationDate, 'Tooltip!');
   const departureDateInput = createInput('departure-date', 'date', 'Last day working for the business', null, departureDate, 'Tooltip!');
   const equipmentDateInput = createInput('equipment-date', 'date', 'Date to return company equipment', null, equipmentDate, 'Tooltip!');
