@@ -178,12 +178,9 @@ function templateSelection(el, forms) {
 
 // Content Input Shortcode Template
 function templateFormWrapper() {
-  let output = '<form class="form-wrap" id="template-form"></form>';
-  output += '<nav>';
-  output += '<button data-step="1" data-prev class="button button--outline">Back</button>';
-  output += '<button data-step="1" data-next class="button" id="populate-template">Next</button>';
-  output += '</nav>';
-  return output;
+  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button data-step="1" data-next class="button" id="populate-template">Next</button></nav>`
+
+  return formHtml;
 }
 
 function getTemplatesTone(template) {
