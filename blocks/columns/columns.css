@@ -435,6 +435,14 @@ main .section > .card-wrapper {
   font-style: normal;
 }
 
+.columns.checkmark-list ul li {
+  list-style: none;
+  background-image: url('/icons/bullets/level1-check.svg');
+  background-repeat: no-repeat;
+  padding-inline-start: 48px;
+  line-height: 32px;
+}
+
 @media (min-width: 600px) {
   .icon-3-cols {
     width: 33.33%;
