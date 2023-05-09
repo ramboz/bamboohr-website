@@ -298,29 +298,16 @@ function nextBtnHandler(el) {
       return acc
     }, [])
 
-    editSessionStorage(editFormID, value)
+    const propertyNames = Object.keys(values)
 
-    const inputs = [
-      'first-name', 
-      'second-name',
-      'employee-name',
-      'business-name',
-      'resignation-date',
-      'departure-date',
-      'department-name',
-      'replacement-name',
-      'departure-reason',
-      'interview-details',
-      'interview-datetime',
-      'equipment-date',
-      'equipment-address',
-    ];
-    inputs.forEach(item => {
-      const input = document.getElementById(item);
+    propertyNames.forEach(item => {
+      const input = el.querySelector(`#${item}`);
       if(input && input.value !== null) {
-        sessionStorage.setItem('generator-' + item, input.value);
+        sessionStorage.setItem(`generator-${item}`, input.value);
       }
-    });
+    })
+
+    editSessionStorage(editFormID, values)
     nextStep(e);
   });
 }
