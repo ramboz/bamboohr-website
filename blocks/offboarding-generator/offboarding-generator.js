@@ -8,6 +8,23 @@ const formUrl = '/website-marketing-resources/offboarding-calculator-form.json'
 let formsNameArr = null
 let formsArr = null
 let editFormID = "";
+let selectedTemplate = ""
+
+// Forms
+const resignationAcknowledgementForm = []
+const resignationAnnouncementForm = []
+const exitInterviewForm = []
+const returningEquipmentForm = []
+const leavingConfirmationForm = []
+const offboardingDismissalForm = []
+
+async function fetchData(url) {
+	const resp = await fetch(url);
+	const json = await resp.json()
+	const {data} = json
+
+	return data
+}
 
 function getSessionStorage() {
   return sessionStorage.getItem("forms")
@@ -44,22 +61,6 @@ function editSessionStorage(id, value) {
   });
 
   sessionStorage.setItem("forms", JSON.stringify(forms));
-}
-
-// Forms
-const resignationAcknowledgementForm = []
-const resignationAnnouncementForm = []
-const exitInterviewForm = []
-const returningEquipmentForm = []
-const leavingConfirmationForm = []
-const offboardingDismissalForm = []
-
-async function fetchData(url) {
-	const resp = await fetch(url);
-	const json = await resp.json()
-	const {data} = json
-
-	return data
 }
 
 // Generate Tooltip
