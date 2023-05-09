@@ -1,19 +1,8 @@
 import { createElem } from "../../scripts/scripts.js";
 
-// const template = sessionStorage.getItem('generator-template');
-const firstName = sessionStorage.getItem('generator-first-name');
-const secondName = sessionStorage.getItem('generator-second-name');
-const employeeName = sessionStorage.getItem('generator-employee-name');
-const businessName = sessionStorage.getItem('generator-business-name');
-const resignationDate = sessionStorage.getItem('generator-resignation-date');
-const departureDate = sessionStorage.getItem('generator-departure-date');
-const departmentName = sessionStorage.getItem('generator-department');
-const replacementName = sessionStorage.getItem('generator-replacement');
-const departureReason = sessionStorage.getItem('generator-departure-reason');
-const interviewDetails = sessionStorage.getItem('generator-interview-details');
-const interviewDateTime = sessionStorage.getItem('generator-interview-datetime');
-const equipmentDate = sessionStorage.getItem('generator-equipment-date');
-const equipmentAddress = sessionStorage.getItem('generator-equipment-address');
+const firstName = sessionStorage.getItem('generator-firstName');
+const secondName = sessionStorage.getItem('generator-secondName');
+const businessName = sessionStorage.getItem('generator-businessName');
 
 const formUrl = '/website-marketing-resources/offboarding-calculator-form.json'
 let formsNameArr = null
