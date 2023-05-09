@@ -275,6 +275,38 @@ function prevStep(el) {
   document.querySelector('[data-step="' + (--current) + '"]').classList.add('offboarding-generator-step--active');   
 }
 
+function nextBtnHandler(el) {
+  // Store template inputs
+  el.querySelector('#populate-template').addEventListener('click', (e) => {
+    e.preventDefault()
+    const form = el.querySelector('#template-form')
+    const inputFields = form.querySelectorAll('input')
+    console.log(inputFields);
+    const inputs = [
+      'first-name', 
+      'second-name',
+      'employee-name',
+      'business-name',
+      'resignation-date',
+      'departure-date',
+      'department-name',
+      'replacement-name',
+      'departure-reason',
+      'interview-details',
+      'interview-datetime',
+      'equipment-date',
+      'equipment-address',
+    ];
+    inputs.forEach(item => {
+      const input = document.getElementById(item);
+      if(input && input.value !== null) {
+        sessionStorage.setItem('generator-' + item, input.value);
+      }
+    });
+    nextStep(e);
+  });
+}
+
 function radioBtnHandler(el) {
   // Store tone selection
   const toneSelection = el.querySelectorAll('input[type=radio][name="select-tone"]');
@@ -422,30 +454,7 @@ export default async function decorate(block) {
   templateSelectHandler(block)
 
   // Store template inputs
-  document.getElementById('populate-template').addEventListener('click', (el) => {
-    const inputs = [
-      'first-name', 
-      'second-name',
-      'employee-name',
-      'business-name',
-      'resignation-date',
-      'departure-date',
-      'department-name',
-      'replacement-name',
-      'departure-reason',
-      'interview-details',
-      'interview-datetime',
-      'equipment-date',
-      'equipment-address',
-    ];
-    inputs.forEach(item => {
-      const input = document.getElementById(item);
-      if(input && input.value !== null) {
-        sessionStorage.setItem('generator-' + item, input.value);
-      }
-    });
-    nextStep(el);
-  });
+  nextBtnHandler(block)
 
   radioBtnHandler(block)
 
