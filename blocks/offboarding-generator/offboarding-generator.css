@@ -70,9 +70,6 @@ main .offboarding-generator-step {
   display: none;
   width: 100%;
   min-height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
   overflow: hidden;
   border-radius: 0.5rem;
 }
