@@ -286,14 +286,13 @@ function prevStep(el) {
 }
 
 function nextBtnHandler(el) {
-  // Store template inputs
   el.querySelector('#populate-template').addEventListener('click', (e) => {
     e.preventDefault()
     const form = el.querySelector('#template-form')
     const inputFields = form.querySelectorAll('input')
     editFormID = form.dataset.form;
 
-    const value = Object.values(inputFields).reduce((acc, item) => {
+    const values = Object.values(inputFields).reduce((acc, item) => {
       acc[item.id] = item.value
       return acc
     }, [])
