@@ -18,6 +18,7 @@ const equipmentAddress = sessionStorage.getItem('generator-equipment-address');
 const formUrl = '/website-marketing-resources/offboarding-calculator-form.json'
 let formsNameArr = null
 let formsArr = null
+let editFormID = "";
 
 function getSessionStorage() {
   return sessionStorage.getItem("forms")
@@ -35,6 +36,25 @@ function addToSessionStorage(id, data) {
     forms.push(form);
     sessionStorage.setItem("forms", JSON.stringify(forms));
   }
+}
+
+function editSessionStorage(id, value) {
+  let forms = getSessionStorage();
+
+  forms = forms.map(form => {
+    if (form.id === id) {
+      form.data.forEach(item => {
+        const {Field} = item
+        if (Object.keys(value).includes(Field)) {
+          item.FieldValue = value[Field]
+        }
+        
+      })
+    }
+    return form;
+  });
+
+  sessionStorage.setItem("forms", JSON.stringify(forms));
 }
 
 // Forms
@@ -281,7 +301,15 @@ function nextBtnHandler(el) {
     e.preventDefault()
     const form = el.querySelector('#template-form')
     const inputFields = form.querySelectorAll('input')
-    console.log(inputFields);
+    editFormID = form.dataset.form;
+
+    const value = Object.values(inputFields).reduce((acc, item) => {
+      acc[item.id] = item.value
+      return acc
+    }, [])
+
+    editSessionStorage(editFormID, value)
+
     const inputs = [
       'first-name', 
       'second-name',
@@ -325,10 +353,12 @@ function templateSelectHandler(el) {
   el.querySelector('#select-template').addEventListener('click', (e) => {
     const selectedTemplate = el.querySelector('#template-options').value;
     const templatePreview = el.querySelector('#template-preview')
+    const formTemplate = el.querySelector('#template-form')
     const templates = formsArr.find(item => item.formValue === selectedTemplate);
     const formatTemp = getTemplatesTone(templates)
     // document.getElementById('template-preview').innerHTML = formatTemp[0][sessionStorage.getItem('generator-tone')];
-    el.querySelector('#template-form').innerHTML = generateInputs(templates);
+    formTemplate.innerHTML = generateInputs(templates);
+    formTemplate.setAttribute('data-form', selectedTemplate)
     // sessionStorage.setItem('generator-template', selectedTemplate);
     addToSessionStorage(selectedTemplate, templates);
     templatePreview.innerHTML = formatTemp[0].TemplateFormal
