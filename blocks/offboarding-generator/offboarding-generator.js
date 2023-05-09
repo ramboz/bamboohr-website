@@ -188,7 +188,7 @@ function templateSelection(el, forms) {
 
 // Content Input Shortcode Template
 function templateFormWrapper() {
-  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button data-step="1" data-next class="button" id="populate-template">Next</button></nav>`
+  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button data-step="1" data-next type="submit" class="button" id="populate-template">Next</button></nav>`
 
   return formHtml;
 }
@@ -327,7 +327,7 @@ function radioBtnHandler(el) {
 
 function templateSelectHandler(el) {
   el.querySelector('#select-template').addEventListener('click', (e) => {
-    const selectedTemplate = el.querySelector('#template-options').value;
+    selectedTemplate = el.querySelector('#template-options').value;
     const templatePreview = el.querySelector('#template-preview')
     const formTemplate = el.querySelector('#template-form')
     const templates = formsArr.find(item => item.formValue === selectedTemplate);
@@ -431,7 +431,7 @@ export default async function decorate(block) {
   });
 
   // Replace shortcodes with functionality
-  const paragraphs = document.querySelectorAll('p');
+  const paragraphs = block.querySelectorAll('p');
   paragraphs.forEach( item => {
     switch(item.innerText) {
       case '[generator-template-selection]':
