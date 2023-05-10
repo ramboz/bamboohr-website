@@ -295,8 +295,8 @@ export default async function decorate(block) {
   sessionStorage.setItem('generator-tone', 'TemplateFormal');
 
   // Add classes to generator step wrapping divs
-  const children = block.children;
-  for(var i = 0; i < children.length; i++) {
+  const {children} = block;
+  for(let i = 0; i < children.length; i++) {
     children[i].dataset.step = i;
     children[i].classList = 'offboarding-generator-step';
     if( i === 0 ) {
