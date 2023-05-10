@@ -121,63 +121,6 @@ const employeeCount = [
   },
 ];
 
-const templateOptions = [
-  {
-    'value': 'resignation-acknowledgement',
-    'label': 'Resignation Letter Acknowledgement',
-    'templates': {
-      'formal' : '<p>Dear <span>[employee\'s name]</span>,</p><p>This letter acknowledges receipt of your resignation, as dated <span>[date resignation letter was submitted]</span>. I can confirm that your final working day will be <span>[last day working for the business]</span>.</p><p>We here at <span>[insert business name]</span> wish you all the best for your future endeavors.</p><p>Sincerely,</p><p><span>[Your name]</span></p>',
-      'neutral' : '<p>Hello <span>[employee\'s name]</span>,</p><p>I can confirm receipt of your resignation, as dated <span>[date resignation letter was submitted]</span>. I can confirm that your final working day will be <span>[last day working for the business]</span>.</p><p>Thank you for your work here at <span>[insert business name]</span>.</p><p>All the best,</p><p><span>[Your name]</span></p>',
-      'friendly' : '<p>Hi <span>[employee\'s name]</span>,</p><p>Thank you for getting in touch. I can confirm I have received your letter of resignation, as dated <span>[date resignation letter was submitted]</span>. Just to confirm, your final working day will be <span>[last day working for the business]</span>.</p><p>It has been a pleasure working with you. All the best for the future.</p><p>Thanks,</p><p><span>[Your name]</span></p>'
-    },
-  },
-  {
-    'value': 'resignation-announcement',
-    'label': 'Resignation Announcement',
-    'templates': {
-      'formal' : '<p>Dear <span>[team or department name]</span>,</p><p>I am writing to inform you all that <span>[employee name]</span> will be leaving <span>[company name]</span>. Their last date will be <span>[departure date]</span>. <span>[Employee name]</span> is heading to <span>[reason for leaving if you have permission to reveal]</span> (can be omitted if an employee has not revealed their next steps).</p><p>Following <span>[employee\'s name]</span> departure, please direct all communications to <span>[person taking over duties for the interim]</span>.</p><p>I speak for the entire company when I say, congratulations <span>[employee name]</span>, and all the best for the future.</p><p>Sincerely,</p><p><span>[Your name]</span></p>',
-      'neutral' : '<p>Hello <span>[team or department name]</span>,</p><p>I want to inform you all that <span>[employee name]</span> will be leaving us on <span>[departure date]</span>. <span>[Employee name]</span> is heading to <span>[reason for leaving if you have permission to reveal]</span> (can be omitted if an employee has not revealed their next steps).</p><p>Following <span>[employee\'s name]</span> departure, please direct all communications to <span>[person taking over duties for the interim]</span>.</p><p>Congratulations <span>[employee name]</span>, we wish you all the best for the future.</p><p>Thanks for your hard work,</p><p><span>[Your name]</span></p>',
-      'friendly' : '<p>Hi <span>[team or department name]</span>,</p><p>We wanted to let you know that <span>[employee name]</span> will be leaving us on <span>[departure date]</span>. <span>[Employee name]</span> is heading to <span>[reason for leaving if you have permission to reveal]</span> (can be omitted if an employee has not revealed their next steps).</p><p>Following <span>[employee\'s name]</span> departure, please direct all communications to <span>[person taking over duties for the interim]</span>.</p><p>Congratulations <span>[employee name]</span>, we wish you all the best for the future.</p><p>We\'re sure you\'ll continue to achieve great things.</p><p><span>[Your name]</span></p>'
-    }
-  },
-  {
-    'value': 'exit-interview',
-    'label': 'Exit Interview',
-    'templates': {
-      'formal' : '<p>Dear <span>[employee\'s name]</span>,</p><p>Thank you for your service here at <span>[insert business name]</span>.</p><p>As we strive to provide the best working environment for our employees, we would like to schedule an exit interview. This allows you to provide us with honest feedback and reflect on your time here with us. Any feedback is appreciated and will help management establish any areas that may need improving. All of your responses are confidential.</p><p>The interview will take place on <span>[date]</span> at <span>[time]</span>, either by <span>[a telephone call]</span> OR <span>[insert office room number/name]</span>. Please confirm you can attend.</p><p>Sincerely,</p><p><span>[Your name]</span></p>',
-      'neutral' : '<p>Hello <span>[employee\'s name]</span>,</p><p>Following your resignation letter, we would like to schedule an exit interview. This gives you the opportunity to provide us with feedback and reflect on your time here with us. We appreciate any feedback, all of which is confidential.</p><p>The interview will take place on <span>[date]</span> at <span>[time]</span>. It will be <span>[a telephone call]</span> OR <span>[insert office room number/name]</span>. Please confirm you can attend.</p><p>I look forward to hearing from you,</p><p><span>[Your name]</span></p>',
-      'friendly' : '<p>Hi <span>[employee\'s name]</span>,</p><p>Thanks for your time here at <span>[insert business name]</span>.</p><p>We would like to schedule an exit interview so we can hear your feedback on areas we do well in and anything that may need improving. We appreciate any feedback, all of which is confidential.</p><p>The interview will take place on <span>[date]</span> at <span>[time]</span>. It can be via <span>[a telephone call]</span> OR <span>[insert office room number/name]</span>. Does this date and time work for you?</p><p>Cheers,</p><p><span>[Your name]</span></p>'
-    }
-  },
-  {
-    'value': 'returning-equipment',
-    'label': 'Returning Equipment/Company Property',
-    'templates': {
-      'formal' : '<p>Dear <span>[employee\'s name]</span>,</p><p>As you will be leaving the business on <span>[date of last day]</span>, you are required to return any keys, passes, company documents, equipment or other company property you have in your possession. It will need to be returned to <span>[address for return]</span> before <span>[date]</span>.</p><p>If you have any questions or concerns regarding the return of these items, please get in touch at the earliest possibility.</p><p>Sincerely,</p><p><span>[Your name]</span></p>',
-      'neutral' : '<p>Hello <span>[employee\'s name]</span>,</p><p>As you will be leaving the business on <span>[date of last day]</span>, you are required to return any keys, passes, company documents, equipment or other company property you have in your possession. It will need to be returned to <span>[address for return]</span> before <span>[date]</span>.</p><p>If you have any questions or concerns regarding the return of these items, please get in touch at the earliest possibility.</p><p>Thank you,</p><p><span>[Your name]</span></p>',
-      'friendly' : '<p>Hi <span>[employee\'s name]</span>,</p><p>Before your last day on <span>[date of last day]</span>, we will need you to return any keys, passes, company documents, equipment or other company property you have in your possession. It will need to be returned to <span>[address for return]</span> before <span>[date]</span>.</p><p>If you have any questions or concerns regarding the return of these items, please get in touch at the earliest possibility.</p><p>Thanks,</p><p><span>[Your name]</span></p>'
-    }
-  },
-  {
-    'value': 'leaving-confirmation',
-    'label': 'Confirmation of leaving date',
-    'templates': {
-      'formal' : '<p>Dear <span>[Employee\'s name]</span>,</p><p>As your contract is due to be terminated on <span>[contract end date]</span>, we would like to confirm that your last working day with <span>[company\'s name]</span> will be on <span>[last working date]</span>.</p><p>Please note, your last pay date will be <span>[date]</span>. Please can you ensure any company property that you have access to is returned to <span>[address it needs to be sent to]</span> before <span>[date]</span>.</p><p>Sincerely,</p><p><span>[Your name]</span></p>',
-      'neutral' : '<p>Hello <span>[Employee\'s name]</span>,</p><p>As your contract is due to be terminated on <span>[contract end date]</span>, we would like to confirm that your last working day with <span>[company\'s name]</span> will be on <span>[last working date]</span>.</p><p>Please note, your last pay date will be <span>[date]</span>. Please can you ensure any company property that you have access to is returned to <span>[address it needs to be sent to]</span> before <span>[date]</span>.</p><p>All the best,</p><p><span>[Your name]</span></p>',
-      'friendly' : '<p>Hi <span>[Employee\'s name]</span>,</p><p>As your contract is due to be terminated on <span>[contract end date]</span>, we wanted to confirm that your last working day with us will be <span>[last working date]</span>.</p><p>Just to confirm, your last pay date will be <span>[date]</span>. Please can you ensure any company property that you have access to is returned to <span>[address it needs to be sent to]</span> before <span>[date]</span>.</p><p>Thank you,</p><p><span>[Your name]</span></p>'
-    }
-  },
-  {
-    'value': 'dismissal',
-    'label': 'Offboarding for Dismissal',
-    'templates': {
-      'formal' : '<p>Dear <span>[Employee name]</span>,</p><p>We write to inform you that your employment with <span>[company\'s name]</span> will end as of <span>[termination date]</span>.</p><p>Your contract has been terminated due to <span>[List detailed reason(s)]</span>.</p><p>You will be paid until <span>[date]</span>. Please ensure all company property that you have access to is returned to <span>[address it needs to be sent to]</span> before <span>[date]</span>.</p><p>If you have questions or concerns about the termination of your contract, please feel free to contact me.</p><p>Sincerely,</p><p><span>[Your name]</span></p>',
-      'neutral' : '<p>Hello <span>[employee name]</span>,</p><p>We\'re writing to confirm the termination of your contract here at <span>[company\'s name]</span>, as of <span>[termination date]</span>.</p><p>Your contract has been terminated due to <span>[List detailed reason(s)]</span>.</p><p>Your last pay date will be <span>[date]</span>. Please ensure any company property that you have access to is returned to <span>[address it needs to be sent to]</span> before <span>[date]</span>.</p><p>If you have any questions or concerns about the termination of your contract, please feel free to contact me.</p><p>Thanks,</p><p><span>[Your name]</span></p>',
-      'friendly' : '<p>Hi <span>[employee name]</span>,</p><p>This is to confirm the termination of your contract here at <span>[company\'s name]</span>, as of <span>[termination date]</span>.</p><p>Your contract has been terminated due to <span>[List detailed reason(s)]</span>.</p><p>Please note, your last pay date will be <span>[date]</span>. Please ensure any company property that you have access to is returned to <span>[address it needs to be sent to]</span> before <span>[date]</span>.</p><p>If you have any questions or concerns about the termination of your contract, please feel free to contact me.</p><p>Thanks,</p><p><span>[Your name]</span></p>'
-    }
-  }
-];
-
 // Content Selection Template
 function templateSelection(el, forms) {
   const selectHtml = createSelect('template-options', 'Choose your template', forms, 'Select template tooltip')
