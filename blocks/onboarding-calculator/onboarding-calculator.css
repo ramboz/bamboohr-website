@@ -381,11 +381,19 @@
 	line-height: 28px;
 }
 
-.onboarding-calculator .result__wrapper #calc-result {
+.onboarding-calculator .result__wrapper .calc-result {
 	color: #1A87C9;
 	font-weight: bold;
 	font-size: 60px;
 	line-height: 48px;
+}
+
+.onboarding-calculator .result__wrapper .calc-result.fs-sm {
+	font-size: 50px;
+}
+
+.onboarding-calculator .result__wrapper .calc-result.fs-xs {
+	font-size: 45px;
 }
 
 .onboarding-calculator .result__wrapper p {

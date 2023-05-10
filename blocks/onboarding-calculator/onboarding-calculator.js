@@ -76,8 +76,15 @@ function validateForm(form) {
  */
 function appendCalcResultToDom(calcResult, formId) {
 	const form = document.getElementById(formId)
-	const resultDiv = form.querySelector('#calc-result')
+	const resultDiv = form.querySelector('.calc-result')
 	const formattedNum = calcResult.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+	if (formattedNum.length === 10) {
+		resultDiv.classList.add('fs-sm')
+	} 
+	else if (formattedNum.length > 12) {
+		resultDiv.classList.add('fs-xs')
+	}
 
 	resultDiv.innerText = `${formattedNum}`
 }
@@ -264,9 +271,14 @@ function resetForm(block) {
 	const outputRangeArr = block.querySelectorAll('.range-value')
 	const inputRangeArr = block.querySelectorAll('.input-range')
 	const contentElement = block.querySelector('.onboarding-calculator__content')
+	const calcResults = block.querySelectorAll('.calc-result')
 	currentTab = 0
 	
 	contentElement.style.display = ''
+
+	calcResults.forEach(item => {
+		item.classList.remove('fs-xs', 'fs-sm')
+	})
 
 	formsArr.forEach(form => {
 		form.classList.remove('active')
@@ -333,7 +345,7 @@ function createCalcResultHtml() {
 
 	const contentHtml = `<div class="result__wrapper">
 	<div class="result__left">
-	<p id="calc-result"></p>
+	<p class="calc-result"></p>
 	<p>Is the estimated cost of onboarding this new employee.</p>
 	<button type="button" class="reset-calc-btn">Calculate Again</button>
 	</div>
