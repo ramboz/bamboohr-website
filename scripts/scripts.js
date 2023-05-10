@@ -216,6 +216,7 @@ function loadTemplateCSS() {
       'live-demo-webinar-lp',
       'hr-101-guide',
       'customers',
+      'trade-show',
     ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -455,6 +456,7 @@ export function decorateBackgrounds($section) {
     'bg-right-multi-4-mobile',
     'bg-right-multi-4-tablet',
     'bg-right-multi-4-laptop',
+    'bg-right-multi-6-mobile',
   ];
   const sectionKey = [...$section.parentElement.children].indexOf($section);
   [...$section.classList]
