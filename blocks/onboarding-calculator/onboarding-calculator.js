@@ -65,8 +65,9 @@ function validateForm(form) {
 function appendCalcResultToDom(calcResult, formId) {
 	const form = document.getElementById(formId)
 	const resultDiv = form.querySelector('#calc-result')
+	const formattedNum = calcResult.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
-	resultDiv.innerText = `${calcResult}`
+	resultDiv.innerText = `${formattedNum}`
 }
 
 /**
@@ -114,12 +115,11 @@ function calcOrganisationCost(onboardingData) {
 	 * Total annual onboarding costs
 	 * Onboarding hours cost + average additional costs x number of new employees per year
 	 */
-	const i = (parseFloat(onboardingHoursCost) + parseFloat(avgAdditionalCosts)).toFixed(2)
+	const totalCost = (parseFloat(onboardingHoursCost) + parseFloat(avgAdditionalCosts)).toFixed(2)
 
-	const totalAnuualOnboardingCosts = parseFloat(i * newEmployeesPerYear)
-	const formattedNum = totalAnuualOnboardingCosts.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+	const totalAnuualOnboardingCosts = parseFloat(totalCost * newEmployeesPerYear)
 
-	return formattedNum
+	return totalAnuualOnboardingCosts
 }
 
 /**
@@ -173,9 +173,7 @@ function calcIndividualCost(employeeOnboardingData) {
 	 */
 	const finalCostOfNewEmployee = (totalHrOnboardingHourCost + totalManagerHourCost + totalEmployeeOnboardingHourCost) + parseFloat(newEmployeeRelocationCost) + parseFloat(workstationCost)
 
-	const formattedNum = finalCostOfNewEmployee.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-
-	return formattedNum
+	return finalCostOfNewEmployee
 }
 
 /**
