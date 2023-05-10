@@ -482,14 +482,11 @@ export default async function decorate(block) {
     });
   });
 
-  const close = document.querySelectorAll('.button[data-close]');
-  close.forEach(el => {
-    
-    el.addEventListener('click', (el) => {
-      let current = parseInt(el.target.dataset.step);
-      document.querySelector('[data-step="' + current + '"]').classList.remove('offboarding-generator-step--active');
-      document.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
-      document.querySelector('.offboarding-generator-container').classList.remove('offboarding-generator-container--overlay');
-    });
+  const close = block.querySelector('.button[data-close]');  
+  close.addEventListener('click', (e) => {
+    const current = parseInt(e.target.dataset.step, 10);
+    document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
+    document.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
+    document.querySelector('.offboarding-generator-container').classList.remove('offboarding-generator-container--overlay');
   });
 }
