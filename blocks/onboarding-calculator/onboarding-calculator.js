@@ -21,8 +21,20 @@ function createProgressIndicatorHtml() {
 	return spanHtml
 }
 
+function formatNumber(sum) {	
+	const formattedNum = parseInt(sum, 10).toLocaleString("en", {   
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0,
+	});
+
+	return formattedNum;
+}
+
 function getMessage(field) {
-	return `Please enter a number between ${field.min} and ${field.max}`
+	const minValue = formatNumber(field.min)
+	const maxValue = formatNumber(field.max)
+
+	return `Please enter a number between ${minValue} and ${maxValue}`
 }
 
 function validateForm(form) {
@@ -348,14 +360,6 @@ function createNavBtn() {
 	fieldWrapper.innerHTML = btns
 
 	return fieldWrapper
-}
-
-function formatNumber(num) {
-	if (num > 1000) {
-		const abbreviated = `${num / 1000}k`;
-		return abbreviated;
-	}
-	return num;
 }
 
 function setRangeValueBubble(rangeValue, rangeValueBubble) {
