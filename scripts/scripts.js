@@ -16,20 +16,20 @@ const SEGMENTATION_CONFIG = {
       label: 'Is a Customer',
       test: () => {
         // eslint-disable-next-line no-use-before-define
-        const features = getBhrFeatures();
+        const features = getBhrFeaturesCookie();
         return features.is_admin && !features.bhr_user;
-      }
+      },
     },
     'not-customer': {
       label: 'Is not a Customer',
       test: () => {
         // eslint-disable-next-line no-use-before-define
-        const features = getBhrFeatures();
+        const features = getBhrFeaturesCookie();
         return !(features.is_admin && !features.bhr_user);
       },
     },
-  }
-}
+  },
+};
 
 /**
  * Gets the value for the specific cookie
@@ -37,7 +37,8 @@ const SEGMENTATION_CONFIG = {
  * @returns {string} the cookie value, or null
  */
 function readCookie(name) {
-  const [value] = document.cookie.split('; ')
+  const [value] = document.cookie
+    .split('; ')
     .filter((cookieString) => cookieString.split('=')[0] === name)
     .map((cookieString) => cookieString.split('=')[1]);
   return value || null;
@@ -47,12 +48,17 @@ function readCookie(name) {
  * Gets the BHR Features from the cookie
  * @returns {object} the BHR features, or an empty object
  */
-function getBhrFeatures() {
+function getBhrFeaturesCookie() {
   const value = readCookie('bhr_features');
   try {
-    return JSON.parse(value);
-  } catch (err) {
-    return {};
+    const decryptedValue = atob(value);
+    return JSON.parse(decryptedValue);
+  } catch (err1) {
+    try {
+      return JSON.parse(value);
+    } catch (err2) {
+      return {};
+    }
   }
 }
 
@@ -64,19 +70,23 @@ function getBhrFeatures() {
 export function sampleRUM(checkpoint, data = {}) {
   sampleRUM.defer = sampleRUM.defer || [];
   const defer = (fnname) => {
-    sampleRUM[fnname] = sampleRUM[fnname]
-      || ((...args) => sampleRUM.defer.push({ fnname, args }));
+    sampleRUM[fnname] = sampleRUM[fnname] || ((...args) => sampleRUM.defer.push({ fnname, args }));
   };
-  sampleRUM.drain = sampleRUM.drain
-    || ((dfnname, fn) => {
+  sampleRUM.drain =
+    sampleRUM.drain ||
+    ((dfnname, fn) => {
       sampleRUM[dfnname] = fn;
       sampleRUM.defer
         .filter(({ fnname }) => dfnname === fnname)
         .forEach(({ fnname, args }) => sampleRUM[fnname](...args));
     });
   sampleRUM.always = sampleRUM.always || [];
-  sampleRUM.always.on = (chkpnt, fn) => { sampleRUM.always[chkpnt] = fn; };
-  sampleRUM.on = (chkpnt, fn) => { sampleRUM.cases[chkpnt] = fn; };
+  sampleRUM.always.on = (chkpnt, fn) => {
+    sampleRUM.always[chkpnt] = fn;
+  };
+  sampleRUM.on = (chkpnt, fn) => {
+    sampleRUM.cases[chkpnt] = fn;
+  };
   defer('observe');
   defer('cwv');
   defer('convert');
@@ -84,12 +94,14 @@ export function sampleRUM(checkpoint, data = {}) {
     window.hlx = window.hlx || {};
     if (!window.hlx.rum) {
       const usp = new URLSearchParams(window.location.search);
-      const weight = (usp.get('rum') === 'on') ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
+      const weight = usp.get('rum') === 'on' ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
       // eslint-disable-next-line no-bitwise
-      const hashCode = (s) => s.split('').reduce((a, b) => (((a << 5) - a) + b.charCodeAt(0)) | 0, 0);
-      const id = `${hashCode(window.location.href)}-${new Date().getTime()}-${Math.random().toString(16).substr(2, 14)}`;
+      const hashCode = (s) => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
+      const id = `${hashCode(window.location.href)}-${new Date().getTime()}-${Math.random()
+        .toString(16)
+        .substr(2, 14)}`;
       const random = Math.random();
-      const isSelected = (random * weight < 1);
+      const isSelected = random * weight < 1;
       // eslint-disable-next-line object-curly-newline
       window.hlx.rum = { weight, id, random, isSelected, sampleRUM };
     }
@@ -97,7 +109,17 @@ export function sampleRUM(checkpoint, data = {}) {
     if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
       const sendPing = (pdata = data) => {
         // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
-        const body = JSON.stringify({ weight, id, referer: window.location.href, generation: window.hlx.RUM_GENERATION, checkpoint, ...data }, (key, value) => (key === 'element' ? undefined : value));
+        const body = JSON.stringify(
+          {
+            weight,
+            id,
+            referer: window.location.href,
+            generation: window.hlx.RUM_GENERATION,
+            checkpoint,
+            ...data,
+          },
+          (key, value) => (key === 'element' ? undefined : value)
+        );
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
         navigator.sendBeacon(url, body);
@@ -115,9 +137,13 @@ export function sampleRUM(checkpoint, data = {}) {
         },
       };
       sendPing(data);
-      if (sampleRUM.cases[checkpoint]) { sampleRUM.cases[checkpoint](); }
+      if (sampleRUM.cases[checkpoint]) {
+        sampleRUM.cases[checkpoint]();
+      }
     }
-    if (sampleRUM.always[checkpoint]) { sampleRUM.always[checkpoint](data); }
+    if (sampleRUM.always[checkpoint]) {
+      sampleRUM.always[checkpoint](data);
+    }
   } catch (error) {
     // something went wrong
   }
@@ -142,7 +168,6 @@ export function loadCSS(href, callback) {
   }
 }
 
-
 /**
  * Retrieves the content of a metadata tag.
  * @param {string} name The metadata name (or property)
@@ -159,18 +184,40 @@ export function getMetadata(name) {
  * @param {string} name The unsanitized name
  * @returns {string} The class name
  */
- export function toClassName(name) {
+export function toClassName(name) {
   return name && typeof name === 'string' ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-') : '';
 }
 
 /**
  * Loads a template specific CSS file.
  */
- function loadTemplateCSS() {
+function loadTemplateCSS() {
   const template = toClassName(getMetadata('template'));
   if (template) {
-    const templates = ['bhr-comparison', 'bhr-home', 'ee-solution', 'hr-glossary', 'hr-software', 'hr-software-payroll', 'hr-unplugged',
-      'hrvs-listing', 'industry', 'industry-category', 'live-demo-webinars', 'payroll-roi', 'performance-reviews', 'pricing-quote', 'content-library', 'webinar', 'paid-landing-page', 'product-updates', 'live-demo-webinar-lp', 'hr-101-guide'];
+    const templates = [
+      'bhr-comparison',
+      'bhr-home',
+      'ee-solution',
+      'hr-glossary',
+      'hr-software',
+      'hr-software-payroll',
+      'hr-unplugged',
+      'hrvs-listing',
+      'industry',
+      'industry-category',
+      'live-demo-webinars',
+      'payroll-roi',
+      'performance-reviews',
+      'pricing-quote',
+      'content-library',
+      'webinar',
+      'paid-landing-page',
+      'product-updates',
+      'live-demo-webinar-lp',
+      'hr-101-guide',
+      'customers',
+      'trade-show',
+    ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
       loadCSS(`${cssBase}/styles/templates/${template}.css`);
@@ -290,9 +337,10 @@ export function decorateBlock(block) {
 
   const blockWrapper = block.parentElement;
   blockWrapper.classList.add(`${shortBlockName}-wrapper`);
+  const regex = /\b(?:tablet-|laptop-|desktop)?(?:content-)?width-(?:xs|sm|md|lg|xl|2xl|full)\b/g;
 
   [...block.classList]
-    .filter((filter) => filter.match(/^content-width-/g))
+    .filter((filter) => filter.match(regex))
     .forEach((style) => {
       block.parentElement.classList.add(style);
       block.classList.remove(style);
@@ -342,21 +390,74 @@ export function readBlockConfig(block) {
  * @param {Element} $section The section element
  */
 export function decorateBackgrounds($section) {
-  const missingBgs = ['bg-bottom-cap-3-tint-laptop', 'bg-bottom-cap-3-tint-mobile', 'bg-bottom-cap-3-tint-tablet',
-    'bg-top-cap-3-laptop', 'bg-top-cap-3-mobile', 'bg-top-cap-3-tablet', 'bg-top-multi-7', 'bg-bottom-multi-3',
-    'bg-center-multi-3', 'bg-block-center-page-cta', 'bg-block-benefits-laptop', 'bg-block-benefits-tablet',
-    'bg-block-benefits-mobile', 'bg-block-center-left-single-1-laptop', 'bg-block-center-left-single-1-tablet',
-    'bg-block-center-left-single-1-mobile', 'bg-block-center-left-single-2-laptop', 'bg-block-center-left-single-2-tablet',
-    'bg-block-center-left-single-2-mobile', 'bg-block-center-right-double-1-laptop', 'bg-block-center-right-double-1-tablet',
-    'bg-block-center-right-single-3-laptop', 'bg-block-center-right-single-3-tablet', 'bg-block-center-right-single-3-mobile',
-    'bg-block-ee-solutions-quote-laptop', 'bg-block-ee-solutions-quote-tablet', 'bg-block-ee-solutions-quote-mobile',
-    'bg-bottom-cap-1-laptop', 'bg-bottom-cap-1-tablet', 'bg-bottom-cap-1-mobile', 'bg-bottom-cap-2-laptop', 'bg-bottom-cap-2-tablet',
-    'bg-bottom-cap-2-mobile', 'bg-bottom-cap-3-laptop', 'bg-bottom-cap-3-tablet', 'bg-bottom-cap-3-mobile',
-    'bg-cover-green-patterns-laptop', 'bg-cover-green-patterns-tablet', 'bg-cover-green-patterns-mobile', 'bg-left-single-1-laptop',
-    'bg-left-single-1-tablet', 'bg-left-single-1-mobile', 'bg-left-single-2-tablet', 'bg-left-single-2-mobile', 'bg-right-multi-2-mobile',
-    'bg-top-cap-1-laptop', 'bg-top-cap-1-tablet', 'bg-top-cap-1-mobile', 'bg-top-cap-2-laptop', 'bg-top-cap-2-tablet',
-    'bg-top-cap-2-mobile', 'bg-top-multi-7-tint-10', 'bg-top-multi-7-tint-15', 'bg-top-multi-11-laptop', 'bg-top-multi-11-tablet',
-    'bg-top-multi-11-mobile'];
+  const missingBgs = [
+    'bg-bottom-cap-3-tint-laptop',
+    'bg-bottom-cap-3-tint-mobile',
+    'bg-bottom-cap-3-tint-tablet',
+    'bg-top-cap-3-laptop',
+    'bg-top-cap-3-mobile',
+    'bg-top-cap-3-tablet',
+    'bg-top-multi-7',
+    'bg-bottom-multi-3',
+    'bg-center-multi-3',
+    'bg-block-center-page-cta',
+    'bg-block-benefits-laptop',
+    'bg-block-benefits-tablet',
+    'bg-block-benefits-mobile',
+    'bg-block-center-left-single-1-laptop',
+    'bg-block-center-left-single-1-tablet',
+    'bg-block-center-left-single-1-mobile',
+    'bg-block-center-left-single-2-laptop',
+    'bg-block-center-left-single-2-tablet',
+    'bg-block-center-left-single-2-mobile',
+    'bg-block-center-right-double-1-laptop',
+    'bg-block-center-right-double-1-tablet',
+    'bg-block-center-right-single-3-laptop',
+    'bg-block-center-right-single-3-tablet',
+    'bg-block-center-right-single-3-mobile',
+    'bg-block-ee-solutions-quote-laptop',
+    'bg-block-ee-solutions-quote-tablet',
+    'bg-block-ee-solutions-quote-mobile',
+    'bg-bottom-cap-1-laptop',
+    'bg-bottom-cap-1-tablet',
+    'bg-bottom-cap-1-mobile',
+    'bg-bottom-cap-2-laptop',
+    'bg-bottom-cap-2-tablet',
+    'bg-bottom-cap-2-mobile',
+    'bg-bottom-cap-3-laptop',
+    'bg-bottom-cap-3-tablet',
+    'bg-bottom-cap-3-mobile',
+    'bg-cover-green-patterns-laptop',
+    'bg-cover-green-patterns-tablet',
+    'bg-cover-green-patterns-mobile',
+    'bg-left-single-1-laptop',
+    'bg-left-single-1-tablet',
+    'bg-left-single-1-mobile',
+    'bg-left-single-2-tablet',
+    'bg-left-single-2-mobile',
+    'bg-right-multi-2-mobile',
+    'bg-top-cap-1-laptop',
+    'bg-top-cap-1-tablet',
+    'bg-top-cap-1-mobile',
+    'bg-top-cap-2-laptop',
+    'bg-top-cap-2-tablet',
+    'bg-top-cap-2-mobile',
+    'bg-top-multi-7-tint-10',
+    'bg-top-multi-7-tint-15',
+    'bg-top-multi-11-laptop',
+    'bg-top-multi-11-tablet',
+    'bg-top-multi-11-mobile',
+    'bg-block-center-right-single-4-mobile',
+    'bg-block-center-right-single-4-tablet',
+    'bg-block-center-right-single-4-laptop',
+    'bg-block-center-left-single-3-mobile',
+    'bg-block-center-left-single-3-tablet',
+    'bg-block-center-left-single-3-laptop',
+    'bg-right-multi-4-mobile',
+    'bg-right-multi-4-tablet',
+    'bg-right-multi-4-laptop',
+    'bg-right-multi-6-mobile',
+  ];
   const sectionKey = [...$section.parentElement.children].indexOf($section);
   [...$section.classList]
     .filter((filter) => filter.match(/^bg-/g))
@@ -474,10 +575,10 @@ export function updateSectionsStatus(main) {
         break;
       } else {
         section.setAttribute('data-section-status', 'loaded');
-        const event = new CustomEvent('section-display', { detail: { section }});
+        const event = new CustomEvent('section-display', { detail: { section } });
         document.body.dispatchEvent(event);
         /* eslint-disable no-console */
-        console.log('event dispatched')
+        console.log('event dispatched');
       }
     }
   }
@@ -920,9 +1021,9 @@ export async function lookupPages(pathnames, collection, sheet = '') {
     hrGlossary: '/resources/hr-glossary/query-index.json',
     hrvs: '/resources/events/hr-virtual/2022/query-index.json',
     blockInventory: '/blocks/query-index.json',
-    blockTracker: `/website-marketing-resources/block-inventory-tracker.json?sheet=${sheet}`,
+    blockTracker: `/website-marketing-resources/block-inventory-tracker2.json?sheet=${sheet}`,
     resources: `/resources/query-index.json?sheet=resources`,
-    speakers: `/speakers/query-index.json`
+    speakers: `/speakers/query-index.json`,
   };
   const indexPath = indexPaths[collection];
   const collectionCache = `${collection}${sheet}`;
@@ -948,13 +1049,13 @@ export async function loadHeader(header) {
   decorateBlock(headerBlock);
   await loadBlock(headerBlock);
   // Patch logo URL for is-customer audience
-  if(getBhrFeatures()){
-	if (SEGMENTATION_CONFIG.audiences['is-customer'].test()) {
-	  const usp = new URLSearchParams(window.location.search);
-	  usp.append('segment', 'general');
-	  document.querySelector('.nav-brand a').href += `?${usp.toString()}`;
-	}		
-  }  
+  if (getBhrFeaturesCookie()) {
+    if (SEGMENTATION_CONFIG.audiences['is-customer'].test()) {
+      const usp = new URLSearchParams(window.location.search);
+      usp.append('segment', 'general');
+      document.querySelector('.nav-brand a').href += `?${usp.toString()}`;
+    }
+  }
 }
 
 function loadFooter(footer) {
@@ -964,7 +1065,7 @@ function loadFooter(footer) {
   const footerBlockName = queryParams.header ? 'megafooter' : 'footer';
 
   const footerBlock = buildBlock(footerBlockName, '');
-  footer.append(footerBlock);
+  if (footer) footer.append(footerBlock);
   decorateBlock(footerBlock);
   loadBlock(footerBlock);
 }
@@ -994,7 +1095,14 @@ async function buildAutoBlocks(main) {
     let template = toClassName(getMetadata('template'));
     if (window.location.pathname.startsWith('/blog/') && !template) template = 'blog';
 
-    const templates = ['blog', 'integrations-listing', 'content-library', 'webinar', 'product-updates', 'live-demo-webinar-lp'];
+    const templates = [
+      'blog',
+      'integrations-listing',
+      'content-library',
+      'webinar',
+      'product-updates',
+      'live-demo-webinar-lp',
+    ];
     if (templates.includes(template)) {
       const mod = await import(`./${template}.js`);
       if (mod.default) {
@@ -1053,16 +1161,17 @@ function getLinkLabel(element) {
 
 function findConversionValue(parent, fieldName) {
   // Try to find the element by Id or Name
-  const valueElement = document.getElementById(fieldName) || parent.querySelector(`[name='${fieldName}']`);
+  const valueElement =
+    document.getElementById(fieldName) || parent.querySelector(`[name='${fieldName}']`);
   if (valueElement) {
     return valueElement.value;
   }
   // Find the element by the inner text of the label
   return Array.from(parent.getElementsByTagName('label'))
-    .filter(l => l.innerText.trim().toLowerCase() === fieldName.toLowerCase())
-    .map(label => document.getElementById(label.htmlFor))
-    .filter(field => !!field)
-    .map(field => field.value)
+    .filter((l) => l.innerText.trim().toLowerCase() === fieldName.toLowerCase())
+    .map((label) => document.getElementById(label.htmlFor))
+    .filter((field) => !!field)
+    .map((field) => field.value)
     .pop();
 }
 
@@ -1081,7 +1190,12 @@ export async function initConversionTracking(parent, path) {
           const cvField = section.dataset.conversionValueField.trim();
           // this will track the value of the element with the id specified in the "Conversion Element" field.
           // ideally, this should not be an ID, but the case-insensitive name label of the element.
-          sampleRUM.convert(undefined, (cvParent) => findConversionValue(cvParent, cvField), element, ['submit']);
+          sampleRUM.convert(
+            undefined,
+            (cvParent) => findConversionValue(cvParent, cvField),
+            element,
+            ['submit']
+          );
         }
         const formConversionName = section.dataset.conversionName || getMetadata('conversion-name');
         if (formConversionName) {
@@ -1095,34 +1209,45 @@ export async function initConversionTracking(parent, path) {
     link: () => {
       // track all links
       Array.from(parent.querySelectorAll('a[href]'))
-        .map(element => ({
+        .map((element) => ({
           element,
-          cevent: getMetadata(`conversion-name--${getLinkLabel(element)}-`) || getMetadata('conversion-name') || getLinkLabel(element),
+          cevent:
+            getMetadata(`conversion-name--${getLinkLabel(element)}-`) ||
+            getMetadata('conversion-name') ||
+            getLinkLabel(element),
         }))
         .forEach(({ element, cevent }) => {
-          sampleRUM.convert(cevent, undefined, element, ['click'])
-      });
+          sampleRUM.convert(cevent, undefined, element, ['click']);
+        });
     },
     'labeled-link': () => {
       // track only the links configured in the metadata
       const linkLabels = getMetadata('conversion-link-labels') || '';
-      const trackedLabels = linkLabels.split(',')
+      const trackedLabels = linkLabels
+        .split(',')
         .map((p) => p.trim())
         .map(toClassName);
 
       Array.from(parent.querySelectorAll('a[href]'))
         .filter((element) => trackedLabels.includes(getLinkLabel(element)))
-        .map(element => ({
+        .map((element) => ({
           element,
-          cevent: getMetadata(`conversion-name--${getLinkLabel(element)}-`) || getMetadata('conversion-name') || getLinkLabel(element),
+          cevent:
+            getMetadata(`conversion-name--${getLinkLabel(element)}-`) ||
+            getMetadata('conversion-name') ||
+            getLinkLabel(element),
         }))
         .forEach(({ element, cevent }) => {
           sampleRUM.convert(cevent, undefined, element, ['click']);
         });
-    }
+    },
   };
 
-  const declaredConversionElements = getMetadata('conversion-element') ? getMetadata('conversion-element').split(',').map((ce) => toClassName(ce.trim())) : [];
+  const declaredConversionElements = getMetadata('conversion-element')
+    ? getMetadata('conversion-element')
+        .split(',')
+        .map((ce) => toClassName(ce.trim()))
+    : [];
 
   Object.keys(conversionElements)
     .filter((ce) => declaredConversionElements.includes(ce))
@@ -1172,25 +1297,26 @@ async function loadMartech() {
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
-  const instantSegments = [...document.head.querySelectorAll(`meta[property^="audience:"],meta[name^="audience-"]`)].map((meta) => {
-    const id = (meta.name
-      ? meta.name.substring(9)
-      : meta.getAttribute('property').split(':')[1]
+  const instantSegments = [
+    ...document.head.querySelectorAll(`meta[property^="audience:"],meta[name^="audience-"]`),
+  ].map((meta) => {
+    const id = (
+      meta.name ? meta.name.substring(9) : meta.getAttribute('property').split(':')[1]
     ).replace(/^-+|-+$/g, '');
     return { id, url: meta.getAttribute('content') };
   });
-  if (instantSegments.length) {
+  if (instantSegments.length && getBhrFeaturesCookie()) {
     // eslint-disable-next-line import/no-cycle
     const { runSegmentation } = await import('./experimentation.js');
     const resolution = getMetadata('audience-resolution');
     await runSegmentation(instantSegments, { ...SEGMENTATION_CONFIG, resolution });
   }
-  
+
   const experiment = getMetadata('experiment');
   const instantExperiment = getMetadata('instant-experiment');
   if (instantExperiment || experiment) {
     // eslint-disable-next-line import/no-cycle
-    const {runExperiment} = await import('./experimentation.js');
+    const { runExperiment } = await import('./experimentation.js');
     await runExperiment(experiment, instantExperiment);
   }
 
@@ -1205,10 +1331,10 @@ async function loadEager(doc) {
   // ];
   // const isOnTestPath = testPaths.includes(window.location.pathname);
   // if (isOnTestPath) {
-    const $head = document.querySelector('head');
-    const $script = document.createElement('script');
-    $script.src = 'https://cdn-4.convertexperiments.com/js/10004673-10005501.js';
-    $head.append($script);
+  const $head = document.querySelector('head');
+  const $script = document.createElement('script');
+  $script.src = 'https://cdn-4.convertexperiments.com/js/10004673-10005501.js';
+  $head.append($script);
   // }
   /* This is the end of the temporary convert test code */
 
@@ -1217,8 +1343,118 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     await decorateMain(main);
+    if (window.innerWidth >= 900)
+      loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
+    if (sessionStorage.getItem('lazy-styles-loaded')) {
+      loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
+      loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+    }
     await waitForLCP();
   }
+}
+
+/**
+ * Schema markup functions
+ */
+function createProductSchemaMarkup() {
+  const pageTitle = document.querySelector('h1').textContent;
+  const pageUrl = document.querySelector('link[rel="canonical"]').getAttribute('href');
+  const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
+
+  const quoteAuthorElement = document.querySelector('.product-schema p:last-of-type');
+  let quoteAuthor = '';
+  if (quoteAuthorElement) quoteAuthor = quoteAuthorElement.textContent;
+
+  const quoteTextElement = document.querySelector('.product-schema div div p:first-of-type');
+  let quoteText = '';
+  if (quoteTextElement) quoteText = quoteTextElement.textContent.replace(/["]+/g, '');
+
+  const pageDescription = document
+    .querySelector('meta[property="og:description"]')
+    .getAttribute('content');
+  const quotePublishDate = document.lastModified;
+  const productSchema = {
+    '@context': 'http://schema.org/',
+    '@type': 'Product',
+    name: pageTitle,
+    url: pageUrl,
+    image: socialImage,
+    description: pageDescription,
+    brand: 'Bamboohr',
+    aggregateRating: {
+      '@type': 'aggregateRating',
+      ratingValue: '4.3',
+      reviewCount: '593',
+    },
+    review: [
+      {
+        '@type': 'Review',
+        author: quoteAuthor,
+        datePublished: quotePublishDate,
+        reviewBody: quoteText,
+      },
+    ],
+  };
+  const $productSchema = document.createElement('script');
+  $productSchema.innerHTML = JSON.stringify(productSchema, null, 2);
+  $productSchema.setAttribute('type', 'application/ld+json');
+  const $head = document.head;
+  $head.append($productSchema);
+}
+
+function createVideoObjectSchemaMarkup() {
+  const videoName = document.querySelector('h1').textContent;
+  const wistiaThumb = getMetadata('wistia-video-thumbnail');
+  const wistiaVideoId = getMetadata('wistia-video-id');
+  const wistiaVideoUrl = `https://fast.wistia.net/embed/iframe/${wistiaVideoId}`;
+  const videoDescription = document
+    .querySelector('meta[property="og:description"]')
+    .getAttribute('content');
+  const videoUploadDate = document.lastModified;
+  const videoObjectSchema = {
+    '@context': 'http://schema.org/',
+    '@type': 'VideoObject',
+    name: videoName,
+    thumbnailUrl: wistiaThumb,
+    embedUrl: wistiaVideoUrl,
+    uploadDate: videoUploadDate,
+    description: videoDescription,
+  };
+  const $videoObjectSchema = document.createElement('script');
+  $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema, null, 2);
+  $videoObjectSchema.setAttribute('type', 'application/ld+json');
+  const $head = document.head;
+  $head.append($videoObjectSchema);
+}
+
+function createFaqPageSchemaMarkup() {
+  const faqPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [],
+  };
+  document.querySelectorAll('.faq-page-schema .accordion').forEach((tab) => {
+    const q = tab.querySelector('h2').textContent.trim();
+    const a = tab
+      .querySelector('.tabs-content')
+      .textContent.replace(/(\n|\n|\r)/gm, '')
+      .trim();
+    if (q && a) {
+      faqPageSchema.mainEntity.push({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: a,
+        },
+      });
+    }
+  });
+  const $faqPageSchema = document.createElement('script');
+  $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema, null, 2);
+  $faqPageSchema.setAttribute('type', 'application/ld+json');
+  const $head = document.head;
+  $head.append($faqPageSchema);
 }
 
 /**
@@ -1242,13 +1478,38 @@ async function loadLazy(doc) {
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
+  /**
+   * Calls the Schema markup functions
+   */
+  if (getMetadata('schema')) {
+    const schemaVals = getMetadata('schema').split(',');
+    schemaVals.forEach((val) => {
+      switch (val.trim()) {
+        case 'Product':
+          createProductSchemaMarkup();
+          break;
+        case 'VideoObject':
+          createVideoObjectSchemaMarkup();
+          break;
+        case 'FAQPage':
+          createFaqPageSchemaMarkup();
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
   const headerloaded = loadHeader(header);
   loadFooter(doc.querySelector('footer'));
 
+  loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  if (!window.location.hostname.includes('localhost'))
+    sessionStorage.setItem('lazy-styles-loaded', 'true');
   addFavIcon('https://www.bamboohr.com/favicon.ico');
 
-  if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {
+  if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === 'localhost') {
     // eslint-disable-next-line import/no-cycle
     import('../tools/preview/experimentation-preview.js');
   }
@@ -1282,7 +1543,7 @@ function loadDelayed() {
     '/resources/hr-glossary/performance-review',
     '/resources/hr-glossary/',
     '/hr-solutions/industry/construction',
-    '/blog/key-hr-metrics'
+    '/blog/key-hr-metrics',
   ];
   const isOnTestPath = testPaths.includes(window.location.pathname);
 
@@ -1353,6 +1614,7 @@ export function insertNewsletterForm(elem, submitCallback) {
       newsletterSubscribe(input.value);
       e.preventDefault();
       submitCallback();
+      input.value = '';
     });
     a.replaceWith(formDiv);
   });
@@ -1421,7 +1683,7 @@ export function addClassToParent(block) {
     'bottom-margin',
     'top-margin',
     'laptop-small-width',
-    'variable-width'
+    'variable-width',
   ];
   classes.some((c) => {
     const found = block.classList.contains(c);
@@ -1475,9 +1737,11 @@ sampleRUM.drain('convert', (cevent, cvalueThunk, element, listenTo = []) => {
   function registerConversionListener(elements) {
     // if elements is an array or nodelist, register a conversion event for each element
     if (Array.isArray(elements) || elements instanceof NodeList) {
-      elements.forEach(e => registerConversionListener(e, listenTo, cevent, cvalueThunk));
+      elements.forEach((e) => registerConversionListener(e, listenTo, cevent, cvalueThunk));
     } else {
-      listenTo.forEach(eventName => element.addEventListener(eventName, (e) => trackConversion(e.target)));
+      listenTo.forEach((eventName) =>
+        element.addEventListener(eventName, (e) => trackConversion(e.target))
+      );
     }
   }
 
@@ -1495,23 +1759,23 @@ sampleRUM.always.on('convert', (data) => {
     let evtDataLayer;
     if (element.tagName === 'FORM') {
       evtDataLayer = {
-        event: "Form Complete",
+        event: 'Form Complete',
         forms: {
           formsComplete: 1,
           formName: data.source, // this is the conversion event name
           conversionValue: data.target,
           formId: element.id,
-          formsType: ""
-        }
+          formsType: '',
+        },
       };
     } else if (element.tagName === 'A') {
       evtDataLayer = {
-        event: "Link Click",
+        event: 'Link Click',
         eventData: {
           linkName: data.source, // this is the conversion event name
           linkText: element.innerHTML,
-          linkHref: element.href
-        }
+          linkHref: element.href,
+        },
       };
     }
     console.debug('push to datalayer', evtDataLayer);

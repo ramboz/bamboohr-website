@@ -476,11 +476,23 @@ function mktoFormReset(form, moreStyles) {
 }
 
 /* Adobe event tracking */
-function adobeEventTracking(event, componentData) {
+export function adobeEventTracking(event, componentData) {
   window.digitalData.push({
     "event": event,
     "component" : componentData
   });
+}
+
+function getMktoSearchParams(url) {
+  const link = new URL(url);
+  const requestType = link.searchParams?.get('requestType');
+  let searchParamObj = {};
+  if (requestType) {
+    searchParamObj = {
+      requestType
+    };
+  }
+  return searchParamObj;
 }
 
 function loadFormAndChilipiper(formId, successUrl, chilipiper) {
@@ -493,7 +505,13 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         const formEl = form.getFormElem()[0];
 
         /* Adobe Form Start event tracking when user changes the first field */		  
-        formEl.firstElementChild.addEventListener('change', () => {			
+        formEl.firstElementChild.addEventListener('change', () => {
+		  try {
+		    // eslint-disable-next-line
+			formEl.querySelector('input[name="ECID"]').value = s.marketingCloudVisitorID;
+		  } catch (e) {
+			formEl.querySelector('input[name="ECID"]').value = '';
+		  }
           adobeEventTracking('Form Start', {"name": form.getId()});
         });
 		
@@ -501,6 +519,13 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
         if (readyTalkMeetingID && readyTalkEl) {
           formEl.querySelector('input[name="readyTalkMeetingID"]').value = readyTalkMeetingID;
+        }
+
+        const modalUrl = formEl.closest('.modal-wrapper')?.dataset.url;
+        if (modalUrl) {
+          const searchParams = getMktoSearchParams(modalUrl);
+          const requestTypeInput = formEl.querySelector('input[name="Request_Type__c"]');
+          if (requestTypeInput && searchParams?.requestType) requestTypeInput.value = searchParams.requestType;
         }
 
         const formSubmitText = getMetadata('form-submit-text');
@@ -541,7 +566,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
     });
   });
   if (chilipiper) {
-    const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper-pricing-timeout-success' : '/chilipiper-demo-timeout-success';
+    const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper/pricing-timeout-success' : '/live-demo-timeout-success';
     loadScript('https://js.chilipiper.com/marketing.js', () => {
       function redirectTimeout() {
         return setTimeout(() => { window.location.href = timeoutSuccessUrl; }, '240000');
@@ -595,7 +620,7 @@ export default async function decorate(block) {
       ) {
         formUrl = entry.Form;
         let fbTracking = '';
-        if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php'
+        if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php';
         successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
         chilipiper = entry.Chilipiper;
       }

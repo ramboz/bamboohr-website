@@ -1,6 +1,7 @@
 import { hasClassStartsWith, getValuesFromClassName, loadCSS } from '../../scripts/scripts.js';
 import decorateWistia from '../wistia/wistia.js';
 import { buildPicture } from '../multi-hero/multi-hero.js';
+import decorateVideo from '../video/video.js';
 
 function addBreakpointImages(col, block) {
   if (block.classList.contains('has-breakpoint-images')) {
@@ -63,22 +64,31 @@ function addLinkToIconSVG(icon, link) {
   } 
 }
 
-function addIconContainer(col) {
+function addIconContainer(col, block) {
+  const mixedIconLink = block.classList.contains('mixed-icon-link');
   if (!col.classList.contains('columns-title-span')) {
     const icons = col.querySelectorAll('span.icon');
     if (icons.length) {
       const iconContainer = document.createElement('div');
-      iconContainer.classList.add('column-small-icons-container', 'column-multi-element');
+      if (mixedIconLink) iconContainer.classList.add('mixed-icon-link-container');
+      else iconContainer.classList.add('column-small-icons-container', 'column-multi-element');
 
       icons.forEach(icon => {
         let link = icon.parentElement.querySelector('a');
-        if (link) {
+        if (mixedIconLink && link && icon.parentElement.tagName === 'P') {
+          const nonImageContainer = document.createElement('div');
+          nonImageContainer.classList.add('mix-non-img-container');
+          nonImageContainer.append(icon.parentElement);
+
+          iconContainer.append(icon);
+          iconContainer.append(nonImageContainer);
+        } else if (link) {
           const buttonContainer = document.createElement('p');
           buttonContainer.classList.add('button-container');
           buttonContainer.append(link);
           icon.parentElement.append(buttonContainer);
 
-          addLinkToIconSVG(icon, link);
+          if (!mixedIconLink) addLinkToIconSVG(icon, link);
           addIconBtnClass(buttonContainer, icon);
         } else if (icon.parentElement.nextElementSibling?.tagName === 'P'
             && icon.parentElement.nextElementSibling.classList.contains('button-container')) {
@@ -89,12 +99,32 @@ function addIconContainer(col) {
           icon.parentElement.append(icon.parentElement.nextElementSibling);
         }
 
-        if (link) iconContainer.append(icon.parentElement);
+        if (link && !mixedIconLink) iconContainer.append(icon.parentElement);
       });
 
       if (iconContainer.children) col.appendChild(iconContainer);
     }
   }
+}
+
+function addVideo(col) {
+  const videoBlock = document.createElement('div');
+  videoBlock.classList.add('video', 'block');
+
+  const colChildren = [...col.children];
+
+  colChildren?.forEach((child) => {
+    if ((child.tagName === 'A' && child.href?.endsWith('.mp4')) ||
+        child.querySelector('a')?.href?.endsWith('.mp4')) {
+      videoBlock.append(child);
+    }
+  });
+
+  col.append(videoBlock);
+  decorateVideo(videoBlock);
+
+  col.classList.remove('button-container');
+  col.classList.add('img-col', 'video-col');
 }
 
 function hasOnlyWistiaChildren(colChildren) {
@@ -171,6 +201,8 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
   cols.forEach((col, i) => {
     if (splitVals) col.classList.add(`column${splitVals[i + extraSplits]}`);
 
+    const anchor = col.querySelector('a');
+
     if (col.innerText.toLowerCase() === 'title span') {
       if (colParent.nextElementSibling) {
         const secondRowCols = [...colParent.nextElementSibling.children];
@@ -179,11 +211,18 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
 
       cols[1].classList.add('columns-title-span');
       colsToRemove.push(col);
-    } else if (col.querySelector('a')?.href?.includes('wistia')) {
+    } else if (anchor?.href?.includes('wistia')) {
       addWistia(col, loadWistiaCSS);
       loadWistiaCSS = false;
       hasImage = true;
       hasWistia = true;
+
+      if (!col.parentElement.classList.contains('column-flex-container')) {
+        col.parentElement.classList.add('column-flex-container', 'columns-align-start');
+      }
+    } else if (anchor?.href?.endsWith('.mp4')) {
+      addVideo(col);
+      hasImage = true;
 
       if (!col.parentElement.classList.contains('column-flex-container')) {
         col.parentElement.classList.add('column-flex-container', 'columns-align-start');
@@ -196,7 +235,7 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
     
     addButtonClasses(col, block);
 
-    addIconContainer(col);
+    addIconContainer(col, block);
   });
 
   colsToRemove.forEach((col) => col.remove());

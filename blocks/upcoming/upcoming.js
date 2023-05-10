@@ -97,6 +97,7 @@ export default async function decorate(block, blockName) {
   indexConfig.indexPath = blockConfig['index-path'];
   indexConfig.indexName = blockConfig['index-name'];
   indexConfig.cardStyle = blockConfig['card-style'];
+  indexConfig.customLinkText = blockConfig['custom-link-text'];
   indexConfig.filterOn = blockConfig.filter;
   indexConfig.sortBy = blockConfig['sort-by'];
   indexConfig.limit = +blockConfig.limit || 0;
@@ -121,7 +122,7 @@ export default async function decorate(block, blockName) {
         resultsElement.append(dateCard);
         loadWistiaBlock(product, dateCard);
       } else if (indexConfig.cardStyle === 'article') {
-        const articleCard = createArticleCard(product, 'upcoming-article');
+        const articleCard = createArticleCard(product, 'upcoming-article', indexConfig.customLinkText);
         resultsElement.append(articleCard);
         loadWistiaBlock(product, articleCard);
       } else resultsElement.append(createAppCard(product, blockName));

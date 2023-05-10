@@ -100,6 +100,10 @@
     color: var(--theme-base);
 }
 
+.cards.link-theme-shade5 > .card > .title > a {
+    color: var(--theme-shade5);
+}
+
 .cards .icon.icon-time svg,
 .cards .icon.icon-paid-time-off svg {
     max-height: 2rem;
@@ -280,6 +284,19 @@
     background-color: var(--color-white);
     border-radius: 1rem;
 }
+
+.cards.background.hover-background > .card {
+    background-color: transparent;
+}
+
+.cards.background.hover-background > .card:hover {
+    background-color: var(--color-white);
+}
+
+.cards.background.asymmetric-border-1 > .card {
+    border-radius: 40px 15px 100px;
+}
+
 
 .cards.background > .card:not(.full) {
     --padding: 2.5rem;
