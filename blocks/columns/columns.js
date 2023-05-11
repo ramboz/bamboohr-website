@@ -228,9 +228,14 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
         col.parentElement.classList.add('column-flex-container', 'columns-align-start');
       }
     } else if (col.querySelector('img')) {
-      col.classList.add('img-col');
+      if (col.classList.contains('col1-img-and-text') ||
+          col.classList.contains('col2-img-and-text')) {
+        col.classList.add('non-img-col');
+      } else {
+        col.classList.add('img-col');
+        addBreakpointImages(col, block);
+      }
       hasImage = true;
-      addBreakpointImages(col, block);
     } else col.classList.add('non-img-col');
     
     addButtonClasses(col, block);
@@ -294,6 +299,14 @@ export default function decorate(block) {
     });
 
     if (splitVals) {
+      if (block.classList.contains('col1-img-and-text')) {
+        cols[0].classList.add('col1-img-and-text');
+        block.classList.remove('col1-img-and-text');
+      }
+      if (block.classList.contains('col2-img-and-text')) {
+        cols[1].classList.add('col2-img-and-text');
+        block.classList.remove('col2-img-and-text');
+      }
       setupColumns(cols, splitVals, block, true);
     }
   } else if (cols.length === 1) {

@@ -15,6 +15,11 @@
   width: 100%;
 }
 
+.columns .col1-img-and-text img,
+.columns .col2-img-and-text img {
+  width: unset;
+}
+
 .columns a:not(.button) {
   font-weight: var(--heading-font-weight);
   color: var(--theme-shade10);
