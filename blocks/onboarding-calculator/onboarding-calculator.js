@@ -82,7 +82,7 @@ function appendCalcResultToDom(calcResult, formId) {
 	if (formattedNum.length === 10) {
 		resultDiv.classList.add('fs-sm');
 	} 
-	else if (formattedNum.length > 12) {
+	else if (formattedNum.length >= 11) {
 		resultDiv.classList.add('fs-xs');
 	}
 
