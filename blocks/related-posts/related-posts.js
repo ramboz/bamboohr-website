@@ -73,7 +73,7 @@ function filterAndSort(dataArray, criteria, uniqueCards) {
 
 async function getCardPath(colConfig, uniqueCards) {
   const promises = [];
-  colConfig.forEach(async (col, index) => {
+  colConfig.forEach(async (col) => {
     const promise = new Promise((resolve) => {
       if (col.path) {
         const pathnames = [col.path];
@@ -84,7 +84,7 @@ async function getCardPath(colConfig, uniqueCards) {
             // console.log(`getCardPath processed path: path = ${col.article.path}, index = ${index}`);
             resolve();
           })
-          .catch((error) => {
+          .catch(() => {
             resolve();
           });
       } else {
@@ -96,7 +96,7 @@ async function getCardPath(colConfig, uniqueCards) {
             // console.log(`getCardPath processed content type: path = ${col.article.path}, index = ${index}`);
             resolve();
           })
-          .catch((error) => {
+          .catch(() => {
             resolve();
           });
       }
