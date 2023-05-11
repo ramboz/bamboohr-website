@@ -377,6 +377,10 @@ export function readBlockConfig(block) {
           } else {
             value = ps.map((p) => p.textContent);
           }
+        } else if (col.querySelector('picture')) {
+          const imgEl = col.querySelector('picture');
+          const imagePath = imgEl.firstElementChild.srcset;
+            value = imagePath.substr(0, imagePath.indexOf('?'));
         } else value = row.children[1].textContent;
         config[name] = value;
       }
@@ -547,6 +551,17 @@ export function decorateSections($main) {
           section.classList.add(...meta.style.split(', ').map(toClassName));
         } else if (key === 'anchor') {
           section.id = toClassName(meta.anchor);
+        } else if (key === 'bg-image') {
+          const bgImg = meta['bg-image'];
+          section.setAttribute('data-bg-image', bgImg);
+          // eslint-disable-next-line no-use-before-define
+          const bgPicture = createOptimizedPicture(bgImg, 'Background Image', false, [
+            { media: '(min-width: 1025px)', width: '2000' },
+            { media: '(min-width: 600px)', width: '1200' }
+          ]);
+          bgPicture.classList.add('bg', 'bg-image');
+          if (!section.classList.contains('has-bg')) section.classList.add('has-bg');
+          section.prepend(bgPicture);
         } else {
           section.dataset[toCamelCase(key)] = meta[key];
         }
@@ -697,6 +712,7 @@ export function createOptimizedPicture(
   const { pathname } = url;
   const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
+  console.log(breakpoints);
   // webp
   breakpoints.forEach((br) => {
     const source = document.createElement('source');
