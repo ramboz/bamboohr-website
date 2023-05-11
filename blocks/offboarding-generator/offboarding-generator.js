@@ -414,8 +414,8 @@ export default async function decorate(block) {
   });
 
   // Progress to completed template
-  document.getElementById('download-confirmed').addEventListener('click', (el) => {
-    nextStep(el);
+  document.getElementById('download-confirmed').addEventListener('click', (e) => {
+    nextStep(e);
   });
   
   const prev = document.querySelectorAll('[data-prev]');
