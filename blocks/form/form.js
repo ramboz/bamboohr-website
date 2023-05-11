@@ -640,10 +640,10 @@ export default async function decorate(block) {
           const formCol = [...col.children].find((child) => child.textContent.trim().toLowerCase() === 'form');
           if (formCol) {
             col.classList.add('form-col');
-            formCol.remove();
             const formContainer = document.createElement('div');
+            formContainer.classList.add('form-container');
             formContainer.innerHTML = mktoForm;
-            col.append(formContainer);
+            formCol.replaceWith(formContainer);
             loadFormAndChilipiper(formId, successUrl, chilipiper);
           } else {
             col.classList.add('content-col');
