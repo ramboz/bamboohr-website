@@ -84,7 +84,9 @@ async function getCardPath(colConfig, uniqueCards) {
             // console.log(`getCardPath processed path: path = ${col.article.path}, index = ${index}`);
             resolve();
           })
-          .catch(() => {
+          .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.log(`Can't find card for ${col.path}`, err);
             resolve();
           });
       } else {
@@ -96,7 +98,9 @@ async function getCardPath(colConfig, uniqueCards) {
             // console.log(`getCardPath processed content type: path = ${col.article.path}, index = ${index}`);
             resolve();
           })
-          .catch(() => {
+          .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.log(`Can't find card for content type = ${col.contentType}`, err);
             resolve();
           });
       }
