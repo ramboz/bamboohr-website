@@ -1,24 +1,24 @@
 import { createElem } from '../../scripts/scripts.js';
 import { createLabel, createInput } from '../form/form.js';
 
-let currentTab = 0
-const jsonUrl = '/website-marketing-resources/roi-calculator-form.json'
+let currentTab = 0;
+const jsonUrl = '/website-marketing-resources/roi-calculator-form.json';
 
-const organisationForm = []
-const individualForm = []
+const organisationForm = [];
+const individualForm = [];
 
 async function fetchData(url) {
 	const resp = await fetch(url);
-	const json = await resp.json()
-	const {data} = json
+	const json = await resp.json();
+	const {data} = json;
 
-	return data
+	return data;
 }
 
 function createProgressIndicatorHtml() {
-	const spanHtml = createElem('span', 'step')
+	const spanHtml = createElem('span', 'step');
 
-	return spanHtml
+	return spanHtml;
 }
 
 function formatNumber(sum) {	
@@ -31,34 +31,34 @@ function formatNumber(sum) {
 }
 
 function getMessage(field) {
-	const minValue = formatNumber(field.min)
-	const maxValue = formatNumber(field.max)
+	const minValue = formatNumber(field.min);
+	const maxValue = formatNumber(field.max);
 
-	return `Please enter a number between ${minValue} and ${maxValue}`
+	return `Please enter a number between ${minValue} and ${maxValue}`;
 }
 
 function validateForm(form) {
-	let valid = true
-	const tabsArr = form.querySelectorAll('.tab')
-	const inputFields = tabsArr[currentTab].querySelectorAll('input')
+	let valid = true;
+	const tabsArr = form.querySelectorAll('.tab');
+	const inputFields = tabsArr[currentTab].querySelectorAll('input');
 
 	inputFields.forEach(input => {
-		const inputContainer = input.parentElement
-		const errorBox = inputContainer.querySelector('.error')
-		const parsedInputValue = parseInt(input.value, 10)
-		const parsedInputMax = parseInt(input.max, 10)
+		const inputContainer = input.parentElement;
+		const errorBox = inputContainer.querySelector('.error');
+		const parsedInputValue = parseInt(input.value, 10);
+		const parsedInputMax = parseInt(input.max, 10);
 
 		if (errorBox) {
 			if (input.value.length === 0 || parsedInputValue > parsedInputMax ) {
-				const message = getMessage(input)
-				errorBox.classList.remove('hidden')
-				inputContainer.classList.add('invalid')
-				errorBox.textContent = message
-				valid = false
+				const message = getMessage(input);
+				errorBox.classList.remove('hidden');
+				inputContainer.classList.add('invalid');
+				errorBox.textContent = message;
+				valid = false;
 			} else {
-				errorBox.classList.add('hidden')
+				errorBox.classList.add('hidden');
 			}
-			inputContainer.classList.remove('invalid')
+			inputContainer.classList.remove('invalid');
 		}
 	})
 
@@ -66,7 +66,7 @@ function validateForm(form) {
 		form.querySelectorAll('.step')[currentTab].className += " finish";
 	}
 	
-	return valid
+	return valid;
 }
 
 /**
@@ -75,18 +75,18 @@ function validateForm(form) {
  * @param {string} formId 
  */
 function appendCalcResultToDom(calcResult, formId) {
-	const form = document.getElementById(formId)
-	const resultDiv = form.querySelector('.calc-result')
+	const form = document.getElementById(formId);
+	const resultDiv = form.querySelector('.calc-result');
 	const formattedNum = calcResult.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
 	if (formattedNum.length === 10) {
-		resultDiv.classList.add('fs-sm')
+		resultDiv.classList.add('fs-sm');
 	} 
 	else if (formattedNum.length > 12) {
-		resultDiv.classList.add('fs-xs')
+		resultDiv.classList.add('fs-xs');
 	}
 
-	resultDiv.innerText = `${formattedNum}`
+	resultDiv.innerText = `${formattedNum}`;
 }
 
 /**
@@ -100,13 +100,13 @@ function getFormular(form) {
 		if (obj.Type === 'formular') {
 			const key = obj.Field;
 			if (!acc[key]) {
-				acc[key] = obj.Options
+				acc[key] = obj.Options;
 			}
 		}
 		return acc;
 	}, []);
 
-	return formularArr
+	return formularArr;
 }
 
 /**
@@ -115,30 +115,30 @@ function getFormular(form) {
  * @returns 
  */
 function calcOrganisationCost(onboardingData) {
-	const {avgAnnualEmployeeSalary, avgOnboardHours, avgAdditionalCosts, newEmployeesPerYear} = onboardingData
-	const {workingHoursPerYear} = getFormular(organisationForm)
+	const {avgAnnualEmployeeSalary, avgOnboardHours, avgAdditionalCosts, newEmployeesPerYear} = onboardingData;
+	const {workingHoursPerYear} = getFormular(organisationForm);
 
 	/**
 	 * Average hourly rate(hourly rate)
 	 * Average employee salary / working hours per year
 	 */
-	const avgHourlyRate = (avgAnnualEmployeeSalary / workingHoursPerYear).toFixed(2)
+	const avgHourlyRate = (avgAnnualEmployeeSalary / workingHoursPerYear).toFixed(2);
 
 	/**
 	 * Onboarding hours cost
 	 * Average hourly rate x average hours needed to onboard new employee
 	 */
-	const onboardingHoursCost = parseFloat(avgHourlyRate * avgOnboardHours).toFixed(2)
+	const onboardingHoursCost = parseFloat(avgHourlyRate * avgOnboardHours).toFixed(2);
 
 	/**
 	 * Total annual onboarding costs
 	 * Onboarding hours cost + average additional costs x number of new employees per year
 	 */
-	const totalCost = (parseFloat(onboardingHoursCost) + parseFloat(avgAdditionalCosts)).toFixed(2)
+	const totalCost = (parseFloat(onboardingHoursCost) + parseFloat(avgAdditionalCosts)).toFixed(2);
 
-	const totalAnuualOnboardingCosts = parseFloat(totalCost * newEmployeesPerYear)
+	const totalAnuualOnboardingCosts = parseFloat(totalCost * newEmployeesPerYear);
 
-	return totalAnuualOnboardingCosts
+	return totalAnuualOnboardingCosts;
 }
 
 /**
@@ -147,52 +147,52 @@ function calcOrganisationCost(onboardingData) {
  * @returns 
  */
 function calcIndividualCost(employeeOnboardingData) {
-	const {newEmployeeSalary, newEmployeeHoursSpendOnboarding, hrStaffSalaryForOnboardingTasks, hrHoursSpentOnboardingProcess, salarayManagerOfNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost} = employeeOnboardingData
-	const {workingHoursPerYear} = getFormular(organisationForm)
+	const {newEmployeeSalary, newEmployeeHoursSpendOnboarding, hrStaffSalaryForOnboardingTasks, hrHoursSpentOnboardingProcess, salarayManagerOfNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost} = employeeOnboardingData;
+	const {workingHoursPerYear} = getFormular(organisationForm);
 
 	/**
 	 * HR salary(per hour)
 	 * hrStaffSalaryForOnboardingTasks / yearly working hours = HR salary(per hour)
 	 */
-	const hrSalaryperHour = parseFloat((hrStaffSalaryForOnboardingTasks / workingHoursPerYear).toFixed(2))
+	const hrSalaryperHour = parseFloat((hrStaffSalaryForOnboardingTasks / workingHoursPerYear).toFixed(2));
 	
 	/**
 	 * Manager Salary(per hour)
 	 * salarayManagerOfNewEmployee / yearly working hours = Manager Salary(per hour)
 	 */
-	const managerSalaryPerHour = parseFloat((salarayManagerOfNewEmployee / workingHoursPerYear).toFixed(2))
+	const managerSalaryPerHour = parseFloat((salarayManagerOfNewEmployee / workingHoursPerYear).toFixed(2));
 
 	/**
 	 * Employee Salary(per hour)
 	 * newEmployeeSalary / yearly working hours = Employee Salary(per hour)
 	 */
-	const employeeSalaryPerHour = parseFloat(newEmployeeSalary / workingHoursPerYear).toFixed(2)
+	const employeeSalaryPerHour = parseFloat(newEmployeeSalary / workingHoursPerYear).toFixed(2);
 
 	/**
 	 * Total HR Onboarding Hour Cost
 	 * HR salary * hrHoursSpentOnboardingProcess
 	 */
-	const totalHrOnboardingHourCost = parseFloat((hrSalaryperHour * hrHoursSpentOnboardingProcess).toFixed(2))
+	const totalHrOnboardingHourCost = parseFloat((hrSalaryperHour * hrHoursSpentOnboardingProcess).toFixed(2));
 
 	/**
 	 * Total Manager Hour Cost
 	 * Manager Salary * managerHoursSpentOnboarding
 	 */
-	const totalManagerHourCost = parseFloat((managerSalaryPerHour * managerHoursSpentOnboarding).toFixed(2))
+	const totalManagerHourCost = parseFloat((managerSalaryPerHour * managerHoursSpentOnboarding).toFixed(2));
 
 	/**
 	 * Total Employee Onboarding Hour Cost
 	 * Employee Salary * newEmployeeHoursSpendOnboarding
 	 */
-	const totalEmployeeOnboardingHourCost = parseFloat((employeeSalaryPerHour * newEmployeeHoursSpendOnboarding).toFixed(2))
+	const totalEmployeeOnboardingHourCost = parseFloat((employeeSalaryPerHour * newEmployeeHoursSpendOnboarding).toFixed(2));
 
 	/**
 	 * Final cost of new employee
 	 * (Total HR Onboarding Hour Cost + Total Manager Hour Cost + Total Employee Onboarding Hour Cost) + newEmployeeRelocationCost + workstationCost
 	 */
-	const finalCostOfNewEmployee = (totalHrOnboardingHourCost + totalManagerHourCost + totalEmployeeOnboardingHourCost) + parseFloat(newEmployeeRelocationCost) + parseFloat(workstationCost)
+	const finalCostOfNewEmployee = (totalHrOnboardingHourCost + totalManagerHourCost + totalEmployeeOnboardingHourCost) + parseFloat(newEmployeeRelocationCost) + parseFloat(workstationCost);
 
-	return finalCostOfNewEmployee
+	return finalCostOfNewEmployee;
 }
 
 /**
@@ -201,32 +201,32 @@ function calcIndividualCost(employeeOnboardingData) {
  */
 function formSubmitHandler(form) {
 	if (form.id === 'organisation-form') {
-		const avgAnnualEmployeeSalary = form.elements.avgAnnualEmployeeSalary.value
-		const avgOnboardHours = form.elements.avgOnboardHours.value
-		const avgAdditionalCosts = form.elements.avgAdditionalCosts.value
-		const newEmployeesPerYear = form.elements.newEmployeesPerYear.value
+		const avgAnnualEmployeeSalary = form.elements.avgAnnualEmployeeSalary.value;
+		const avgOnboardHours = form.elements.avgOnboardHours.value;
+		const avgAdditionalCosts = form.elements.avgAdditionalCosts.value;
+		const newEmployeesPerYear = form.elements.newEmployeesPerYear.value;
 
-		const organisationOnboardingData = {avgAnnualEmployeeSalary, avgOnboardHours, avgAdditionalCosts, newEmployeesPerYear}
-		const totalAnuualOnboardingCosts = calcOrganisationCost(organisationOnboardingData)
+		const organisationOnboardingData = {avgAnnualEmployeeSalary, avgOnboardHours, avgAdditionalCosts, newEmployeesPerYear};
+		const totalAnuualOnboardingCosts = calcOrganisationCost(organisationOnboardingData);
 		
-		appendCalcResultToDom(totalAnuualOnboardingCosts, form.id)
+		appendCalcResultToDom(totalAnuualOnboardingCosts, form.id);
 	}
 
 	if (form.id === 'individual-form') {
-		const newEmployeeSalary = form.elements.newEmployeeSalary.value
-		const newEmployeeHoursSpendOnboarding = form.elements.newEmployeeHoursSpendOnboarding.value
-		const hrStaffSalaryForOnboardingTasks = form.elements.hrStaffSalaryForOnboardingTasks.value
-		const hrHoursSpentOnboardingProcess = form.elements.hrHoursSpentOnboardingProcess.value
-		const salarayManagerOfNewEmployee = form.elements.salarayManagerOfNewEmployee.value
-		const managerHoursSpentOnboarding = form.elements.managerHoursSpentOnboarding.value
-		const newEmployeeRelocationCost = form.elements.newEmployeeRelocationCost.value
-		const workstationCost = form.elements.workstationCost.value
+		const newEmployeeSalary = form.elements.newEmployeeSalary.value;
+		const newEmployeeHoursSpendOnboarding = form.elements.newEmployeeHoursSpendOnboarding.value;
+		const hrStaffSalaryForOnboardingTasks = form.elements.hrStaffSalaryForOnboardingTasks.value;
+		const hrHoursSpentOnboardingProcess = form.elements.hrHoursSpentOnboardingProcess.value;
+		const salarayManagerOfNewEmployee = form.elements.salarayManagerOfNewEmployee.value;
+		const managerHoursSpentOnboarding = form.elements.managerHoursSpentOnboarding.value;
+		const newEmployeeRelocationCost = form.elements.newEmployeeRelocationCost.value;
+		const workstationCost = form.elements.workstationCost.value;
 
-		const employeeOnboardingData = {newEmployeeSalary, newEmployeeHoursSpendOnboarding, hrStaffSalaryForOnboardingTasks, hrHoursSpentOnboardingProcess, salarayManagerOfNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost}
+		const employeeOnboardingData = {newEmployeeSalary, newEmployeeHoursSpendOnboarding, hrStaffSalaryForOnboardingTasks, hrHoursSpentOnboardingProcess, salarayManagerOfNewEmployee, managerHoursSpentOnboarding, newEmployeeRelocationCost, workstationCost};
 
-		const totalEmployeeOnboardingCosts = calcIndividualCost(employeeOnboardingData)
+		const totalEmployeeOnboardingCosts = calcIndividualCost(employeeOnboardingData);
 
-		appendCalcResultToDom(totalEmployeeOnboardingCosts, form.id)
+		appendCalcResultToDom(totalEmployeeOnboardingCosts, form.id);
 	}
 }
 
@@ -234,10 +234,10 @@ function progressIndicator(index, form) {
 	const stepsArr = form.querySelectorAll(".step");
 
 	stepsArr.forEach(item => {
-		item.classList.remove('step-active')
-	})
+		item.classList.remove('step-active');
+	});
 
-	stepsArr[index].classList.add('step-active')
+	stepsArr[index].classList.add('step-active');
 }
 
 /**
@@ -246,16 +246,16 @@ function progressIndicator(index, form) {
  * @param {object} form current active form
  */
 function showTab(index, form) {
-	const tabs = form.querySelectorAll('.tab')
-	const nextBtn = form.querySelector('#nextBtn')
-	tabs[index].style.display = 'flex'
+	const tabs = form.querySelectorAll('.tab');
+	const nextBtn = form.querySelector('#nextBtn');
+	tabs[index].style.display = 'flex';
 
 	if (index === (tabs.length - 2)) {
-		nextBtn.setAttribute('type', 'submit')
-		nextBtn.innerText = 'Calculate'
+		nextBtn.setAttribute('type', 'submit');
+		nextBtn.innerText = 'Calculate';
 	} else {
-		nextBtn.setAttribute('type', 'button')
-		nextBtn.innerText = 'Next'
+		nextBtn.setAttribute('type', 'button');
+		nextBtn.innerText = 'Next';
 	}
 }
 
@@ -264,51 +264,51 @@ function showTab(index, form) {
  * @param {object} block 
  */
 function resetForm(block) {
-	const formsArr = block.querySelectorAll('form')
-	const tabsArr = block.querySelectorAll('.tab')
-	const navBtnArr = block.querySelectorAll('.navBtn-wrapper')
-	const invalidFieldsArr = block.querySelectorAll('.field-item.invalid')
-	const outputRangeArr = block.querySelectorAll('.range-value')
-	const inputRangeArr = block.querySelectorAll('.input-range')
-	const contentElement = block.querySelector('.onboarding-calculator__content')
-	const calcResults = block.querySelectorAll('.calc-result')
-	currentTab = 0
+	const formsArr = block.querySelectorAll('form');
+	const tabsArr = block.querySelectorAll('.tab');
+	const navBtnArr = block.querySelectorAll('.navBtn-wrapper');
+	const invalidFieldsArr = block.querySelectorAll('.field-item.invalid');
+	const outputRangeArr = block.querySelectorAll('.range-value');
+	const inputRangeArr = block.querySelectorAll('.input-range');
+	const contentElement = block.querySelector('.onboarding-calculator__content');
+	const calcResults = block.querySelectorAll('.calc-result');
+	currentTab = 0;
 	
-	contentElement.style.display = ''
+	contentElement.style.display = '';
 
 	calcResults.forEach(item => {
-		item.classList.remove('fs-xs', 'fs-sm')
-	})
+		item.classList.remove('fs-xs', 'fs-sm');
+	});
 
 	formsArr.forEach(form => {
-		form.classList.remove('active')
-		form.querySelector('#nextBtn').innerText = 'Next'
-		form.querySelector('#nextBtn').setAttribute('type', 'button')
-		form.reset()
+		form.classList.remove('active');
+		form.querySelector('#nextBtn').innerText = 'Next';
+		form.querySelector('#nextBtn').setAttribute('type', 'button');
+		form.reset();
 	});
 
 	invalidFieldsArr.forEach(item => {
-		item.classList.remove('invalid')
+		item.classList.remove('invalid');
 	});
 
 	tabsArr.forEach(tab => {
-		tab.style.display = ''
+		tab.style.display = '';
 	});
 
 	navBtnArr.forEach(btn => {
-		btn.style.display = ''
+		btn.style.display = '';
 	});
 
 	outputRangeArr.forEach(item => {
 		item.style.left = `calc(0% + 8px)`;
-		item.innerHTML = item.previousSibling.min
-	})
+		item.innerHTML = item.previousSibling.min;
+	});
 
 	inputRangeArr.forEach(item => {
 		item.style = `--percent:calc(0% + 8px)`;
-	})
+	});
 
-	showTab(currentTab, block)
+	showTab(currentTab, block);
 }
 
 /**
@@ -317,31 +317,31 @@ function resetForm(block) {
  * @param {object} form 
  */
 function nextPrev(index, form) {
-	const tabsArr = form.querySelectorAll('.tab')
-	const navBtn = form.querySelector('.navBtn-wrapper')
+	const tabsArr = form.querySelectorAll('.tab');
+	const navBtn = form.querySelector('.navBtn-wrapper');
 
 	if (index === 1 && !validateForm(form)) return;
 
-	tabsArr[currentTab].style.display ='none'
+	tabsArr[currentTab].style.display ='none';
 
-	currentTab += index
+	currentTab += index;
 
 	if (currentTab < 0) {
-		resetForm(navBtn.parentElement.parentElement)
+		resetForm(navBtn.parentElement.parentElement);
 	}
 
 	if (currentTab >= (tabsArr.length - 1)) {
-		formSubmitHandler(form)
-		navBtn.style.display ='none'
+		formSubmitHandler(form);
+		navBtn.style.display ='none';
 	}
 
-	showTab(currentTab, form)
-	progressIndicator(currentTab, form)
+	showTab(currentTab, form);
+	progressIndicator(currentTab, form);
 }
 
 function createCalcResultHtml() {
-	const divWrapper = document.createElement('div')
-	divWrapper.classList.add('tab')
+	const divWrapper = document.createElement('div');
+	divWrapper.classList.add('tab');
 
 	const contentHtml = `<div class="result__wrapper">
 	<div class="result__left">
@@ -355,23 +355,23 @@ function createCalcResultHtml() {
 	<a class="button accent" href="/hr-software/video-tour">Video Product Tour</a>
 	</div>
 	</div>
-	</div>`
+	</div>`;
 
-	divWrapper.innerHTML = contentHtml
+	divWrapper.innerHTML = contentHtml;
 
-	return divWrapper
+	return divWrapper;
 }
 
 function createNavBtn() {
-	const fieldWrapper = document.createElement('div')
-	fieldWrapper.classList.add('navBtn-wrapper')
+	const fieldWrapper = document.createElement('div');
+	fieldWrapper.classList.add('navBtn-wrapper');
 
 	const btns = `<button type="button" id="prevBtn">Back</button>
-    <button type="button" id="nextBtn">Next</button>`
+    <button type="button" id="nextBtn">Next</button>`;
 
-	fieldWrapper.innerHTML = btns
+	fieldWrapper.innerHTML = btns;
 
-	return fieldWrapper
+	return fieldWrapper;
 }
 
 function setRangeValueBubble(rangeValue, rangeValueBubble) {
@@ -386,27 +386,27 @@ function setRangeValueBubble(rangeValue, rangeValueBubble) {
 }
 
 function createRangeInputIndicator() {
-	const output = document.createElement('output')
-	output.classList.add('range-value')
+	const output = document.createElement('output');
+	output.classList.add('range-value');
 
-	return output
+	return output;
 }
 
 function createRangeInput(type, options, field) {
 	const input = document.createElement('input');
-	input.classList.add('input-range')
-	const [minValue, maxValue, step] = options.split('|')
+	input.classList.add('input-range');
+	const [minValue, maxValue, step] = options.split('|');
 	input.type = type;
-	input.id = field
-	input.setAttribute('value', 0)
-	input.min = minValue.trim()
-	input.max = maxValue.trim()
+	input.id = field;
+	input.setAttribute('value', 0);
+	input.min = minValue.trim();
+	input.max = maxValue.trim();
 
 	if (step) {
-		input.setAttribute('step', step.trim())
+		input.setAttribute('step', step.trim());
 	}
 
-	return input
+	return input;
 }
 
 function addMinMaxLabels(el, icon) {
@@ -414,9 +414,9 @@ function addMinMaxLabels(el, icon) {
 	const labelElement = createElem('div', 'range-container');
 
 	const rangeMinMaxHtml = `<div class="range-min">${icon ? '$' : ''}${formatNumber(inputField.min)}</div>
-	<div class="range-max">${icon ? '$' : ''}${formatNumber(inputField.max)}</div>`
-	labelElement.innerHTML = rangeMinMaxHtml
-	inputField.insertAdjacentElement('beforebegin', labelElement)
+	<div class="range-max">${icon ? '$' : ''}${formatNumber(inputField.max)}</div>`;
+	labelElement.innerHTML = rangeMinMaxHtml;
+	inputField.insertAdjacentElement('beforebegin', labelElement);
 }
 
 function addDescribtion(el, descriptionText) {
@@ -424,78 +424,78 @@ function addDescribtion(el, descriptionText) {
 	if (descriptionText) {
 		const descriptionElement = createElem('p', 'description-text');
 
-		descriptionElement.textContent = descriptionText
-		labelField.insertAdjacentElement('afterend', descriptionElement)
+		descriptionElement.textContent = descriptionText;
+		labelField.insertAdjacentElement('afterend', descriptionElement);
 	}
 }
 
 function createErrorBox(el) {
-	const inputField = el.querySelector('input')
-	const errorBox = document.createElement('div')
-	errorBox.classList.add('error', 'hidden')
-	const message = getMessage(inputField)
-	errorBox.textContent = message
+	const inputField = el.querySelector('input');
+	const errorBox = document.createElement('div');
+	errorBox.classList.add('error', 'hidden');
+	const message = getMessage(inputField);
+	errorBox.textContent = message;
 
-	inputField.insertAdjacentElement('afterend', errorBox)
+	inputField.insertAdjacentElement('afterend', errorBox);
 }
 
 function addIcon(el, icon) {
-	const inputField = el.querySelector('input')
+	const inputField = el.querySelector('input');
 
 	if (icon) {
 		const descriptionElement = createElem('i', 'icon-dollar');
 
-		inputField.insertAdjacentElement('afterend', descriptionElement)
+		inputField.insertAdjacentElement('afterend', descriptionElement);
 	}
 }
 
 function createFields(fields) {
-	const fieldWrapper = document.createElement('div')
-	fieldWrapper.classList.add('tab')
+	const fieldWrapper = document.createElement('div');
+	fieldWrapper.classList.add('tab');
 	fields.forEach(item => {
-		const {Field, Type, Options, Tooltip, Icon, Description} = item
-		const divFieldItem = document.createElement('div')
-		divFieldItem.classList.add('field-item')
+		const {Field, Type, Options, Tooltip, Icon, Description} = item;
+		const divFieldItem = document.createElement('div');
+		divFieldItem.classList.add('field-item');
 	
 		switch (Type) {
 			case 'range': 
-				divFieldItem.classList.add('field-item__range')
-				divFieldItem.append(createLabel(item))
-				addDescribtion(divFieldItem, Description)
-				divFieldItem.append(createRangeInput(Type, Options, Field))
-				addMinMaxLabels(divFieldItem, Icon)
-				divFieldItem.append(createRangeInputIndicator())
+				divFieldItem.classList.add('field-item__range');
+				divFieldItem.append(createLabel(item));
+				addDescribtion(divFieldItem, Description);
+				divFieldItem.append(createRangeInput(Type, Options, Field));
+				addMinMaxLabels(divFieldItem, Icon);
+				divFieldItem.append(createRangeInputIndicator());
 			break;
 			case 'formular':
 				return
 			default:
-				divFieldItem.append(createLabel(item))
-				addDescribtion(divFieldItem, Description)
-				divFieldItem.append(createInput(item))
-				createErrorBox(divFieldItem)
-				addIcon(divFieldItem, Icon)
+				divFieldItem.append(createLabel(item));
+				addDescribtion(divFieldItem, Description);
+				divFieldItem.append(createInput(item));
+				createErrorBox(divFieldItem);
+				addIcon(divFieldItem, Icon);
 		}
 
 		// Add Tooltip HTML if field label has tootltip description
 		if (Tooltip) {
-			const label = divFieldItem.querySelector('label')
-			const tooltipHtml = `<div class="tooltip"><span class="tooltip__text">${Tooltip}</span></div>`
+			const label = divFieldItem.querySelector('label');
+			const tooltipHtml = `<div class="tooltip"><span class="tooltip__text">${Tooltip}</span></div>`;
 			label.insertAdjacentHTML('beforeend', tooltipHtml);
 		}
 
 		// Add CSS class has-icon if field need to display dollar symbol $ 
 		if (Icon) {
-			divFieldItem.classList.add('has-icon')
+			divFieldItem.classList.add('has-icon');
 		}
 
 		// Set min and max value for number fields
 		if (Type === 'number') {
-			const inputField = divFieldItem.querySelector('input')
-			inputField.setAttribute('min', 0)
-			inputField.setAttribute('max', 1000000)
+			const inputField = divFieldItem.querySelector('input');
+			inputField.setAttribute('min', 0);
+			inputField.setAttribute('max', 1000000);
 		}
 
-		fieldWrapper.append(divFieldItem)
+		fieldWrapper.append(divFieldItem);
 	})
 	return fieldWrapper
 }
@@ -503,13 +503,13 @@ function createFields(fields) {
 // Individual form
 function createIndividualForm(fields) {
 	// Create form element
-	const form = createElem('form',)
-	const div = createElem('div', 'progress-bar')
+	const form = createElem('form',);
+	const div = createElem('div', 'progress-bar');
 
 	// Setup form attributes
-	form.setAttribute('id', 'individual-form')
-	form.setAttribute('method', 'POST')
-	form.classList.add('d-none')
+	form.setAttribute('id', 'individual-form');
+	form.setAttribute('method', 'POST');
+	form.classList.add('d-none');
 
 	// Grouping fields into different tab
 	const grouped = fields.reduce((acc, obj) => {
@@ -523,175 +523,175 @@ function createIndividualForm(fields) {
 
 	// eslint-disable-next-line 
 	for (const group in grouped) {
-		form.append(createFields(grouped[group]))
-	}
+		form.append(createFields(grouped[group]));
+	};
 
-	form.append(createCalcResultHtml())
-	form.append(createNavBtn())
-	form.append(div)
+	form.append(createCalcResultHtml());
+	form.append(createNavBtn());
+	form.append(div);
 	
-	const tabsArr = form.querySelectorAll('.tab')
+	const tabsArr = form.querySelectorAll('.tab');
 	
 	tabsArr.forEach(() => {
-		div.append(createProgressIndicatorHtml())
-	})
+		div.append(createProgressIndicatorHtml());
+	});
 
 	// Select prevBtn and nextBtn
-	const btnArr = form.querySelectorAll('button')
+	const btnArr = form.querySelectorAll('button');
 
 	btnArr.forEach(btn => {
 		btn.addEventListener('click', e => {
-			e.preventDefault()
+			e.preventDefault();
 			if (e.target.id === 'nextBtn') {
-				nextPrev(1, form)
+				nextPrev(1, form);
 			}
 
 			if (e.target.id === 'prevBtn') {
-				nextPrev(-1, form)
+				nextPrev(-1, form);
 			}
 		})
 	});
 	
-	return form
+	return form;
 }
 
 // Orgnaisation form
 function createOrganisationForm(fields) {
 	// Create form element
-	const form = createElem('form',)
-	const div = createElem('div', 'progress-bar')
+	const form = createElem('form',);
+	const div = createElem('div', 'progress-bar');
 
 	// Setup form attributes
-	form.setAttribute('id', 'organisation-form')
-	form.setAttribute('method', 'POST')
-	form.classList.add('d-none')
+	form.setAttribute('id', 'organisation-form');
+	form.setAttribute('method', 'POST');
+	form.classList.add('d-none');
 
-	form.append(createFields(fields))
-	form.append(createCalcResultHtml())
-	form.append(createNavBtn())
-	form.append(div)
+	form.append(createFields(fields));
+	form.append(createCalcResultHtml());
+	form.append(createNavBtn());
+	form.append(div);
 
-	const tabsArr = form.querySelectorAll('.tab')
+	const tabsArr = form.querySelectorAll('.tab');
 
 	tabsArr.forEach(() => {
-		div.append(createProgressIndicatorHtml())
-	})
+		div.append(createProgressIndicatorHtml());
+	});
 
 	// Select prevBtn and nextBtn
-	const btnArr = form.querySelectorAll('button')
+	const btnArr = form.querySelectorAll('button');
 
 	btnArr.forEach(btn => {
 		btn.addEventListener('click', e => {
-			e.preventDefault()
+			e.preventDefault();
 			if (e.target.id === 'nextBtn') {
-				nextPrev(1, form)
+				nextPrev(1, form);
 			}
 
 			if (e.target.id === 'prevBtn') {
-				nextPrev(-1, form)
+				nextPrev(-1, form);
 			}
 		})
 	});
 	
-	return form
+	return form;
 }
 
 function toggleForm(formId) {
-	const form = document.getElementById(formId)
-	const tabs = form.querySelectorAll('.tab')
-	form.classList.add('active')
+	const form = document.getElementById(formId);
+	const tabs = form.querySelectorAll('.tab');
+	form.classList.add('active');
 
 	tabs.forEach((item, index) => {
 		if (Object.is(tabs.length - 1, index)) {
 			// add class last-tab to the last tab div
-			item.classList.add('last-tab')
+			item.classList.add('last-tab');
 		}
 	});
 
-	showTab(currentTab, form)
-	progressIndicator(currentTab, form)
+	showTab(currentTab, form);
+	progressIndicator(currentTab, form);
 }
 
 function createCtaContainer() {
 	// Create elements
 	const ctaContainer = createElem('div', 'form-cta-container');
-	const indidualBtn = createElem('button')
-	const organisationBtn = createElem('button')
+	const indidualBtn = createElem('button');
+	const organisationBtn = createElem('button');
 
 	// Setup btn inner text
-	indidualBtn.innerText = 'Employee'
-	organisationBtn.innerText = 'Organization'
+	indidualBtn.innerText = 'Employee';
+	organisationBtn.innerText = 'Organization';
 
 	// Setup btn attributes
 	Object.assign(indidualBtn, {
 		classList: ['button accent'],
 		type: 'button',
 		title: 'Employee'
-	})
+	});
 	Object.assign(organisationBtn, {
 		classList: ['button accent'],
 		type: 'button',
-		title: 'Organization'
-	})
+		title: 'Organization',
+	});
 
-	indidualBtn.setAttribute('data-form', 'individual-form')
-	organisationBtn.setAttribute('data-form', 'organisation-form')
+	indidualBtn.setAttribute('data-form', 'individual-form');
+	organisationBtn.setAttribute('data-form', 'organisation-form');
 
-	ctaContainer.append(indidualBtn, organisationBtn)
+	ctaContainer.append(indidualBtn, organisationBtn);
 
 	// Click event for buttons
 	ctaContainer.addEventListener('click', (e) => {
-		e.preventDefault()
-		const grandparentContainer = ctaContainer.parentElement.parentElement
-		const id = e.target.dataset.form
+		e.preventDefault();
+		const grandparentContainer = ctaContainer.parentElement.parentElement;
+		const id = e.target.dataset.form;
 
 		if (id) {
-			grandparentContainer.style.display = 'none'
-			toggleForm(id)
+			grandparentContainer.style.display = 'none';
+			toggleForm(id);
 		}
 	})
 
-	return ctaContainer
+	return ctaContainer;
 }
 
 export default async function decorate(block) {
 
-	const data = await fetchData(jsonUrl)
-	const firstDiv = block.firstElementChild
+	const data = await fetchData(jsonUrl);
+	const firstDiv = block.firstElementChild;
 
 	Object.assign(firstDiv, {
 		classList: ['onboarding-calculator__content'],
 		id: 'roi-intro',
-	})
+	});
 
 	// Sort fields for each form
 	data.forEach(item => {
 		if (item.form === "Organisation") {
-			organisationForm.push(item)
+			organisationForm.push(item);
 		}
 
 		if (item.form === "Individual") {
-			individualForm.push(item)
+			individualForm.push(item);
 		}
 	});
 	
-	const cols = [...block.firstElementChild.children]
+	const cols = [...block.firstElementChild.children];
 	// 1st collumn
-	cols[0].classList.add('onboarding-calculator__content-left')
+	cols[0].classList.add('onboarding-calculator__content-left');
 	// 2nd collumn
-	cols[1].classList.add('onboarding-calculator__content-right')
+	cols[1].classList.add('onboarding-calculator__content-right');
 
-	cols[1].append(createCtaContainer())
-	block.append(createOrganisationForm(organisationForm), createIndividualForm(individualForm))
+	cols[1].append(createCtaContainer());
+	block.append(createOrganisationForm(organisationForm), createIndividualForm(individualForm));
 
-	const resetBtnArr = block.querySelectorAll('.reset-calc-btn')
+	const resetBtnArr = block.querySelectorAll('.reset-calc-btn');
 	const rangeInputsArr = block.querySelectorAll(".field-item__range");
 
 	resetBtnArr.forEach(btn => {
 		btn.addEventListener('click', () => {
-			resetForm(block)
+			resetForm(block);
 		})
-	})
+	});
 
 	rangeInputsArr.forEach(item => {
 		const inputRangeField = item.querySelector(".input-range");
