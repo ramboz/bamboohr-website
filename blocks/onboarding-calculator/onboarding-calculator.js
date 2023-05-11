@@ -60,7 +60,7 @@ function validateForm(form) {
 			}
 			inputContainer.classList.remove('invalid');
 		}
-	})
+	});
 
 	if (valid) {
 		form.querySelectorAll('.step')[currentTab].className += " finish";
@@ -497,7 +497,7 @@ function createFields(fields) {
 
 		fieldWrapper.append(divFieldItem);
 	})
-	return fieldWrapper
+	return fieldWrapper;
 }
 
 // Individual form
