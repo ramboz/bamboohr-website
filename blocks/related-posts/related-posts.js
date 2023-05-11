@@ -2,7 +2,7 @@ import { getMetadata, lookupPages, toCamelCase } from '../../scripts/scripts.js'
 import { filterArticles } from '../article-feed/article-feed.js';
 import { createBlogCard } from '../featured-articles/featured-articles.js';
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
-import { createArticleCard, loadWistiaBlock, isUpcomingEvent } from '../listing/listing.js';
+import { createArticleCard, loadWistiaBlock } from '../listing/listing.js';
 import { createDateCard } from '../upcoming/upcoming.js';
 
 function addNoBackgroundClass() {
@@ -32,7 +32,7 @@ function filterAndSort(dataArray, criteria, uniqueCards) {
 
     // Do filter
     filteredResults = dataArray.filter((row) => {
-      //if (isUpcomingEvent(row.eventDate)) return false;
+      // if (isUpcomingEvent(row.eventDate)) return false;
       const matchedAll = filterKeys.every((key) => {
         let matched = false;
         if (row[key]) {
@@ -47,7 +47,7 @@ function filterAndSort(dataArray, criteria, uniqueCards) {
   }
   
   if (criteria.sortBy) {
-    const sortBy = criteria.sortBy;
+    const { sortBy } = criteria;
       // ? criteria.sortBy
       // : 'publicationDate';
 
@@ -74,24 +74,31 @@ function filterAndSort(dataArray, criteria, uniqueCards) {
 async function getCardPath(colConfig, uniqueCards) {
   const promises = [];
   colConfig.forEach(async (col, index) => {
-    const promise = new Promise(async (resolve) => {
+    const promise = new Promise((resolve) => {
       if (col.path) {
         const pathnames = [col.path];
-        const articles = await lookupPages(pathnames, col.contentType);
-        
-        col.article = articles[0];
-        if (col.article) uniqueCards.push(col.article.path);
-        console.log(`getCardPath processed path: path = ${col.article.path}, index = ${index}`);
-        resolve();
+        lookupPages(pathnames, col.contentType)
+          .then((articles) => {
+            [ col.article ] = articles;
+            if (col.article) uniqueCards.push(col.article.path);
+            // console.log(`getCardPath processed path: path = ${col.article.path}, index = ${index}`);
+            resolve();
+          })
+          .catch((error) => {
+            resolve();
+          });
       } else {
-        await lookupPages([], col.contentType);
-        
-        // filter then sort
-        const article = filterAndSort(window.pageIndex[col.contentType].data, col, uniqueCards);
-        col.article = article;
-        if (col.article) uniqueCards.push(col.article.path);
-        console.log(`getCardPath processed content type: path = ${col.article.path}, index = ${index}`);
-        resolve();
+        lookupPages([], col.contentType)
+          .then(() => {
+            const article = filterAndSort(window.pageIndex[col.contentType].data, col, uniqueCards);
+            col.article = article;
+            if (col.article) uniqueCards.push(col.article.path);
+            // console.log(`getCardPath processed content type: path = ${col.article.path}, index = ${index}`);
+            resolve();
+          })
+          .catch((error) => {
+            resolve();
+          });
       }
     });
 
@@ -175,8 +182,8 @@ function getDefaultCardStyle(contentType) {
       defCardStyle = 'date';
       break;
 
-    default:
     case 'blog':
+      default:
       defCardStyle = 'blog';
       break;
   }
@@ -198,28 +205,28 @@ function buildColConfig(block) {
       const contentType = getContentType(pathname);
       const defCardStyle = getDefaultCardStyle(contentType);
       return {contentType, path: pathname, cardStyle: defCardStyle, article: null };
-    } else {
-      const config = {
-        contentType: null,
-        filters: [],
-        sortBy: null,
-        cardStyle: null,
-        article: null,
-      };
-      const configParts = configRow.innerText.split(',');
-      configParts.forEach(p => {
-        const propValPairs = p.split(':');
-        const prop = propValPairs[0].trim().toLowerCase();
-        if (prop === 'content type' || prop === 'sort by' || prop === 'card style') {
-          const val = propValPairs[1].trim();
-          config[toCamelCase(prop)] = val;
-        } else config.filters.push(p.trim());
-      });
+    } 
+    
+    const config = {
+      contentType: null,
+      filters: [],
+      sortBy: null,
+      cardStyle: null,
+      article: null,
+    };
+    const configParts = configRow.innerText.split(',');
+    configParts.forEach(p => {
+      const propValPairs = p.split(':');
+      const prop = propValPairs[0].trim().toLowerCase();
+      if (prop === 'content type' || prop === 'sort by' || prop === 'card style') {
+        const val = propValPairs[1].trim();
+        config[toCamelCase(prop)] = val;
+      } else config.filters.push(p.trim());
+    });
 
-      if (!config.cardStyle) config.cardStyle = getDefaultCardStyle(config.contentType);
+    if (!config.cardStyle) config.cardStyle = getDefaultCardStyle(config.contentType);
 
-      return config;
-    }
+    return config;
   });
 
   return colConfig;
