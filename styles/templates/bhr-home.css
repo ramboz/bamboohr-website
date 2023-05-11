@@ -55,12 +55,12 @@
     color: var(--theme-shade10);
 }
 
-.bhr-home .columns .icon svg {
+.bhr-home .columns:not(.mixed-icon-link) .icon svg {
     width: 5rem;
     height: auto;
 }
 
-.bhr-home .columns .column-small-icons-container.column-multi-element p.button-container {
+.bhr-home .columns:not(.mixed-icon-link) .column-small-icons-container.column-multi-element p.button-container {
     line-height: 12px;
 }
 
@@ -214,6 +214,10 @@
     box-shadow: var(--box-shadow-3);
 }
 
+.bhr-home .columns .block.video video {
+    max-width: 140%;
+}
+
 .bhr-home .section-2 {
     margin-top: -1450px;
 }
@@ -309,6 +313,15 @@
     font-size: 36px;
     font-weight: 700;
     line-height: 44px;
+}
+
+.bhr-home main .carousel.style-5 img {
+    width: 180px;
+    height: 180px;
+}
+
+.bhr-home main .carousel.style-5 div.carousel-text {
+    background-color: var(--color-white);
 }
 
 @media (min-width: 319px) {
@@ -490,7 +503,7 @@
       margin: 0 auto 20px;
     }
 
-    .bhr-home .columns.img-stacked-80 .img-col {
+    .bhr-home .columns.img-stacked-80 .img-col:not(.video-col) {
         width: 80%;
     }
   
@@ -513,6 +526,10 @@
       
     .bhr-home .columns.columns-2-cols:not(.title2-heading) .column-flex-container .non-img-col p.button-container.left {
         text-align: center;
+    }
+
+    .bhr-home .columns .non-img-col .mixed-icon-link-container {
+        justify-content: center;
     }
 }
 
@@ -618,6 +635,31 @@
     .bhr-home main .image.bg-home-middle-1 p:not(:only-child):nth-child(3),
     .bhr-home main .image.bg-home-bottom p:not(:only-child):nth-child(3) {
         display: block;
+    }
+}
+
+@media (min-width: 2200px) {
+    .bhr-home .image.bg-home-bottom picture {
+        top: unset;
+        bottom: 335px;
+    }
+
+    .bhr-home main .section.bottom-section {
+        padding-top: 300px;
+    }
+
+    .bhr-home .image.bg-home-bottom-pudgy picture {
+        bottom: 440px;
+    }
+}
+
+@media (min-width: 3000px) {
+    .bhr-home main .section.bottom-section {
+        padding-top: 360px;
+    }
+
+    .bhr-home .image.bg-home-bottom-pudgy picture {
+        bottom: 500px;
     }
 }
 

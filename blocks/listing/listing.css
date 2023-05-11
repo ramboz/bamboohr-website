@@ -573,6 +573,7 @@ main .listing-results .hrvs-card-body a::after {
 
 main .article-cards ul > div {
   width: 100%;
+  margin-bottom: 30px;
 }
 
 main .article-cards ul > div div a img,
@@ -643,6 +644,11 @@ main .article-cards ul > div div p a::after {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 40px;
+    }
+
+
+    main .article-cards ul > div {
+        margin-bottom: 0;
     }
 
     main .listing-results > li {
@@ -833,8 +839,7 @@ main .listing-article-card .listing-article-card-body p{
 main .listing-article-card .listing-article-card-header span:not(:last-child)::after {
     content: '•';
     display: inline-block;
-    margin: 1px 4px 0 8px;
-    font-size: 10px;
+    margin: 0 2px 0 5px;
     vertical-align: top;
 }
 
@@ -900,4 +905,9 @@ main .listing.one-column.article-cards ul > div div h3 {
         font-size: 36px;
         line-height: 44px;
     }
+}
+
+main .listing.one-column .listing-results .listing-article-card .listing-article-card-header {
+    margin-top: 20px;
+    color: var(--color-1-shade-10);
 }

@@ -23,7 +23,7 @@ function addEndGroupLabel(groupName, parentContainer, siblingContainer = null) {
   else parentContainer.append(endGroupLabel);
 }
 
-async function addBlockLinks(parentContainer, blockName) {
+async function addBlockLinks(parentContainer, blockName, blockPath, blockTitle) {
   const noLinks = ['container-backgrounds'];
   const blockLinks = document.createElement('div');
   blockLinks.classList = 'block-links';
@@ -39,7 +39,7 @@ async function addBlockLinks(parentContainer, blockName) {
 
       const uniqueLinks = [];
       trackerListings.data.forEach(l => {
-        if (l && !uniqueLinks.find(u => u.Title === l.Title)) uniqueLinks.push(l);
+        if (l && !uniqueLinks.find(u => u.MetaTitle === l.MetaTitle)) uniqueLinks.push(l);
       });
 
       const blockLinksLabel = document.createElement('h3');
@@ -52,13 +52,26 @@ async function addBlockLinks(parentContainer, blockName) {
       uniqueLinks.some((link, index) => {
         const blockExampleLink = document.createElement('a');
         blockExampleLink.className = 'block-example-link';
-        blockExampleLink.textContent = link.Title;
+        blockExampleLink.href = link.DocLink;
+        blockExampleLink.textContent = `${link.DocTitle} (${link.MetaTitle})`;
 
         blockLinks.append(blockExampleLink);
 
         // For now only show 10
         return index >= 9;
       });
+
+      // Add path to block page--via sidekick users can get to the google doc
+      const blockPageLinkLabel = document.createElement('h3');
+      blockPageLinkLabel.classList = 'block-page-link-label';
+      blockPageLinkLabel.innerHTML = `Block Page:`;
+      blockLinks.append(blockPageLinkLabel);
+
+      const blockPageLink = document.createElement('a');
+      blockPageLink.className = 'block-page-link';
+      blockPageLink.href = blockPath; // link.path
+      blockPageLink.textContent = blockTitle;
+      blockLinks.append(blockPageLink);
 
       // Add a separator
       const sepContainer = document.createElement('div');
@@ -244,7 +257,7 @@ export default async function decorate(block) {
         // Load the block fragment
         loadFragment(product.path).then(fragment => {
           blockContainer.append(fragment);
-          addBlockLinks(blockContainer, product.block);
+          addBlockLinks(blockContainer, product.block, product.path, product.title);
         });
       }
     });

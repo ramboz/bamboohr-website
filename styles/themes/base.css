@@ -273,6 +273,12 @@
   margin-right: 20px;
 }
 
+@media (max-width: 390px) {
+  #base .button-inline .button-container {
+    margin-right: 0;
+  } 
+}
+
 @media (max-width: 600px) {
   #base .button-inline .button-container a:any-link {
     margin: 6px 0;
@@ -619,6 +625,13 @@
   font-weight: 700;
   font-size: 30px;
   line-height: 36px;
+}
+
+#base .title-size-title-1 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font-family);
+	font-weight: 700;
+	font-size: 26px;
+	line-height: 30px;
 }
 
 #base .title-color-gray-9 :is(h1, h2, h3, h4, h5, h6) {

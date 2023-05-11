@@ -116,6 +116,14 @@ main .quote.full.image-420 .image {
   max-width: 26.25rem;
 }
 
+main .quote.full.image-500 .image {
+  max-width: 31.25rem;
+}
+
+main .quote.full.image-520 .image {
+  max-width: 32.5rem;
+}
+
 /* Colors */
 main .quote.full {
   background-clip: revert;
