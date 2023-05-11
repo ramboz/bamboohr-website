@@ -349,3 +349,17 @@ export async function analyticsTrackTabClicks(clickedTabText) {
 		},
 	});
 }
+
+export async function analyticsTrackSocial(platform) {
+	//eslint-disable-next-line no-undef
+	return alloy('sendEvent', {
+		documentUnloading: true,
+		xdm: {
+			eventType: 'social.share',
+			socialMarketing: {
+				network: platform,
+				share: 1
+			}			
+		},
+	});
+}
