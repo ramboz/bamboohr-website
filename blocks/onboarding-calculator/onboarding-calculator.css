@@ -386,6 +386,7 @@ main .onboarding-calculator .result__wrapper .calc-result {
 	font-weight: bold;
 	font-size: 60px;
 	line-height: 48px;
+	margin-bottom: 1rem;
 }
 
 main .onboarding-calculator .result__wrapper .calc-result.fs-sm {
