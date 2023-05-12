@@ -286,6 +286,17 @@ function templateSelectHandler(el) {
   });
 }
 
+async function copyToClipboard(el) {
+  const text = el.querySelector('#template-preview').textContent;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log('Content copied to clipboard');
+  } catch (err) {
+    console.error('Failed to copy: ', err);
+  }
+}
+
 export default async function decorate(block) {
   
   const data = await fetchData(formUrl)
@@ -415,6 +426,7 @@ export default async function decorate(block) {
 
   // Progress to completed template
   document.getElementById('download-confirmed').addEventListener('click', (e) => {
+    copyToClipboard(block)
     nextStep(e);
   });
   
