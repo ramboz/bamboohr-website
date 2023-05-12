@@ -216,6 +216,7 @@ function loadTemplateCSS() {
       'live-demo-webinar-lp',
       'hr-101-guide',
       'customers',
+      'trade-show',
     ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -376,6 +377,10 @@ export function readBlockConfig(block) {
           } else {
             value = ps.map((p) => p.textContent);
           }
+        } else if (col.querySelector('picture')) {
+          const imgEl = col.querySelector('picture');
+          const imagePath = imgEl.firstElementChild.srcset;
+            value = imagePath.substr(0, imagePath.indexOf('?'));
         } else value = row.children[1].textContent;
         config[name] = value;
       }
@@ -455,6 +460,7 @@ export function decorateBackgrounds($section) {
     'bg-right-multi-4-mobile',
     'bg-right-multi-4-tablet',
     'bg-right-multi-4-laptop',
+    'bg-right-multi-6-mobile',
   ];
   const sectionKey = [...$section.parentElement.children].indexOf($section);
   [...$section.classList]
@@ -545,6 +551,17 @@ export function decorateSections($main) {
           section.classList.add(...meta.style.split(', ').map(toClassName));
         } else if (key === 'anchor') {
           section.id = toClassName(meta.anchor);
+        } else if (key === 'bg-image') {
+          const bgImg = meta['bg-image'];
+          section.setAttribute('data-bg-image', bgImg);
+          // eslint-disable-next-line no-use-before-define
+          const bgPicture = createOptimizedPicture(bgImg, 'Background Image', false, [
+            { media: '(min-width: 1025px)', width: '2000' },
+            { media: '(min-width: 600px)', width: '1200' }
+          ]);
+          bgPicture.classList.add('bg', 'bg-image');
+          if (!section.classList.contains('has-bg')) section.classList.add('has-bg');
+          section.prepend(bgPicture);
         } else {
           section.dataset[toCamelCase(key)] = meta[key];
         }
