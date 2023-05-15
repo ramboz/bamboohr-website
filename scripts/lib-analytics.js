@@ -10,6 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
+import {getMetadata} from "./scripts.js";
+import {setObject} from "./set-object.js";
+
 /**
  * Customer's XDM schema namespace
  * @type {string}
@@ -134,7 +137,7 @@ export async function analyticsSetConsent(approved) {
  * @param additionalXdmFields
  * @returns {Promise<*>}
  */
-export async function analyticsTrackPageViews(document, additionalXdmFields = {}) {
+export async function analyticsTrackPageViews(document, additionalXdmFields = {}, blogPageDetails = {}) {
   // eslint-disable-next-line no-undef
   return alloy('sendEvent', {
     documentUnloading: true,
@@ -144,7 +147,9 @@ export async function analyticsTrackPageViews(document, additionalXdmFields = {}
         webPageDetails: {
           name: `${document.title}`,
 		  _bamboohr: {
-			urlNoQueryString: document.URL.split('?')[0]
+			blogPageDetails: {
+			  ...blogPageDetails,				  
+			}
 		  },
           pageViews: {
             value: 1,
@@ -171,7 +176,8 @@ export async function setupAnalyticsTrackingWithAlloy(document) {
 
   // Custom logic can be inserted here in order to support early tracking before alloy library
   // loads, for e.g. for page views
-  const pageView = analyticsTrackPageViews(document); // track page view early
+  const blogMeta = await getBlogMetaFromInstrumentation(); 
+  const pageView = analyticsTrackPageViews(document,{}, blogMeta); // track page view early
 
   await import('./alloy.min.js');
   await configure;
@@ -362,4 +368,24 @@ export async function analyticsTrackSocial(platform) {
 			}			
 		},
 	});
+}
+
+export async function getBlogMetaFromInstrumentation() {
+	const resp = await fetch('/blog/instrumentation.json');
+	const json = await resp.json();
+	let blogMeta = {};
+	json.digitaldata.data.forEach((mapping) => {
+		if(mapping.metadata == 'title'){
+			mapping.metadata = 'og:title';
+		}
+		const metaValue = getMetadata(mapping.metadata);
+		if (metaValue) {			
+			setObject(blogMeta, mapping.digitaldata, metaValue);
+		}
+	});	
+	try{
+		return blogMeta.resource ;		
+	}catch (e) {
+		return {};
+	}
 }
