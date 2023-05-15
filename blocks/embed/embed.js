@@ -132,6 +132,12 @@ const embedSlideShare = (url) => {
   return resultHtml.outerHTML;
 };
 
+const embedSoftwareAdvice = (url) => `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 66.25%;">
+    <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
+      scrolling="no" allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
+    </iframe>
+  </div>`;
+
 const EMBEDS_CONFIG = {
   youtube: {
     type: 'youtube',
@@ -172,6 +178,10 @@ const EMBEDS_CONFIG = {
   slideshare: {
     type: 'slideshare',
     embed: embedSlideShare,
+  },
+  softwareadvice: {
+    type: 'softwareadvice',
+    embed: embedSoftwareAdvice,
   },
 };
 
