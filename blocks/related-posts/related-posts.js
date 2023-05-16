@@ -239,14 +239,21 @@ async function createCards(block, colConfig) {
       // updateImgHeightsMin(e.target);
     });
   });
-  const relatedPostsInterval = window.setInterval(() => {
-    // This assumes every column has an image/wistia
-    const relatedPostsCardImgs = block.querySelectorAll('.related-posts-card img');
-    if (relatedPostsCardImgs.length === colConfig.length) {
-      relatedPostsCardImgs.forEach(i => resizeObserver.observe(i));
-      window.clearInterval(relatedPostsInterval);
+
+  const cardObserver = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) {
+      window.setTimeout(() => {
+        // This assumes every column has an image/wistia
+        const relatedPostsCardImgs = block.querySelectorAll('.related-posts-card img');
+        if (relatedPostsCardImgs.length === colConfig.length) {
+          relatedPostsCardImgs.forEach(i => resizeObserver.observe(i));
+          cardObserver.disconnect();
+        }
+      }, 500);
     }
-  }, 750);
+  });
+  const relatedPostsCards = block.querySelectorAll('.related-posts-card');
+  relatedPostsCards.forEach(c => cardObserver.observe(c));
 }
 
 function getContentType(pathname) {
