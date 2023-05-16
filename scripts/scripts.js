@@ -1472,12 +1472,6 @@ function createFaqPageSchemaMarkup() {
   $head.append($faqPageSchema);
 }
 
-function hideFreeTrialButton() {
-  // const tryItFree = document.querySelectorAll('.nav-buttons');
-  // tryItFree.classList.add('nav-control-hide');
-  console.log('firing the hideFreeTrialButton function');
-}
-
 /**
  * loads everything that doesn't need to be delayed.
  */
@@ -1520,24 +1514,6 @@ async function loadLazy(doc) {
       }
     });
   }
-
-  if (getMetadata('nav-control')) {
-    console.log('nav control is present');
-    const navControlVals = getMetadata('nav-control').split(',');
-    console.log(navControlVals, 'these are the vals');
-    navControlVals.forEach((val) => {
-      switch (val.trim().toLowerCase().replace(/\s+/g, '-')) {
-        case 'hide-free-trial-button':
-          hideFreeTrialButton();
-          // console.log(val.replace(/\s+/g, '-').trim().toLowerCase());
-          break;
-        default:
-          break;
-      }
-    });
-  }
-
-
 
   const headerloaded = loadHeader(header);
   loadFooter(doc.querySelector('footer'));
