@@ -27,7 +27,7 @@ export function isUpcomingEvent(eventDateStr) {
 
 let gLoadWistiaCSS = true;
 
-function getLinkText(format, mediaType) {
+export function getLinkText(format, mediaType) {
   let linkText = 'Read Now';
   if (format) linkText = format.toLowerCase() === 'video' ? 'Watch Now' : 'Read Now';
   else if (mediaType) {
@@ -49,7 +49,14 @@ function getLinkText(format, mediaType) {
   return linkText;
 }
 
-export function createArticleCard(article, classPrefix, customLinkText = '', excludeMediaType = false, eager = false) {
+export function createArticleCard(
+  article,
+  classPrefix,
+  customLinkText = '',
+  excludeMediaType = false,
+  includeDescription = true,
+  eager = false
+) {
   const title = article.jobTitle || article.title.split(' | ')[0];
   const card = document.createElement('div');
   let articleCategory = [article.category, article.topic, article.planType, article.productArea, article.contentType, article.brandedContent];
@@ -90,18 +97,25 @@ export function createArticleCard(article, classPrefix, customLinkText = '', exc
   } 
 
   const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
-  const articleCategorySpan = articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
+  const articleCategorySpan = !article.readTime && articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
+  const blogCategorySpan = article.readTime && articleCategory ? `<div class="${classPrefix}-card-header category-color-${category}">
+    <span class="${classPrefix}-card-category">${article.category}</span> 
+    <span class="${classPrefix}-card-readtime">${article.readTime || ''}</span>
+    </div>` : '';
+  const articlePresenter = article?.presenter || article?.customerName ? `<h5>${article?.presenter || article?.customerName || ''}</h5>` : '';
+  const articleDesc = includeDescription ? `<p>${article.description}</p>` : '';
 
   card.innerHTML = `
     ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
-    <h5>${article?.presenter || article?.customerName || ''}</h5>
+    ${articlePresenter}
     <h3>${title}</h3>
     ${releaseDate}
-    <p>${article.description}</p>
+    ${articleDesc}
     <div class="${classPrefix}-card-header category-color-${category}">
-    ${articleCategorySpan}
-    ${articleFormatSpan}
+      ${articleCategorySpan}
+      ${blogCategorySpan}
+      ${articleFormatSpan}
     </div>
     <p><a href="${article.path}">${linkText}</a></p>
     </div>`;

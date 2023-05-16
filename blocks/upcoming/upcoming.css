@@ -99,6 +99,16 @@ main .upcoming ul > div div p a::after {
   margin-left: 8px;
 }
 
+main .upcoming-article-card-header {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--category-color);
+    margin-top: 30px;
+    margin-bottom: 25px;
+    font-size: 12px;
+  }
+
 main .upcoming-article-card .upcoming-article-card-picture img {
     width: 100%;
 }

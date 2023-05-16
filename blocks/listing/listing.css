@@ -871,9 +871,21 @@ main .listing.one-column .listing-results .listing-article-card {
     }
 }
 
+main .listing-results .listing-article-card .listing-article-card-picture,
+main .listing-results .listing-article-card .wistia.block,
 main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture {
     margin-bottom: 40px;
 }
+
+main .listing-article-card-header {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--category-color);
+    margin-top: 30px;
+    margin-bottom: 25px;
+    font-size: 12px;
+  }
 
 @media screen and (min-width: 600px) {
     main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture {

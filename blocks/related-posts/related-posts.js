@@ -1,4 +1,10 @@
-import { getMetadata, lookupPages, toCamelCase } from '../../scripts/scripts.js';
+import {
+  createOptimizedPicture,
+  getMetadata,
+  lookupPages,
+  toCamelCase,
+  toCategory,
+} from '../../scripts/scripts.js';
 import { filterArticles } from '../article-feed/article-feed.js';
 import { createBlogCard } from '../featured-articles/featured-articles.js';
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
@@ -112,6 +118,88 @@ async function getCardPath(colConfig, uniqueCards) {
   return Promise.all(promises);
 }
 
+function updateImgHeights(target) {
+  let block = target;
+  if (!target.classList.contains('related-posts') && 
+      target.classList.contains('related-posts-card-picture')) {
+    block = target.parentElement.parentElement;
+  } else if (target.tagName === 'IMG') {
+    let p = target.parentElement;
+    while (!p.classList?.contains('related-posts')) p = p.parentElement;
+    block = p;
+  }
+  const relatedPostsCards = block.querySelectorAll('.related-posts-card');
+  const relatedPostsCardImgs = block.querySelectorAll('.related-posts-card img');
+
+  if (relatedPostsCards.length !== relatedPostsCardImgs.length) return;
+
+  const isInitialized = [...relatedPostsCardImgs].every(i => i.clientHeight);
+  if (!isInitialized) return;
+  
+  let modelImg = null;
+  let tallestImg = null;
+  let maxHeight = 0;
+  // Find model/tallest
+  relatedPostsCardImgs.forEach((img) => {
+    if (img.dataset.modelImg) modelImg = img;
+    if (img.clientHeight > maxHeight) {
+      maxHeight = img.clientHeight;
+      tallestImg = img;
+    }
+  });
+
+  if (modelImg) maxHeight = modelImg.clientHeight;
+  if (!modelImg && tallestImg) tallestImg.dataset.modelImg = true;
+
+  if (!maxHeight) return;
+  
+  // Set all image heights to match the model/tallest.
+  relatedPostsCardImgs.forEach((img) => {
+    if (!img.dataset.modelImg) img.style.height = `${maxHeight}px`;
+  });
+}
+
+function updateImgHeightsMin(target) {
+  let block = target;
+  if (!target.classList.contains('related-posts') && 
+      target.classList.contains('related-posts-card-picture')) {
+    block = target.parentElement.parentElement;
+  } else if (target.tagName === 'IMG') {
+    let p = target.parentElement;
+    while (!p.classList?.contains('related-posts')) p = p.parentElement;
+    block = p;
+  }
+  const relatedPostsCards = block.querySelectorAll('.related-posts-card');
+  const relatedPostsCardImgs = block.querySelectorAll('.related-posts-card img');
+
+  if (relatedPostsCards.length !== relatedPostsCardImgs.length) return;
+
+  const isInitialized = [...relatedPostsCardImgs].every(i => i.clientHeight);
+  if (!isInitialized) return;
+  
+  let modelImg = null;
+  let shortestImg = null;
+  let minHeight = -1;
+  // Find model/shortest
+  relatedPostsCardImgs.forEach((img) => {
+    if (img.dataset.modelImg) modelImg = img;
+    if (img.clientHeight && (minHeight === -1 || img.clientHeight < minHeight)) {
+      minHeight = img.clientHeight;
+      shortestImg = img;
+    }
+  });
+
+  if (modelImg) minHeight = modelImg.clientHeight;
+  if (!modelImg && shortestImg) shortestImg.dataset.modelImg = true;
+
+  if (minHeight === -1) return;
+  
+  // Set all image heights to match the model/shortest.
+  relatedPostsCardImgs.forEach((img) => {
+    if (!img.dataset.modelImg) img.style.height = `${minHeight}px`;
+  });
+}
+
 async function createCards(block, colConfig) {
   const uniqueCards = [];
   await getCardPath(colConfig, uniqueCards);
@@ -126,16 +214,21 @@ async function createCards(block, colConfig) {
         card = createAppCard(col.article, 'related-posts');
         break;
       case 'article':
-        card = createArticleCard(col.article, 'related-posts');
+        card = createArticleCard(col.article, 'related-posts', col.customLinkText);
         loadWistia = true;
         break;
       case 'date':
-        card = createDateCard(col.article, 'related-posts');
+        card = createDateCard(col.article, 'related-posts', false, {text: col.customLinkText});
         loadWistia = true;
         break;
       case 'blog':
+        card = createBlogCard(col.article, 'related-posts', col.customLinkText);
+        break;
+
+      case 'simple':
       default:
-        card = createBlogCard(col.article, 'related-posts');
+        card = createArticleCard(col.article, 'related-posts', col.customLinkText, false, false);
+        loadWistia = true;
         break;
     }
 
@@ -145,6 +238,21 @@ async function createCards(block, colConfig) {
 
   // Adds .no-background class to related posts block after all cards are created
   addNoBackgroundClass();
+
+  const resizeObserver = new ResizeObserver((entries) => {
+    entries.forEach(e => {
+      updateImgHeights(e.target);
+      // updateImgHeightsMin(e.target);
+    });
+  });
+  const relatedPostsInterval = window.setInterval(() => {
+    // This assumes every column has an image/wistia
+    const relatedPostsCardImgs = block.querySelectorAll('.related-posts-card img');
+    if (relatedPostsCardImgs.length === colConfig.length) {
+      relatedPostsCardImgs.forEach(i => resizeObserver.observe(i));
+      window.clearInterval(relatedPostsInterval);
+    }
+  }, 750);
 }
 
 function getContentType(pathname) {
@@ -173,7 +281,9 @@ function getContentType(pathname) {
   return contentType;
 }
 
-function getDefaultCardStyle(contentType) {
+function getDefaultCardStyle(contentType, mixed) {
+  if (mixed) return 'simple';
+
   let defCardStyle = null;
   switch(contentType) {
     case 'integrations':
@@ -200,6 +310,7 @@ function buildColConfig(block) {
   // Parse the column config info (content type determines index to read):
   // content type + path or
   // content type + filters, sort by and card style
+  const contentTypes = [];
   const colConfig = configRows.map(configRow => {
     const link = configRow.querySelector('a');
 
@@ -207,8 +318,8 @@ function buildColConfig(block) {
       let { pathname } = new URL(link.href);
       if (pathname.endsWith('/')) pathname = pathname.slice(0, -1);
       const contentType = getContentType(pathname);
-      const defCardStyle = getDefaultCardStyle(contentType);
-      return {contentType, path: pathname, cardStyle: defCardStyle, article: null };
+      if (!contentTypes.includes(contentType)) contentTypes.push(contentType);
+      return {contentType, path: pathname, cardStyle: null, article: null };
     } 
     
     const config = {
@@ -222,15 +333,21 @@ function buildColConfig(block) {
     configParts.forEach(p => {
       const propValPairs = p.split(':');
       const prop = propValPairs[0].trim().toLowerCase();
-      if (prop === 'content type' || prop === 'sort by' || prop === 'card style') {
+      if (prop === 'content type' || prop === 'sort by' || prop === 'card style'
+          || prop === 'custom link text') {
         const val = propValPairs[1].trim();
         config[toCamelCase(prop)] = val;
       } else config.filters.push(p.trim());
     });
 
-    if (!config.cardStyle) config.cardStyle = getDefaultCardStyle(config.contentType);
+    if (!contentTypes.includes(config.contentType)) contentTypes.push(config.contentType);
 
     return config;
+  });
+
+  const mixed = contentTypes.length > 1;
+  colConfig.forEach(c => {
+    if (!c.cardStyle) c.cardStyle = getDefaultCardStyle(c.contentType, mixed);
   });
 
   return colConfig;
