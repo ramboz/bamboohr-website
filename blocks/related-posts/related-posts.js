@@ -1,10 +1,4 @@
-import {
-  createOptimizedPicture,
-  getMetadata,
-  lookupPages,
-  toCamelCase,
-  toCategory,
-} from '../../scripts/scripts.js';
+import { getMetadata, lookupPages, toCamelCase, } from '../../scripts/scripts.js';
 import { filterArticles } from '../article-feed/article-feed.js';
 import { createBlogCard } from '../featured-articles/featured-articles.js';
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
