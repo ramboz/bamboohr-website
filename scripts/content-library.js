@@ -88,7 +88,7 @@ function buildSuccessMore(main) {
 
 function downloadPdf() {
   const {origin} = window.location;
-  const path = window.location.pathname.split('/')
+  const path = window.location.pathname.split('/');
   const fileName = path[path.length - 1];
   const pdfPath = window.location.pathname.replace('/resources/','/resources/assets/');
   const url = `${origin}${pdfPath}.pdf`;
