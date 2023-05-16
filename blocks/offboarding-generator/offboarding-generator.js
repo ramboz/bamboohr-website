@@ -143,8 +143,8 @@ function getTemplatesTone(template) {
     if (TemplateFormal && TemplateFriendly && TemplateNeutral ) {
       const obj = {
         TemplateFormal: item.TemplateFormal,
+        TemplateNeutral: item.TemplateNeutral,
         TemplateFriendly: item.TemplateFriendly,
-        TemplateNeutral: item.TemplateNeutral
       }
       acc[index] = obj
     }
