@@ -1,5 +1,4 @@
 main .onboarding-calculator {
-	background-color: #F6FAFD;
 	border-radius: 12px;
 	box-shadow: 0 4px 12px 4px #86868624;
 	margin: 2em auto;
@@ -66,7 +65,7 @@ main .onboarding-calculator button {
 	font-weight: 500;
 	cursor: pointer;
 	color: var(--color-white);
-	background-color: #1A87C9;
+	background-color: var(--theme-shade5);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -77,7 +76,7 @@ main .onboarding-calculator button {
 
 main .onboarding-calculator button:hover, 
 main .onboarding-calculator .result__wrapper .result__right .button:hover {
-	background-color: #177AB5;
+	background-color: var(--theme-shade5);
 	box-shadow: 0 4px 12px 4px #86868624;
 }
 
@@ -91,7 +90,7 @@ main .onboarding-calculator form {
     align-items: center;
     height: 100%;
 	width: 100%;
-	background-color: #F6FAFD;
+	background-color: var(--secondary-theme-tint15);
 	gap: 20px;
 }
 
@@ -149,8 +148,8 @@ main .onboarding-calculator .error {
 
 main .onboarding-calculator .tab .field-item input[type="range"]{
 	--percent: 50%;
-    background-color: #B6E0FA;
-    background-image: linear-gradient(#1A87C9,#1A87C9);
+    background-color: var(--secondary-theme-tint10);
+    background-image: linear-gradient(var(--theme-shade5),var(--theme-shade5));
     background-size: var(--percent) 100%;
     background-repeat: no-repeat;
     border-radius: 0;
@@ -159,6 +158,15 @@ main .onboarding-calculator .tab .field-item input[type="range"]{
     transition: background-color 0.3s;
     appearance: none;
 	margin-top: 2px;
+}
+
+main .onboarding-calculator .tab .field-item input[type=range]::-webkit-slider-thumb {
+	height: 15px;
+	width: 15px;
+	border-radius: 23px;
+	background-color: var(--theme-shade5);
+	cursor: pointer;
+	-webkit-appearance: none;
 }
 
 main .onboarding-calculator .tab .field-item label {
@@ -178,7 +186,7 @@ main .onboarding-calculator .field-item__range {
 }
 
 main .onboarding-calculator .field-item__range .range-value {
-	background: #1A87C9;
+	background-color: var(--theme-shade5);
 	color: white;
 	padding: 2px 12px;
 	position: absolute;
@@ -193,7 +201,7 @@ main .onboarding-calculator .field-item__range .range-value::after {
     position: absolute;
     width: 0;
     height: 0;
-    border-bottom: 10px solid #1A87C9;
+    border-bottom: 10px solid var(--theme-shade5);
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     top: -5px;
@@ -217,11 +225,11 @@ main .onboarding-calculator .step {
 }
 
 main .onboarding-calculator .step.step-active {
-	background-color: #1A87C9;
+	background-color: var(--theme-shade5);
 }
 
 main .onboarding-calculator .step.finish {
-	background-color: #1A87C9;
+	background-color: var(--theme-shade5);
 }
 
 main .onboarding-calculator .tooltip {
@@ -230,7 +238,7 @@ main .onboarding-calculator .tooltip {
 	margin-left: 0.25rem;
 	width: 14px;
 	height: 14px;
-	background: #1A87C9;
+	background: var(--theme-shade5);
 	cursor: help;
 	border-radius: 50%;
 	top: 2px;
@@ -268,7 +276,7 @@ main .onboarding-calculator .tooltip__text {
 	top: 1.4rem;
 	left: 50%;
 	transform: translateX(-50%);
-	background:#1A87C9;
+	background-color: var(--theme-shade5);
 	border-radius: 0.5rem;
 	color: white;
 	width: 10rem;
@@ -294,14 +302,14 @@ main .onboarding-calculator .navBtn-wrapper {
 }
 
 main .onboarding-calculator #prevBtn {
-	border: 1px solid #1A87C9;
-	color: #1A87C9;
+	border: 1px solid var(--theme-shade5);
+	color: var(--theme-shade5);
 	background-color: transparent;
 }
 
 main .onboarding-calculator #prevBtn:hover {
-	border-color:#177AB5;
-	color:#177AB5;
+	border-color: var(--theme-shade5);
+	color:var(--theme-shade5);
 }
 
 main .onboarding-calculator .range-container {
@@ -339,7 +347,7 @@ main .onboarding-calculator .result__wrapper .result__left .reset-calc-btn {
 	background-color: transparent;
 	padding: 0;
 	text-decoration: underline;
-	color: #1A87C9;
+	color: var(--theme-shade5);
 	font-size: 14px;
 	font-weight: 500;
 	line-height: 24px;
@@ -351,7 +359,7 @@ main .onboarding-calculator .result__wrapper .result__left .reset-calc-btn:hover
 
 main .onboarding-calculator .result__wrapper .result__right .button {
 	padding: 16px 48px;
-	background: #1A87C9;
+	background-color: var(--theme-shade5);
 	border-radius: 25px;
 	font-weight: 500;
 	font-size: 14px;
@@ -368,6 +376,7 @@ main .onboarding-calculator .result__wrapper .result__right {
     justify-content: center;
     width: 100%;
 	background: #D2E5F0;
+	background-color: var(--secondary-theme-tint5);
 }
 
 main .onboarding-calculator .result__wrapper .result__right-text {
@@ -382,7 +391,7 @@ main .onboarding-calculator .result__wrapper .result__right-text p {
 }
 
 main .onboarding-calculator .result__wrapper .calc-result {
-	color: #1A87C9;
+	color: var(--theme-shade5);
 	font-weight: bold;
 	font-size: 60px;
 	line-height: 48px;
