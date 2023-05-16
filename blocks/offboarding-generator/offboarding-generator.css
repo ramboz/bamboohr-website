@@ -79,11 +79,13 @@ main .offboarding-generator-step--active {
 }
 
 /* Overlay Steps */
+main .offboarding-generator-step--overlay.offboarding-generator-step--active {
+  display: flex;
+}
+
 main .offboarding-generator-step--overlay > div {
-  width: 400px;
-  position: absolute;
-  top: 2.5rem;
-  left: 2.5rem;
+  flex: 0 0 40%;
+  margin: 2.5rem 0 2.5rem 2.5rem;
   z-index: 3;
 }
 
@@ -349,11 +351,14 @@ main .offboarding-generator select {
 }
 
 /* Input Elements */
+main .offboarding-generator .field_item {
+  margin-bottom: 1rem;
+}
+
 main .offboarding-generator input {
   padding: 1rem;
   border-radius: 0.5rem;
   border: 1px solid #E5EFF6;
-  margin: 0 0 1rem 0;
   width: 100%;
   display: block;
   appearance: none;
@@ -469,4 +474,13 @@ main .offboarding-generator .tooltip:hover .tooltip__text {
   opacity: 1;
   bottom: 1.25rem;
   transition: all 0.3s ease;
+}
+
+main .offboarding-generator .error {
+  font-size: 12px;
+  color: red;
+}
+
+main .offboarding-generator .hidden {
+	display: none;
 }
