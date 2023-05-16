@@ -44,6 +44,37 @@ function addToSessionStorage(id, data) {
   }
 }
 
+function getMessage(field) {
+	return `Please enter ${field.name || field.id}`;
+}
+
+function validateForm(form) {
+	let valid = true;
+	const inputFields = form.querySelectorAll('input');
+
+	inputFields.forEach(input => {
+		const inputContainer = input.parentElement;
+		const errorBox = inputContainer.querySelector('.error');
+
+    if (input.value.length === 0) {
+      const message = getMessage(input);
+      errorBox.classList.remove('hidden');
+      inputContainer.classList.add('invalid');
+      errorBox.textContent = message;
+      valid = false;
+    } else {
+      errorBox.classList.add('hidden');
+    }
+    inputContainer.classList.remove('invalid');
+	});
+
+	// if (valid) {
+	// 	form.querySelectorAll('.step')[currentTab].className += " finish";
+	// }
+	
+	return valid;
+}
+
 function editSessionStorage(id, value) {
   let forms = getSessionStorage();
 
@@ -71,9 +102,10 @@ function createTooltip(content) {
 
 // Generate Input
 function createInput(id, type, label, placeholder, value, tooltip) {
-  const inputHtml = `<div>
+  const inputHtml = `<div class="field_item">
   <label for="${id}">${label} ${tooltip ? createTooltip(tooltip) : ''}</label>
   <input type="${type}" id="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} />
+  <div class="error hidden"></div>
   </div>`
 
   return inputHtml;
@@ -193,8 +225,9 @@ function leadGenTemplate() {
   output += createInput('lead-phone', 'tel', 'Phone Number', 'Please enter your phone number', null);
   output += countrySelect;
   output += createSelect('lead-employees', 'Employee Count ', employeeCount);
+  output += '<button data-step="3" class="button button--teal" id="download-confirmed">Download my template</button>'
   output += '</form>';
-  output += '<nav><button data-step="3" class="button button--teal" id="download-confirmed">Download my template</button></nav>';
+  // output += '<nav><button data-step="3" class="button button--teal" id="download-confirmed">Download my template</button></nav>';
   return output;
 }
 
@@ -234,6 +267,8 @@ function nextBtnHandler(el) {
     const form = el.querySelector('#template-form')
     const inputFields = form.querySelectorAll('input')
     editFormID = form.dataset.form;
+
+    if (!validateForm(form)) return;
 
     const values = Object.values(inputFields).reduce((acc, item) => {
       acc[item.id] = item.value
@@ -426,6 +461,11 @@ export default async function decorate(block) {
 
   // Progress to completed template
   document.getElementById('download-confirmed').addEventListener('click', (e) => {
+    e.preventDefault()
+    const form = e.target.parentElement
+    
+    if (!validateForm(form)) return;
+
     copyToClipboard(block)
     nextStep(e);
   });
