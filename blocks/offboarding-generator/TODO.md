@@ -9,7 +9,7 @@ https://docs.google.com/document/d/1MGzTs2BfVB773CEZWaBJAfBl9iGaiuLIzBpBSslwg4I/
 # To Do
 
 - Move forms into Google spreadsheet - DONE
-- Form Validation - Is this for every fields or only for fields that are mandatory?
+- Form Validation - Is this for every fields or only for fields that are mandatory? - DONE
 - Form Spacing - accommodate extra fields for each template - Style fix - DONE
 - Step Transitions - Nicer animation between tabs (Optional)
 - Generate Template (for copy/paste) - not exporting to PDF! - Copy fields value into Clipboard - DONE
