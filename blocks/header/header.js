@@ -320,4 +320,14 @@ export default async function decorate(block) {
 
   if (collection === 'blog') block.append(createSearch());
   decorateIcons(block);
+
+  // Adds the ability to hide the free trial button in the nav
+  if (getMetadata('nav-control')) {
+    const navControlVal = getMetadata('nav-control').trim().toLowerCase().replace(/\s+/g, '-');
+    const freeTrialButton = document.querySelector('.nav-free-trial-btn');
+    if (navControlVal === 'hide-free-trial-button' && freeTrialButton) {
+      freeTrialButton.classList.add('hide-element');
+    }
+  }
+
 }
