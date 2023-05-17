@@ -867,6 +867,7 @@ div .tablet-center-image .column-flex-container.columns-align-start {
 
 .inline-form-container {
   max-width: 510px;
+  margin: 0 auto;
 }
 
 .inline-form {
@@ -899,12 +900,12 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   width: 100%;
   cursor: text;
   color: var(--color-gray-9);
+  text-align: left;
 }
 
 .inline-form-input {
   height: 50px;
   border-radius: 100px 0 0 100px;
-  background-color: var(--color-gray-1);
   border: 1px solid var(--color-gray-7);
   border-right: none;
   width: 100%;
@@ -961,6 +962,7 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   line-height: 22px;
   color: var(--color-2-shade-10);
   margin-top: 10px;
+  text-align: left;
 }
 
 @media (min-width: 600px) {
@@ -1005,6 +1007,10 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   .columns.section-header :is(h1, h2, h3, h4, h5, h6, div) {
     font-size: 48px;
     line-height: 60px;
+  }
+
+  .inline-form-container {
+    margin: 0;
   }
 }
 
