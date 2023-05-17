@@ -98,16 +98,16 @@ export function createArticleCard(
 
   const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
   const articleCategorySpan = !article.readTime && articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
-  const blogCategorySpan = article.readTime && articleCategory ? `<div class="${classPrefix}-card-header category-color-${category}">
-    <span class="${classPrefix}-card-category">${article.category}</span> 
-    <span class="${classPrefix}-card-readtime">${article.readTime || ''}</span>
-    </div>` : '';
+  const blogCategorySpan = article.readTime && articleCategory ? `<span class="${classPrefix}-card-category">${article.category}</span> 
+    <span class="${classPrefix}-card-readtime">${article.readTime || ''}</span>` : '';
   const articlePresenter = article?.presenter || article?.customerName ? `<h5>${article?.presenter || article?.customerName || ''}</h5>` : '';
   const articleDesc = includeDescription ? `<p>${article.description}</p>` : '';
+  // const simpleClass = !includeDescription ? ` ${classPrefix}-card-body-simple` : '';
+  const simpleClass = '';
 
   card.innerHTML = `
     ${articleImage}
-    <div class="${classPrefix}-card-body" am-region="${title}">
+    <div class="${classPrefix}-card-body${simpleClass}" am-region="${title}">
     ${articlePresenter}
     <h3>${title}</h3>
     ${releaseDate}

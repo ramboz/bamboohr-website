@@ -55,6 +55,9 @@ main .related-posts-card-header {
   margin-top: 30px;
   margin-bottom: 25px;
   font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 main .related-posts-card-header a:any-link {
@@ -80,6 +83,12 @@ main .related-posts-card h3 {
   font-weight: 600;
   font-style: normal;
   margin: 0 0 20px;
+}
+
+main .related-posts-card-body-simple h3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 main .related-posts-card .related-posts-card-readtime::before {
