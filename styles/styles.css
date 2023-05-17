@@ -1829,3 +1829,7 @@ main .section[data-section-status='loading'],
 main .section[data-section-status='initialized'] {
   display: none;
 }
+
+.hide-element {
+  display: none;
+}
