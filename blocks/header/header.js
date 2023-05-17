@@ -325,7 +325,7 @@ export default async function decorate(block) {
   if (getMetadata('nav-control')) {
     const navControlVal = getMetadata('nav-control').trim().toLowerCase().replace(/\s+/g, '-');
     const freeTrialButton = document.querySelector('.nav-free-trial-btn');
-    if (navControlVal === 'hide-nav-free-trial-button' && freeTrialButton) {
+    if (navControlVal === 'hide-free-trial-button' && freeTrialButton) {
       freeTrialButton.classList.add('hide-element');
     }
   }
