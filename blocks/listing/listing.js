@@ -54,7 +54,7 @@ export function createArticleCard(
   classPrefix,
   customLinkText = '',
   excludeMediaType = false,
-  includeDescription = true,
+  simple = false,
   eager = false
 ) {
   const title = article.jobTitle || article.title.split(' | ')[0];
@@ -101,9 +101,14 @@ export function createArticleCard(
   const blogCategorySpan = article.readTime && articleCategory ? `<span class="${classPrefix}-card-category">${article.category}</span> 
     <span class="${classPrefix}-card-readtime">${article.readTime || ''}</span>` : '';
   const articlePresenter = article?.presenter || article?.customerName ? `<h5>${article?.presenter || article?.customerName || ''}</h5>` : '';
-  const articleDesc = includeDescription ? `<p>${article.description}</p>` : '';
-  // const simpleClass = !includeDescription ? ` ${classPrefix}-card-body-simple` : '';
+  const articleDesc = !simple ? `<p class="${classPrefix}-card-detail">${article.description}</p>` : '';
+  // const simpleClass = simple ? ` ${classPrefix}-card-body-simple` : '';
   const simpleClass = '';
+  const articleCardHeader = !simple ? `<div class="${classPrefix}-card-header category-color-${category}">
+      ${articleCategorySpan}
+      ${blogCategorySpan}
+      ${articleFormatSpan}
+    </div>` : '';
 
   card.innerHTML = `
     ${articleImage}
@@ -112,11 +117,7 @@ export function createArticleCard(
     <h3>${title}</h3>
     ${releaseDate}
     ${articleDesc}
-    <div class="${classPrefix}-card-header category-color-${category}">
-      ${articleCategorySpan}
-      ${blogCategorySpan}
-      ${articleFormatSpan}
-    </div>
+    ${articleCardHeader}
     <p><a href="${article.path}">${linkText}</a></p>
     </div>`;
   return (card);

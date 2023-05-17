@@ -221,7 +221,7 @@ async function createCards(block, colConfig) {
 
       case 'simple':
       default:
-        card = createArticleCard(col.article, 'related-posts', col.customLinkText, false, false);
+        card = createArticleCard(col.article, 'related-posts', col.customLinkText, false, true);
         loadWistia = true;
         break;
     }

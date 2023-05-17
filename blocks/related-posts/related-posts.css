@@ -91,6 +91,15 @@ main .related-posts-card-body-simple h3 {
   text-overflow: ellipsis;
 }
 
+main .related-posts-card-detail {
+  max-height: 110px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 main .related-posts-card .related-posts-card-readtime::before {
   content: '•';
   display: inline-block;

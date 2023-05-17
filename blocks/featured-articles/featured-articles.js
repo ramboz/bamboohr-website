@@ -26,7 +26,7 @@ export function createBlogCard(article, classPrefix, customLinkText = '', eager 
     <div class="${classPrefix}-card-picture"><a href="${article.path}">${pictureString}</a></div>
     <div class="${classPrefix}-card-body" am-region="${title}">
     <h3>${title}</h3>
-    <p>${article.description}</p>
+    <p class="${classPrefix}-card-detail">${article.description}</p>
     <p><a href="${article.path}">${linkText}</a></p>
     </div>`;
   return (card);
