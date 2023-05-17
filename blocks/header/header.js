@@ -241,7 +241,14 @@ export default async function decorate(block) {
         const buttons = buttonsContainer.querySelectorAll('a');
         if (buttons.length === 3) buttonsContainer.parentElement.classList.add('extra-buttons');
         buttons.forEach((a) => {
-          if (a.href.startsWith('tel:')) a.classList.add('phone-number');
+          if (a.href.startsWith('tel:')) {
+            a.classList.add('phone-number');
+            a.parentElement.classList.add('nav-phone-num');
+          } else if (a.href.endsWith('/login/')) {
+            a.parentElement.parentElement.classList.add('nav-login-btn');
+          } else if (a.href.endsWith('/signup.php')) {
+            a.parentElement.classList.add('nav-free-trial-btn');
+          }
           a.classList.add('button', 'small');
           if (a.parentElement.tagName === 'EM') {
             a.classList.add('light');
@@ -313,4 +320,14 @@ export default async function decorate(block) {
 
   if (collection === 'blog') block.append(createSearch());
   decorateIcons(block);
+
+  // Adds the ability to hide the free trial button in the nav
+  if (getMetadata('nav-control')) {
+    const navControlVal = getMetadata('nav-control').trim().toLowerCase().replace(/\s+/g, '-');
+    const freeTrialButton = document.querySelector('.nav-free-trial-btn');
+    if (navControlVal === 'hide-free-trial-button' && freeTrialButton) {
+      freeTrialButton.classList.add('hide-element');
+    }
+  }
+
 }
