@@ -871,8 +871,7 @@ div .tablet-center-image .column-flex-container.columns-align-start {
 
 .inline-form {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
   align-content: stretch;
