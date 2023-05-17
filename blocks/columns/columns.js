@@ -27,9 +27,75 @@ function addBreakpointImages(col, block) {
   }
 }
 
+function handleEmailFormSubmit (event) {
+  event.preventDefault();
+  const form = event.target;
+  const emailInput = document.querySelector('.inline-form-input');
+  const email = emailInput.value;
+  const formLabel = document.querySelector('.inline-form-label');
+  const errorContainer = document.querySelector('.error-container');
+
+  if (event.type === 'focusin') {
+    // Add active class when user focuses inside emailInput
+    formLabel.classList.add('inline-form-label-active');
+    errorContainer.textContent = '';
+    emailInput.classList.remove('inline-form-input-error');
+  } else if (event.type === 'focusout') {
+    // Remove active class when user focuses out and no value in emailInput
+    if (email.trim() === '') {
+      formLabel.classList.remove('inline-form-label-active');
+      errorContainer.textContent = '';
+      emailInput.classList.remove('inline-form-input-error');
+    }
+  }
+  
+  const link = form.dataset.link; // Get the link from the dataset attribute
+  
+  if (event.type === 'submit') {
+    if (email.trim() === '') {
+      // Display error message for blank email
+      errorContainer.textContent = 'Please enter an email address.';
+      emailInput.classList.add('inline-form-input-error');
+      return; // Stop further execution
+    }
+
+    if (!isValidEmail(email)) {
+      // Display error message for incorrect email format
+      errorContainer.textContent = 'Please enter a valid email address.';
+      emailInput.classList.add('inline-form-input-error');
+      return; // Stop further execution
+    }
+
+  // Redirect the user to the provided link
+    if (link) {
+      const url = new URL(link);
+      url.searchParams.set('email', email);
+      window.location.href = url.toString();
+    }
+  }
+  
+  // Additional logic or validation if needed
+
+  //add event datalayer pushes
+
+}
+
+// Helper function to validate email format
+function isValidEmail(email) {
+  // Use a regular expression to validate email format
+  const emailRegex = /^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/;
+  return emailRegex.test(email);
+}
+
+// Add the event listener to the form
+const form = document.querySelector('form.inline-form');
+if (form) {
+  form.addEventListener('submit', handleEmailFormSubmit);
+}
+
 function addButtonClasses(col, block) {
   const noLeftButtons = block.classList.contains('no-left-buttons');
-    
+ 
   if (!noLeftButtons) {
     const isButtonLinks = block.classList.contains('button-style-link');
     const buttons = col.querySelectorAll('a.button');
@@ -43,6 +109,66 @@ function addButtonClasses(col, block) {
         button.classList.add('small');
         button.parentElement.classList.add('left');
       });
+    }
+  }
+
+  if (block.classList.contains('email-form')) {
+    const link = col.querySelector('a');
+    
+    if (link) {
+      // Remove existing button
+      link.parentElement.remove();
+      
+      // Build embedded form
+      const formContainer = document.createElement('div');
+      formContainer.classList.add('inline-form-container');
+  
+      const form = document.createElement('form');
+      form.classList.add('inline-form');
+      form.addEventListener('submit', handleEmailFormSubmit);
+      form.dataset.link = link.href;
+      form.setAttribute('novalidate', '');
+
+      const errorContainer = document.createElement('div');
+      errorContainer.classList.add('error-container');
+
+      const formLeft = document.createElement('div');
+      formLeft.classList.add('inline-form-left');
+      form.appendChild(formLeft);
+
+      const formInputWrapper = document.createElement('div');
+      formInputWrapper.classList.add('inline-form-input-wrapper');
+      formLeft.appendChild(formInputWrapper);
+
+      const emailInput = document.createElement('input');
+      emailInput.type = 'email';
+      emailInput.name = 'email';
+      emailInput.required = true;
+      emailInput.classList.add('inline-form-input');
+      formInputWrapper.appendChild(emailInput);
+
+      emailInput.addEventListener('focusin', handleEmailFormSubmit);
+      emailInput.addEventListener('focusout', handleEmailFormSubmit);
+
+      const formLabel = document.createElement('label');
+      formLabel.for = 'email';
+      formLabel.innerText = 'Enter your email';
+      formLabel.classList.add('inline-form-label');
+      formInputWrapper.appendChild(formLabel);
+
+      // Moves label on focus
+      formLabel.addEventListener('click', () => {
+        emailInput.focus();
+      });
+  
+      const submitButton = document.createElement('button');
+      submitButton.type = 'submit';
+      submitButton.innerText = link.title;
+      form.appendChild(submitButton);
+  
+      formContainer.appendChild(form);
+      formContainer.appendChild(errorContainer);
+      col.appendChild(formContainer);
     }
   }
 }
@@ -239,7 +365,6 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
     } else col.classList.add('non-img-col');
     
     addButtonClasses(col, block);
-
     addIconContainer(col, block);
   });
 
