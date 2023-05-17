@@ -324,27 +324,10 @@ export default async function decorate(block) {
 
   if (getMetadata('nav-control')) {
     const navControlVal = getMetadata('nav-control').trim().toLowerCase().replace(/\s+/g, '-');
-    console.log(navControlVal, 'this is the navcontrolval');
-    if (navControlVal === 'hide-free-trial-button') {
-      const freeTrialButton = document.querySelectorAll('nav-free-trial-btn');
-      freeTrialButton.classList.add('test-class');
+    const freeTrialButton = document.querySelector('.nav-free-trial-btn');
+    if (navControlVal === 'hide-nav-free-trial-button' && freeTrialButton) {
+      freeTrialButton.classList.add('hide-element');
     }
-
-
-
-
-
-
-
-    // const navControlVals = getMetadata('nav-control').split(',');
-    // navControlVals.forEach((navControlVal) => {
-    //   const val = navControlVal.trim().toLowerCase().replace(/\s+/g, '-');
-    //   if (val === 'hide-free-trial-button') {
-    //     const freeTrialButton = document.querySelectorAll('nav-free-trial-btn');
-    //     freeTrialButton.classList.add('test-class');
-    //     console.log(freeTrialButton, 'this is the button');
-    //   }
-    // });
   }
 
 }
