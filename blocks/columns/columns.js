@@ -27,6 +27,11 @@ function addBreakpointImages(col, block) {
   }
 }
 
+function isValidEmail(email) {
+  const emailRegex = /^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/;
+  return emailRegex.test(email);
+}
+
 function handleEmailFormSubmit (event) {
   event.preventDefault();
   const form = event.target;
@@ -49,21 +54,21 @@ function handleEmailFormSubmit (event) {
     }
   }
   
-  const link = form.dataset.link; // Get the link from the dataset attribute
+  const { link } = form.dataset;
   
   if (event.type === 'submit') {
     if (email.trim() === '') {
       // Display error message for blank email
       errorContainer.textContent = 'Please enter an email address.';
       emailInput.classList.add('inline-form-input-error');
-      return; // Stop further execution
+      return;
     }
 
     if (!isValidEmail(email)) {
       // Display error message for incorrect email format
       errorContainer.textContent = 'Please enter a valid email address.';
       emailInput.classList.add('inline-form-input-error');
-      return; // Stop further execution
+      return;
     }
 
   // Redirect the user to the provided link
@@ -73,24 +78,14 @@ function handleEmailFormSubmit (event) {
       window.location.href = url.toString();
     }
   }
-  
-  // Additional logic or validation if needed
+  // Add event datalayer
 
-  //add event datalayer pushes
-
-}
-
-// Helper function to validate email format
-function isValidEmail(email) {
-  // Use a regular expression to validate email format
-  const emailRegex = /^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/;
-  return emailRegex.test(email);
 }
 
 // Add the event listener to the form
-const form = document.querySelector('form.inline-form');
-if (form) {
-  form.addEventListener('submit', handleEmailFormSubmit);
+const emailForm = document.querySelector('form.inline-form');
+if (emailForm) {
+  emailForm.addEventListener('submit', handleEmailFormSubmit);
 }
 
 function addButtonClasses(col, block) {
