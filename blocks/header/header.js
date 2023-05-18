@@ -325,8 +325,12 @@ export default async function decorate(block) {
   if (getMetadata('nav-control')) {
     const navControlVal = getMetadata('nav-control').trim().toLowerCase().replace(/\s+/g, '-');
     const freeTrialButton = document.querySelector('.nav-free-trial-btn');
+    const freeTrialButtonLink = document.querySelector('.nav-free-trial-btn a');
     if (navControlVal === 'hide-free-trial-button' && freeTrialButton) {
       freeTrialButton.classList.add('hide-element');
+    } else if (navControlVal === 'swap-free-trial-for-demo-button' && freeTrialButton) {
+      freeTrialButtonLink.innerHTML = 'Get My Free Demo';
+      freeTrialButtonLink.setAttribute('href', 'https://www.bamboohr.com/pl-pages/demo-request/');
     }
   }
 
