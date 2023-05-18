@@ -328,7 +328,7 @@ export default async function decorate(block) {
     const freeTrialButtonLink = document.querySelector('.nav-free-trial-btn a');
     if (navControlVal === 'hide-free-trial-button' && freeTrialButton) {
       freeTrialButton.classList.add('hide-element');
-    } else if (navControlVal === 'swap-free-trial-for-demo-button' && freeTrialButton) {
+    } else if (navControlVal === 'swap-free-trial-for-free-demo' && freeTrialButton) {
       freeTrialButtonLink.innerHTML = 'Get My Free Demo';
       freeTrialButtonLink.setAttribute('href', 'https://www.bamboohr.com/pl-pages/demo-request/');
     }
