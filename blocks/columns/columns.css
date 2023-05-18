@@ -948,6 +948,7 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   margin-top: 20px;
   color: var(--color-white);
   background-color: var(--color-1-shade-5);
+  cursor: pointer;
 }
 
 .error-container {
