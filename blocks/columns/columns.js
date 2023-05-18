@@ -40,6 +40,20 @@ function handleEmailFormSubmit (event) {
   const formLabel = document.querySelector('.inline-form-label');
   const errorContainer = document.querySelector('.error-container');
 
+  emailInput.addEventListener('keyup', handleEmailInputKeyup);
+
+  function handleEmailInputKeyup(event) {
+    if (event.key === 'Enter') {
+      // Trigger the form submission if the Enter key is pressed
+      handleEmailFormSubmit(event);
+    } else {
+      // Add your digital data push logic here
+      window.digitalData.push({
+        event: 'Pre-form Email Entered'
+      });
+    }
+  }
+
   if (event.type === 'focusin') {
     // Add active class when user focuses inside emailInput
     formLabel.classList.add('inline-form-label-active');
@@ -82,7 +96,7 @@ function handleEmailFormSubmit (event) {
       url.searchParams.set('email', email);
     
       // Delay the redirection by 500 milliseconds (adjust the delay as needed)
-      setTimeout(function() {
+      setTimeout(() => {
         window.location.href = url.toString();
       }, 500);
     }
@@ -91,14 +105,8 @@ function handleEmailFormSubmit (event) {
 
 // Add the event listener to the form
 const emailForm = document.querySelector('form.inline-form');
-const emailInput = document.querySelector('.inline-form-input');
 if (emailForm) {
   emailForm.addEventListener('submit', handleEmailFormSubmit);
-  emailInput.addEventListener('change', function () {
-    window.digitalData.push({
-      event: 'Pre-form Email Entered'
-    });
-  });
 }
 
 function addButtonClasses(col, block) {
