@@ -11,8 +11,8 @@
  */
 
 // eslint-disable-next-line import/no-cycle
-import { getMetadata } from "./scripts.js";
-import { setObject } from "./set-object.js";
+import { getMetadata } from './scripts.js';
+import { setObject } from './set-object.js';
 
 /**
  * Customer's XDM schema namespace
@@ -192,8 +192,9 @@ export async function analyticsTrackPageViews(document, additionalXdmFields = {}
           name: `${document.title}`,
           [CUSTOM_SCHEMA_NAMESPACE]: {
             campaign: getCampaignString(),
-            blogPageDetails,
-		      },
+              blogPageDetails,
+            }
+          ,
           pageViews: {
             value: 1,
           },
@@ -413,36 +414,49 @@ export async function analyticsTrackSocial(platform) {
 }
 
 export async function analyticsTrackPreformEmailEntered() {
-	if(!window.preformEmailEntered) {
-		window.preformEmailEntered = true;
+  if(!window.preformEmailEntered) {
+    window.preformEmailEntered = true;
 
-		// eslint-disable-next-line no-undef
-		return alloy('sendEvent', {
-			documentUnloading: true,
-			xdm: {
-				eventType: 'web.formFilledOut',
-				[CUSTOM_SCHEMA_NAMESPACE]: {
-					form: {
-						preFormEmailEntered: 1,
-					}
-				},
-			},
-		});
-	}
+    // eslint-disable-next-line no-undef
+    return alloy('sendEvent', {
+      documentUnloading: true,
+      xdm: {
+        eventType: 'web.formFilledOut',
+        [CUSTOM_SCHEMA_NAMESPACE]: {
+          form: {
+            preFormEmailEntered: 1,
+          }
+        },
+      },
+    });
+  }
   return Promise.resolve();
 }
 
 export async function analyticsTrackPreformEmailSubmitted() {
-	// eslint-disable-next-line no-undef
-	return alloy('sendEvent', {
-		documentUnloading: true,
-		xdm: {
-			eventType: 'web.formFilledOut',
-			[CUSTOM_SCHEMA_NAMESPACE]: {
-				form: {
-					preFormEmailSubmitted: 1,
-				}
-			},
-		},
-	});
+  // eslint-disable-next-line no-undef
+  return alloy('sendEvent', {
+    documentUnloading: true,
+    xdm: {
+      eventType: 'web.formFilledOut',
+      [CUSTOM_SCHEMA_NAMESPACE]: {
+        form: {
+          preFormEmailSubmitted: 1,
+        }
+      },
+    },
+  });
+}
+
+export async function analyticsTrackCWV(cwv) {
+  // eslint-disable-next-line no-undef
+  return alloy('sendEvent', {
+    documentUnloading: true,
+    xdm: {
+      eventType: 'web.performance.measurements',
+      [CUSTOM_SCHEMA_NAMESPACE]: {
+        cwv,
+      }
+    },
+  });
 }
