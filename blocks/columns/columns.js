@@ -95,10 +95,10 @@ function handleEmailFormSubmit (event) {
       const url = new URL(link);
       url.searchParams.set('email', email);
     
-      // Delay the redirection by 500 milliseconds (adjust the delay as needed)
+      // Delay the redirection to allow the digitalData.push to work
       setTimeout(() => {
         window.location.href = url.toString();
-      }, 500);
+      }, 750);
     }
   }
 }
