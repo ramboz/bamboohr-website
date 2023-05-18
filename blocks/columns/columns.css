@@ -951,6 +951,10 @@ div .tablet-center-image .column-flex-container.columns-align-start {
   cursor: pointer;
 }
 
+.inline-form button:hover {
+  background-color: var(--theme-shade15);
+}
+
 .error-container {
   font-family: var(--body-font-family);
   font-style: normal;
