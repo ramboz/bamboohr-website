@@ -40,6 +40,7 @@ function handleEmailFormSubmit (event) {
   const formLabel = document.querySelector('.inline-form-label');
   const errorContainer = document.querySelector('.error-container');
 
+  // eslint-disable-next-line
   function handleEmailInputKeyup(event) {
     if (event.key === 'Enter') {
        // eslint-disable-next-line
