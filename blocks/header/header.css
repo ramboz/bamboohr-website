@@ -615,7 +615,7 @@ header .nav-limited .nav-buttons .button.small {
   }
 
   header .nav-section {
-    padding: 0 20px;
+    padding: 0 12px;
     position: relative;
     border-width: 3px 0 0;
     border-style: solid;
@@ -805,7 +805,7 @@ header .nav-limited .nav-buttons .button.small {
 
 @media (min-width: 1300px) {
   header .nav-section {
-    padding: 0 22px;
+    padding: 0 20px;
   }
 
 	header .nav.extra-buttons {
