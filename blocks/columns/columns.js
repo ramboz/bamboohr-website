@@ -42,11 +42,11 @@ function handleEmailFormSubmit (event) {
 
   function handleEmailInputKeyup(event) {
     if (event.key === 'Enter') {
-      // Trigger the form submission if the Enter key is pressed
+       // eslint-disable-next-line
       handleEmailFormSubmit(event);
     } else {
-      // Add your digital data push logic here
       window.digitalData.push({
+        // eslint-disable-next-line
         event: 'Pre-form Email Entered'
       });
     }
