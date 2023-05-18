@@ -40,8 +40,6 @@ function handleEmailFormSubmit (event) {
   const formLabel = document.querySelector('.inline-form-label');
   const errorContainer = document.querySelector('.error-container');
 
-  emailInput.addEventListener('keyup', handleEmailInputKeyup);
-
   function handleEmailInputKeyup(event) {
     if (event.key === 'Enter') {
       // Trigger the form submission if the Enter key is pressed
@@ -53,6 +51,8 @@ function handleEmailFormSubmit (event) {
       });
     }
   }
+
+  emailInput.addEventListener('keyup', handleEmailInputKeyup);
 
   if (event.type === 'focusin') {
     // Add active class when user focuses inside emailInput
