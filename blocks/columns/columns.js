@@ -71,21 +71,34 @@ function handleEmailFormSubmit (event) {
       return;
     }
 
-  // Redirect the user to the provided link
+    // Redirect the user to the provided link
     if (link) {
+      // Adobe analytics tracking event
+      window.digitalData.push({
+        event: 'Pre-form Email Submitted'
+      });
+    
       const url = new URL(link);
       url.searchParams.set('email', email);
-      window.location.href = url.toString();
+    
+      // Delay the redirection by 500 milliseconds (adjust the delay as needed)
+      setTimeout(function() {
+        window.location.href = url.toString();
+      }, 500);
     }
   }
-  // Add event datalayer
-
 }
 
 // Add the event listener to the form
 const emailForm = document.querySelector('form.inline-form');
+const emailInput = document.querySelector('.inline-form-input');
 if (emailForm) {
   emailForm.addEventListener('submit', handleEmailFormSubmit);
+  emailInput.addEventListener('change', function () {
+    window.digitalData.push({
+      event: 'Pre-form Email Entered'
+    });
+  });
 }
 
 function addButtonClasses(col, block) {
