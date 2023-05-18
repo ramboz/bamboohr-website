@@ -153,47 +153,6 @@ function updateImgHeights(target) {
   });
 }
 
-function updateImgHeightsMin(target) {
-  let block = target;
-  if (!target.classList.contains('related-posts') && 
-      target.classList.contains('related-posts-card-picture')) {
-    block = target.parentElement.parentElement;
-  } else if (target.tagName === 'IMG') {
-    let p = target.parentElement;
-    while (!p.classList?.contains('related-posts')) p = p.parentElement;
-    block = p;
-  }
-  const relatedPostsCards = block.querySelectorAll('.related-posts-card');
-  const relatedPostsCardImgs = block.querySelectorAll('.related-posts-card img');
-
-  if (relatedPostsCards.length !== relatedPostsCardImgs.length) return;
-
-  const isInitialized = [...relatedPostsCardImgs].every(i => i.clientHeight);
-  if (!isInitialized) return;
-  
-  let modelImg = null;
-  let shortestImg = null;
-  let minHeight = -1;
-  // Find model/shortest
-  relatedPostsCardImgs.forEach((img) => {
-    if (img.dataset.modelImg) modelImg = img;
-    if (img.clientHeight && (minHeight === -1 || img.clientHeight < minHeight)) {
-      minHeight = img.clientHeight;
-      shortestImg = img;
-    }
-  });
-
-  if (modelImg) minHeight = modelImg.clientHeight;
-  if (!modelImg && shortestImg) shortestImg.dataset.modelImg = true;
-
-  if (minHeight === -1) return;
-  
-  // Set all image heights to match the model/shortest.
-  relatedPostsCardImgs.forEach((img) => {
-    if (!img.dataset.modelImg) img.style.height = `${minHeight}px`;
-  });
-}
-
 async function createCards(block, colConfig) {
   const uniqueCards = [];
   await getCardPath(colConfig, uniqueCards);
@@ -236,7 +195,6 @@ async function createCards(block, colConfig) {
   const resizeObserver = new ResizeObserver((entries) => {
     entries.forEach(e => {
       updateImgHeights(e.target);
-      // updateImgHeightsMin(e.target);
     });
   });
 
