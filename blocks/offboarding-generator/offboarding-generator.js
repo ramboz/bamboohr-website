@@ -54,7 +54,7 @@ function getMessage(field) {
 	return `Please enter ${field.name || field.id}`;
 }
 
-function validateForm(form) {
+function validateForm(form, block) {
 	let valid = true;
 	const inputFields = form.querySelectorAll('input');
 
@@ -74,9 +74,9 @@ function validateForm(form) {
     inputContainer.classList.remove('invalid');
 	});
 
-	// if (valid) {
-	// 	form.querySelectorAll('.step')[currentTab].className += " finish";
-	// }
+	if (valid) {
+		block.querySelectorAll('.step')[0].className += " finish";
+	}
 	
 	return valid;
 }
