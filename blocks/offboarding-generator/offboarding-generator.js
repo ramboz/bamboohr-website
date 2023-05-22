@@ -272,7 +272,9 @@ function nextStep(el, block) {
     stepIndicator(current, block);
   }
 
-  document.querySelector(`[data-step="${++current}"]`).classList.add('offboarding-generator-step--active');
+  current += 1
+
+  document.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
 }
 
 // Previous Step
@@ -353,6 +355,17 @@ function leadGenBtnHandler(block) {
   const containerDiv = block.parentElement.parentElement
   containerDiv.classList.add('offboarding-generator-container--overlay');
   block.querySelector('.progress-bar').classList.remove('active');
+}
+
+function resetForm(block) {
+  const stepsArr = block.querySelectorAll('.offboarding-generator-step')
+  const blockContainer = block.parentNode.parentElement
+
+  stepsArr.forEach(element => {
+    element.classList.remove('offboarding-generator-step--active');
+  });
+  block.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
+  blockContainer.classList.remove('offboarding-generator-container--overlay');
 }
 
 async function copyToClipboard(el) {
@@ -473,6 +486,7 @@ export default async function decorate(block) {
         break;
       case '[generator-lead-gen]':
         item.innerHTML = leadGenTemplate();
+        item.parentNode.parentElement.insertAdjacentHTML('beforeend', '<div class="overlay-close"><button data-close class="button">No, I do not want my bespoke template CLOSE</button></div>')
         break;
       case '[generator-download-confirmed]':
         item.innerHTML = downloadConfirmed();
@@ -524,12 +538,10 @@ export default async function decorate(block) {
     });
   });
 
-  const close = block.querySelector('.button[data-close]');  
-  close.addEventListener('click', (e) => {
-    const current = parseInt(e.target.dataset.step, 10);
-    block.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
-    block.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
-    block.parentElement.parentElement.classList.remove
-    ('offboarding-generator-container--overlay');
+  const close = block.querySelectorAll('.button[data-close]');  
+  close.forEach(item => {
+    item.addEventListener('click', () => {
+      resetForm(block)
+    });
   });
 }
