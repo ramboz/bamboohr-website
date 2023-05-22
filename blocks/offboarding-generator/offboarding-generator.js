@@ -336,15 +336,23 @@ function templateSelectHandler(block) {
     const formTemplate = block.querySelector('#template-form')
     const templates = formsArr.find(item => item.formValue === selectedTemplate);
     const formatTemp = getTemplatesTone(templates)
+    const pregressBar = block.querySelector('.progress-bar')
     // document.getElementById('template-preview').innerHTML = formatTemp[0][sessionStorage.getItem('generator-tone')];
     formTemplate.innerHTML = generateInputs(templates);
     formTemplate.setAttribute('data-form', selectedTemplate)
     // sessionStorage.setItem('generator-template', selectedTemplate);
     addToSessionStorage(selectedTemplate, templates);
     templatePreview.innerHTML = formatTemp[0].TemplateFormal
+    pregressBar.classList.add('active')
 
     nextStep(e, block);
   });
+}
+
+function leadGenBtnHandler(block) {
+  const containerDiv = block.parentElement.parentElement
+  containerDiv.classList.add('offboarding-generator-container--overlay');
+  block.querySelector('.progress-bar').classList.remove('active');
 }
 
 async function copyToClipboard(el) {
@@ -492,9 +500,10 @@ export default async function decorate(block) {
   radioBtnHandler(block)
 
   // Progress to lead gen
-  document.getElementById('lead-gen').addEventListener('click', (el) => {
-    document.querySelector('.offboarding-generator-container').classList.add('offboarding-generator-container--overlay');
-    nextStep(el);
+  block.querySelector('#lead-gen').addEventListener('click', (e) => {
+    leadGenBtnHandler(block)
+
+    nextStep(e);
   });
 
   // Progress to completed template
@@ -518,8 +527,9 @@ export default async function decorate(block) {
   const close = block.querySelector('.button[data-close]');  
   close.addEventListener('click', (e) => {
     const current = parseInt(e.target.dataset.step, 10);
-    document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
-    document.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
-    document.querySelector('.offboarding-generator-container').classList.remove('offboarding-generator-container--overlay');
+    block.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
+    block.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
+    block.parentElement.parentElement.classList.remove
+    ('offboarding-generator-container--overlay');
   });
 }
