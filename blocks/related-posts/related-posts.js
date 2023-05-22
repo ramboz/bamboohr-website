@@ -167,11 +167,11 @@ async function createCards(block, colConfig) {
         card = createAppCard(col.article, 'related-posts');
         break;
       case 'article':
-        card = createArticleCard(col.article, 'related-posts', col.customLinkText);
+        card = createArticleCard(col.article, 'related-posts', col.customLinkText, false, false, true);
         loadWistia = true;
         break;
       case 'date':
-        card = createDateCard(col.article, 'related-posts', false, {text: col.customLinkText});
+        card = createDateCard(col.article, 'related-posts', true, false, {text: col.customLinkText});
         loadWistia = true;
         break;
       case 'blog':

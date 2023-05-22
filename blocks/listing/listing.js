@@ -55,6 +55,7 @@ export function createArticleCard(
   customLinkText = '',
   excludeMediaType = false,
   simple = false,
+  hideCategory = false,
   eager = false
 ) {
   const title = article.jobTitle || article.title.split(' | ')[0];
@@ -104,7 +105,7 @@ export function createArticleCard(
   const articleDesc = !simple ? `<p class="${classPrefix}-card-detail">${article.description}</p>` : '';
   // const simpleClass = simple ? ` ${classPrefix}-card-body-simple` : '';
   const simpleClass = '';
-  const articleCardHeader = !simple ? `<div class="${classPrefix}-card-header category-color-${category}">
+  const articleCardHeader = !simple && !hideCategory ? `<div class="${classPrefix}-card-header category-color-${category}">
       ${articleCategorySpan}
       ${blogCategorySpan}
       ${articleFormatSpan}

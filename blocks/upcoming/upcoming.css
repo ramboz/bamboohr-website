@@ -83,7 +83,7 @@ main .upcoming ul > div div p a {
   font-weight: 700;
   line-height: 22px;
   display: inline-block;
-  color: var(--color-1-shade-10);
+  color: var(--theme-shade5);
   text-decoration: none;
 }
 
@@ -100,10 +100,7 @@ main .upcoming ul > div div p a::after {
 }
 
 main .upcoming-article-card-header {
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--category-color);
+    font-weight: 500;
     margin-top: 30px;
     margin-bottom: 25px;
     font-size: 12px;
