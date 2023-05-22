@@ -44,6 +44,12 @@ function addToSessionStorage(id, data) {
   }
 }
 
+function createProgressIndicatorHtml() {
+	const spanHtml = createElem('span', 'step');
+
+	return spanHtml;
+}
+
 function getMessage(field) {
 	return `Please enter ${field.name || field.id}`;
 }
