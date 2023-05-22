@@ -209,10 +209,6 @@ async function createCards(block, colConfig) {
   relatedPostsCards.forEach(c => cardObserver.observe(c));
 
   window.setTimeout(() => {
-    block.querySelectorAll('.related-posts-card-body-simple h3').forEach(h3 => {
-      if (h3.scrollWidth > h3.clientWidth) h3.title = h3.innerText;
-    });
-
     block.querySelectorAll('.related-posts-card-category').forEach(cat => {
       if (cat.parentElement.scrollWidth > cat.parentElement.clientWidth) cat.title = cat.innerText;
     });

@@ -85,12 +85,6 @@ main .related-posts-card h3 {
   margin: 0 0 20px;
 }
 
-main .related-posts-card-body-simple h3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 main .related-posts-card-detail {
   max-height: 110px;
   /* stylelint-disable value-no-vendor-prefix */

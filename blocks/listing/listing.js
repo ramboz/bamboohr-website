@@ -103,8 +103,6 @@ export function createArticleCard(
     <span class="${classPrefix}-card-readtime">${article.readTime || ''}</span>` : '';
   const articlePresenter = article?.presenter || article?.customerName ? `<h5>${article?.presenter || article?.customerName || ''}</h5>` : '';
   const articleDesc = !simple ? `<p class="${classPrefix}-card-detail">${article.description}</p>` : '';
-  // const simpleClass = simple ? ` ${classPrefix}-card-body-simple` : '';
-  const simpleClass = '';
   const articleCardHeader = !simple && !hideCategory ? `<div class="${classPrefix}-card-header category-color-${category}">
       ${articleCategorySpan}
       ${blogCategorySpan}
@@ -113,7 +111,7 @@ export function createArticleCard(
 
   card.innerHTML = `
     ${articleImage}
-    <div class="${classPrefix}-card-body${simpleClass}" am-region="${title}">
+    <div class="${classPrefix}-card-body" am-region="${title}">
     ${articlePresenter}
     <h3>${title}</h3>
     ${releaseDate}
