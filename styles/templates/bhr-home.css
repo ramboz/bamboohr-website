@@ -79,12 +79,14 @@
     text-transform: uppercase;
 }
 
-.bhr-home .columns a.button:not(.link):any-link {
+.bhr-home .columns a.button:not(.link):any-link,
+.bhr-home .inline-form button {
     color: var(--color-white);
     background: linear-gradient(90deg, var(--theme-shade10) 0%, var(--theme-shade5) 100%);
 }
 
-.bhr-home .columns a.button:not(.link):any-link:hover {
+.bhr-home .columns a.button:not(.link):any-link:hover,
+.bhr-home .inline-form button:hover {
     background: linear-gradient(91.88deg, var(--theme-shade5), var(--theme-shade10) 99.25%);
 }
 
