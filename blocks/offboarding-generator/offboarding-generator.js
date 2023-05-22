@@ -194,7 +194,7 @@ function getTemplatesTone(template) {
 
 // Tone Selection Shortcode Template
 function templateTone(el) {
-  const templates = formsArr.find(item => item.formValue = sessionStorage.getItem('generator-template'));
+  const templates = formsArr.find(item => item.formValue === sessionStorage.getItem('generator-template'));
   const labelArr = ['Formal', 'Neutral', 'Friendly']
   const formatTemp = getTemplatesTone(templates)
 
