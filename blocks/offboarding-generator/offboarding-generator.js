@@ -102,7 +102,7 @@ function editSessionStorage(id, value) {
 
 // Generate Tooltip
 function createTooltip(content) {
-  let output = '<div class="tooltip"><span>More information</span><div class="tooltip__text">' + content + '</div></div>';
+  const output = `<div class="tooltip"><span>More information</span><div class="tooltip__text">${content}</div></div>`;
   return output;
 }
 
