@@ -4,11 +4,11 @@ const firstName = sessionStorage.getItem('generator-firstName');
 const secondName = sessionStorage.getItem('generator-secondName');
 const businessName = sessionStorage.getItem('generator-businessName');
 
-const formUrl = '/website-marketing-resources/offboarding-calculator-form.json'
-let formsNameArr = null
-let formsArr = null
+const formUrl = '/website-marketing-resources/offboarding-calculator-form.json';
+let formsNameArr = null;
+let formsArr = null;
 let editFormID = "";
-let selectedTemplate = ""
+let selectedTemplate = "";
 
 // Forms
 const resignationAcknowledgementForm = []
@@ -304,14 +304,14 @@ function nextBtnHandler(block) {
     const propertyNames = Object.keys(values)
 
     propertyNames.forEach(item => {
-      const input = el.querySelector(`#${item}`);
+      const input = block.querySelector(`#${item}`);
       if(input && input.value !== null) {
         sessionStorage.setItem(`generator-${item}`, input.value);
       }
     })
 
     editSessionStorage(editFormID, values)
-    nextStep(e);
+    nextStep(e, block);
   });
 }
 
@@ -329,11 +329,11 @@ function radioBtnHandler(el) {
   }));
 }
 
-function templateSelectHandler(el) {
-  el.querySelector('#select-template').addEventListener('click', (e) => {
-    selectedTemplate = el.querySelector('#template-options').value;
-    const templatePreview = el.querySelector('#template-preview')
-    const formTemplate = el.querySelector('#template-form')
+function templateSelectHandler(block) {
+  block.querySelector('#select-template').addEventListener('click', (e) => {
+    selectedTemplate = block.querySelector('#template-options').value;
+    const templatePreview = block.querySelector('#template-preview')
+    const formTemplate = block.querySelector('#template-form')
     const templates = formsArr.find(item => item.formValue === selectedTemplate);
     const formatTemp = getTemplatesTone(templates)
     // document.getElementById('template-preview').innerHTML = formatTemp[0][sessionStorage.getItem('generator-tone')];
@@ -343,7 +343,7 @@ function templateSelectHandler(el) {
     addToSessionStorage(selectedTemplate, templates);
     templatePreview.innerHTML = formatTemp[0].TemplateFormal
 
-    nextStep(e);
+    nextStep(e, block);
   });
 }
 
@@ -486,11 +486,11 @@ export default async function decorate(block) {
   });
 
   // Progress to completed template
-  document.getElementById('download-confirmed').addEventListener('click', (e) => {
+  block.querySelector('#download-confirmed').addEventListener('click', (e) => {
     e.preventDefault()
     const form = e.target.parentElement
     
-    if (!validateForm(form)) return;
+    if (!validateForm(form, block)) return;
 
     copyToClipboard(block)
     nextStep(e);
