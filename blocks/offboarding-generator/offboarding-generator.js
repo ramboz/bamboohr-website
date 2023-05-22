@@ -471,6 +471,14 @@ export default async function decorate(block) {
     }
   });
 
+  // Create progress bar div
+  block.append(progressBarDiv)
+
+  const tabsArr = block.querySelectorAll('.tab');
+  tabsArr.forEach(() => {
+		progressBarDiv.append(createProgressIndicatorHtml());
+	});
+
   // Store template selection
   templateSelectHandler(block)
 
