@@ -37,7 +37,7 @@ main .offboarding-generator {
   border-radius: 0.5rem;
   position: relative;
   z-index: 2;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 /* Wrapper Overlay Variation */
@@ -104,10 +104,11 @@ main .offboarding-generator-step--overlay::before {
 }
 
 main .offboarding-generator-step--overlay svg {
-  position: absolute;
+  /* position: absolute; */
+  position: relative;
   width: 726px;
-  height: 732px;
-  left: 375px;
+  /* height: 732px; */
+  left: 0;
   top: 104px;
 }
 
@@ -142,10 +143,10 @@ main .offboarding-generator-step[data-step="0"] > div {
 
 main .offboarding-generator-step[data-step="0"] svg {
   position: absolute;
-  width: 450px;
+  width: 400px;
   height: 450px;
-  top: -50px;
-  left: -90px;
+  /* top: -50px;
+  left: -90px; */
   z-index: 1;
 }
 
@@ -272,7 +273,7 @@ main .offboarding-generator .button {
   appearance: none;
   border: none;
   border-radius: 0.5rem;
-  padding: 1rem 2rem;
+  padding: 1rem 2rem !important;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
@@ -512,4 +513,17 @@ main .offboarding-generator .progress-bar .step.step-active {
 
 main .offboarding-generator .progress-bar .step.finish {
   background-color: var(--theme-shade5);
+}
+
+main .offboarding-generator .overlay-close {
+  position: absolute;
+  bottom: -50px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+
+main .offboarding-generator .overlay-close .button{
+  background-color: transparent;
+  text-decoration: underline;
 }
