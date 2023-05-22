@@ -48,11 +48,6 @@ function filterAndSort(dataArray, criteria, uniqueCards) {
   
   if (criteria.sortBy) {
     const { sortBy } = criteria;
-      // ? criteria.sortBy
-      // : 'publicationDate';
-
-    // need to figure out default sort for each index.
-
     // Do sort
     if (sortOptions(sortBy)) filteredResults.sort(sortOptions(sortBy));
   }
