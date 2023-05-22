@@ -263,10 +263,15 @@ main .tabs.style-2 {
   }
 }
 
+@media (min-width: 1024px) {
+  main .tabs.style-2 {
+    grid-template-columns: 1fr 60%;
+  }
+}
+
 @media (min-width: 1200px) {
   main .tabs.style-2 {
     column-gap: 7.5rem;
-    grid-template-columns: 1fr 60%;
   }
 }
 
