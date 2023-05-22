@@ -486,3 +486,29 @@ main .offboarding-generator .error {
 main .offboarding-generator .hidden {
 	display: none;
 }
+
+main .offboarding-generator .progress-bar.active {
+  display: flex;
+}
+
+main .offboarding-generator .progress-bar {
+	display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+main .offboarding-generator .progress-bar .step {
+  height: 8px;
+  background-color: #E8F3FA;
+  flex: 1;
+}
+
+main .offboarding-generator .progress-bar .step.step-active {
+  background-color: var(--theme-shade5);
+}
+
+main .offboarding-generator .progress-bar .step.finish {
+  background-color: var(--theme-shade5);
+}
