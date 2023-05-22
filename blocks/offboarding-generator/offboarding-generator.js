@@ -361,6 +361,7 @@ async function copyToClipboard(el) {
 export default async function decorate(block) {
   
   const data = await fetchData(formUrl)
+  const progressBarDiv = createElem('div', 'progress-bar');
 
   // Set template defaults
   sessionStorage.setItem('generator-template', 'resignation-letter-acknowledgement');
@@ -375,6 +376,9 @@ export default async function decorate(block) {
       children[i].classList = 'offboarding-generator-step offboarding-generator-step--active';
     } else if (i === 3 || i === 4) {
       children[i].classList = 'offboarding-generator-step offboarding-generator-step--overlay';
+    }
+    else if (i === 1 || i === 2) {
+      children[i].classList = 'offboarding-generator-step tab';
     }
   }
 
