@@ -436,12 +436,12 @@ export default async function decorate(block) {
   const svgOne = '<svg width="313" height="404" viewBox="0 0 313 404" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M211.451 -36.908L46.9479 -81.3319C20.2268 -88.5622 -8.31543 -80.8583 -27.8774 -61.1249L-148.295 60.3383C-167.888 80.0717 -175.518 108.835 -168.359 135.767L-124.274 301.654C-117.115 328.618 -96.2344 349.678 -69.4819 356.876L95.0521 401.332C121.773 408.562 150.315 400.858 169.877 381.125L290.295 259.693C309.888 239.96 317.518 211.196 310.359 184.264L266.274 18.3772C259.115 -8.5866 238.203 -29.6461 211.513 -36.8764L211.451 -36.908Z" fill="#E8F6F9"/></svg>';
   const svgTwo = '<svg width="548" height="696" viewBox="0 0 548 696" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M573.676 70.638L326.922 4.00218C286.84 -6.84331 244.027 4.71258 214.684 34.3127L34.0576 216.507C4.66754 246.108 -6.77763 289.253 3.96104 329.651L70.0886 578.482C80.8273 618.927 112.148 650.516 152.277 661.315L399.078 727.998C439.16 738.843 481.973 727.287 511.316 697.687L691.942 515.54C721.332 485.94 732.778 442.795 722.039 402.396L655.911 153.566C645.173 113.12 613.804 81.5309 573.77 70.6854L573.676 70.638Z" fill="#E8F6F9"/></svg>';
 
-  const stepOne = document.querySelector('.offboarding-generator-step[data-step="0"]');
-  let stepOneContent = stepOne.innerHTML;
+  const stepOne = block.querySelector('.offboarding-generator-step[data-step="0"]');
+  const stepOneContent = stepOne.innerHTML;
   stepOne.innerHTML = stepOneContent + svgOne;
 
-  document.querySelectorAll('.offboarding-generator-step--overlay').forEach((el) => {
-    let content = el.innerHTML;
+  block.querySelectorAll('.offboarding-generator-step--overlay').forEach((el) => {
+    const content = el.innerHTML;
     el.innerHTML = content + svgTwo;
   });
 
