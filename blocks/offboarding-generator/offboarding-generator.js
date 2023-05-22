@@ -497,9 +497,9 @@ export default async function decorate(block) {
   });
   
   const prev = document.querySelectorAll('[data-prev]');
-  prev.forEach(el => {
-    el.addEventListener('click', el => {
-      prevStep(el);
+  prev.forEach(item => {
+    item.addEventListener('click', (e) => {
+      prevStep(e, block);
     });
   });
 
