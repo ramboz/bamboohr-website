@@ -253,28 +253,48 @@ function generateInputs(template) {
   return output
 }
 
+function stepIndicator(index, form) {
+  const stepsArr = form.querySelectorAll(".step");
+  
+  stepsArr.forEach(item => {
+		item.classList.remove('step-active');
+	});
+
+  stepsArr[index].classList.add('step-active');
+}
+
 // Next Step
-function nextStep(el) {
-  let current = parseInt(el.target.dataset.step);
-  document.querySelector('[data-step="' + current + '"]').classList.remove('offboarding-generator-step--active');
-  document.querySelector('[data-step="' + (++current) + '"]').classList.add('offboarding-generator-step--active');
+function nextStep(el, block) {
+  let current = parseInt(el.target.dataset.step, 10);
+  document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
+
+  if (block) {
+    stepIndicator(current, block);
+  }
+
+  document.querySelector(`[data-step="${++current}"]`).classList.add('offboarding-generator-step--active');
 }
 
 // Previous Step
-function prevStep(el) {
-  let current = parseInt(el.target.dataset.step);
-  document.querySelector('[data-step="' + current + '"]').classList.remove('offboarding-generator-step--active');
-  document.querySelector('[data-step="' + (--current) + '"]').classList.add('offboarding-generator-step--active');   
+function prevStep(el, block) {
+  let current = parseInt(el.target.dataset.step, 10);
+  document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
+
+  if (block) {
+    stepIndicator(0, block);
+  }
+
+  document.querySelector(`[data-step="${--current}"]`).classList.add('offboarding-generator-step--active');
 }
 
-function nextBtnHandler(el) {
-  el.querySelector('#populate-template').addEventListener('click', (e) => {
+function nextBtnHandler(block) {
+  block.querySelector('#populate-template').addEventListener('click', (e) => {
     e.preventDefault()
-    const form = el.querySelector('#template-form')
+    const form = block.querySelector('#template-form')
     const inputFields = form.querySelectorAll('input')
     editFormID = form.dataset.form;
 
-    if (!validateForm(form)) return;
+    if (!validateForm(form, block)) return;
 
     const values = Object.values(inputFields).reduce((acc, item) => {
       acc[item.id] = item.value
