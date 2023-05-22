@@ -5,7 +5,7 @@ main .offboarding-generator-container {
 
 /* Container Overlay Variation*/
 main .offboarding-generator-container.offboarding-generator-container--overlay {
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   left: 0;
   width: 100%;
@@ -17,7 +17,8 @@ main .offboarding-generator-container.offboarding-generator-container--overlay::
   content: '';
   background: #041B35;
   opacity: 0.9;
-  position: absolute;
+  /* position: absolute; */
+  position: fixed;
   top: 0; 
   left: 0;
   width: 100%;
@@ -43,12 +44,12 @@ main .offboarding-generator {
 main .offboarding-generator-container.offboarding-generator-container--overlay .offboarding-generator {
   max-width: 62.5rem;
   min-height: 50rem;
-  z-index: 3;
+  /* z-index: 3;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
-  margin: 0;
+  transform: translate(-50%,-50%); */
+  margin: 0 auto;
 }
 
 /* Navigation */
