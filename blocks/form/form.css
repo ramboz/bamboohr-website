@@ -3,6 +3,10 @@
 	color: var(--color-gray-5);
 }
 
+main .form-container {
+  margin-bottom: 10px;
+}
+
 @media (min-width: 1800px) {
   main .form {
     max-width: 83.33%;
@@ -432,6 +436,16 @@ main .form .form-col .form-logos img {
   flex: 0 0 auto;
   width: 33.33%;
   max-width: 120px;
+}
+
+main .form .form-col p > em {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+main .form .form-col p > em > a {
+  text-decoration: underline;
 }
 
 main .form.with-google-map .content-col iframe {
