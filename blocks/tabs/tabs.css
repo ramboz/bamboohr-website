@@ -269,6 +269,12 @@ main .tabs.style-2 {
   }
 }
 
+@media (min-width: 1800px) {
+  main .tabs.style-2 {
+    grid-template-columns: 1fr 50%;
+  }
+}
+
 @media (min-width: 1200px) {
   main .tabs.style-2 {
     column-gap: 7.5rem;
