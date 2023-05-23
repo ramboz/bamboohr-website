@@ -376,6 +376,10 @@ main .form.has-content .content-col img {
   width: 100%;
 }
 
+main .form.has-content.no-box-shadow .content-col img {
+  box-shadow: none;
+}
+
 main .form.white-container .form-col {
   background-color: var(--color-white);
   border-radius: 16px;
