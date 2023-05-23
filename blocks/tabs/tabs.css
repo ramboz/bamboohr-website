@@ -265,7 +265,7 @@ main .tabs.style-2 {
 
 @media (min-width: 1024px) {
   main .tabs.style-2 {
-    grid-template-columns: 1fr 60%;
+    grid-template-columns: 1fr 40%;
   }
 }
 
