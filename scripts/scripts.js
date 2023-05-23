@@ -1039,6 +1039,8 @@ export async function lookupPages(pathnames, collection, sheet = '') {
     blockTracker: `/website-marketing-resources/block-inventory-tracker2.json?sheet=${sheet}`,
     resources: `/resources/query-index.json?sheet=resources`,
     speakers: `/speakers/query-index.json`,
+    productUpdates: '/product-updates/query-index.json',
+    webinars: '/webinars/query-index.json?sheet=default',
   };
   const indexPath = indexPaths[collection];
   const collectionCache = `${collection}${sheet}`;

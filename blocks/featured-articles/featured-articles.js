@@ -4,7 +4,7 @@ import {
   toCategory,
 } from '../../scripts/scripts.js';
 
-export function createBlogCard(article, classPrefix, eager = false) {
+export function createBlogCard(article, classPrefix, customLinkText = '', eager = false) {
   const title = article.title.split(' - ')[0];
   const card = document.createElement('div');
   card.className = `${classPrefix}-card`;
@@ -18,6 +18,7 @@ export function createBlogCard(article, classPrefix, eager = false) {
   ).outerHTML;
   const category = toCategory(article.category);
   const categoryHref = article.noCategoryLink ? '#' : `href="/blog/category/${category}"`;
+  const linkText = customLinkText || 'Read Now';
   card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
     <span class="${classPrefix}-card-category"><a ${categoryHref}>${article.category}</a></span> 
     <span class="${classPrefix}-card-readtime">${article.readTime || ''}</span>
@@ -25,8 +26,8 @@ export function createBlogCard(article, classPrefix, eager = false) {
     <div class="${classPrefix}-card-picture"><a href="${article.path}">${pictureString}</a></div>
     <div class="${classPrefix}-card-body" am-region="${title}">
     <h3>${title}</h3>
-    <p>${article.description}</p>
-    <p><a href="${article.path}">Read Now</a></p>
+    <p class="${classPrefix}-card-detail">${article.description}</p>
+    <p><a href="${article.path}">${linkText}</a></p>
     </div>`;
   return (card);
 }
@@ -53,7 +54,7 @@ export default async function decorate(block) {
           article.noCategoryLink = true;
           article.category = category;
         }
-        const card = createBlogCard(article, 'featured-articles', i === 0);
+        const card = createBlogCard(article, 'featured-articles', '', i === 0);
         contents.push(card.outerHTML);
       }
     } else {
