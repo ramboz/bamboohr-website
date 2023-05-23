@@ -32,9 +32,12 @@ function isStyle5ScrolledToFirstCardInGroup(block, activeButtonIndex) {
   const cardCnt = getStyle5CardCount(block);
   let isFirst = false;
   let isLast = false;
+  let leftPadding = 0;
 
   cards.forEach((card, index) => {
-    if (card.offsetLeft >= block.scrollLeft - 5 && card.offsetLeft <= block.scrollLeft + 5) {
+    if (index === 0) leftPadding = card.offsetLeft;
+    const cardLeft = card.offsetLeft - leftPadding;
+    if (cardLeft >= block.scrollLeft - 5 && cardLeft <= block.scrollLeft + 5) {
       const btnGroup = Math.floor(index/cardCnt);
 
       if (activeButtonIndex !== btnGroup) isLast = true;
@@ -90,7 +93,7 @@ function getVisibleSlide(event) {
     let btnGroup = isStyle5 ? Math.floor(key/cardCnt) : key;
 
     // set first offset (extra padding?)
-    if (key === 0 && !isStyle5) leftPadding = offset;
+    if (key === 0) leftPadding = offset;
 
     if (offset - leftPadding === leftPosition ||
         (isStyle5 && btnGroup === buttons.length - 1 && leftPosition === rightEnd)) {

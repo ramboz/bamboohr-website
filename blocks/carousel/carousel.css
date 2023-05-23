@@ -522,6 +522,10 @@ main .carousel.style-5 ~ .carousel-controls button.prev {
 }
 
 /* style 5 */
+.base main .carousel-wrapper .carousel-buttons.style-5 {
+  position: unset;
+}
+
 main .carousel.style-5 picture {
   position: unset;
 }
@@ -529,6 +533,11 @@ main .carousel.style-5 picture {
 main .carousel.style-5 img {
   width: auto;
   height: auto;
+}
+
+main .carousel.style-5.img-size-fixed img {
+  width: 180px;
+  height: 180px;
 }
 
 main .carousel.style-5 .carousel-image {
@@ -624,6 +633,10 @@ main .carousel.style-5 ~ .carousel-controls button.prev {
   top: calc(50% - var(--extra-padding));
 }
 
+.base main .carousel.style-5 ~ .carousel-controls button.prev {
+  left: 10px;
+}
+
 main .carousel.style-5 ~ .carousel-controls button.next {
   --extra-padding: 64px;
 
@@ -631,6 +644,10 @@ main .carousel.style-5 ~ .carousel-controls button.next {
   right: -45px;
   position: absolute;
   top: calc(50% - var(--extra-padding));
+}
+
+.base main .carousel.style-5 ~ .carousel-controls button.next {
+  right: 10px;
 }
 
 @media (min-width: 1038px) {
