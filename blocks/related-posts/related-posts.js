@@ -76,7 +76,6 @@ async function getCardPath(colConfig, uniqueCards) {
           .then((articles) => {
             [ col.article ] = articles;
             if (col.article) uniqueCards.push(col.article.path);
-            // console.log(`getCardPath processed path: path = ${col.article.path}, index = ${index}`);
             resolve();
           })
           .catch((err) => {
@@ -90,7 +89,6 @@ async function getCardPath(colConfig, uniqueCards) {
             const article = filterAndSort(window.pageIndex[col.contentType].data, col, uniqueCards);
             col.article = article;
             if (col.article) uniqueCards.push(col.article.path);
-            // console.log(`getCardPath processed content type: path = ${col.article.path}, index = ${index}`);
             resolve();
           })
           .catch((err) => {
