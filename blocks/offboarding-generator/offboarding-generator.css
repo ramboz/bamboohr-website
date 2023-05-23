@@ -43,27 +43,21 @@ main .offboarding-generator {
 /* Wrapper Overlay Variation */
 main .offboarding-generator-container.offboarding-generator-container--overlay .offboarding-generator {
   max-width: 62.5rem;
-  min-height: 50rem;
-  /* z-index: 3;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%); */
   margin: 0 auto;
 }
 
 /* Navigation */
 main .offboarding-generator-step nav {
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
+  flex-flow: column nowrap;
   align-items: center;
   width: 100%;
   margin: 1rem 0 0 0;
+  gap: 14px;
 }
 
 main .offboarding-generator-step nav .button {
-  flex: 0 0 auto;
+  width: 100%;
 }
 
 /* Steps */
@@ -73,6 +67,7 @@ main .offboarding-generator-step {
   min-height: 100%;
   overflow: hidden;
   border-radius: 0.5rem;
+  flex-wrap: wrap;
 }
 
 main .offboarding-generator-step--active {
@@ -85,18 +80,18 @@ main .offboarding-generator-step--overlay.offboarding-generator-step--active {
 }
 
 main .offboarding-generator-step--overlay > div {
-  flex: 0 0 40%;
-  margin: 2.5rem 0 2.5rem 2.5rem;
-  z-index: 3;
+  /* flex: 0 0 40%; */
+  margin: 32px 25px;
+  /* z-index: 3; */
 }
 
 main .offboarding-generator-step--overlay::before {
   content: '';
   position: absolute;
   bottom: 0;
-  right: 1.95rem;
-  width: 517px;
-  height: 733px;
+  right: 0;
+  width: 80%;
+  height: 55%;
   background: url('./offboarding-generator-2.png') no-repeat;
   background-position: 0 bottom;
   background-size: 100%;
@@ -104,12 +99,9 @@ main .offboarding-generator-step--overlay::before {
 }
 
 main .offboarding-generator-step--overlay svg {
-  /* position: absolute; */
+  height: auto;
+  transform: translate(80px, 85px);
   position: relative;
-  width: 726px;
-  /* height: 732px; */
-  left: 0;
-  top: 104px;
 }
 
 main .offboarding-generator-step--overlay .button {
@@ -119,34 +111,25 @@ main .offboarding-generator-step--overlay .button {
 /* Step 1 Specific */
 main .offboarding-generator-step[data-step="0"]::before {
   content: '';
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
+  bottom: 0;
   width: 100%;
-  /* height: 100%; */
   background: url('./offboarding-generator-1.png') no-repeat;
   background-position: 1.5rem bottom;
+  background-size: 270px;
   z-index: 2;
 }
 
 main .offboarding-generator-step[data-step="0"] > div {
   width: 100%;
-  /* max-width: 21.25rem;
-  position: absolute; */
-  /* top: 50%;
-  transform: translateY(-50%);
-  right: 4.5rem; */
-  margin: 3.5rem;
-  flex: 0 0 43%;
+  margin: 32px 25px;
   z-index: 3;
 }
 
 main .offboarding-generator-step[data-step="0"] svg {
-  position: absolute;
-  width: 400px;
-  height: 450px;
-  /* top: -50px;
-  left: -90px; */
+  width: 70%;
   z-index: 1;
 }
 
@@ -163,17 +146,17 @@ main .offboarding-generator-step[data-step="1"] .form-wrap {
 }
 
 main .offboarding-generator-step[data-step="1"] .form-wrap > div {
-  flex: 0 0 48%;
+  flex: 0 0 100%;
 }
 
-/* Step 3 Specific */
+/* Step 2 Specific */
 main .offboarding-generator-step[data-step="2"] > div {
   margin: 2.5rem;
 }
 
 main .offboarding-generator-step[data-step="2"] .tone-selection {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   justify-content: space-between;
   align-items: center;
 }
@@ -217,7 +200,7 @@ main .offboarding-generator-step[data-step="2"] #template-preview p > span{
   color: #1A87C9;
 }
 
-/* Step 4 Specific */
+/* Step 3 Specific */
 main .offboarding-generator-step[data-step="3"] .form-wrap {
   display: flex;
   flex-flow: row wrap;
@@ -229,11 +212,12 @@ main .offboarding-generator-step[data-step="3"] .form-wrap > div {
   flex: 0 0 100%;
 }
 
-main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(1),
-main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(2),
-main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(7),
-main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(8) {
-  flex: 0 0 48%;
+main .offboarding-generator-step[data-step="3"] svg {
+  display: none;
+}
+
+main .offboarding-generator-step[data-step="3"].offboarding-generator-step--overlay::before {
+  content: none;
 }
 
 /* Typography */
@@ -333,7 +317,7 @@ main .offboarding-generator label {
   font-size: 14px !important;
   line-height: 20px;
   margin: 0 0 0.5rem 0;
-  
+  width: 100%;
 }
 
 /* Select Elements */
@@ -517,7 +501,7 @@ main .offboarding-generator .progress-bar .step.finish {
 
 main .offboarding-generator .overlay-close {
   position: absolute;
-  bottom: -50px;
+  bottom: -55px;
   margin: 0 auto;
   left: 0;
   right: 0;
@@ -526,4 +510,93 @@ main .offboarding-generator .overlay-close {
 main .offboarding-generator .overlay-close .button{
   background-color: transparent;
   text-decoration: underline;
+}
+
+@media (min-width: 685px) and (max-width: 781px) {
+  main .offboarding-generator-step--overlay::before {
+    width: 67%;
+  }
+
+  main .offboarding-generator-step--overlay svg {
+    right: -45px;
+  }
+}
+
+@media screen and (min-width: 782px) {
+
+  main .offboarding-generator-step {
+    flex-wrap: unset;
+  }
+
+  main .offboarding-generator-step[data-step="0"] > div {
+    margin: 2.5rem;
+    flex: 0 0 43%;
+  }
+
+  main .offboarding-generator-step[data-step="0"] svg {
+    position: absolute;
+    width: 300px;
+  }
+
+  main .offboarding-generator-step[data-step="0"]::before {
+    position: relative;
+    background-size: 90%;
+  }
+
+  main .offboarding-generator-step[data-step="1"] .form-wrap > div {
+    flex: 0 0 48%;
+  }
+
+  main .offboarding-generator-step nav {
+    flex-flow: row nowrap;
+    justify-content: space-between;
+  }
+
+  main .offboarding-generator-step nav .button {
+    width: auto;
+  }
+
+  main .offboarding-generator-step[data-step="2"] .tone-selection {
+    flex-flow: row nowrap;
+  }
+
+  main .offboarding-generator-step--overlay > div {
+    flex: 0 0 40%;
+    margin: 2.5rem 0 2.5rem 2.5rem;
+  }
+
+  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(1),
+  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(2),
+  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(7),
+  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(8) {
+    flex: 0 0 48%;
+  }
+
+  main .offboarding-generator-step[data-step="3"] svg {
+    display: block;
+  }
+
+  main .offboarding-generator-step[data-step="3"].offboarding-generator-step--overlay::before {
+    content: '';
+  }
+
+  main .offboarding-generator .overlay-close {
+    bottom: -50px;
+  }
+
+  main .offboarding-generator-step--overlay::before {
+    width: 45%;
+    height: 100%;
+  }
+
+  main .offboarding-generator-step--overlay svg {
+    width: 726px;
+    top: 104px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  main .offboarding-generator-step[data-step="0"] > div {
+    margin: 3.5rem;
+  }
 }
