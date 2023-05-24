@@ -135,7 +135,7 @@ main .offboarding-generator-step[data-step="0"] svg {
 
 /* Step 2 Specific */
 main .offboarding-generator-step[data-step="1"] > div {
-  margin: 2.5rem;
+  margin: 1.5rem;
 }
 
 main .offboarding-generator-step[data-step="1"] .form-wrap {
@@ -151,7 +151,7 @@ main .offboarding-generator-step[data-step="1"] .form-wrap > div {
 
 /* Step 2 Specific */
 main .offboarding-generator-step[data-step="2"] > div {
-  margin: 2.5rem;
+  margin: 1.5rem;
 }
 
 main .offboarding-generator-step[data-step="2"] .tone-selection {
