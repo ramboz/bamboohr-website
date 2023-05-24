@@ -47,6 +47,7 @@ main .quote.full.industry-footer h2 {
   color: var(--theme-tint15);
   margin-top: 30px;
   margin-bottom: 30px;
+  font-style: italic;
 }
 
 @media (max-width: 599px) {
