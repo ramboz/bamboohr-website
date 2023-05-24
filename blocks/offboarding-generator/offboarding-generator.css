@@ -91,7 +91,7 @@ main .offboarding-generator-step--overlay::before {
   bottom: 0;
   right: 0;
   width: 80%;
-  height: 55%;
+  height: 40%;
   background: url('./offboarding-generator-2.png') no-repeat;
   background-position: 0 bottom;
   background-size: 100%;
@@ -159,6 +159,7 @@ main .offboarding-generator-step[data-step="2"] .tone-selection {
   flex-flow: column nowrap;
   justify-content: space-between;
   align-items: center;
+  gap: 14px;
 }
 
 main .offboarding-generator-step[data-step="2"] #template-preview {
@@ -336,6 +337,7 @@ main .offboarding-generator select {
   transition: border-color 0.25s ease-in-out;
   outline: none;
   text-transform: capitalize;
+  background-color: white;
 }
 
 /* Input Elements */
@@ -352,6 +354,11 @@ main .offboarding-generator input {
   appearance: none;
   transition: border-color 0.25s ease-in-out;
   outline: none;
+  background-color: white;
+}
+
+main .offboarding-generator input[type="date"] {
+  appearance: auto;
 }
 
 main.offboarding-generator input::placeholder {
@@ -375,8 +382,8 @@ main .offboarding-generator input[type="radio"] {
 }
 
 /* Radio Element Labels */
-main .offboarding-generator input[type="radio"] + label {
-  flex: 0 0 auto;
+main .offboarding-generator .template-selector {
+  width: 100%;
   border: 1px solid #fff;
   background: #fff;
   color: #041B35;
@@ -385,11 +392,10 @@ main .offboarding-generator input[type="radio"] + label {
   border-radius: 0.5rem;
   font-size: 16px;
   cursor: pointer;
-  flex: 1 0 0;
 }
 
 /* Radio Element Checked State */
-main .offboarding-generator input[type="radio"]:checked + label {
+main .offboarding-generator .template-selector.checked {
   border-color: #041B35;
 }
 
@@ -558,6 +564,7 @@ main .offboarding-generator .overlay-close .button{
 
   main .offboarding-generator-step[data-step="2"] .tone-selection {
     flex-flow: row nowrap;
+    gap: 20px;
   }
 
   main .offboarding-generator-step--overlay > div {

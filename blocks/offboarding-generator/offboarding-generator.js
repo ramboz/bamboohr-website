@@ -51,7 +51,15 @@ function createProgressIndicatorHtml() {
 }
 
 function getMessage(field) {
-	return `Please enter ${field.name || field.id}`;
+  const { validity } = field
+  const text = field.id;
+  const convertedText = text.replace(/([A-Z])/g, ' $1').toLowerCase();
+
+  if (validity.valueMissing) return `Please enter ${convertedText}`;
+  if (validity.typeMismatch) return `Please enter a valid ${field.type}`
+	if (validity.patternMismatch) return `Please enter the correct format. 0690xxxxxx`
+
+  return field.validationMessage
 }
 
 function validateForm(form, block) {
@@ -62,11 +70,11 @@ function validateForm(form, block) {
 		const inputContainer = input.parentElement;
 		const errorBox = inputContainer.querySelector('.error');
 
-    if (input.value.length === 0) {
+    if (!input.checkValidity()) {
       const message = getMessage(input);
       errorBox.classList.remove('hidden');
       inputContainer.classList.add('invalid');
-      errorBox.textContent = message;
+      errorBox.textContent = message ;
       valid = false;
     } else {
       errorBox.classList.add('hidden');
@@ -110,7 +118,7 @@ function createTooltip(content) {
 function createInput(id, type, label, placeholder, value, tooltip) {
   const inputHtml = `<div class="field_item">
   <label for="${id}">${label} ${tooltip ? createTooltip(tooltip) : ''}</label>
-  <input type="${type}" id="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} />
+  <input type="${type}" id="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} required/>
   <div class="error hidden"></div>
   </div>`
 
@@ -169,7 +177,9 @@ function templateSelection(el, forms) {
 
 // Content Input Shortcode Template
 function templateFormWrapper() {
-  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button data-step="1" data-next type="submit" class="button" id="populate-template">Next</button></nav>`
+  // const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button data-step="1" data-next type="submit" class="button" id="populate-template">Next</button></nav>`
+
+  const formHtml = `<form class="form-wrap" id="template-form"></form>`
 
   return formHtml;
 }
@@ -211,7 +221,8 @@ function templateTone(el) {
   // eslint-disable-next-line no-restricted-syntax
   for (const [key, value] of Object.entries(obj) ) {
     const selected = value === 'TemplateFormal' ? 'checked' : null
-    const inputHtml = `<input type="radio" name="select-tone" id="${value}" value="${value}" ${selected}/><label for="${value}">${key}</label>`
+    // const inputHtml = `<input type="radio" name="select-tone" id="${value}" value="${value}" ${selected}/><label for="${value}">${key}</label>`
+    const inputHtml = `<button class="template-selector" id="${value}">${key}</button>`
     divWrapper.insertAdjacentHTML('beforeend', inputHtml)
   }
 
@@ -223,15 +234,15 @@ function templateTone(el) {
 // Lead Gen Shortcode Template
 function leadGenTemplate() {
   let output = '<form class="form-wrap" id="lead-gen">';
-  output += createInput('lead-first-name', 'text', 'Your first name', 'Please enter your first name', firstName);
-  output += createInput('lead-second-name', 'text', 'Your second name', 'Please enter your second name', secondName);
-  output += createInput('lead-email', 'email', 'Email address', 'Please enter your email address', null);
-  output += createInput('lead-title', 'text', 'Job title', 'Please enter your Job title', null);
-  output += createInput('lead-business', 'text', 'Company name', 'Please enter your company name', businessName);
-  output += createInput('lead-phone', 'tel', 'Phone Number', 'Please enter your phone number', null);
+  output += createInput('leadFirstName', 'text', 'Your first name', 'Please enter your first name', firstName);
+  output += createInput('leadSecondMame', 'text', 'Your second name', 'Please enter your second name', secondName);
+  output += createInput('leadEmail', 'email', 'Email address', 'Please enter your email address', null);
+  output += createInput('leadTitle', 'text', 'Job title', 'Please enter your Job title', null);
+  output += createInput('leadBusiness', 'text', 'Company name', 'Please enter your company name', businessName);
+  output += createInput('leadPhone', 'tel', 'Phone Number', 'Please enter your phone number', null);
   output += countrySelect;
   output += createSelect('lead-employees', 'Employee Count ', employeeCount);
-  output += '<button data-step="3" class="button button--teal" id="download-confirmed">Download my template</button>'
+  output += '<button data-step="3" class="button button--teal" id="download-confirmed">Copy to Clipboard</button>'
   output += '</form>';
   // output += '<nav><button data-step="3" class="button button--teal" id="download-confirmed">Download my template</button></nav>';
   return output;
@@ -289,66 +300,75 @@ function prevStep(el, block) {
   document.querySelector(`[data-step="${--current}"]`).classList.add('offboarding-generator-step--active');
 }
 
-function nextBtnHandler(block) {
-  block.querySelector('#populate-template').addEventListener('click', (e) => {
-    e.preventDefault()
-    const form = block.querySelector('#template-form')
-    const inputFields = form.querySelectorAll('input')
-    editFormID = form.dataset.form;
+function nextBtnHandler(event, block) {
+  const form = block.querySelector('#template-form')
+  const inputFields = form.querySelectorAll('input')
+  editFormID = form.dataset.form;
 
-    if (!validateForm(form, block)) return;
+  if (!validateForm(form, block)) return;
 
-    const values = Object.values(inputFields).reduce((acc, item) => {
-      acc[item.id] = item.value
-      return acc
-    }, [])
+  const values = Object.values(inputFields).reduce((acc, item) => {
+    acc[item.id] = item.value
+    return acc
+  }, [])
 
-    const propertyNames = Object.keys(values)
+  const propertyNames = Object.keys(values)
 
-    propertyNames.forEach(item => {
-      const input = block.querySelector(`#${item}`);
-      if(input && input.value !== null) {
-        sessionStorage.setItem(`generator-${item}`, input.value);
-      }
-    })
+  propertyNames.forEach(item => {
+    const input = block.querySelector(`#${item}`);
+    if(input && input.value !== null) {
+      sessionStorage.setItem(`generator-${item}`, input.value);
+    }
+  })
 
-    editSessionStorage(editFormID, values)
-    nextStep(e, block);
-  });
+  editSessionStorage(editFormID, values)
+  nextStep(event, block);
 }
 
 function radioBtnHandler(el) {
   // Store tone selection
-  const toneSelection = el.querySelectorAll('input[type=radio][name="select-tone"]');
-  toneSelection.forEach(radio => radio.addEventListener('change', () => {
-    const tone = radio.value;
+  const toneSelection = el.querySelectorAll('.template-selector');
+  const toneSelectionWrapper = el.querySelector('.tone-selection')
+  toneSelection[0].classList.add('checked')
+
+  toneSelectionWrapper.addEventListener('click', (e) => {
+
+    toneSelection.forEach(item => {
+      item.classList.remove('checked')
+    })
+
+    const tone = e.target.id;
+    const button = el.querySelector(`#${tone}`)
+    button.classList.add('checked')
     sessionStorage.setItem('generator-tone', tone);
     const template = sessionStorage.getItem('generator-template');
     const templates = formsArr.find(item => item.formValue === template);
     const formatTemp = getTemplatesTone(templates)
   
     el.querySelector('#template-preview').innerHTML = formatTemp[0][tone];
-  }));
+  })
 }
 
-function templateSelectHandler(block) {
-  block.querySelector('#select-template').addEventListener('click', (e) => {
-    selectedTemplate = block.querySelector('#template-options').value;
-    const templatePreview = block.querySelector('#template-preview')
-    const formTemplate = block.querySelector('#template-form')
-    const templates = formsArr.find(item => item.formValue === selectedTemplate);
-    const formatTemp = getTemplatesTone(templates)
-    const pregressBar = block.querySelector('.progress-bar')
-    // document.getElementById('template-preview').innerHTML = formatTemp[0][sessionStorage.getItem('generator-tone')];
-    formTemplate.innerHTML = generateInputs(templates);
-    formTemplate.setAttribute('data-form', selectedTemplate)
-    // sessionStorage.setItem('generator-template', selectedTemplate);
-    addToSessionStorage(selectedTemplate, templates);
-    templatePreview.innerHTML = formatTemp[0].TemplateFormal
-    pregressBar.classList.add('active')
+function templateSelectHandler(event, block) {
+  selectedTemplate = block.querySelector('#template-options').value;
+  const templatePreview = block.querySelector('#template-preview')
+  const formTemplate = block.querySelector('#template-form')
+  const templates = formsArr.find(item => item.formValue === selectedTemplate);
+  const formatTemp = getTemplatesTone(templates)
+  const pregressBar = block.querySelector('.progress-bar')
+  formTemplate.innerHTML = generateInputs(templates);
+  formTemplate.insertAdjacentHTML('beforeend', '<nav><button data-step="1" data-prev class="button button--outline">Back</button><button data-step="1" data-next type="submit" class="button" id="populate-template">Next</button></nav>')
+  formTemplate.setAttribute('data-form', selectedTemplate)
+  addToSessionStorage(selectedTemplate, templates);
+  templatePreview.innerHTML = formatTemp[0].TemplateFormal
+  pregressBar.classList.add('active')
 
-    nextStep(e, block);
-  });
+  block.querySelector('#populate-template').addEventListener('click', (e) => {
+    e.preventDefault()
+    nextBtnHandler(e, block)
+  })
+
+  nextStep(event, block);
 }
 
 function leadGenBtnHandler(block) {
@@ -506,10 +526,13 @@ export default async function decorate(block) {
 	});
 
   // Store template selection
-  templateSelectHandler(block)
+  // templateSelectHandler(block)
+  block.querySelector('#select-template').addEventListener('click', (event) => {
+    templateSelectHandler(event, block)
+  })
 
   // Store template inputs
-  nextBtnHandler(block)
+  // nextBtnHandler(block)
 
   radioBtnHandler(block)
 
