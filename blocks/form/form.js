@@ -1,6 +1,6 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
-import { addWistia, hasOnlyWistiaChildren } from '../columns/columns.js';
+import { addWistia } from '../columns/columns.js';
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -653,7 +653,7 @@ export default async function decorate(block) {
               const url = new URL(a.href.replace(/\/$/, ''));
               a.outerHTML = getDefaultEmbed(url);
             } else if (a?.href?.includes('wistia')) {
-              let loadWistiaCSS = true;
+              const loadWistiaCSS = true;
               addWistia(col, loadWistiaCSS);
             }
           }
