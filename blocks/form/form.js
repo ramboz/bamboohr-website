@@ -1,5 +1,6 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
+import { addWistia } from '../columns/columns.js';
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -651,6 +652,9 @@ export default async function decorate(block) {
             if (a && block.classList.contains('with-google-map')) {
               const url = new URL(a.href.replace(/\/$/, ''));
               a.outerHTML = getDefaultEmbed(url);
+            } else if (a?.href?.includes('wistia')) {
+              const loadWistiaCSS = true;
+              addWistia(col, loadWistiaCSS);
             }
           }
         });
