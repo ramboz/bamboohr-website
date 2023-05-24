@@ -107,21 +107,6 @@ function downloadPdf() {
   });
 }
 
-function addExpansionProduct(main) {
-  const expansionProduct = getMetadata('expansion-product');
-  console.log(expansionProduct, 'this is the expansion product');
-  const formOnPage = document.querySelectorAll('#mktoForm_3119');
-  console.log(formOnPage, 'this is the form');
-  if (expansionProduct) {
-    // Create a hidden input element
-    const hiddenInput = main.createElement("input");
-    hiddenInput.type = "hidden";
-    hiddenInput.value = expansionProduct;
-    // Append the hidden input to the document body or any other desired element
-    main.formOnPage.appendChild(hiddenInput);
-  }
-}
-
 export default async function decorateTemplate(main) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -134,7 +119,6 @@ export default async function decorateTemplate(main) {
     buildSuccessDownload(main, category);
     buildSuccessMoreTitle(main);
     buildSuccessMore(main);
-    addExpansionProduct(main);
     if (category !== 'videos') {
       window.onload = downloadPdf();
     }
