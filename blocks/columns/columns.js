@@ -270,7 +270,7 @@ function addVideo(col) {
   col.classList.add('img-col', 'video-col');
 }
 
-function hasOnlyWistiaChildren(colChildren) {
+export function hasOnlyWistiaChildren(colChildren) {
   let hasWistiaChildrenOnly = false;
   // Assumption: wistia block content is thumbnail (picture) + wistia link or just wistia link 
   if (colChildren?.length === 2 &&
@@ -287,7 +287,7 @@ function hasOnlyWistiaChildren(colChildren) {
   return hasWistiaChildrenOnly;
 }
 
-function addWistia(col, loadWistiaCSS) {
+export function addWistia(col, loadWistiaCSS) {
   const wistiaBlock = document.createElement('div');
   wistiaBlock.classList.add('wistia', 'block');
 
