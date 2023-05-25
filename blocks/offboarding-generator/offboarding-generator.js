@@ -341,11 +341,14 @@ function radioBtnHandler(el) {
     })
 
     const tone = e.target.id;
-    const button = el.querySelector(`#${tone}`)
-    button.classList.add('checked')
-    sessionStorage.setItem('generator-tone', tone);
-  
-    el.querySelector('#template-preview').innerHTML = emailFormat[0][tone];
+
+    if (tone) {
+      const button = el.querySelector(`#${tone}`)
+      button.classList.add('checked')
+      sessionStorage.setItem('generator-tone', tone);
+    
+      el.querySelector('#template-preview').innerHTML = emailFormat[0][tone];
+    }
   })
 }
 
