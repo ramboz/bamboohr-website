@@ -496,7 +496,7 @@ function getMktoSearchParams(url) {
   return searchParamObj;
 }
 
-function loadFormAndChilipiper(formId, successUrl, chilipiper) {
+function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
@@ -507,14 +507,27 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
 
         /* Adobe Form Start event tracking when user changes the first field */		  
         formEl.firstElementChild.addEventListener('change', () => {
-		  try {
-		    // eslint-disable-next-line
-			formEl.querySelector('input[name="ECID"]').value = s.marketingCloudVisitorID;
-		  } catch (e) {
-			formEl.querySelector('input[name="ECID"]').value = '';
-		  }
+          try {
+            // eslint-disable-next-line
+            formEl.querySelector('input[name="ECID"]').value = s.marketingCloudVisitorID;
+          } catch (e) {
+            formEl.querySelector('input[name="ECID"]').value = '';
+          }
           adobeEventTracking('Form Start', {"name": form.getId()});
         });
+
+        /* floating label */
+        if (floatingLable === true) {
+          formEl.querySelectorAll('input[type="text"]:not([type="checkbox"]):not([type="radio"])').forEach((input) => {
+            if (input.value.trim() !== '') input.previousElementSibling.classList.add('active');
+            input.addEventListener('focusin', () => {
+              input.previousElementSibling.classList.add('active');
+            });
+          });
+          formEl.querySelectorAll('select').forEach((input) => {
+            input.previousElementSibling.classList.add('active');
+          });
+        }
 		
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
@@ -598,6 +611,8 @@ export function scrollToForm() {
 export default async function decorate(block) {
   const config = readBlockConfig(block);
   let chilipiper; let formUrl; let successUrl;
+
+  const floatingLabel = !!block.classList.contains('floating-label');
   
   if (!block.classList.contains('has-content')) {
     const as = block.querySelectorAll('a');
@@ -645,7 +660,7 @@ export default async function decorate(block) {
             formContainer.classList.add('form-container');
             formContainer.innerHTML = mktoForm;
             formCol.replaceWith(formContainer);
-            loadFormAndChilipiper(formId, successUrl, chilipiper);
+            loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLabel);
           } else {
             col.classList.add('content-col');
             const a = col.querySelector('a');
@@ -660,7 +675,7 @@ export default async function decorate(block) {
         });
       } else {
         block.innerHTML = mktoForm;
-        loadFormAndChilipiper(formId, successUrl, chilipiper);
+        loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLabel);
       }
     } else {
       const formEl = await createForm(formUrl);
