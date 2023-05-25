@@ -508,9 +508,9 @@ function getMktoSearchParams(url) {
   // Grabs the Expansion Product value from the meta data and adds it to the Request_Type_c hidden input field on the marketo form
   function addExpansionProduct() {
     const expansionProduct = getMetadata('expansion-product');
-    const hiddenInput = document.querySelector('input[name="Request_Type__c"]');
-    if (expansionProduct && hiddenInput) {
-      hiddenInput.value = expansionProduct;
+    const requestType = document.querySelector('input[name="Request_Type__c"]');
+    if (expansionProduct && requestType) {
+      requestType.value = expansionProduct;
     }
   }
 
