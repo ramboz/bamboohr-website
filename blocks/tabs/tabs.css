@@ -263,7 +263,7 @@ main .tabs.style-2 {
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
   main .tabs.style-2 {
     grid-template-columns: 1fr 40%;
   }
