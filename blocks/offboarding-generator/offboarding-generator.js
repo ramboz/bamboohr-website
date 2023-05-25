@@ -9,6 +9,7 @@ let formsNameArr = null;
 let formsArr = null;
 let editFormID = "";
 let selectedTemplate = "";
+let emailFormat = '';
 
 // Forms
 const resignationAcknowledgementForm = []
@@ -177,9 +178,7 @@ function templateSelection(el, forms) {
 
 // Content Input Shortcode Template
 function templateFormWrapper() {
-  // const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button data-step="1" data-next type="submit" class="button" id="populate-template">Next</button></nav>`
-
-  const formHtml = `<form class="form-wrap" id="template-form"></form>`
+  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button data-step="1" data-next type="submit" class="button" id="populate-template">Next</button></nav>`
 
   return formHtml;
 }
@@ -220,7 +219,7 @@ function templateTone(el) {
 
   // eslint-disable-next-line no-restricted-syntax
   for (const [key, value] of Object.entries(obj) ) {
-    const selected = value === 'TemplateFormal' ? 'checked' : null
+    // const selected = value === 'TemplateFormal' ? 'checked' : null
     // const inputHtml = `<input type="radio" name="select-tone" id="${value}" value="${value}" ${selected}/><label for="${value}">${key}</label>`
     const inputHtml = `<button class="template-selector" id="${value}">${key}</button>`
     divWrapper.insertAdjacentHTML('beforeend', inputHtml)
@@ -298,6 +297,10 @@ function prevStep(el, block) {
   }
 
   document.querySelector(`[data-step="${--current}"]`).classList.add('offboarding-generator-step--active');
+
+  if (current === 0) {
+    block.querySelector('.progress-bar').classList.remove('active');
+  }
 }
 
 function nextBtnHandler(event, block) {
@@ -341,11 +344,8 @@ function radioBtnHandler(el) {
     const button = el.querySelector(`#${tone}`)
     button.classList.add('checked')
     sessionStorage.setItem('generator-tone', tone);
-    const template = sessionStorage.getItem('generator-template');
-    const templates = formsArr.find(item => item.formValue === template);
-    const formatTemp = getTemplatesTone(templates)
   
-    el.querySelector('#template-preview').innerHTML = formatTemp[0][tone];
+    el.querySelector('#template-preview').innerHTML = emailFormat[0][tone];
   })
 }
 
@@ -354,13 +354,13 @@ function templateSelectHandler(event, block) {
   const templatePreview = block.querySelector('#template-preview')
   const formTemplate = block.querySelector('#template-form')
   const templates = formsArr.find(item => item.formValue === selectedTemplate);
-  const formatTemp = getTemplatesTone(templates)
+  emailFormat = getTemplatesTone(templates)
   const pregressBar = block.querySelector('.progress-bar')
+
   formTemplate.innerHTML = generateInputs(templates);
-  formTemplate.insertAdjacentHTML('beforeend', '<nav><button data-step="1" data-prev class="button button--outline">Back</button><button data-step="1" data-next type="submit" class="button" id="populate-template">Next</button></nav>')
   formTemplate.setAttribute('data-form', selectedTemplate)
   addToSessionStorage(selectedTemplate, templates);
-  templatePreview.innerHTML = formatTemp[0].TemplateFormal
+  templatePreview.innerHTML = emailFormat[0].TemplateFormal
   pregressBar.classList.add('active')
 
   block.querySelector('#populate-template').addEventListener('click', (e) => {
@@ -554,9 +554,10 @@ export default async function decorate(block) {
     nextStep(e);
   });
   
-  const prev = document.querySelectorAll('[data-prev]');
+  const prev = block.querySelectorAll('[data-prev]');
   prev.forEach(item => {
     item.addEventListener('click', (e) => {
+      e.preventDefault()
       prevStep(e, block);
     });
   });
