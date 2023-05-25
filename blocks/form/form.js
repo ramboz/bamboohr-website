@@ -496,14 +496,23 @@ function getMktoSearchParams(url) {
   return searchParamObj;
 }
 
-// Grabs the Expansion Product value from the meta data and adds it to the Request_Type_c hidden input field on the marketo form
-function addExpansionProduct() {
-  const expansionProduct = getMetadata('expansion-product');
-  const hiddenInput = document.querySelector('input[name="Request_Type__c"]');
-  if (expansionProduct && hiddenInput) {
-    hiddenInput.value = expansionProduct;
+  // Replaces the default form heading text with the Form Heading Text value set in the metadata in the gdoc
+  function addFormHeadingText() {
+    const formHeadingText = getMetadata('form-heading-text');
+    const formHeadingEl = document.querySelector('main .form .form-col p strong');
+    if (formHeadingText && formHeadingEl) {
+      formHeadingEl.textContent = formHeadingText;
+    }
   }
-}
+
+  // Grabs the Expansion Product value from the meta data and adds it to the Request_Type_c hidden input field on the marketo form
+  function addExpansionProduct() {
+    const expansionProduct = getMetadata('expansion-product');
+    const hiddenInput = document.querySelector('input[name="Request_Type__c"]');
+    if (expansionProduct && hiddenInput) {
+      hiddenInput.value = expansionProduct;
+    }
+  }
 
 function loadFormAndChilipiper(formId, successUrl, chilipiper) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
@@ -513,7 +522,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
       if (form.getId().toString() === formId) {
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
-        addExpansionProduct();
+        // addExpansionProduct();
 
         /* Adobe Form Start event tracking when user changes the first field */
         formEl.firstElementChild.addEventListener('change', () => {
@@ -547,7 +556,10 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           const eventDateStr = getMetadata('event-date');
           formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
-        
+
+        addFormHeadingText();
+        addExpansionProduct();
+
         form.onSuccess(() => {
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
