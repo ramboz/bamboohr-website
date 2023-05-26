@@ -518,14 +518,24 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 
         /* floating label */
         if (floatingLable === true) {
-          formEl.querySelectorAll('input[type="text"]:not([type="checkbox"]):not([type="radio"])').forEach((input) => {
-            if (input.value.trim() !== '') input.previousElementSibling.classList.add('active');
+          formEl.querySelectorAll('input:not([type="checkbox"]):not([type="radio"])').forEach((input) => {
+            const label = input.previousElementSibling;
+            if (input.value.trim() !== '' && label) label.classList.add('active');
+
             input.addEventListener('focusin', () => {
-              input.previousElementSibling.classList.add('active');
+              if (!label.classList.contains('active')) label.classList.add('active');
+            });
+            input.addEventListener('focusout', () => {
+              if (label.classList.contains('active')) label.classList.remove('active');
+            });
+            input.addEventListener('input', () => {
+              if (!label.classList.contains('active') && input.value.trim() !== '') {
+                label.classList.add('active');
+              }
             });
           });
-          formEl.querySelectorAll('select').forEach((input) => {
-            input.previousElementSibling.classList.add('active');
+          formEl.querySelectorAll('select').forEach((select) => {
+            select.previousElementSibling.classList.add('active');
           });
         }
 		
