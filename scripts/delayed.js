@@ -269,4 +269,4 @@ loadTrustArcFormScript();
 
 loadSalesforceChatScript();
 
-updateExternalLinks()
+updateExternalLinks();
