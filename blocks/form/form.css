@@ -475,7 +475,7 @@ main .form.floating-label .mktoForm select,
 main .form.floating-label .mktoForm textarea,
 main .form.floating-label .mktoForm input {
   border-color: var(--color-gray-5);
-  padding: 11px 9px;
+  padding: 11px 12px 9px;
   height: 44px;
 }
 
@@ -485,13 +485,14 @@ main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mkt
   top: 50%;
   transform: translateY(-50%);
   font-size: 15px;
-  line-height: 22px;
+  line-height: 16px;
   font-weight: 500;
   color: var(--color-gray-7);
-  padding: 0 9px;
+  padding: 0 12px;
   cursor: text;
   text-align: left;
   transition: all ease-out .3s;
+  margin-bottom: 0;
 }
 
 main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel.active {
@@ -499,4 +500,10 @@ main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mkt
   font-weight: 700;
   color: var(--color-gray-12);
   top: 10px;
+}
+
+main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel.active + input,
+main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel.active + select,
+main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel.active + textarea {
+  padding: 17px 12px 3px;
 }

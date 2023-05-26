@@ -526,10 +526,11 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
               if (!label.classList.contains('active')) label.classList.add('active');
             });
             input.addEventListener('focusout', () => {
-              if (label.classList.contains('active')) label.classList.remove('active');
+              console.log(input.value.trim().length);
+              if (label.classList.contains('active') && input.value.trim().length === 0) label.classList.remove('active');
             });
             input.addEventListener('input', () => {
-              if (!label.classList.contains('active') && input.value.trim() !== '') {
+              if (!label.classList.contains('active') && input.value.trim().length > 0) {
                 label.classList.add('active');
               }
             });
