@@ -153,8 +153,6 @@ function loadTrustArcFormScript() {
   loadScript('header', trustArcFormSrc, null, 'text/javascript', true);
 }
 
-loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', null, 'text/javascript');
-
 /**
  * opens external links in new window
  */
