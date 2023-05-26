@@ -311,7 +311,9 @@ function templatePreview(values, block) {
 
       if (token.dataset.token === key) {
         token.textContent = value
-      } 
+      } else if (token.dataset.token === 'name') {
+        token.textContent = `${values.firstName} ${values.secondName}`
+      }
     }
   })
 }
