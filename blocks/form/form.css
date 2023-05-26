@@ -474,7 +474,8 @@ main .form.with-google-map .content-col iframe {
 main .form.floating-label .mktoForm select,
 main .form.floating-label .mktoForm textarea,
 main .form.floating-label .mktoForm input {
-  border-color: var(--color-gray-5);
+  border-width: 1px;
+  border-color: var(--color-gray-6);
   padding: 11px 12px 9px;
   height: 44px;
 }
