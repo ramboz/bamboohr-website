@@ -556,10 +556,6 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
             select.previousElementSibling.classList.add('active');
           });
         }
-
-        // addExpansionProduct();
-        addFormHeadingText();
-        addExpansionProduct();
 		
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
@@ -582,6 +578,10 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           const eventDateStr = getMetadata('event-date');
           formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
+
+        // addExpansionProduct();
+        addFormHeadingText();
+        addExpansionProduct();
         
         form.onSuccess(() => {
           /* GA events tracking */
