@@ -1025,7 +1025,7 @@ export async function readIndex(indexPath, collectionCache) {
     json.data.forEach((row) => {
       lookup[row.path] = row;
     });
-    let data = json.data;
+    let { data } = json;
     // Include/read live-demo-webinars when reading webinars index.
     if (indexPath.startsWith('/webinars/query-index')) {
       const resp2 = await fetch('/live-demo-webinars/query-index.json?sheet=default');
