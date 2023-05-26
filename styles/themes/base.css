@@ -634,8 +634,21 @@
 	line-height: 30px;
 }
 
+#base .title-size-small-info :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--body-font-family);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
 #base .title-color-gray-9 :is(h1, h2, h3, h4, h5, h6) {
   color: var(--color-gray-9);
+}
+
+#base .title-color-gray-11 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--color-gray-11);
 }
 
 #base .title-color-gray-12 :is(h1, h2, h3, h4, h5, h6) {
