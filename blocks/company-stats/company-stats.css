@@ -32,7 +32,7 @@ main .company-stats .company-stats-list .company-stats-list-item {
 }
 
 main .company-stats .company-stats-list .company-stats-list-item .icon svg {
-  color: var(--theme-shade10);
+  color: var(--theme-shade5);
 }
 
 @media (max-width: 599px) {
