@@ -156,6 +156,24 @@ function loadTrustArcFormScript() {
 loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', null, 'text/javascript');
 
 /**
+ * opens external links in new window
+ */
+function updateExternalLinks() {
+  document.querySelectorAll('main a').forEach((a) => {
+    try {
+      const { origin } = new URL(a.href, window.location.href);
+      if (origin && origin !== window.location.origin) {
+        a.setAttribute('rel', 'noopener');
+        a.setAttribute('target', '_blank');
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(`Invalid link: ${a.href}`);
+    }
+  });
+}
+
+/**
  * Adobe Tags
  *
  * To set a Development Environment, from your browser's Developer Tools' Console run
@@ -250,3 +268,5 @@ loadTrustArcFormScript();
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-ZLCX');
 
 loadSalesforceChatScript();
+
+updateExternalLinks()
