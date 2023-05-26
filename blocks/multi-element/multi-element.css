@@ -1,7 +1,7 @@
 /* stylelint-disable no-descending-specificity */
 
 .multi-element {
-    --column-gap: 2rem;
+    --column-gap: 40px;
     --columns: repeat(2, 1fr);
     --row-gap: 1rem;
 
@@ -491,7 +491,7 @@ main .multi-element p {
 }
 
 .multi-element.industry {
-    --row-gap: 14px;
+    --row-gap: 40px;
 
     position: relative;
     padding-top: 70px;
