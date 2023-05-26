@@ -73,7 +73,7 @@ function checkForMatch(row, key, defaultReturn, liveDemoWebinarsCnt) {
   if (key === 'futureOnly') {
     return isUpcomingEvent(row.eventDate);
   } else if (key === 'liveDemoWebinarsLimit3' && row.path.startsWith('/live-demo-webinars/')) {
-    return liveDemoWebinarsCnt >= 3 ? false : true;
+    return liveDemoWebinarsCnt < 3;
   }
 
   if (row[key]) {
@@ -93,8 +93,7 @@ async function filterResults(indexConfig = {}) {
   if (!indexConfig.filterOn) return listings.data;
 
   const keys = indexConfig.filterOn.split(',').map((t) => t.trim());
-
-  const isWebinars = indexConfig.indexPath.startsWith('/webinars/query-index') ? true : false;
+  const isWebinars = indexConfig.indexPath.startsWith('/webinars/query-index');
 
   /* filter */
   let liveDemoWebinarsCnt = 0;
