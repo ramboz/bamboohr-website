@@ -520,17 +520,16 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         if (floatingLable === true) {
           formEl.querySelectorAll('input:not([type="checkbox"]):not([type="radio"])').forEach((input) => {
             const label = input.previousElementSibling;
-            if (input.value.trim() !== '' && label) label.classList.add('active');
+            if (input.value.trim().length && label) label.classList.add('active');
 
             input.addEventListener('focusin', () => {
               if (!label.classList.contains('active')) label.classList.add('active');
             });
             input.addEventListener('focusout', () => {
-              console.log(input.value.trim().length);
-              if (label.classList.contains('active') && input.value.trim().length === 0) label.classList.remove('active');
+              if (label.classList.contains('active') && !input.value.trim().length) label.classList.remove('active');
             });
             input.addEventListener('input', () => {
-              if (!label.classList.contains('active') && input.value.trim().length > 0) {
+              if (!label.classList.contains('active') && input.value.trim().length) {
                 label.classList.add('active');
               }
             });
