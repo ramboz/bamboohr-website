@@ -158,6 +158,12 @@ async function decorateAppsFeed(
     ul.append(createAppCard(app, 'app-cards'));
   }
 
+  window.setTimeout(() => {
+    appsFeedEl.querySelectorAll('.app-cards-card-header h4').forEach(h4 => {
+      if (h4.scrollWidth > h4.clientWidth) h4.title = h4.innerText;
+    });
+  }, 1000);
+
   /* add load more if needed */
   if ((apps.length > pageEnd && config.maxLimit?.toLowerCase() !== 'yes') || !feed.complete) {
     const wrapper = document.createElement('div');

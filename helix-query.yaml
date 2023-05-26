@@ -486,3 +486,99 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+  
+  hr-software:
+    include:
+      - '/hr-software/**'
+    target: /hr-software/query-index
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[property="og:description"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      term:
+        select: head > meta[name="term"]
+        value: |
+          attribute(el, 'content')
+      category:
+        select: head > meta[name="category"]
+        value: |
+          attribute(el, 'content')
+      wistiaVideoId:
+        select: head > meta[name="wistia-video-id"]
+        value: |
+          attribute(el, 'content')
+      robots:
+        select: head > meta[name="robots"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+
+  live-demo-webinars:
+    include:
+      - '/live-demo-webinars/**'
+    target: /live-demo-webinars/query-index
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[property="og:description"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      topic:
+        select: head > meta[name="topic"]
+        value: |
+          attribute(el, 'content')
+      eventDate:
+        select: head > meta[name="event-date"]
+        value: |
+          attribute(el, 'content')
+      eventDateAndTime:
+        select: head > meta[name="event-date-and-time"]
+        value: |
+          attribute(el, 'content')
+      publicationDate:
+        select: head > meta[name="publication-date"]
+        value: |
+          attribute(el, 'content')
+      hideFromLibrary:
+        select: head > meta[name="hide-from-library"]
+        value: |
+          attribute(el, 'content')
+      mediaType:
+        select: head > meta[name="media-type"]
+        value: |
+          attribute(el, 'content')
+      brandedContent:
+        select: head > meta[name="branded-content"]
+        value: |
+          attribute(el, 'content')
+      contentType:
+        select: head > meta[name="content-type"]
+        value: |
+          attribute(el, 'content')
+      robots:
+        select: head > meta[name="robots"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')

@@ -1034,11 +1034,15 @@ export async function lookupPages(pathnames, collection, sheet = '') {
     blog: '/blog/fixtures/blog-query-index.json',
     integrations: '/integrations/query-index.json?sheet=listings',
     hrGlossary: '/resources/hr-glossary/query-index.json',
+    hrSoftware: '/hr-software/query-index.json',
     hrvs: '/resources/events/hr-virtual/2022/query-index.json',
+    liveDemoWebinars: '/live-demo-webinars/query-index.json?sheet=default',
     blockInventory: '/blocks/query-index.json',
     blockTracker: `/website-marketing-resources/block-inventory-tracker2.json?sheet=${sheet}`,
     resources: `/resources/query-index.json?sheet=resources`,
     speakers: `/speakers/query-index.json`,
+    productUpdates: '/product-updates/query-index.json',
+    webinars: '/webinars/query-index.json?sheet=default',
   };
   const indexPath = indexPaths[collection];
   const collectionCache = `${collection}${sheet}`;
