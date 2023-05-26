@@ -1,0 +1,42 @@
+@media (min-width: 1200px) {
+  main .company-stats {
+    width: 83.33%;
+    margin: 0 auto;
+  }
+}
+
+main .company-stats .company-stats-list {
+  --cols: 2;
+  --row-gap: 24px;
+
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  column-gap: 40px;
+  row-gap: var(--row-gap)
+}
+
+@media (min-width: 600px) {
+  main .company-stats .company-stats-list {
+    --row-gap: 46px;
+  }
+}
+
+@media (min-width: 900px) {
+  main .company-stats .company-stats-list {
+    --cols: 4;
+  }
+}
+
+main .company-stats .company-stats-list .company-stats-list-item {
+  text-align: center;
+}
+
+main .company-stats .company-stats-list .company-stats-list-item .icon svg {
+  color: var(--theme-shade5);
+}
+
+@media (max-width: 599px) {
+  main .company-stats .company-stats-list .company-stats-list-item .icon svg {
+    max-height: 45px;
+  }
+}
