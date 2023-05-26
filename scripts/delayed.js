@@ -171,6 +171,8 @@ function updateExternalLinks() {
   });
 }
 
+loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', null, 'text/javascript');
+
 /**
  * Adobe Tags
  *
