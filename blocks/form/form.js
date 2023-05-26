@@ -496,6 +496,24 @@ function getMktoSearchParams(url) {
   return searchParamObj;
 }
 
+ // Replaces the default form heading text with the Form Heading Text value set in the metadata in the gdoc
+ function addFormHeadingText() {
+  const formHeadingText = getMetadata('form-heading-text');
+  const formHeadingEl = document.querySelector('main .form .form-col p strong');
+  if (formHeadingText && formHeadingEl) {
+    formHeadingEl.textContent = formHeadingText;
+  }
+}
+
+// Grabs the Expansion Product value from the meta data and adds it to the Request_Type_c hidden input field on the marketo form
+function addExpansionProduct() {
+  const expansionProduct = getMetadata('expansion-product');
+  const requestType = document.querySelector('input[name="Request_Type__c"]');
+  if (expansionProduct && requestType) {
+    requestType.value = expansionProduct;
+  }
+}
+
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -538,6 +556,10 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
             select.previousElementSibling.classList.add('active');
           });
         }
+
+        // addExpansionProduct();
+        addFormHeadingText();
+        addExpansionProduct();
 		
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
@@ -577,7 +599,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           adobeEventTracking('Form Complete', {
             "name": form.getId(),
             "business_size": formBusinessSize
-		      });
+          });
 
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
