@@ -72,7 +72,8 @@ export function createDateCard(article, classPrefix, hideCategory = false, eager
 function checkForMatch(row, key, defaultReturn, liveDemoWebinarsCnt) {
   if (key === 'futureOnly') {
     return isUpcomingEvent(row.eventDate);
-  } else if (key === 'liveDemoWebinarsLimit3' && row.path.startsWith('/live-demo-webinars/')) {
+  }
+  if (key === 'liveDemoWebinarsLimit3' && row.path.startsWith('/live-demo-webinars/')) {
     return liveDemoWebinarsCnt < 3;
   }
 
