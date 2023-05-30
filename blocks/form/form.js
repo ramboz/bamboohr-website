@@ -583,11 +583,11 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         addFormHeadingText();
         addExpansionProduct();
 
+
+        const demoCheckbox = formEl.querySelector('input[name="Demo_Request_Checkbox__c"]');
         if (chilipiper && chilipiper === 'content-download-form') {
           form.onSubmit(() => {
             console.log('onSubmit function');
-            const demoCheckbox = formEl.querySelector('input[name="Demo_Request_Checkbox__c"]');
-
             if (demoCheckbox && demoCheckbox.checked) {
               console.log(demoCheckbox.checked);
               // eslint-disable-next-line
@@ -597,6 +597,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         }
         
         form.onSuccess(() => {
+          console.log('onSuccess function');
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
           const eventType = form.getId() === 1240 ? 'demoRequest' : 'marketoForm';
