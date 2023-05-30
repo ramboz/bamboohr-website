@@ -308,11 +308,23 @@ function templatePreview(values, block) {
   tokens.forEach(token => {
     // eslint-disable-next-line no-restricted-syntax
     for (const [key, value] of Object.entries(values) ) {
+      let data = value.value
+      let time = ""
+
+      if (value.type === "date" || value.type === "datetime-local") {
+        data = new Date(value.value).toLocaleDateString("en-US");
+      }
+
+      if (value.type === "datetime-local") {
+        time = new Date(value.value).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+      }
 
       if (token.dataset.token === key) {
-        token.textContent = value
+        token.textContent = data
       } else if (token.dataset.token === 'name') {
-        token.textContent = `${values.firstName} ${values.secondName}`
+        token.textContent = `${values.firstName.value} ${values.secondName.value}`
+      } else if (token.dataset.token === 'time') {
+        token.textContent = time
       }
     }
   })
@@ -326,7 +338,11 @@ function nextBtnHandler(event, block) {
   if (!validateForm(form, block)) return;
 
   formValues = Object.values(inputFields).reduce((acc, item) => {
-    acc[item.id] = item.value
+    const {id, value, type} = item
+    acc[id] = {
+      value,
+      type
+    }
     return acc
   }, [])
 
