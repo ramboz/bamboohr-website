@@ -582,6 +582,23 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         // addExpansionProduct();
         addFormHeadingText();
         addExpansionProduct();
+
+        if (chilipiper && chilipiper === 'content-download-form') {
+          form.onSubmit(() => {
+            console.log('onSubmit function');
+            const demoCheckbox = formEl.querySelector('input[name="Demo_Request_Checkbox__c"]');
+
+            if (demoCheckbox && demoCheckbox.checked) {
+              console.log(demoCheckbox.checked);
+              loadScript('https://js.chilipiper.com/marketing.js', () => {
+                //  eslint-disable-next-line
+                window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});
+                // eslint-disable-next-line
+                ChiliPiper.scheduling('bamboohr', `${chilipiper}`, {title: 'Thanks! What time works best for a quick call?'});
+              });
+            }
+          });
+        }
         
         form.onSuccess(() => {
           /* GA events tracking */
@@ -611,7 +628,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
       }
     });
   });
-  if (chilipiper) {
+  if (chilipiper && chilipiper !== 'content-download-form') {
     const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper/pricing-timeout-success' : '/live-demo-timeout-success';
     loadScript('https://js.chilipiper.com/marketing.js', () => {
       function redirectTimeout() {
