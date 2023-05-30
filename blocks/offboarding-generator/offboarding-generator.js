@@ -112,7 +112,7 @@ function validateForm(form, block) {
     }
 
     if (input.type === 'text') {
-      regex = /^[A-Za-z]+$/;
+      regex = /^[A-Za-z\s]+$/;
       if (!input.value.match(regex)) {
         message = 'Please enter letters only.';
         errorBox.classList.remove('hidden');
