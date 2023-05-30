@@ -16,10 +16,20 @@ sitemaps:
       source: /resources/hr-glossary/query-index.json
       destination: /resources/hr-glossary/sitemap.xml
 
+  hrSoftware:
+      origin: https://www.bamboohr.com
+      source: /hr-software/query-index.json
+      destination: /hr-software/sitemap.xml
+
   resources:
       origin: https://www.bamboohr.com
-      source: /resources/query-index.json?sheet=resources
+      source: /resources/query-index.json?sheet=sitemap
       destination: /resources/sitemap.xml
+
+  resourcesGuides:
+      origin: https://www.bamboohr.com
+      source: /resources/query-index.json?sheet=guides
+      destination: /resources/guides/sitemap.xml
   
   webinars:
       origin: https://www.bamboohr.com

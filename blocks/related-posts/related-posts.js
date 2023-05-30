@@ -247,16 +247,16 @@ function getDefaultCardStyle(contentType, mixed) {
     case 'integrations':
       defCardStyle = 'app';
       break;
-    case 'productUpdates':
-      defCardStyle = 'article';
+    case 'blog':
+      defCardStyle = 'blog';
       break;
     case 'webinars':
       defCardStyle = 'date';
       break;
 
-    case 'blog':
-      default:
-      defCardStyle = 'blog';
+    case 'productUpdates':
+    default:
+      defCardStyle = 'article';
       break;
   }
 
