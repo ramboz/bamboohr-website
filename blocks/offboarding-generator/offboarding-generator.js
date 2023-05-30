@@ -99,16 +99,41 @@ function validateForm(form, block) {
 	inputFields.forEach(input => {
 		const inputContainer = input.parentElement;
 		const errorBox = inputContainer.querySelector('.error');
+    let message = '';
+    let regex = ''
 
-    if (!input.checkValidity()) {
-      const message = getMessage(input);
+    if (input.validity.valueMissing) {
+      message = getMessage(input);
       errorBox.classList.remove('hidden');
       inputContainer.classList.add('invalid');
       errorBox.textContent = message ;
       valid = false;
-    } else {
-      errorBox.classList.add('hidden');
+      return false;
     }
+
+    if (input.type === 'text') {
+      regex = /^[A-Za-z]+$/;
+      if (!input.value.match(regex)) {
+        message = 'Please enter letters only.';
+        errorBox.classList.remove('hidden');
+        inputContainer.classList.add('invalid');
+        errorBox.textContent = message;
+        valid = false;
+        return false;
+      }
+    } else if (input.type === 'tel') {
+      regex = /^\d+$/;
+      if (!input.value.match(regex)) {
+        message = 'Please enter numbers only.';
+        errorBox.classList.remove('hidden');
+        inputContainer.classList.add('invalid');
+        errorBox.textContent = message;
+        valid = false;
+        return false;
+      }
+    }
+
+    errorBox.classList.add('hidden');
     inputContainer.classList.remove('invalid');
 	});
 
