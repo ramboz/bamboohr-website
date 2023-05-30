@@ -1,6 +1,6 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
-import {analyticsTrackFormStart} from "../../scripts/lib-analytics.js";
+import {analyticsTrackFormStart, analyticsTrackFormSubmission} from "../../scripts/lib-analytics.js";
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -541,10 +541,9 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
             formName: form.getId(),
           });
 
-          const empText = formEl.querySelector('select[name="Employees_Text__c"]');
-          const formBusinessSize = empText?.value || 'unknown';
-
           /* Adobe form complete events tracking */
+		  analyticsTrackFormSubmission(formEl);
+		  
           // adobeEventTracking('Form Complete', {
           //   "name": form.getId(),
           //   "business_size": formBusinessSize
