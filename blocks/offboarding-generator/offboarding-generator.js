@@ -420,8 +420,20 @@ function resetForm(block) {
   blockContainer.classList.remove('offboarding-generator-container--overlay');
 }
 
+function removeHTMLTags(str) {
+  // Replace closing </p> tags with new line breaks
+  const withLineBreaks = str.replace(/<\/p>/g, '\n');
+
+  // Remove HTML tags using regular expression
+  const withoutTags = withLineBreaks.replace(/<[^>]+>/g, '');
+  
+  return withoutTags;
+}
+
+
 async function copyToClipboard(el) {
-  const text = el.querySelector('#template-preview').textContent;
+  let text = el.querySelector('#template-preview').innerHTML;
+  text = removeHTMLTags(text)
 
   try {
     await navigator.clipboard.writeText(text);
