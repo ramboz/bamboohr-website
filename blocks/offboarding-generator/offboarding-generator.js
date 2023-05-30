@@ -148,7 +148,7 @@ function createTooltip(content) {
 function createInput(id, type, label, placeholder, value, tooltip) {
   const inputHtml = `<div class="field_item">
   <label for="${id}">${label} ${tooltip ? createTooltip(tooltip) : ''}</label>
-  <input type="${type}" id="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} required/>
+  <input type="${type}" id="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} ${type === 'date' ? 'min="2023-01-01" max="2050-12-31"' : ''} ${type === 'datetime-local' ? 'min="2023-01-01T00:00" max="2050-12-31T23:30"' : ''} required/>
   <div class="error hidden"></div>
   </div>`
 
