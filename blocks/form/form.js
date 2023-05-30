@@ -1,5 +1,6 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
+import { addWistia } from '../columns/columns.js';
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -495,7 +496,25 @@ function getMktoSearchParams(url) {
   return searchParamObj;
 }
 
-function loadFormAndChilipiper(formId, successUrl, chilipiper) {
+ // Replaces the default form heading text with the Form Heading Text value set in the metadata in the gdoc
+ function addFormHeadingText() {
+  const formHeadingText = getMetadata('form-heading-text');
+  const formHeadingEl = document.querySelector('main .form .form-col p strong');
+  if (formHeadingText && formHeadingEl) {
+    formHeadingEl.textContent = formHeadingText;
+  }
+}
+
+// Grabs the Expansion Product value from the meta data and adds it to the Request_Type_c hidden input field on the marketo form
+function addExpansionProduct() {
+  const expansionProduct = getMetadata('expansion-product');
+  const requestType = document.querySelector('input[name="Request_Type__c"]');
+  if (expansionProduct && requestType) {
+    requestType.value = expansionProduct;
+  }
+}
+
+function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
@@ -506,14 +525,37 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
 
         /* Adobe Form Start event tracking when user changes the first field */		  
         formEl.firstElementChild.addEventListener('change', () => {
-		  try {
-		    // eslint-disable-next-line
-			formEl.querySelector('input[name="ECID"]').value = s.marketingCloudVisitorID;
-		  } catch (e) {
-			formEl.querySelector('input[name="ECID"]').value = '';
-		  }
+          try {
+            // eslint-disable-next-line
+            formEl.querySelector('input[name="ECID"]').value = s.marketingCloudVisitorID;
+          } catch (e) {
+            formEl.querySelector('input[name="ECID"]').value = '';
+          }
           adobeEventTracking('Form Start', {"name": form.getId()});
         });
+
+        /* floating label */
+        if (floatingLable === true) {
+          formEl.querySelectorAll('input:not([type="checkbox"]):not([type="radio"])').forEach((input) => {
+            const label = input.previousElementSibling;
+            if (input.value.trim().length && label) label.classList.add('active');
+
+            input.addEventListener('focusin', () => {
+              if (!label.classList.contains('active')) label.classList.add('active');
+            });
+            input.addEventListener('focusout', () => {
+              if (label.classList.contains('active') && !input.value.trim().length) label.classList.remove('active');
+            });
+            input.addEventListener('input', () => {
+              if (!label.classList.contains('active') && input.value.trim().length) {
+                label.classList.add('active');
+              }
+            });
+          });
+          formEl.querySelectorAll('select').forEach((select) => {
+            select.previousElementSibling.classList.add('active');
+          });
+        }
 		
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
@@ -536,6 +578,10 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           const eventDateStr = getMetadata('event-date');
           formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
+
+        // addExpansionProduct();
+        addFormHeadingText();
+        addExpansionProduct();
         
         form.onSuccess(() => {
           /* GA events tracking */
@@ -553,7 +599,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           adobeEventTracking('Form Complete', {
             "name": form.getId(),
             "business_size": formBusinessSize
-		      });
+          });
 
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
@@ -597,6 +643,8 @@ export function scrollToForm() {
 export default async function decorate(block) {
   const config = readBlockConfig(block);
   let chilipiper; let formUrl; let successUrl;
+
+  const floatingLabel = !!block.classList.contains('floating-label');
   
   if (!block.classList.contains('has-content')) {
     const as = block.querySelectorAll('a');
@@ -644,19 +692,22 @@ export default async function decorate(block) {
             formContainer.classList.add('form-container');
             formContainer.innerHTML = mktoForm;
             formCol.replaceWith(formContainer);
-            loadFormAndChilipiper(formId, successUrl, chilipiper);
+            loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLabel);
           } else {
             col.classList.add('content-col');
             const a = col.querySelector('a');
             if (a && block.classList.contains('with-google-map')) {
               const url = new URL(a.href.replace(/\/$/, ''));
               a.outerHTML = getDefaultEmbed(url);
+            } else if (a?.href?.includes('wistia')) {
+              const loadWistiaCSS = true;
+              addWistia(col, loadWistiaCSS);
             }
           }
         });
       } else {
         block.innerHTML = mktoForm;
-        loadFormAndChilipiper(formId, successUrl, chilipiper);
+        loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLabel);
       }
     } else {
       const formEl = await createForm(formUrl);
