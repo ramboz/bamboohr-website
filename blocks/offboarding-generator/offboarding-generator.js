@@ -422,7 +422,7 @@ function resetForm(block) {
 
 function removeHTMLTags(str) {
   // Replace closing </p> tags with new line breaks
-  const withLineBreaks = str.replace(/<\/p>/g, '\n');
+  const withLineBreaks = str.replace(/<\/p>/g, '\n\n');
 
   // Remove HTML tags using regular expression
   const withoutTags = withLineBreaks.replace(/<[^>]+>/g, '');
