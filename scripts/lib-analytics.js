@@ -147,6 +147,7 @@ export async function analyticsTrackPageViews(document, additionalXdmFields = {}
         webPageDetails: {
           name: `${document.title}`,
 		  _bamboohr: {
+			Campaign: getCampaignString(),
 			blogPageDetails: {
 			  ...blogPageDetails,				  
 			}
@@ -388,4 +389,11 @@ export async function getBlogMetaFromInstrumentation() {
 	}catch (e) {
 		return {};
 	}
+}
+
+export function getCampaignString(){
+	const urlParams = new URLSearchParams(window.location.search);
+	const campaign = (urlParams.get("utm_campaign") || "not_set") + "|" + (urlParams.get("utm_source") || "not_set") + "|" + (urlParams.get("utm_medium") || "not_set") + "|" + (urlParams.get("utm_term") || "not_set") + "|" + (urlParams.get("utm_content") || "not_set");
+
+	return (campaign != "not_set|not_set|not_set|not_set|not_set" ? campaign : "");
 }
