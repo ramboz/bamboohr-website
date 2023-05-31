@@ -1,9 +1,5 @@
 import { createElem } from "../../scripts/scripts.js";
 
-const firstName = sessionStorage.getItem('generator-firstName');
-const secondName = sessionStorage.getItem('generator-secondName');
-const businessName = sessionStorage.getItem('generator-businessName');
-
 const formUrl = '/website-marketing-resources/offboarding-calculator-form.json';
 
 let formsNameArr = null;
@@ -359,7 +355,12 @@ function nextBtnHandler(event, block) {
   propertyNames.forEach(item => {
     const input = block.querySelector(`#${item}`);
     if(input && input.value !== null) {
-      sessionStorage.setItem(`generator-${item}`, input.value);
+      const capitalised = item.charAt(0).toUpperCase() + item.slice(1)
+      const fieldId = block.querySelector(`#lead${capitalised}`)
+
+      if (fieldId) {
+        fieldId.value = input.value
+      }
     }
   })
 
@@ -606,7 +607,6 @@ export default async function decorate(block) {
   // Progress to lead gen
   block.querySelector('#lead-gen').addEventListener('click', (e) => {
     leadGenBtnHandler(block)
-
     nextStep(e);
   });
 
