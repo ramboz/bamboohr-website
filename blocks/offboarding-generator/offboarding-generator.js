@@ -419,11 +419,17 @@ function leadGenBtnHandler(block) {
 
 function resetForm(block) {
   const stepsArr = block.querySelectorAll('.offboarding-generator-step')
+  const forms = block.querySelectorAll('form')
   const blockContainer = block.parentNode.parentElement
+
+  forms.forEach(form => {
+    form.reset()
+  });
 
   stepsArr.forEach(element => {
     element.classList.remove('offboarding-generator-step--active');
   });
+
   block.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
   blockContainer.classList.remove('offboarding-generator-container--overlay');
 }
@@ -623,7 +629,7 @@ export default async function decorate(block) {
     });
   });
 
-  const close = block.querySelectorAll('.button[data-close]');  
+  const close = block.querySelectorAll('.button[data-close]');
   close.forEach(item => {
     item.addEventListener('click', () => {
       resetForm(block)
