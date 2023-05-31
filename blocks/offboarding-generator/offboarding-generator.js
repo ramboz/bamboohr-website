@@ -275,6 +275,20 @@ function stepIndicator(index, form) {
   stepsArr[index].classList.add('step-active');
 }
 
+function scrollToTop() {
+  let position = document.querySelector('#offboarding-generator').offsetTop
+  const nav = document.querySelector('.header-wrapper .nav')
+  const navHeight = nav.getBoundingClientRect().height
+
+  position -= navHeight + 10
+
+  window.scrollTo({
+    left: 0,
+    top: position,
+    behavior: 'smooth'
+  });
+}
+
 // Next Step
 function nextStep(el, block) {
   let current = parseInt(el.target.dataset.step, 10);
@@ -287,6 +301,8 @@ function nextStep(el, block) {
   current += 1
 
   document.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
+
+  scrollToTop()
 }
 
 // Previous Step
@@ -298,11 +314,13 @@ function prevStep(el, block) {
     stepIndicator(0, block);
   }
 
-  document.querySelector(`[data-step="${--current}"]`).classList.add('offboarding-generator-step--active');
+  block.querySelector(`[data-step="${--current}"]`).classList.add('offboarding-generator-step--active');
 
   if (current === 0) {
     block.querySelector('.progress-bar').classList.remove('active');
   }
+
+  scrollToTop()
 }
 
 function templatePreview(values, block) {
@@ -462,10 +480,7 @@ export default async function decorate(block) {
   
   const data = await fetchData(formUrl)
   const progressBarDiv = createElem('div', 'progress-bar');
-
-  // Set template defaults
-  sessionStorage.setItem('generator-template', 'resignation-letter-acknowledgement');
-  sessionStorage.setItem('generator-tone', 'TemplateFormal');
+  block.setAttribute('id', 'offboarding-generator');
 
   // Add classes to generator step wrapping divs
   const {children} = block;
