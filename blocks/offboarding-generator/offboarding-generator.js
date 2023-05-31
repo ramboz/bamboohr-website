@@ -218,25 +218,15 @@ function generateInputs(template) {
 
 // Tone Selection Shortcode Template
 function templateTone(el) {
-  const templates = formsArr.find(item => item.formValue === sessionStorage.getItem('generator-template'));
   const labelArr = ['Formal', 'Neutral', 'Friendly']
-  const formatTemp = getTemplatesTone(templates)
-
   const divWrapper = createElem('div', 'tone-selection')
+  
   const toneTemplateDiv = `<div class="tone-template"><div id="template-preview"></div></div><nav><button data-step="2" data-prev class="button button--outline">Back</button><button data-step="2" class="button" id="lead-gen">Generate my template</button></nav>`
 
-  const propertyNames = Object.keys(formatTemp[0]);
-  
-  const obj = labelArr.reduce((acc, label, index) => {
-    acc[label] = propertyNames[index]
-    return acc
-  }, {})
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const [key, value] of Object.entries(obj) ) {
-    const inputHtml = `<button class="template-selector" id="${value}">${key}</button>`
+  labelArr.forEach(item => {
+    const inputHtml = `<button class="template-selector" id="Template${item}">${item}</button>`
     divWrapper.insertAdjacentHTML('beforeend', inputHtml)
-  }
+  })
 
   el.insertAdjacentHTML('afterend', toneTemplateDiv)
 
