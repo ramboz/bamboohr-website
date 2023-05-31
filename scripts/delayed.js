@@ -297,33 +297,12 @@ trackWistiaPlayerEvents();
  * Track external links interaction with alloy
  */
 function trackInteractionExternalLinks() {
-  const loginLinks = document.querySelectorAll('[href="https://app.bamboohr.com/login/"], [href="https://partners.bamboohr.com/login/"]');
-  loginLinks.forEach(item => {
-    item.addEventListener('click', async (event) => {
-      await analyticsTrackLinkClicks(event.currentTarget, 'exit');
-    });
-  });
-
-  const mobileAppLinks = document.querySelectorAll('[href="https://apps.apple.com/us/app/bamboohr/id587244049"], ' +
-    '[href="https://play.google.com/store/apps/details?id=com.mokinetworks.bamboohr"]');
-  mobileAppLinks.forEach(item => {
-    item.addEventListener('click', async (event) => {
-      await analyticsTrackLinkClicks(event.currentTarget, 'exit');
-    });
-  });
-
-  const phoneNumberLinks = document.querySelectorAll('[href^="tel:"]');
-  phoneNumberLinks.forEach(item => {
-    item.addEventListener('click', async (event) => {
-      await analyticsTrackLinkClicks(event.currentTarget, 'exit');
-    });
-  });
-
-  const socialMediaLink = document.querySelectorAll('main div.article-header-share a, footer div.social a');
-  socialMediaLink.forEach(item => {
-    item.addEventListener('click', async (event) => {
-      await analyticsTrackLinkClicks(event.currentTarget, 'exit');
-    });
+  
+  const allLinkTags = document.querySelectorAll('header a, main a, footer a');
+	allLinkTags.forEach(item => {
+	item.addEventListener('click', async (event) => {
+		await analyticsTrackLinkClicks(event.currentTarget, 'exit');
+	});
   });
 }
 
