@@ -57,9 +57,14 @@ function readCookie(name) {
 function getBhrFeaturesCookie() {
   const value = readCookie('bhr_features');
   try {
-    return JSON.parse(value);
-  } catch (err) {
-    return {};
+    const decryptedValue = atob(value);
+    return JSON.parse(decryptedValue);
+  } catch (err1) {
+    try {
+      return JSON.parse(value);
+    } catch (err2) {
+      return {};
+    }
   }
 }
 
@@ -213,9 +218,12 @@ function loadTemplateCSS() {
       'content-library',
       'webinar',
       'paid-landing-page',
+      'paid-landing-page-b',
       'product-updates',
       'live-demo-webinar-lp',
       'hr-101-guide',
+      'customers',
+      'trade-show',
     ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -336,9 +344,10 @@ export function decorateBlock(block) {
 
   const blockWrapper = block.parentElement;
   blockWrapper.classList.add(`${shortBlockName}-wrapper`);
+  const regex = /\b(?:tablet-|laptop-|desktop)?(?:content-)?width-(?:xs|sm|md|lg|xl|2xl|full)\b/g;
 
   [...block.classList]
-    .filter((filter) => filter.match(/^content-width-/g))
+    .filter((filter) => filter.match(regex))
     .forEach((style) => {
       block.parentElement.classList.add(style);
       block.classList.remove(style);
@@ -375,6 +384,10 @@ export function readBlockConfig(block) {
           } else {
             value = ps.map((p) => p.textContent);
           }
+        } else if (col.querySelector('picture')) {
+          const imgEl = col.querySelector('picture');
+          const imagePath = imgEl.firstElementChild.srcset;
+          value = imagePath.substr(0, imagePath.indexOf('?'));
         } else value = row.children[1].textContent;
         config[name] = value;
       }
@@ -425,6 +438,9 @@ export function decorateBackgrounds($section) {
     'bg-bottom-cap-3-laptop',
     'bg-bottom-cap-3-tablet',
     'bg-bottom-cap-3-mobile',
+    'bg-bottom-cap-4-laptop',
+    'bg-bottom-cap-4-tablet',
+    'bg-bottom-cap-4-mobile',
     'bg-cover-green-patterns-laptop',
     'bg-cover-green-patterns-tablet',
     'bg-cover-green-patterns-mobile',
@@ -454,6 +470,7 @@ export function decorateBackgrounds($section) {
     'bg-right-multi-4-mobile',
     'bg-right-multi-4-tablet',
     'bg-right-multi-4-laptop',
+    'bg-right-multi-6-mobile',
   ];
   const sectionKey = [...$section.parentElement.children].indexOf($section);
   [...$section.classList]
@@ -544,6 +561,17 @@ export function decorateSections($main) {
           section.classList.add(...meta.style.split(', ').map(toClassName));
         } else if (key === 'anchor') {
           section.id = toClassName(meta.anchor);
+        } else if (key === 'bg-image') {
+          const bgImg = meta['bg-image'];
+          section.setAttribute('data-bg-image', bgImg);
+          // eslint-disable-next-line no-use-before-define
+          const bgPicture = createOptimizedPicture(bgImg, 'Background Image', false, [
+            { media: '(min-width: 1025px)', width: '2000' },
+            { media: '(min-width: 600px)', width: '1200' },
+          ]);
+          bgPicture.classList.add('bg', 'bg-image');
+          if (!section.classList.contains('has-bg')) section.classList.add('has-bg');
+          section.prepend(bgPicture);
         } else {
           section.dataset[toCamelCase(key)] = meta[key];
         }
@@ -1018,11 +1046,15 @@ export async function lookupPages(pathnames, collection, sheet = '') {
     blog: '/blog/fixtures/blog-query-index.json',
     integrations: '/integrations/query-index.json?sheet=listings',
     hrGlossary: '/resources/hr-glossary/query-index.json',
+    hrSoftware: '/hr-software/query-index.json',
     hrvs: '/resources/events/hr-virtual/2022/query-index.json',
+    liveDemoWebinars: '/live-demo-webinars/query-index.json?sheet=default',
     blockInventory: '/blocks/query-index.json',
     blockTracker: `/website-marketing-resources/block-inventory-tracker2.json?sheet=${sheet}`,
     resources: `/resources/query-index.json?sheet=resources`,
     speakers: `/speakers/query-index.json`,
+    productUpdates: '/product-updates/query-index.json',
+    webinars: '/webinars/query-index.json?sheet=default',
   };
   const indexPath = indexPaths[collection];
   const collectionCache = `${collection}${sheet}`;
@@ -1064,7 +1096,7 @@ function loadFooter(footer) {
   const footerBlockName = queryParams.header ? 'megafooter' : 'footer';
 
   const footerBlock = buildBlock(footerBlockName, '');
-  footer.append(footerBlock);
+  if (footer) footer.append(footerBlock);
   decorateBlock(footerBlock);
   loadBlock(footerBlock);
 }
@@ -1347,6 +1379,12 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     await decorateMain(main);
+    if (window.innerWidth >= 900)
+      loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
+    if (sessionStorage.getItem('lazy-styles-loaded')) {
+      loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
+      loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+    }
     await waitForLCP();
   }
 }
@@ -1358,10 +1396,15 @@ function createProductSchemaMarkup() {
   const pageTitle = document.querySelector('h1').textContent;
   const pageUrl = document.querySelector('link[rel="canonical"]').getAttribute('href');
   const socialImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
-  const quoteAuthor = document.querySelector('.product-schema p:last-of-type').textContent;
-  const quoteText = document
-    .querySelector('.product-schema div div p:first-of-type')
-    .textContent.replace(/["]+/g, '');
+
+  const quoteAuthorElement = document.querySelector('.product-schema p:last-of-type');
+  let quoteAuthor = '';
+  if (quoteAuthorElement) quoteAuthor = quoteAuthorElement.textContent;
+
+  const quoteTextElement = document.querySelector('.product-schema div div p:first-of-type');
+  let quoteText = '';
+  if (quoteTextElement) quoteText = quoteTextElement.textContent.replace(/["]+/g, '');
+
   const pageDescription = document
     .querySelector('meta[property="og:description"]')
     .getAttribute('content');
@@ -1388,8 +1431,9 @@ function createProductSchemaMarkup() {
       },
     ],
   };
-  const $productSchema = document.createElement('script', { type: 'application/ld+json' });
+  const $productSchema = document.createElement('script');
   $productSchema.innerHTML = JSON.stringify(productSchema, null, 2);
+  $productSchema.setAttribute('type', 'application/ld+json');
   const $head = document.head;
   $head.append($productSchema);
 }
@@ -1412,8 +1456,9 @@ function createVideoObjectSchemaMarkup() {
     uploadDate: videoUploadDate,
     description: videoDescription,
   };
-  const $videoObjectSchema = document.createElement('script', { type: 'application/ld+json' });
+  const $videoObjectSchema = document.createElement('script');
   $videoObjectSchema.innerHTML = JSON.stringify(videoObjectSchema, null, 2);
+  $videoObjectSchema.setAttribute('type', 'application/ld+json');
   const $head = document.head;
   $head.append($videoObjectSchema);
 }
@@ -1441,8 +1486,9 @@ function createFaqPageSchemaMarkup() {
       });
     }
   });
-  const $faqPageSchema = document.createElement('script', { type: 'application/ld+json' });
+  const $faqPageSchema = document.createElement('script');
   $faqPageSchema.innerHTML = JSON.stringify(faqPageSchema, null, 2);
+  $faqPageSchema.setAttribute('type', 'application/ld+json');
   const $head = document.head;
   $head.append($faqPageSchema);
 }
@@ -1493,7 +1539,10 @@ async function loadLazy(doc) {
   const headerloaded = loadHeader(header);
   loadFooter(doc.querySelector('footer'));
 
+  loadCSS(`${window.hlx.codeBasePath}/styles/fonts/early-fonts.css`);
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  if (!window.location.hostname.includes('localhost'))
+    sessionStorage.setItem('lazy-styles-loaded', 'true');
   addFavIcon('https://www.bamboohr.com/favicon.ico');
 
   if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === 'localhost') {
@@ -1605,6 +1654,7 @@ export function insertNewsletterForm(elem, submitCallback) {
       newsletterSubscribe(input.value);
       e.preventDefault();
       submitCallback();
+      input.value = '';
     });
     a.replaceWith(formDiv);
   });

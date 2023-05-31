@@ -88,7 +88,7 @@ function buildSuccessMore(main) {
 
 function downloadPdf() {
   const {origin} = window.location;
-  const path = window.location.pathname.split('/')
+  const path = window.location.pathname.split('/');
   const fileName = path[path.length - 1];
   const pdfPath = window.location.pathname.replace('/resources/','/resources/assets/');
   const url = `${origin}${pdfPath}.pdf`;
@@ -106,7 +106,6 @@ function downloadPdf() {
       setTimeout(() => URL.revokeObjectURL(link.href), 7000);
   });
 }
-
 
 export default async function decorateTemplate(main) {
   const queryString = window.location.search;

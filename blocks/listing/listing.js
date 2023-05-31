@@ -27,7 +27,7 @@ export function isUpcomingEvent(eventDateStr) {
 
 let gLoadWistiaCSS = true;
 
-function getLinkText(format, mediaType) {
+export function getLinkText(format, mediaType) {
   let linkText = 'Read Now';
   if (format) linkText = format.toLowerCase() === 'video' ? 'Watch Now' : 'Read Now';
   else if (mediaType) {
@@ -49,8 +49,16 @@ function getLinkText(format, mediaType) {
   return linkText;
 }
 
-export function createArticleCard(article, classPrefix, customLinkText = '', excludeMediaType = false, eager = false) {
-  const title = article.title.split(' | ')[0];
+export function createArticleCard(
+  article,
+  classPrefix,
+  customLinkText = '',
+  excludeMediaType = false,
+  simple = false,
+  hideCategory = false,
+  eager = false
+) {
+  const title = article.jobTitle || article.title.split(' | ')[0];
   const card = document.createElement('div');
   let articleCategory = [article.category, article.topic, article.planType, article.productArea, article.contentType, article.brandedContent];
   articleCategory = articleCategory.filter((str) => (str !== '' && str !== undefined)).join(' | ');
@@ -88,22 +96,27 @@ export function createArticleCard(article, classPrefix, customLinkText = '', exc
     const [year, month, day] = article.publicationDate.split('-');
     releaseDate = `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>`;
   } 
-  
 
   const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
-  const articleCategorySpan = articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
+  const articleCategorySpan = !article.readTime && articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
+  const blogCategorySpan = article.readTime && articleCategory ? `<span class="${classPrefix}-card-category">${article.category}</span> 
+    <span class="${classPrefix}-card-readtime">${article.readTime || ''}</span>` : '';
+  const articlePresenter = article?.presenter || article?.customerName ? `<h5>${article?.presenter || article?.customerName || ''}</h5>` : '';
+  const articleDesc = !simple ? `<p class="${classPrefix}-card-detail">${article.description}</p>` : '';
+  const articleCardHeader = !simple && !hideCategory ? `<div class="${classPrefix}-card-header category-color-${category}">
+      ${articleCategorySpan}
+      ${blogCategorySpan}
+      ${articleFormatSpan}
+    </div>` : '';
 
   card.innerHTML = `
     ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
-    <h5>${article?.presenter || ''}</h5>
+    ${articlePresenter}
     <h3>${title}</h3>
     ${releaseDate}
-    <p>${article.description}</p>
-    <div class="${classPrefix}-card-header category-color-${category}">
-    ${articleCategorySpan}
-    ${articleFormatSpan}
-    </div>
+    ${articleDesc}
+    ${articleCardHeader}
     <p><a href="${article.path}">${linkText}</a></p>
     </div>`;
   return (card);
@@ -209,24 +222,23 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
 
   /* filter */
   const results = listings.data.filter((row) => {
+    if (isUpcomingEvent(row.eventDate)) return false;
     const filterMatches = {};
-    const eventDateStr = row.eventDate;
-    let matchedAll = false;
-    if (!eventDateStr || !isUpcomingEvent(eventDateStr)) {
-      matchedAll = keys.every((key) => {
-        let matched = false;
-        if (row[key]) {
-          const rowValues = row[key].split(',').map((t) => t.trim());
-          matched = tokens[key].some((t) => rowValues.includes(t));
-        }
-        if (key === 'fulltext') {
-          const {fulltext} = config;
-          matched = row.title.toLowerCase().includes(fulltext.toLowerCase()) || row.description.toLowerCase().includes(fulltext.toLowerCase());
-        }
-        filterMatches[key] = matched;
-        return matched;
-      });
-    }
+    let matchedAll = true;
+    keys.forEach((key) => {
+      let matched = false;
+      if (row[key]) {
+        const rowValues = row[key].split(',').map((t) => t.trim());
+        matched = tokens[key].some((t) => rowValues.includes(t));
+      }
+      if (key === 'fulltext') {
+        const {fulltext} = config;
+        matched = row.title.toLowerCase().includes(fulltext.toLowerCase()) || row.description.toLowerCase().includes(fulltext.toLowerCase());
+      }
+      filterMatches[key] = matched;
+      if (!matched) matchedAll = false;
+      return matched;
+    });
 
     const isListing = () => !!row.publisher;
 
@@ -240,17 +252,12 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
           includeInFacet = false;
 
           if (filterKey !== facetKey) {
-            keys.every((key) => {
+            includeInFacet = keys.every((key) => {
               let matched = false;
 
               if (row[key]) {
                 const rowValues = row[key].split(',').map((t) => t.trim());
                 matched = tokens[key].some((t) => rowValues.includes(t));
-
-                if (matched) {
-                  includeInFacet = true;
-                }
-                includeInFacet = false;
               }
 
               return matched;
@@ -573,7 +580,7 @@ export default async function decorate(block, blockName) {
         industry: {},
         companySize: {},
         companyGrowthStage: {},
-        userRole: {},
+        jobTitleCategory: {},
       };
     } else {
       facets = {
@@ -655,7 +662,8 @@ export default async function decorate(block, blockName) {
       span.className = 'listing-filters-tag';
       span.textContent = tag;
       span.addEventListener('click', () => {
-        document.getElementById(`listing-filter-${tag}`).checked = false;
+        const selFilter = document.getElementById(`listing-filter-${tag}`);
+        if (selFilter) selFilter.checked = false;
         const filterConfig = createFilterConfig();
 
         runSearch(filterConfig);
@@ -687,7 +695,8 @@ export default async function decorate(block, blockName) {
         block.querySelector('#listing-results-count').textContent = getHRVSVisibleCount();
       } else {
         selected.forEach((tag) => {
-          document.getElementById(`listing-filter-${tag}`).checked = false;
+          const selFilter = document.getElementById(`listing-filter-${tag}`);
+          if (selFilter) selFilter.checked = false;
         });
 
         const filterConfig = createFilterConfig();

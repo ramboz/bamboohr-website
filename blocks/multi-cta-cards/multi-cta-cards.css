@@ -1,4 +1,4 @@
-.multi-cta-cards.gray,
+.multi-cta-cards.gray-bg-header,
 .multi-cta-cards .gray {
   --theme-tint10: var(--color-gray-1);
   --theme-bullet-level1: var(--bullet-level1-gray);
@@ -17,6 +17,8 @@
   box-shadow: var(--theme-shadow2-shade5);
   margin-bottom: 32px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .multi-cta-cards > div:nth-child(n + 2) {
@@ -29,10 +31,11 @@
   color: var(--theme-shade15);
   font-family: var(--body-font-family);
   font-size: 16px;
+  line-height: 1.2;
   font-style: normal;
   font-weight: var(--heading-font-weight);
   margin: 0;
-  padding: 24px 0;
+  padding: 24px 5px;
   text-align: center;
   text-transform: uppercase;
   width: 100%;
@@ -52,7 +55,8 @@
   padding: 16px;
 }
 
-.multi-cta-cards > div > div > h4 + .button-container {
+.multi-cta-cards > div > div > h4 + .button-container,
+.multi-cta-cards > div > div > h4 + p + .button-container {
   border-bottom: none;
   margin: 0;
   padding: 0;
@@ -131,9 +135,11 @@
 }
 
 .multi-cta-cards > div > div > ul + .button-container {
-  margin: 0 0 21px;
-  padding: 0;
-  text-align: center;
+  padding: 21px 42px;
+  margin: auto 0 0;
+  text-align: left;
+  width: 100%;
+  border-top: 1px solid var(--color-gray-1);
 }
 
 .multi-cta-tooltip-container a:any-link {
@@ -267,4 +273,38 @@
   main .section > .multi-cta-wrapper-extended .multi-cta-cards {
     max-width: 75%;
   }
+}
+
+.multi-cta-cards.has-top-cta-button > div > div > h4 + p,
+.multi-cta-cards.has-top-cta-button > div > div > h6 + p {
+  border-bottom: none;
+}
+
+@media (min-width: 1200px) {
+  .multi-cta-cards.has-top-cta-button > div > div > h4 + p,
+  .multi-cta-cards.has-top-cta-button > div > div > h6 + p {
+    min-height: 176px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .multi-cta-cards.has-top-cta-button > div > div > h4 + p,
+  .multi-cta-cards.has-top-cta-button > div > div > h6 + p {
+    min-height: unset;
+  }
+}
+
+.multi-cta-cards.has-top-cta-button > div > div > h4 + p + .button-container,
+.multi-cta-cards.has-top-cta-button > div > div > h6 + p + .button-container {
+  border-bottom: 1px solid var(--color-gray-1);
+}
+
+.multi-cta-cards.has-top-cta-button > div > div > h4 + p + .button-container .button,
+.multi-cta-cards.has-top-cta-button > div > div > h6 + p + .button-container .button{
+  color: var(--color-white);
+  background-color: var(--theme-shade10);
+  margin-top: 0;
+  padding: 10px 30px;
+  font-size: 15px;
+  line-height: 1.2;
 }

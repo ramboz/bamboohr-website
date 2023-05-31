@@ -1,6 +1,7 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
 import {analyticsTrackFormStart, analyticsTrackFormSubmission} from "../../scripts/lib-analytics.js";
+import { addWistia } from '../columns/columns.js';
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -496,7 +497,25 @@ function getMktoSearchParams(url) {
   return searchParamObj;
 }
 
-function loadFormAndChilipiper(formId, successUrl, chilipiper) {
+ // Replaces the default form heading text with the Form Heading Text value set in the metadata in the gdoc
+ function addFormHeadingText() {
+  const formHeadingText = getMetadata('form-heading-text');
+  const formHeadingEl = document.querySelector('main .form .form-col p strong');
+  if (formHeadingText && formHeadingEl) {
+    formHeadingEl.textContent = formHeadingText;
+  }
+}
+
+// Grabs the Expansion Product value from the meta data and adds it to the Request_Type_c hidden input field on the marketo form
+function addExpansionProduct() {
+  const expansionProduct = getMetadata('expansion-product');
+  const requestType = document.querySelector('input[name="Request_Type__c"]');
+  if (expansionProduct && requestType) {
+    requestType.value = expansionProduct;
+  }
+}
+
+function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
@@ -510,6 +529,29 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
 			analyticsTrackFormStart(formEl);
         });
 
+        /* floating label */
+        if (floatingLable === true) {
+          formEl.querySelectorAll('input:not([type="checkbox"]):not([type="radio"])').forEach((input) => {
+            const label = input.previousElementSibling;
+            if (input.value.trim().length && label) label.classList.add('active');
+
+            input.addEventListener('focusin', () => {
+              if (!label.classList.contains('active')) label.classList.add('active');
+            });
+            input.addEventListener('focusout', () => {
+              if (label.classList.contains('active') && !input.value.trim().length) label.classList.remove('active');
+            });
+            input.addEventListener('input', () => {
+              if (!label.classList.contains('active') && input.value.trim().length) {
+                label.classList.add('active');
+              }
+            });
+          });
+          formEl.querySelectorAll('select').forEach((select) => {
+            select.previousElementSibling.classList.add('active');
+          });
+        }
+		
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
         if (readyTalkMeetingID && readyTalkEl) {
@@ -532,6 +574,10 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
           formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
 
+        // addExpansionProduct();
+        addFormHeadingText();
+        addExpansionProduct();
+        
         form.onSuccess(() => {
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
@@ -560,7 +606,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper) {
     });
   });
   if (chilipiper) {
-    const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper-pricing-timeout-success' : '/chilipiper-demo-timeout-success';
+    const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper/pricing-timeout-success' : '/live-demo-timeout-success';
     loadScript('https://js.chilipiper.com/marketing.js', () => {
       function redirectTimeout() {
         return setTimeout(() => { window.location.href = timeoutSuccessUrl; }, '240000');
@@ -592,6 +638,8 @@ export default async function decorate(block) {
   const config = readBlockConfig(block);
   let chilipiper; let formUrl; let successUrl;
 
+  const floatingLabel = !!block.classList.contains('floating-label');
+  
   if (!block.classList.contains('has-content')) {
     const as = block.querySelectorAll('a');
     formUrl = as[0] ? as[0].href : '';
@@ -614,7 +662,7 @@ export default async function decorate(block) {
       ) {
         formUrl = entry.Form;
         let fbTracking = '';
-        if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php'
+        if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php';
         successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
         chilipiper = entry.Chilipiper;
       }
@@ -634,23 +682,26 @@ export default async function decorate(block) {
           const formCol = [...col.children].find((child) => child.textContent.trim().toLowerCase() === 'form');
           if (formCol) {
             col.classList.add('form-col');
-            formCol.remove();
             const formContainer = document.createElement('div');
+            formContainer.classList.add('form-container');
             formContainer.innerHTML = mktoForm;
-            col.append(formContainer);
-            loadFormAndChilipiper(formId, successUrl, chilipiper);
+            formCol.replaceWith(formContainer);
+            loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLabel);
           } else {
             col.classList.add('content-col');
             const a = col.querySelector('a');
             if (a && block.classList.contains('with-google-map')) {
               const url = new URL(a.href.replace(/\/$/, ''));
               a.outerHTML = getDefaultEmbed(url);
+            } else if (a?.href?.includes('wistia')) {
+              const loadWistiaCSS = true;
+              addWistia(col, loadWistiaCSS);
             }
           }
         });
       } else {
         block.innerHTML = mktoForm;
-        loadFormAndChilipiper(formId, successUrl, chilipiper);
+        loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLabel);
       }
     } else {
       const formEl = await createForm(formUrl);

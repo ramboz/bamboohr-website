@@ -68,6 +68,7 @@ main .upcoming-article-card .upcoming-article-card-format::before {
 
 main .upcoming ul > div {
   width: 100%;
+  margin-bottom: 30px;
 }
 
 main .upcoming ul > div div a img,
@@ -82,7 +83,7 @@ main .upcoming ul > div div p a {
   font-weight: 700;
   line-height: 22px;
   display: inline-block;
-  color: var(--color-1-shade-10);
+  color: var(--theme-shade5);
   text-decoration: none;
 }
 
@@ -98,12 +99,23 @@ main .upcoming ul > div div p a::after {
   margin-left: 8px;
 }
 
+main .upcoming-article-card-header {
+    font-weight: 500;
+    margin-top: 30px;
+    margin-bottom: 25px;
+    font-size: 12px;
+  }
+
 main .upcoming-article-card .upcoming-article-card-picture img {
     width: 100%;
 }
 
 @media (min-width: 1025px) {
-    main .upcoming-results {
+      main .upcoming ul > div {
+        margin-bottom: 0;
+      }
+
+      main .upcoming-results {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         row-gap: 60px;

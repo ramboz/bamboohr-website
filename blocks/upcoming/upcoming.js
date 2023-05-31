@@ -2,16 +2,16 @@ import {
   createOptimizedPicture,
   readBlockConfig,
   readIndex,
+  toCategory,
 } from '../../scripts/scripts.js';
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 import { createArticleCard, loadWistiaBlock, isUpcomingEvent } from '../listing/listing.js';
 
-function createDateCard(article, classPrefix, eager = false, cardLink = {}) {
+export function createDateCard(article, classPrefix, hideCategory = false, eager = false, cardLink = {}) {
   const title = article.title.split(' | ')[0];
   const card = document.createElement('div');
-  const articleCategory = article.category || article.topic || article.contentType
-    || article.brandedContent || '';
-  const articleCategoryElement = articleCategory ? `<p class="upcoming-article-card-category">${articleCategory}</p>` : '';
+  let articleCategory = [article.category, article.topic, article.planType, article.productArea, article.contentType, article.brandedContent];
+  articleCategory = articleCategory.filter((str) => (str !== '' && str !== undefined)).join(' | ');
   const articleFormat = article?.format || article?.mediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
@@ -36,18 +36,24 @@ function createDateCard(article, classPrefix, eager = false, cardLink = {}) {
   }
   const articleImage = articlePicture || wistiaBlock;
   const articleLinkText = cardLink.text || article.linkText || 'Register for this event';
+  const category = toCategory(articleCategory);
   const articlePath = cardLink.link || article.path || '';
-
+  const articleDate = article.eventDateAndTime ? `<h4>${article.eventDateAndTime}</h4>` : '';
+  const articlePresenter = article?.presenter || article?.customerName ? `<h5>${article?.presenter || article?.customerName || ''}</h5>` : '';
   const articleLink = articlePath ? `<p><a href="${articlePath}">${articleLinkText}</a></p>` : '';
+  const articleCategorySpan = !article.readTime && articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
+  const articleCardHeader = !hideCategory ? `<div class="${classPrefix}-card-header category-color-${category}">
+      ${articleCategorySpan}
+    </div>` : '';
 
   card.innerHTML = `
     ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
-    <h4>${article.eventDateAndTime}</h4>
-    <h5>${article?.presenter || ''}</h5>
+    ${articleDate}
+    ${articlePresenter}
     <h3>${title}</h3>
-    <p>${article.description}</p>
-    ${articleCategoryElement}
+    <p class="${classPrefix}-card-detail">${article.description}</p>
+    ${articleCardHeader}
     ${articleLink}
     </div>`;
   return (card);
@@ -97,6 +103,7 @@ export default async function decorate(block, blockName) {
   indexConfig.indexPath = blockConfig['index-path'];
   indexConfig.indexName = blockConfig['index-name'];
   indexConfig.cardStyle = blockConfig['card-style'];
+  indexConfig.customLinkText = blockConfig['custom-link-text'];
   indexConfig.filterOn = blockConfig.filter;
   indexConfig.sortBy = blockConfig['sort-by'];
   indexConfig.limit = +blockConfig.limit || 0;
@@ -117,11 +124,11 @@ export default async function decorate(block, blockName) {
       const product = results[i];
 
       if (indexConfig.cardStyle === 'date') {
-        const dateCard = createDateCard(product, 'upcoming-article', false, cardLink);
+        const dateCard = createDateCard(product, 'upcoming-article', false, false, cardLink);
         resultsElement.append(dateCard);
         loadWistiaBlock(product, dateCard);
       } else if (indexConfig.cardStyle === 'article') {
-        const articleCard = createArticleCard(product, 'upcoming-article');
+        const articleCard = createArticleCard(product, 'upcoming-article', indexConfig.customLinkText);
         resultsElement.append(articleCard);
         loadWistiaBlock(product, articleCard);
       } else resultsElement.append(createAppCard(product, blockName));

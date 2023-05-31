@@ -17,6 +17,45 @@ import { analyticsSetConsent, analyticsTrackLinkClicks, analyticsTrackVideo } fr
 
 sampleRUM('cwv');
 
+function initESW(gslbBaseURL) {
+  // eslint-disable-next-line
+  embedded_svc.settings.displayHelpButton = true; //Or false
+  // eslint-disable-next-line
+  embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
+  // embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+  // embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+  // embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+  // embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+  // Settings for Chat
+  // embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+    // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+    // Returns a valid button ID.
+  // };
+  // embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+  // embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+  // embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+  // eslint-disable-next-line
+  embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+  // eslint-disable-next-line
+  embedded_svc.settings.entryFeature = 'LiveAgent';
+  // eslint-disable-next-line
+  embedded_svc.init(
+    'https://bamboohr.my.salesforce.com',
+    'https://bamboohr.my.site.com/surveys',
+    gslbBaseURL,
+    '00D50000000JMqp',
+    'BambooHR_Chat',
+    {
+      baseLiveAgentContentURL: 'https://c.la3-c1-ia5.salesforceliveagent.com/content',
+      deploymentId: '5724z000000Gn92',
+      buttonId: '5734z00000000gZ',
+      baseLiveAgentURL: 'https://d.la3-c1-ia5.salesforceliveagent.com/chat',
+      eswLiveAgentDevName: 'BambooHR_Chat',
+      isOfflineSupportEnabled: false
+    }
+  );
+}
+
 /**
  * loads a script by adding a script tag to the head.
  * @param {string} where to load the js file ('header' or 'footer')
@@ -30,13 +69,9 @@ function loadScript(location, url, callback, type, defer) {
   const $head = document.querySelector('head');
   const $body = document.querySelector('body');
   const $script = document.createElement('script');
-  $script.src = url;
-  if (type) {
-    $script.setAttribute('type', type);
-  }
-  if (defer && $script.src) {
-    $script.defer = defer;
-  }
+  if (url) $script.src = url;
+  if (type) $script.setAttribute('type', type);
+  if (defer && $script.src) $script.defer = defer;
   if (location === 'header') {
     $head.append($script);
   } else if (location === 'footer') {
@@ -44,6 +79,48 @@ function loadScript(location, url, callback, type, defer) {
   }
   $script.onload = callback;
   return $script;
+}
+
+function loadStyle(location, css) {
+  const $head = document.querySelector('head');
+  const $body = document.querySelector('body');
+  const $style = document.createElement('style');
+  $style.setAttribute('type', 'text/css');
+  $style.appendChild(document.createTextNode(css));
+  if (location === 'header') {
+    $head.append($style);
+  } else if (location === 'footer') {
+    $body.append($style);
+  }
+  return $style;
+}
+
+function loadSalesforceChatScript() {
+  const chatTestPaths = [
+    '/drafts/sclayton/chat-test',
+  ];
+
+  const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
+  if (!isOnChatTestPath) return;
+
+  // load style
+  loadStyle('footer', `.embeddedServiceHelpButton .helpButton .uiButton {
+    background-color: #444444;
+    font-family: "Salesforce Sans", sans-serif;
+  }
+  .embeddedServiceHelpButton .helpButton .uiButton:focus {
+    outline: 1px solid #444444;
+  }
+  @font-face {
+    font-family: 'Salesforce Sans';
+    src: url('https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.woff') format('woff'),
+    url('https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.ttf') format('truetype');
+  }`);
+  loadScript('footer', 'https://service.force.com/embeddedservice/5.0/esw.min.js', null, 'text/javascript');
+  loadScript('footer', 'https://bamboohr.my.salesforce.com/embeddedservice/5.0/esw.min.js', async () => {
+    if (!window.embedded_svc) initESW(null);
+    else initESW('https://service.force.com');
+  }, 'text/javascript');
 }
 
 function loadTrustArcFormScript() {
@@ -75,6 +152,26 @@ function loadTrustArcFormScript() {
   // TODO: revert to non-proxied url before merging
   const trustArcFormSrc = 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://form-renderer.trustarc.com/browser/client.js';
   loadScript('header', trustArcFormSrc, null, 'text/javascript', true);
+}
+
+// loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', null, 'text/javascript');
+
+/**
+ * opens external links in new window
+ */
+function updateExternalLinks() {
+  document.querySelectorAll('main a').forEach((a) => {
+    try {
+      const { origin } = new URL(a.href, window.location.href);
+      if (origin && origin !== window.location.origin) {
+        a.setAttribute('rel', 'noopener');
+        a.setAttribute('target', '_blank');
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(`Invalid link: ${a.href}`);
+    }
+  });
 }
 
 function getCookie(name) {
@@ -136,21 +233,9 @@ loadTrustArcFormScript();
 // eslint-disable-next-line
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-ZLCX');
 
-/* This is temporary code to load our homepage convert test mid-test.
- we are loading here to avoid the delay "long flicker" before the test page is loaded.
- This type of test should be handled in Adobe Franklin experiments going forward.
-*/
-// const testPaths = [
-//   '/resources/hr-glossary/performance-review'
-// ];
-// const isOnTestPath = testPaths.includes(window.location.pathname);
-// if (isOnTestPath) {
-const $head = document.querySelector('head');
-const $script = document.createElement('script');
-$script.src = 'https://cdn-4.convertexperiments.com/js/10004673-10005501.js';
-$head.append($script);
-// }
-/* This is the end of the temporary convert test code */
+loadSalesforceChatScript();
+
+updateExternalLinks();
 
 /**
  * Track Wistia Player events with alloy

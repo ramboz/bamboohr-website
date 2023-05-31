@@ -573,6 +573,7 @@ main .listing-results .hrvs-card-body a::after {
 
 main .article-cards ul > div {
   width: 100%;
+  margin-bottom: 30px;
 }
 
 main .article-cards ul > div div a img,
@@ -594,7 +595,7 @@ main .article-cards ul > div div p a {
   font-weight: 700;
   line-height: 22px;
   display: inline-block;
-  color: var(--color-1-shade-10);
+  color: var(--theme-shade5);
   text-decoration: none;
 }
 
@@ -643,6 +644,11 @@ main .article-cards ul > div div p a::after {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 40px;
+    }
+
+
+    main .article-cards ul > div {
+        margin-bottom: 0;
     }
 
     main .listing-results > li {
@@ -826,7 +832,17 @@ main .listing.no-controls .listing-search {
     display: none;
 }
 
-main .listing-article-card .listing-article-card-body p{
+main .listing-article-card-detail {
+    max-height: 110px;
+    /* stylelint-disable value-no-vendor-prefix */
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+main .listing-article-card .listing-article-card-body p {
     margin-bottom: 10px;
 }
 
@@ -865,9 +881,18 @@ main .listing.one-column .listing-results .listing-article-card {
     }
 }
 
+main .listing-results .listing-article-card .listing-article-card-picture,
+main .listing-results .listing-article-card .wistia.block,
 main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture {
     margin-bottom: 40px;
 }
+
+main .listing-article-card-header {
+    font-weight: 500;
+    margin-top: 30px;
+    margin-bottom: 25px;
+    font-size: 12px;
+  }
 
 @media screen and (min-width: 600px) {
     main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture {
