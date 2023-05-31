@@ -147,7 +147,7 @@ export async function analyticsTrackPageViews(document, additionalXdmFields = {}
         webPageDetails: {
           name: `${document.title}`,
 		  _bamboohr: {
-			Campaign: getCampaignString(),
+			campaign: getCampaignString(),
 			blogPageDetails: {
 			  ...blogPageDetails,				  
 			}
@@ -396,4 +396,39 @@ export function getCampaignString(){
 	const campaign = (urlParams.get("utm_campaign") || "not_set") + "|" + (urlParams.get("utm_source") || "not_set") + "|" + (urlParams.get("utm_medium") || "not_set") + "|" + (urlParams.get("utm_term") || "not_set") + "|" + (urlParams.get("utm_content") || "not_set");
 
 	return (campaign != "not_set|not_set|not_set|not_set|not_set" ? campaign : "");
+}
+
+export async function analyticsTrackPreformEmailEntered() {
+	if(!window.preformEmailEntered){
+		
+		window.preformEmailEntered = true;		
+	
+		// eslint-disable-next-line no-undef
+		return alloy('sendEvent', {
+			documentUnloading: true,
+			xdm: {
+				eventType: 'web.formFilledOut',
+				[CUSTOM_SCHEMA_NAMESPACE]: {
+					form: {
+						preFormEmailEntered: 1,
+					}
+				},
+			},
+		});
+	}
+}
+
+export async function analyticsTrackPreformEmailSubmitted() {
+	// eslint-disable-next-line no-undef
+	return alloy('sendEvent', {
+		documentUnloading: true,
+		xdm: {
+			eventType: 'web.formFilledOut',
+			[CUSTOM_SCHEMA_NAMESPACE]: {
+				form: {
+					preFormEmailSubmitted: 1,
+				}
+			},
+		},
+	});
 }

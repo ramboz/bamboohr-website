@@ -2,6 +2,7 @@ import { hasClassStartsWith, getValuesFromClassName, loadCSS } from '../../scrip
 import decorateWistia from '../wistia/wistia.js';
 import { buildPicture } from '../multi-hero/multi-hero.js';
 import decorateVideo from '../video/video.js';
+import {analyticsTrackPreformEmailEntered, analyticsTrackPreformEmailSubmitted} from "../../scripts/lib-analytics.js";
 
 function addBreakpointImages(col, block) {
   if (block.classList.contains('has-breakpoint-images')) {
@@ -43,13 +44,9 @@ function handleEmailFormSubmit (event) {
   // eslint-disable-next-line
   function handleEmailInputKeyup(event) {
     if (event.key === 'Enter') {
+	  analyticsTrackPreformEmailEntered();
        // eslint-disable-next-line
       handleEmailFormSubmit(event);
-    } else {
-      window.digitalData.push({
-        // eslint-disable-next-line
-        event: 'Pre-form Email Entered'
-      });
     }
   }
 
@@ -66,7 +63,9 @@ function handleEmailFormSubmit (event) {
       formLabel.classList.remove('inline-form-label-active');
       errorContainer.textContent = '';
       emailInput.classList.remove('inline-form-input-error');
-    }
+    }else{
+		analyticsTrackPreformEmailEntered();
+	}
   }
   
   const { link } = form.dataset;
@@ -89,9 +88,7 @@ function handleEmailFormSubmit (event) {
     // Redirect the user to the provided link
     if (link) {
       // Adobe analytics tracking event
-      window.digitalData.push({
-        event: 'Pre-form Email Submitted'
-      });
+	  analyticsTrackPreformEmailSubmitted();
     
       const url = new URL(link);
       url.searchParams.set('email', email);
