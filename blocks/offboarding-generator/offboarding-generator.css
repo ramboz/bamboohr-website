@@ -173,7 +173,14 @@ main .offboarding-generator-step[data-step="2"] #template-preview {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  margin: 1.5rem 0 1.75rem 0;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview span {
+  color: #1A87C9;
 }
 
 main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar {
@@ -359,6 +366,8 @@ main .offboarding-generator input {
 
 main .offboarding-generator input[type="date"] {
   appearance: auto;
+  -webkit-appearance: none;
+  height: 50px;
 }
 
 main.offboarding-generator input::placeholder {

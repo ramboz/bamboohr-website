@@ -220,7 +220,7 @@ function generateInputs(template) {
 function templateTone(el) {
   const labelArr = ['Formal', 'Neutral', 'Friendly']
   const divWrapper = createElem('div', 'tone-selection')
-  
+
   const toneTemplateDiv = `<div class="tone-template"><div id="template-preview"></div></div><nav><button data-step="2" data-prev class="button button--outline">Back</button><button data-step="2" class="button" id="lead-gen">Generate my template</button></nav>`
 
   labelArr.forEach(item => {
@@ -270,7 +270,7 @@ function scrollToTop() {
   const nav = document.querySelector('.header-wrapper .nav')
   const navHeight = nav.getBoundingClientRect().height
 
-  position -= navHeight + 10
+  position -= navHeight
 
   window.scrollTo({
     left: 0,
