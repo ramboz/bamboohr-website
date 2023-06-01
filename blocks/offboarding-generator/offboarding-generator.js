@@ -258,11 +258,14 @@ function stepIndicator(index, form) {
 }
 
 function scrollToTop() {
-  let position = document.querySelector('#offboarding-generator').offsetTop
+  const element = document.getElementById('offboarding-generator')
+  const elementRect = element.getBoundingClientRect()
   const nav = document.querySelector('.header-wrapper .nav')
   const navHeight = nav.getBoundingClientRect().height
+  // Used to fix offsetTop for Iphone
+  const topPosition = elementRect.top + window.pageYOffset; 
 
-  position -= navHeight
+  const position = topPosition - navHeight
 
   window.scrollTo({
     left: 0,
