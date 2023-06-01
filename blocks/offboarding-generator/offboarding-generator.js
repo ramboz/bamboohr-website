@@ -83,6 +83,15 @@ function validateForm(form, block) {
       return false;
     }
 
+    if (input.dataset.field === 'address') {
+      message = getMessage(input);
+      errorBox.classList.remove('hidden');
+      inputContainer.classList.add('invalid');
+      errorBox.textContent = message ;
+      valid = false;
+      return false;
+    }
+
     if (input.type === 'text') {
       regex = /^[A-Za-z\s]+$/;
       if (!input.value.match(regex)) {
@@ -154,14 +163,14 @@ function createSelect(id, label, options, tooltip) {
 }
 
 // Generate Input
-function createInput(id, type, label, placeholder, value, tooltip, options) {
+function createInput(id, type, label, placeholder, value, tooltip, options, data) {
   let inputHtml = '';
   let optionsArr = '';
 
   if (type !== "select") {
     inputHtml = `<div class="field_item">
     <label for="${id}">${label} ${tooltip ? createTooltip(tooltip) : ''}</label>
-    <input type="${type}" id="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} ${type === 'date' ? 'min="2023-01-01" max="2050-12-31"' : ''} ${type === 'datetime-local' ? 'min="2023-01-01T00:00" max="2050-12-31T23:30"' : ''} required/>
+    <input type="${type}" id="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} ${type === 'date' ? 'min="2023-01-01" max="2050-12-31"' : ''} ${type === 'datetime-local' ? 'min="2023-01-01T00:00" max="2050-12-31T23:30"' : ''} ${data ? `data-field="${data}"` : ""} required/>
     <div class="error hidden"></div>
     </div>`
   }
@@ -210,8 +219,8 @@ function getTemplatesTone(template) {
 // Generate Inputs
 function generateInputs(template) {
   const output = template.map(item => {
-    const {Field, Label, Placeholder, Tooltip, Type, Options} = item
-    return `${createInput(Field, Type, Label, Placeholder, null, Tooltip, Options)}`
+    const {Field, Label, Placeholder, Tooltip, Type, Options, Data} = item
+    return `${createInput(Field, Type, Label, Placeholder, null, Tooltip, Options, Data)}`
   }).join('')
   return output
 }
