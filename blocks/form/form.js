@@ -590,11 +590,6 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           /* Adobe form complete events tracking */
 		  analyticsTrackFormSubmission(formEl);
 		  
-          // adobeEventTracking('Form Complete', {
-          //   "name": form.getId(),
-          //   "business_size": formBusinessSize
-		  //     });
-
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
             if (successUrl && !chilipiper) window.location.href = successUrl;

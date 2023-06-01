@@ -1574,8 +1574,6 @@ async function handleLoadDelayed() {
  * the user experience.
  */
 function loadDelayed() {
-  // TODO: re-enable before merging
-  /*
   const testPaths = [
     '/',
     '/resources/hr-glossary/performance-review',
@@ -1583,13 +1581,14 @@ function loadDelayed() {
     '/hr-solutions/industry/construction',
     '/blog/key-hr-metrics',
   ];
-  */
-  const testPaths = [];
   const isOnTestPath = testPaths.includes(window.location.pathname);
 
   if (isOnTestPath) handleLoadDelayed(); // import without delay (for testing page performance)
-  else if (!window.hlx.performance) window.setTimeout(() => handleLoadDelayed(), 4000);
-  // else if (!window.hlx.performance) handleLoadDelayed();
+  // else if (!window.hlx.performance) window.setTimeout(() => handleLoadDelayed(), 4000);
+  else if (!window.hlx.performance) {
+	  // CURRENTLY THERE IS NO 4 SECOND DELAY IN PLACE
+	  handleLoadDelayed();
+  }
 
   // load anything that can be postponed to the latest here
 }
