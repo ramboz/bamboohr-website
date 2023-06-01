@@ -69,54 +69,37 @@ function validateForm(form, block) {
 	const inputFields = form.querySelectorAll('input');
 
 	inputFields.forEach(input => {
-		const inputContainer = input.parentElement;
-		const errorBox = inputContainer.querySelector('.error');
+    const inputContainer = input.parentElement;
+    const errorBox = inputContainer.querySelector('.error');
     let message = '';
-    let regex = ''
-
+    let regex = '';
+  
     if (input.validity.valueMissing) {
       message = getMessage(input);
-      errorBox.classList.remove('hidden');
-      inputContainer.classList.add('invalid');
-      errorBox.textContent = message ;
       valid = false;
-      return false;
-    }
-
-    if (input.dataset.field === 'address') {
-      message = getMessage(input);
-      errorBox.classList.remove('hidden');
-      inputContainer.classList.add('invalid');
-      errorBox.textContent = message ;
-      valid = false;
-      return false;
-    }
-
-    if (input.type === 'text') {
+    } else if (input.type === 'text' && input.dataset.field !== 'address') {
       regex = /^[A-Za-z\s]+$/;
       if (!input.value.match(regex)) {
         message = 'Please enter letters only.';
-        errorBox.classList.remove('hidden');
-        inputContainer.classList.add('invalid');
-        errorBox.textContent = message;
         valid = false;
-        return false;
       }
     } else if (input.type === 'tel') {
       regex = /^\d+$/;
       if (!input.value.match(regex)) {
         message = 'Please enter numbers only.';
-        errorBox.classList.remove('hidden');
-        inputContainer.classList.add('invalid');
-        errorBox.textContent = message;
         valid = false;
-        return false;
       }
     }
-
-    errorBox.classList.add('hidden');
-    inputContainer.classList.remove('invalid');
-	});
+  
+    if (!valid) {
+      errorBox.classList.remove('hidden');
+      inputContainer.classList.add('invalid');
+      errorBox.textContent = message;
+    } else {
+      errorBox.classList.add('hidden');
+      inputContainer.classList.remove('invalid');
+    }
+  });
 
 	if (valid) {
 		block.querySelectorAll('.step')[0].className += " finish";
