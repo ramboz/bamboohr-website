@@ -148,13 +148,15 @@ function loadTrustArcFormScript() {
       document.body.style.color = 'red';
     }
   );
-
-  // TODO: revert to non-proxied url before merging
-  const trustArcFormSrc = 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://form-renderer.trustarc.com/browser/client.js';
+  
+  //PROXIED URL: const trustArcFormSrc = 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://form-renderer.trustarc.com/browser/client.js';
+  const trustArcFormSrc = 'https://form-renderer.trustarc.com/browser/client.js';
+  
   loadScript('header', trustArcFormSrc, null, 'text/javascript', true);
 }
 
-// loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', null, 'text/javascript');
+//comment next line if using proxied trustarc URL
+loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', null, 'text/javascript');
 
 /**
  * opens external links in new window

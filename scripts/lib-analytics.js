@@ -48,14 +48,26 @@ function getAlloyInitScript() {
 
 /**
  * Returns datastream id to use as edge configuration id
- * Custom logic can be inserted here in order to support
- * different datastream ids for different environments (non-prod/prod)
+ * 
+ * A development datastream can be provided by setting the applicable localstorage key ('Adobe Development Datastream')
+ * with the desired stream as the value and that will override the stage datastream when loaded on a non-production 
+ * domain.
+ * 
+ * Existing dev datastream that is available to be set via local storage: 05576f9e-140b-4dcc-bccd-d73d97d94690
+ * 
  * @returns {{edgeConfigId: string, orgId: string}}
  */
 function getDatastreamConfiguration() {
-  const isProdSite = /^(marketplace|partners|www)\.bamboohr\.com$/i.test(document.location.hostname);
-  // TODO: before merging replace non prod with BambooHR stage 48e64dbd-346e-45e9-8f8d-c82715e21301
-  const edgeConfigId = isProdSite ? '3f2b3209-7600-4a37-8bb5-0d91f8f7f7e7' : '05576f9e-140b-4dcc-bccd-d73d97d94690';
+	
+  let edgeConfigId;
+  const adobeDevDatastream = (localStorage ? localStorage.getItem('Adobe Development Datastream') : undefined);
+  if (adobeDevDatastream) {
+	  edgeConfigId = adobeDevDatastream;
+  } else {
+	const isProdSite = /^(marketplace|partners|www)\.bamboohr\.com$/i.test(document.location.hostname);
+	edgeConfigId = isProdSite ? '3f2b3209-7600-4a37-8bb5-0d91f8f7f7e7' : '48e64dbd-346e-45e9-8f8d-c82715e21301';
+  }
+  
   return {
     edgeConfigId,
     orgId: '63C70EF1613FCF530A495EE2@AdobeOrg',
