@@ -271,6 +271,40 @@ function scrollToTop() {
   });
 }
 
+function resetForm(block) {
+  const stepsArr = block.querySelectorAll('.offboarding-generator-step')
+  const forms = block.querySelectorAll('form')
+  const radioBtns = block.querySelectorAll('.template-selector')
+  const blockContainer = block.parentNode.parentElement
+
+  radioBtns.forEach(btn => {
+    btn.classList.remove('checked')
+  })
+
+  radioBtns[0].classList.add('checked')
+
+  forms.forEach(form => {
+    form.reset()
+  });
+
+  stepsArr.forEach(element => {
+    element.classList.remove('offboarding-generator-step--active');
+  });
+
+  block.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
+  blockContainer.classList.remove('offboarding-generator-container--overlay');
+}
+
+function removeHTMLTags(str) {
+  // Replace closing </p> tags with new line breaks
+  const withLineBreaks = str.replace(/<\/p>/g, '\n\n');
+
+  // Remove HTML tags using regular expression
+  const withoutTags = withLineBreaks.replace(/<[^>]+>/g, '');
+  
+  return withoutTags;
+}
+
 // Next Step
 function nextStep(el, block) {
   let current = parseInt(el.target.dataset.step, 10);
@@ -300,6 +334,7 @@ function prevStep(el, block) {
 
   if (current === 0) {
     block.querySelector('.progress-bar').classList.remove('active');
+    resetForm(block)
   }
 
   scrollToTop()
@@ -417,34 +452,6 @@ function leadGenBtnHandler(block) {
   containerDiv.classList.add('offboarding-generator-container--overlay');
   block.querySelector('.progress-bar').classList.remove('active');
 }
-
-function resetForm(block) {
-  const stepsArr = block.querySelectorAll('.offboarding-generator-step')
-  const forms = block.querySelectorAll('form')
-  const blockContainer = block.parentNode.parentElement
-
-  forms.forEach(form => {
-    form.reset()
-  });
-
-  stepsArr.forEach(element => {
-    element.classList.remove('offboarding-generator-step--active');
-  });
-
-  block.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
-  blockContainer.classList.remove('offboarding-generator-container--overlay');
-}
-
-function removeHTMLTags(str) {
-  // Replace closing </p> tags with new line breaks
-  const withLineBreaks = str.replace(/<\/p>/g, '\n\n');
-
-  // Remove HTML tags using regular expression
-  const withoutTags = withLineBreaks.replace(/<[^>]+>/g, '');
-  
-  return withoutTags;
-}
-
 
 async function copyToClipboard(el) {
   let text = el.querySelector('#template-preview').innerHTML;
