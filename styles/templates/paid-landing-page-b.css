@@ -1,0 +1,121 @@
+.paid-landing-page-b main .form h1 {
+  font-family: var(--heading-font-family);
+  font-size:40px;
+  line-height: 48px;
+  font-weight: 900;
+  color: var(--theme-shade10);
+}
+
+.paid-landing-page-b main .form.subtitle .content-col p:first-of-type {
+  font-size: 21px;
+  line-height: 28px;
+  font-weight: 500;
+  color: var(--color-gray-10);
+  margin-top: 30px;
+}
+
+.paid-landing-page-b main .form.has-content .content-col strong {
+  font-weight: 500;
+}
+
+.paid-landing-page-b main .form.has-content .content-col ul {
+  padding: 0;
+  margin: 0;
+}
+
+.paid-landing-page-b main .form.has-content ul li {
+    position: relative;
+    list-style-image: none;
+    padding: 0;
+    padding-left: 21px;
+    list-style-type: none;
+    margin: 0;
+}
+
+.paid-landing-page-b main .form.has-content ul li::before {
+  content: "";
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-gray-12);
+    padding-right: 0;
+}
+
+
+
+
+@media (min-width: 500px) {
+  .paid-landing-page-b main .form h1 {
+    font-size: 54px;
+    line-height: 60px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .paid-landing-page-b main .form.has-content .content-col {
+    max-width: inherit;
+    text-align: left;
+  }
+  .paid-landing-page-b main .form h1 {
+    font-size: 64px;
+    line-height: 72px;
+  }
+  .paid-landing-page-b  main .form.has-content .content-col ul {
+    max-width: inherit;
+  }
+}
+
+
+.paid-landing-page-b main .form h2 {
+  font-family: var(--body-font-family);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 30px;
+  margin: 24px 0 48px;
+  color: var(--theme-shade10);
+}
+
+
+
+.paid-landing-page-b main .columns p,
+.paid-landing-page-b main .columns ul,
+.paid-landing-page-b main .app-download p,
+.paid-landing-page-b main .app-download ul,
+.paid-landing-page-b main .form .content-col p,
+.paid-landing-page-b main .form .content-col ul {
+  color: var(--color-gray-12);
+}
+
+@media (min-width: 600px) and (max-width: 1199px) {
+  .paid-landing-page-b main .form.has-content .form-col,
+  .paid-landing-page-b main .form.has-content h2 {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1200px){
+  .paid-landing-page-b main .form.has-content .content-col {
+    max-width: 607px;
+    justify-self: center;
+  }
+
+  .paid-landing-page-b main .form.has-content .form-col {
+    max-width: 424px;
+    justify-self: center;
+  }
+}
+
+@media (min-width: 1800px) {
+  .paid-landing-page-b main .form.has-content .content-col {
+    max-width: 754px;
+    justify-self: center;
+  }
+  .paid-landing-page-b main .form {
+    max-width: 1500px;
+  }  
+}
+

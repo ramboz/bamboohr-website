@@ -212,6 +212,7 @@ function loadTemplateCSS() {
       'content-library',
       'webinar',
       'paid-landing-page',
+      'paid-landing-page-b',
       'product-updates',
       'live-demo-webinar-lp',
       'hr-101-guide',
@@ -380,7 +381,7 @@ export function readBlockConfig(block) {
         } else if (col.querySelector('picture')) {
           const imgEl = col.querySelector('picture');
           const imagePath = imgEl.firstElementChild.srcset;
-            value = imagePath.substr(0, imagePath.indexOf('?'));
+          value = imagePath.substr(0, imagePath.indexOf('?'));
         } else value = row.children[1].textContent;
         config[name] = value;
       }
@@ -431,6 +432,9 @@ export function decorateBackgrounds($section) {
     'bg-bottom-cap-3-laptop',
     'bg-bottom-cap-3-tablet',
     'bg-bottom-cap-3-mobile',
+    'bg-bottom-cap-4-laptop',
+    'bg-bottom-cap-4-tablet',
+    'bg-bottom-cap-4-mobile',
     'bg-cover-green-patterns-laptop',
     'bg-cover-green-patterns-tablet',
     'bg-cover-green-patterns-mobile',
@@ -557,7 +561,7 @@ export function decorateSections($main) {
           // eslint-disable-next-line no-use-before-define
           const bgPicture = createOptimizedPicture(bgImg, 'Background Image', false, [
             { media: '(min-width: 1025px)', width: '2000' },
-            { media: '(min-width: 600px)', width: '1200' }
+            { media: '(min-width: 600px)', width: '1200' },
           ]);
           bgPicture.classList.add('bg', 'bg-image');
           if (!section.classList.contains('has-bg')) section.classList.add('has-bg');
@@ -1801,3 +1805,5 @@ sampleRUM.always.on('convert', (data) => {
     window.digitalData.push(evtDataLayer);
   }
 });
+
+// comment to trigger header update
