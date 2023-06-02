@@ -112,7 +112,7 @@ export default async function decorateTemplate(main) {
   const requestType = getMetadata('form-request-type');
   const utm = getMetadata('form-utm') ? `&${getMetadata('form-utm')}` : '';
   let formPageLink = `/integrations/request-information?appName=${appName}`;
-  if (level === 'BambooHR Product') {
+  if (level === 'BambooHR Product' && requestType) {
     formPageLink = `/integrations/request-information-bamboohr-products?requestType=${requestType}${utm}`;
   }
   const extraFormFields = getMetadata('extra-form-fields');
