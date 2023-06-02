@@ -308,4 +308,5 @@ function trackInteractionExternalLinks() {
   });
 }
 
-trackInteractionExternalLinks();
+//temporarily disabled to test activity map tracking:
+//trackInteractionExternalLinks();

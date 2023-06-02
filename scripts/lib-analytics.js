@@ -98,7 +98,7 @@ function getAlloyConfiguration(document) {
     // enable while debugging
     debugEnabled: true, // document.location.hostname.startsWith('localhost'),
     // disable when clicks are also tracked via sendEvent with additional details
-    clickCollectionEnabled: false,
+    clickCollectionEnabled: true,
     // adjust default based on customer use case
     defaultConsent: 'pending',
     ...getDatastreamConfiguration(),
