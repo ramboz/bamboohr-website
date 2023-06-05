@@ -337,6 +337,9 @@ export async function analyticsTrackVideo(
 }
 
 export async function analyticsTrackFormStart(form) {
+	
+	const rawFormId = form.id.replace('mktoForm_', '');
+	
 	// eslint-disable-next-line no-undef
 	return alloy('sendEvent', {
 		documentUnloading: true,
@@ -344,7 +347,7 @@ export async function analyticsTrackFormStart(form) {
 			eventType: 'web.formStarted',
 			[CUSTOM_SCHEMA_NAMESPACE]: {
 				form: {
-					formId: `${form.id}`,
+					formId: rawFormId,
 					formStart: 1,
 				}
 			},
