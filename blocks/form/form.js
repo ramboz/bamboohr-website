@@ -589,7 +589,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           form.onSubmit(() => {
             if (demoCheckbox && demoCheckbox.checked) {
               // eslint-disable-next-line
-              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: successUrl });
+              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: `${window.location.origin}/${$successUrl}` });
             }
           });
         }
