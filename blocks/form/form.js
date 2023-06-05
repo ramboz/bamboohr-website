@@ -599,6 +599,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         }
         
         form.onSuccess(() => {
+          console.log('success function');
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
           const eventType = form.getId() === 1240 ? 'demoRequest' : 'marketoForm';
@@ -618,7 +619,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
-            if (successUrl && !chilipiper) window.location.href = successUrl;
+            if (successUrl && (!chilipiper || chilipiper === 'content-download-form')) window.location.href = successUrl;
           },1000);
           
           return false;
