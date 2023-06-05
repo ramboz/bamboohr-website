@@ -315,8 +315,8 @@ function trackInteractionExternalLinks() {
   socialMediaLink.forEach(item => {
 	  const className = Array.from(item.classList).find(name => name.startsWith('icon-'));
 	  if (className) {
-		let socialNetwork = className.replace('icon-','')
-		item.addEventListener('click', async (event) => {
+		const socialNetwork = className.replace('icon-','')
+		item.addEventListener('click', async () => {
 		  await analyticsTrackSocial(socialNetwork);
 		});
 	  }
