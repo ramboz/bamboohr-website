@@ -587,19 +587,14 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         const demoCheckbox = formEl.querySelector('input[name="Demo_Request_Checkbox__c"]');
         if (chilipiper && chilipiper === 'content-download-form') {
           form.onSubmit(() => {
-            console.log('onSubmit function');
             if (demoCheckbox && demoCheckbox.checked) {
-              console.log(demoCheckbox.checked);
-              const redirectURL = `${ window.location.href }?formSubmit=success`;
-              console.log('content-download-form chilipiper');
               // eslint-disable-next-line
-              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: redirectURL });
+              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: successUrl });
             }
           });
         }
         
         form.onSuccess(() => {
-          console.log('success function');
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
           const eventType = form.getId() === 1240 ? 'demoRequest' : 'marketoForm';
