@@ -1,6 +1,6 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
-import { analyticsTrackFormStart, analyticsTrackFormSubmission } from "../../scripts/lib-analytics.js";
+import { analyticsTrackFormStart, analyticsTrackFormSubmission } from '../../scripts/lib-analytics.js';
 import { addWistia } from '../columns/columns.js';
 
 const loadScript = (url, callback, type) => {

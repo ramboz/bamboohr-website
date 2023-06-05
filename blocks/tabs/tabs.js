@@ -1,4 +1,4 @@
-import { analyticsTrackTabClicks } from "../../scripts/lib-analytics.js";
+import { analyticsTrackTabClicks } from '../../scripts/lib-analytics.js';
 
 // mobile vs desktop
 const mediaQueryPhone = window.matchMedia('(max-width: 599px)');

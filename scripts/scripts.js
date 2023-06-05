@@ -12,6 +12,7 @@
 
 // eslint-disable-next-line import/no-cycle
 import {
+  analyticsTrackCWV,
   analyticsTrackFormSubmission,
   analyticsTrackLinkClicks,
   setupAnalyticsTrackingWithAlloy,
@@ -890,6 +891,25 @@ window.addEventListener('error', (event) => {
 });
 
 window.addEventListener('load', () => sampleRUM('load'));
+
+let cwv = {};
+
+// Forward the RUM CWV cached measurements to edge using WebSDK before the page unloads
+window.addEventListener("beforeunload", () => {
+  if (Object.keys(cwv).length > 0) {
+    analyticsTrackCWV(cwv);
+  }
+});
+
+// Callback to RUM CWV checkpoint in order to cache the measurements
+sampleRUM.always.on('cwv', async (data) => {
+  if (data.cwv) {
+    cwv = {
+      ...cwv,
+      ...data.cwv
+    };
+  }
+});
 
 if (!window.hlx.suppressLoadPage) loadPage(document);
 
