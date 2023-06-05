@@ -14,7 +14,12 @@
 // eslint-disable-next-line import/no-cycle
 import { sampleRUM } from './scripts.js';
 // eslint-disable-next-line import/no-cycle
-import { analyticsSetConsent, analyticsTrackLinkClicks, analyticsTrackVideo } from './lib-analytics.js';
+import {
+  analyticsSetConsent,
+  analyticsTrackLinkClicks,
+  analyticsTrackSocial,
+  analyticsTrackVideo
+} from './lib-analytics.js';
 
 sampleRUM('cwv');
 
@@ -299,11 +304,22 @@ trackWistiaPlayerEvents();
  * Track external links interaction with alloy
  */
 function trackInteractionExternalLinks() {
-  const allLinkTags = document.querySelectorAll('header a, main a, footer a');
+  const allLinkTags = document.querySelectorAll('header a, main a:not(main div.article-header-share a), footer a:not(footer div.social a)');
 	allLinkTags.forEach(item => {
-	item.addEventListener('click', async (event) => {
-		await analyticsTrackLinkClicks(event.currentTarget, 'exit');
-	});
+		item.addEventListener('click', async (event) => {
+			await analyticsTrackLinkClicks(event.currentTarget, 'exit');
+		});			
+  });
+
+  const socialMediaLink = document.querySelectorAll('footer div.social a span');
+  socialMediaLink.forEach(item => {
+	  const className = Array.from(item.classList).find(name => name.startsWith('icon-'));
+	  if (className) {
+		let socialNetwork = className.replace('icon-','')
+		item.addEventListener('click', async (event) => {
+		  await analyticsTrackSocial(socialNetwork);
+		});
+	  }
   });
 }
 
