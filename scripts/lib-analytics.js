@@ -10,8 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
-import {getMetadata} from "./scripts.js";
-import {setObject} from "./set-object.js";
+// eslint-disable-next-line import/no-cycle
+import { getMetadata } from './scripts.js';
+import { setObject } from './set-object.js';
 
 /**
  * Customer's XDM schema namespace
@@ -48,26 +49,25 @@ function getAlloyInitScript() {
 
 /**
  * Returns datastream id to use as edge configuration id
- * 
+ *
  * A development datastream can be provided by setting the applicable localstorage key ('Adobe Development Datastream')
- * with the desired stream as the value and that will override the stage datastream when loaded on a non-production 
+ * with the desired stream as the value and that will override the stage datastream when loaded on a non-production
  * domain.
- * 
+ *
  * Existing dev datastream that is available to be set via local storage: 05576f9e-140b-4dcc-bccd-d73d97d94690
- * 
+ *
  * @returns {{edgeConfigId: string, orgId: string}}
  */
 function getDatastreamConfiguration() {
-	
   let edgeConfigId;
   const adobeDevDatastream = (localStorage ? localStorage.getItem('Adobe Development Datastream') : undefined);
   if (adobeDevDatastream) {
 	  edgeConfigId = adobeDevDatastream;
   } else {
-	const isProdSite = /^(marketplace|partners|www)\.bamboohr\.com$/i.test(document.location.hostname);
-	edgeConfigId = isProdSite ? '3f2b3209-7600-4a37-8bb5-0d91f8f7f7e7' : '48e64dbd-346e-45e9-8f8d-c82715e21301';
+    const isProdSite = /^(marketplace|partners|www)\.bamboohr\.com$/i.test(document.location.hostname);
+    edgeConfigId = isProdSite ? '3f2b3209-7600-4a37-8bb5-0d91f8f7f7e7' : '48e64dbd-346e-45e9-8f8d-c82715e21301';
   }
-  
+
   return {
     edgeConfigId,
     orgId: '63C70EF1613FCF530A495EE2@AdobeOrg',
@@ -85,7 +85,6 @@ function enhanceAnalyticsEvent(options) {
     ...options.xdm[CUSTOM_SCHEMA_NAMESPACE],
     ...(experiment ? {experiment} : {}), // add experiment details, if existing, to all events
   };
-  console.debug(`enhanceAnalyticsEvent complete: ${JSON.stringify(options)}`);
 }
 
 /**
@@ -96,7 +95,7 @@ function enhanceAnalyticsEvent(options) {
 function getAlloyConfiguration(document) {
   return {
     // enable while debugging
-    debugEnabled: true, // document.location.hostname.startsWith('localhost'),
+    debugEnabled: document.location.hostname.startsWith('localhost'),
     // disable when clicks are also tracked via sendEvent with additional details
     clickCollectionEnabled: false,
     // adjust default based on customer use case
@@ -143,10 +142,43 @@ export async function analyticsSetConsent(approved) {
   });
 }
 
+export async function getBlogMetaFromInstrumentation() {
+  try {
+    const resp = await fetch('/blog/instrumentation.json');
+    const json = await resp.json();
+    // eslint-disable-next-line prefer-const
+    let blogMeta = {};
+    json.digitaldata.data.forEach((mapping) => {
+      if(mapping.metadata === 'title'){
+        mapping.metadata = 'og:title';
+      }
+      const metaValue = getMetadata(mapping.metadata);
+      if (metaValue) {
+        setObject(blogMeta, mapping.digitaldata, metaValue);
+      }
+    });
+    return blogMeta.resource;
+  } catch (e) {
+    return {};
+  }
+}
+
+export function getCampaignString(){
+  const urlParams = new URLSearchParams(window.location.search);
+  const campaign = `${urlParams.get("utm_campaign") || "not_set"}|
+	${urlParams.get("utm_source") || "not_set"}|
+	${urlParams.get("utm_medium") || "not_set"}|
+	${urlParams.get("utm_term") || "not_set"}|
+	${urlParams.get("utm_content") || "not_set"}`;
+
+  return (campaign !== "not_set|not_set|not_set|not_set|not_set" ? campaign : "");
+}
+
 /**
  * Basic tracking for page views with alloy
  * @param document
  * @param additionalXdmFields
+ * @param blogPageDetails
  * @returns {Promise<*>}
  */
 export async function analyticsTrackPageViews(document, additionalXdmFields = {}, blogPageDetails = {}) {
@@ -158,12 +190,11 @@ export async function analyticsTrackPageViews(document, additionalXdmFields = {}
       web: {
         webPageDetails: {
           name: `${document.title}`,
-		  _bamboohr: {
-			campaign: getCampaignString(),
-			blogPageDetails: {
-			  ...blogPageDetails,				  
-			}
-		  },
+          [CUSTOM_SCHEMA_NAMESPACE]: {
+            campaign: getCampaignString(),
+              blogPageDetails,
+            }
+          ,
           pageViews: {
             value: 1,
           },
@@ -189,7 +220,7 @@ export async function setupAnalyticsTrackingWithAlloy(document) {
 
   // Custom logic can be inserted here in order to support early tracking before alloy library
   // loads, for e.g. for page views
-  const blogMeta = await getBlogMetaFromInstrumentation(); 
+  const blogMeta = await getBlogMetaFromInstrumentation();
   const pageView = analyticsTrackPageViews(document,{}, blogMeta); // track page view early
 
   await import('./alloy.min.js');
@@ -236,10 +267,9 @@ export async function analyticsTrackLinkClicks(element, linkType = 'other', addi
  * @returns {Promise<*>}
  */
 export async function analyticsTrackFormSubmission(element, additionalXdmFields = {}) {
-	
 	const empText = element.querySelector('select[name="Employees_Text__c"]');
 	const formBusinessSize = empText?.value || 'unknown';
-	
+
   // eslint-disable-next-line no-undef
   return alloy('sendEvent', {
     documentUnloading: true,
@@ -249,7 +279,7 @@ export async function analyticsTrackFormSubmission(element, additionalXdmFields 
         form: {
           formId: `${element.id}`,
           formComplete: 1,
-		  businessSize: formBusinessSize
+		      businessSize: formBusinessSize
         },
         ...additionalXdmFields,
       },
@@ -363,7 +393,7 @@ export async function analyticsTrackTabClicks(clickedTabText) {
 			eventType: 'web.webinteraction.linkClicks',
 			web: {
 				webInteraction: {
-					_bamboohr: {
+          [CUSTOM_SCHEMA_NAMESPACE]: {
 						clickedTab: clickedTabText,
 					},
 				},
@@ -373,7 +403,7 @@ export async function analyticsTrackTabClicks(clickedTabText) {
 }
 
 export async function analyticsTrackSocial(platform) {
-	//eslint-disable-next-line no-undef
+	// eslint-disable-next-line no-undef
 	return alloy('sendEvent', {
 		documentUnloading: true,
 		xdm: {
@@ -381,69 +411,55 @@ export async function analyticsTrackSocial(platform) {
 			socialMarketing: {
 				network: platform,
 				share: 1
-			}			
+			}
 		},
 	});
-}
-
-export async function getBlogMetaFromInstrumentation() {
-	const resp = await fetch('/blog/instrumentation.json');
-	const json = await resp.json();
-	let blogMeta = {};
-	json.digitaldata.data.forEach((mapping) => {
-		if(mapping.metadata == 'title'){
-			mapping.metadata = 'og:title';
-		}
-		const metaValue = getMetadata(mapping.metadata);
-		if (metaValue) {			
-			setObject(blogMeta, mapping.digitaldata, metaValue);
-		}
-	});	
-	try{
-		return blogMeta.resource ;		
-	}catch (e) {
-		return {};
-	}
-}
-
-export function getCampaignString(){
-	const urlParams = new URLSearchParams(window.location.search);
-	const campaign = (urlParams.get("utm_campaign") || "not_set") + "|" + (urlParams.get("utm_source") || "not_set") + "|" + (urlParams.get("utm_medium") || "not_set") + "|" + (urlParams.get("utm_term") || "not_set") + "|" + (urlParams.get("utm_content") || "not_set");
-
-	return (campaign != "not_set|not_set|not_set|not_set|not_set" ? campaign : "");
 }
 
 export async function analyticsTrackPreformEmailEntered() {
-	if(!window.preformEmailEntered){
-		
-		window.preformEmailEntered = true;		
-	
-		// eslint-disable-next-line no-undef
-		return alloy('sendEvent', {
-			documentUnloading: true,
-			xdm: {
-				eventType: 'web.formFilledOut',
-				[CUSTOM_SCHEMA_NAMESPACE]: {
-					form: {
-						preFormEmailEntered: 1,
-					}
-				},
-			},
-		});
-	}
+  if(!window.preformEmailEntered) {
+    window.preformEmailEntered = true;
+
+    // eslint-disable-next-line no-undef
+    return alloy('sendEvent', {
+      documentUnloading: true,
+      xdm: {
+        eventType: 'web.formFilledOut',
+        [CUSTOM_SCHEMA_NAMESPACE]: {
+          form: {
+            preFormEmailEntered: 1,
+          }
+        },
+      },
+    });
+  }
+  return Promise.resolve();
 }
 
 export async function analyticsTrackPreformEmailSubmitted() {
-	// eslint-disable-next-line no-undef
-	return alloy('sendEvent', {
-		documentUnloading: true,
-		xdm: {
-			eventType: 'web.formFilledOut',
-			[CUSTOM_SCHEMA_NAMESPACE]: {
-				form: {
-					preFormEmailSubmitted: 1,
-				}
-			},
-		},
-	});
+  // eslint-disable-next-line no-undef
+  return alloy('sendEvent', {
+    documentUnloading: true,
+    xdm: {
+      eventType: 'web.formFilledOut',
+      [CUSTOM_SCHEMA_NAMESPACE]: {
+        form: {
+          preFormEmailSubmitted: 1,
+        }
+      },
+    },
+  });
+}
+
+export async function analyticsTrackCWV(cwv) {
+  // eslint-disable-next-line no-undef
+  return alloy('sendEvent', {
+    documentUnloading: true,
+    xdm: {
+      eventType: 'web.performance.measurements',
+      [CUSTOM_SCHEMA_NAMESPACE]: {
+        cwv,
+      }
+    },
+  });
 }

@@ -2,7 +2,7 @@ import { hasClassStartsWith, getValuesFromClassName, loadCSS } from '../../scrip
 import decorateWistia from '../wistia/wistia.js';
 import { buildPicture } from '../multi-hero/multi-hero.js';
 import decorateVideo from '../video/video.js';
-import {analyticsTrackPreformEmailEntered, analyticsTrackPreformEmailSubmitted} from "../../scripts/lib-analytics.js";
+import { analyticsTrackPreformEmailEntered, analyticsTrackPreformEmailSubmitted } from "../../scripts/lib-analytics.js";
 
 function addBreakpointImages(col, block) {
   if (block.classList.contains('has-breakpoint-images')) {
@@ -44,7 +44,7 @@ function handleEmailFormSubmit (event) {
   // eslint-disable-next-line
   function handleEmailInputKeyup(event) {
     if (event.key === 'Enter') {
-	  analyticsTrackPreformEmailEntered();
+	    analyticsTrackPreformEmailEntered();
        // eslint-disable-next-line
       handleEmailFormSubmit(event);
     }
@@ -63,13 +63,13 @@ function handleEmailFormSubmit (event) {
       formLabel.classList.remove('inline-form-label-active');
       errorContainer.textContent = '';
       emailInput.classList.remove('inline-form-input-error');
-    }else{
-		analyticsTrackPreformEmailEntered();
-	}
+    } else {
+		  analyticsTrackPreformEmailEntered();
+	  }
   }
-  
+
   const { link } = form.dataset;
-  
+
   if (event.type === 'submit') {
     if (email.trim() === '') {
       // Display error message for blank email
@@ -88,11 +88,11 @@ function handleEmailFormSubmit (event) {
     // Redirect the user to the provided link
     if (link) {
       // Adobe analytics tracking event
-	  analyticsTrackPreformEmailSubmitted();
-    
+	    analyticsTrackPreformEmailSubmitted();
+
       const url = new URL(link);
       url.searchParams.set('email', email);
-    
+
       // Delay the redirection to allow the digitalData.push to work
       setTimeout(() => {
         window.location.href = url.toString();
@@ -109,7 +109,7 @@ if (emailForm) {
 
 function addButtonClasses(col, block) {
   const noLeftButtons = block.classList.contains('no-left-buttons');
- 
+
   if (!noLeftButtons) {
     const isButtonLinks = block.classList.contains('button-style-link');
     const buttons = col.querySelectorAll('a.button');
@@ -128,15 +128,15 @@ function addButtonClasses(col, block) {
 
   if (block.classList.contains('email-form')) {
     const link = col.querySelector('a');
-    
+
     if (link) {
       // Remove existing button
       link.parentElement.remove();
-      
+
       // Build embedded form
       const formContainer = document.createElement('div');
       formContainer.classList.add('inline-form-container');
-  
+
       const form = document.createElement('form');
       form.classList.add('inline-form');
       form.addEventListener('submit', handleEmailFormSubmit);
@@ -174,12 +174,12 @@ function addButtonClasses(col, block) {
       formLabel.addEventListener('click', () => {
         emailInput.focus();
       });
-  
+
       const submitButton = document.createElement('button');
       submitButton.type = 'submit';
       submitButton.innerText = link.title;
       form.appendChild(submitButton);
-  
+
       formContainer.appendChild(form);
       formContainer.appendChild(errorContainer);
       col.appendChild(formContainer);
@@ -194,14 +194,14 @@ function addIconBtnClass(buttonContainer, icon) {
 }
 
 function addLinkToIconSVG(icon, link) {
-  // Clone the link: 
+  // Clone the link:
   if (link?.tagName === 'A') {
     const imageLink = link.cloneNode(true);
     imageLink.innerText = '';
     imageLink.classList.add('column-svg-link');
     if (icon.firstElementChild) imageLink.append(icon.firstElementChild);
     icon.append(imageLink);
-  } 
+  }
 }
 
 function addIconContainer(col, block) {
@@ -269,13 +269,13 @@ function addVideo(col) {
 
 export function hasOnlyWistiaChildren(colChildren) {
   let hasWistiaChildrenOnly = false;
-  // Assumption: wistia block content is thumbnail (picture) + wistia link or just wistia link 
+  // Assumption: wistia block content is thumbnail (picture) + wistia link or just wistia link
   if (colChildren?.length === 2 &&
       colChildren[0].firstElementChild?.tagName === 'PICTURE' &&
       colChildren[1].firstElementChild?.tagName === 'A' &&
       colChildren[1].firstElementChild?.href?.includes('wistia')) {
       hasWistiaChildrenOnly = true;
-  } else if (colChildren?.length === 1 && 
+  } else if (colChildren?.length === 1 &&
             colChildren[0].tagName === 'A' &&
             colChildren[0].href?.includes('wistia')) {
       hasWistiaChildrenOnly = true;
@@ -377,7 +377,7 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
       }
       hasImage = true;
     } else col.classList.add('non-img-col');
-    
+
     addButtonClasses(col, block);
     addIconContainer(col, block);
   });

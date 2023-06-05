@@ -1,5 +1,5 @@
 import { getMetadata, toClassName } from '../../scripts/scripts.js';
-import {analyticsTrackSocial} from "../../scripts/lib-analytics.js";
+import { analyticsTrackSocial } from "../../scripts/lib-analytics.js";
 
 function createDiv(name, type, content) {
   const div = document.createElement('div');
@@ -27,8 +27,8 @@ export function createSharing(shareClass = 'page-header-share') {
     a.innerHTML = `<img alt="${button.icon}" src="${window.hlx.codeBasePath}/icons/${button.icon}.svg" class="icon icon-${button.icon}">`;
     div.append(a);
   	a.addEventListener('click', () => {
-	  analyticsTrackSocial(button.icon);
-	});
+	    analyticsTrackSocial(button.icon);
+	  });
   });
   return div;
 }

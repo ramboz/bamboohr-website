@@ -1,6 +1,6 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
-import {analyticsTrackFormStart, analyticsTrackFormSubmission} from "../../scripts/lib-analytics.js";
+import { analyticsTrackFormStart, analyticsTrackFormSubmission } from '../../scripts/lib-analytics.js';
 import { addWistia } from '../columns/columns.js';
 
 const loadScript = (url, callback, type) => {
@@ -526,7 +526,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 
         /* Adobe Form Start event tracking when user changes the first field */
         formEl.firstElementChild.addEventListener('change', () => {
-			analyticsTrackFormStart(formEl);
+			    analyticsTrackFormStart(formEl);
         });
 
         /* floating label */
@@ -551,7 +551,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
             select.previousElementSibling.classList.add('active');
           });
         }
-		
+
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
         if (readyTalkMeetingID && readyTalkEl) {
@@ -577,7 +577,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         // addExpansionProduct();
         addFormHeadingText();
         addExpansionProduct();
-        
+
         form.onSuccess(() => {
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
@@ -588,8 +588,8 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           });
 
           /* Adobe form complete events tracking */
-		  analyticsTrackFormSubmission(formEl);
-		  
+		      analyticsTrackFormSubmission(formEl);
+
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
             if (successUrl && !chilipiper) window.location.href = successUrl;
@@ -627,14 +627,14 @@ export function scrollToForm() {
     behavior: 'smooth',
   });
   formEl.querySelector('input:not([type=hidden])').focus();
-};
+}
 
 export default async function decorate(block) {
   const config = readBlockConfig(block);
   let chilipiper; let formUrl; let successUrl;
 
   const floatingLabel = !!block.classList.contains('floating-label');
-  
+
   if (!block.classList.contains('has-content')) {
     const as = block.querySelectorAll('a');
     formUrl = as[0] ? as[0].href : '';

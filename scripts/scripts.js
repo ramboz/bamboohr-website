@@ -10,7 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
+// eslint-disable-next-line import/no-cycle
 import {
+  analyticsTrackCWV,
   analyticsTrackFormSubmission,
   analyticsTrackLinkClicks,
   setupAnalyticsTrackingWithAlloy,
@@ -890,6 +892,25 @@ window.addEventListener('error', (event) => {
 
 window.addEventListener('load', () => sampleRUM('load'));
 
+let cwv = {};
+
+// Forward the RUM CWV cached measurements to edge using WebSDK before the page unloads
+window.addEventListener("beforeunload", () => {
+  if (Object.keys(cwv).length > 0) {
+    analyticsTrackCWV(cwv);
+  }
+});
+
+// Callback to RUM CWV checkpoint in order to cache the measurements
+sampleRUM.always.on('cwv', async (data) => {
+  if (data.cwv) {
+    cwv = {
+      ...cwv,
+      ...data.cwv
+    };
+  }
+});
+
 if (!window.hlx.suppressLoadPage) loadPage(document);
 
 export function formatDate(dateString) {
@@ -1210,7 +1231,7 @@ function findConversionValue(parent, fieldName) {
  * Registers conversion listeners according to the metadata configured in the document.
  * @param {Element} parent element where to find potential event conversion sources
  * @param {string} path fragment path when the parent element is coming from a fragment
- * @param {Element} a element used as CTA for conversion
+ * @param {Element} ctaElement element used as CTA for conversion
  */
 export async function initConversionTracking(parent, path, ctaElement) {
   const conversionElements = {
@@ -1229,11 +1250,11 @@ export async function initConversionTracking(parent, path, ctaElement) {
             ['submit']
           );
         }
-        const formConversionName = 
-			section.dataset.conversionName || 
-			getMetadata(`conversion-name--${getLinkLabel(ctaElement)}-`) || 
-			getMetadata('conversion-name');
-		
+        const formConversionName =
+          section.dataset.conversionName ||
+          getMetadata(`conversion-name--${getLinkLabel(ctaElement)}-`) ||
+          getMetadata('conversion-name');
+
         if (formConversionName) {
           sampleRUM.convert(formConversionName, undefined, element, ['submit']);
         } else {
