@@ -269,6 +269,7 @@ export async function analyticsTrackLinkClicks(element, linkType = 'other', addi
 export async function analyticsTrackFormSubmission(element, additionalXdmFields = {}) {
 	const empText = element.querySelector('select[name="Employees_Text__c"]');
 	const formBusinessSize = empText?.value || 'unknown';
+	const rawFormId = element.id.replace('mktoForm_', '');
 
   // eslint-disable-next-line no-undef
   return alloy('sendEvent', {
@@ -277,7 +278,7 @@ export async function analyticsTrackFormSubmission(element, additionalXdmFields 
       eventType: 'web.formFilledOut',
       [CUSTOM_SCHEMA_NAMESPACE]: {
         form: {
-          formId: `${element.id}`,
+          formId: rawFormId,
           formComplete: 1,
 		      businessSize: formBusinessSize
         },
