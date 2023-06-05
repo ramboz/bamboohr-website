@@ -590,14 +590,15 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
             console.log('onSubmit function');
             if (demoCheckbox && demoCheckbox.checked) {
               console.log(demoCheckbox.checked);
+              const redirectURL = `${ window.location.href }?formSubmit=success`;
+              console.log('content-download-form chilipiper');
               // eslint-disable-next-line
-              ChiliPiper.scheduling('bamboohr', `${chilipiper}`, {title: 'Thanks! What time works best for a quick call?'});
+              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: redirectURL });
             }
           });
         }
         
         form.onSuccess(() => {
-          console.log('onSuccess function');
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
           const eventType = form.getId() === 1240 ? 'demoRequest' : 'marketoForm';
