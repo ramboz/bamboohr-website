@@ -588,8 +588,9 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         if (chilipiper && chilipiper === 'content-download-form') {
           form.onSubmit(() => {
             if (demoCheckbox && demoCheckbox.checked) {
+              const redirectURL = `/${window.location.pathname}?formSubmit=success`;
               // eslint-disable-next-line
-              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: successUrl });
+              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: redirectURL });
             }
           });
         }
