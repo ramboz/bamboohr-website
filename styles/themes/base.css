@@ -874,6 +874,10 @@
   color: var(--theme-shade10);
 }
 
+#base .columns.bold-gray-12 strong {
+  color: var(--color-gray-12);
+}
+
 /**** RESETS ****/
 /* stylelint-disable-next-line no-duplicate-selectors */
 #base .section {
