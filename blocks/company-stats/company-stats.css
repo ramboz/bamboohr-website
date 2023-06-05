@@ -33,6 +33,7 @@ main .company-stats .company-stats-list .company-stats-list-item {
 
 main .company-stats .company-stats-list .company-stats-list-item .icon svg {
   color: var(--theme-shade5);
+  min-height: 38px;
 }
 
 @media (max-width: 599px) {

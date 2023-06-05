@@ -6,6 +6,14 @@
   color: var(--theme-shade10);
 }
 
+.paid-landing-page-b main .form.subtitle .content-col p:first-of-type {
+  font-size: 21px;
+  line-height: 28px;
+  font-weight: 500;
+  color: var(--color-gray-10);
+  margin-top: 30px;
+}
+
 .paid-landing-page-b main .form.has-content .content-col strong {
   font-weight: 500;
 }
@@ -90,6 +98,11 @@
 }
 
 @media (min-width: 1200px){
+  .paid-landing-page-b main .form.has-content .content-col {
+    max-width: 607px;
+    justify-self: center;
+  }
+
   .paid-landing-page-b main .form.has-content .form-col {
     max-width: 424px;
     justify-self: center;
@@ -97,6 +110,10 @@
 }
 
 @media (min-width: 1800px) {
+  .paid-landing-page-b main .form.has-content .content-col {
+    max-width: 754px;
+    justify-self: center;
+  }
   .paid-landing-page-b main .form {
     max-width: 1500px;
   }  
