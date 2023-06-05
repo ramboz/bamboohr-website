@@ -13,6 +13,7 @@
 
 // eslint-disable-next-line import/no-cycle
 import { sampleRUM } from './scripts.js';
+// eslint-disable-next-line import/no-cycle
 import { analyticsSetConsent, analyticsTrackLinkClicks, analyticsTrackVideo } from './lib-analytics.js';
 
 sampleRUM('cwv');
@@ -148,15 +149,13 @@ function loadTrustArcFormScript() {
       document.body.style.color = 'red';
     }
   );
-  
-  //PROXIED URL: const trustArcFormSrc = 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://form-renderer.trustarc.com/browser/client.js';
+
+  // PROXIED URL: const trustArcFormSrc =
+  // 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://form-renderer.trustarc.com/browser/client.js';
   const trustArcFormSrc = 'https://form-renderer.trustarc.com/browser/client.js';
-  
+
   loadScript('header', trustArcFormSrc, null, 'text/javascript', true);
 }
-
-//comment next line if using proxied trustarc URL
-loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', null, 'text/javascript');
 
 /**
  * opens external links in new window
@@ -224,8 +223,9 @@ async function setConsentBasedOnTrustArc() {
   });
 }
 
-// TODO: revert to non-proxied url before merging
-loadScript('footer', 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
+// PROXIED URL: loadScript('footer',
+// 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
+loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
 
 loadScript('header', 'https://www.googleoptimize.com/optimize.js?id=OPT-PXL7MPD', null);
 
@@ -299,7 +299,6 @@ trackWistiaPlayerEvents();
  * Track external links interaction with alloy
  */
 function trackInteractionExternalLinks() {
-  
   const allLinkTags = document.querySelectorAll('header a, main a, footer a');
 	allLinkTags.forEach(item => {
 	item.addEventListener('click', async (event) => {

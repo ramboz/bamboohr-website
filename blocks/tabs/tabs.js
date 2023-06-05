@@ -1,4 +1,4 @@
-import {analyticsTrackTabClicks} from "../../scripts/lib-analytics.js";
+import { analyticsTrackTabClicks } from "../../scripts/lib-analytics.js";
 
 // mobile vs desktop
 const mediaQueryPhone = window.matchMedia('(max-width: 599px)');
@@ -66,8 +66,8 @@ function openTab(e) {
     content.setAttribute('aria-hidden', false);
 
     /* Adobe tab name click events tracking */
-	analyticsTrackTabClicks(target.innerText);
-	
+	  analyticsTrackTabClicks(target.innerText);
+
   } else if (
     (mediaQueryPhone.matches &&
       !parent.classList.contains('style-1') &&
