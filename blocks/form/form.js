@@ -525,8 +525,16 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         const formEl = form.getFormElem()[0];
 
         /* Adobe Form Start event tracking when user changes the first field */
-        formEl.firstElementChild.addEventListener('change', () => {
-			    analyticsTrackFormStart(formEl);
+        formEl.firstElementChild.addEventListener('change', () => {		  
+		  alloy("getIdentity")
+			.then(function(result) {
+			  // eslint-disable-next-line
+			  formEl.querySelector('input[name="ECID"]').value = result.identity.ECID;
+			})
+			.catch(function(error) { 
+			  formEl.querySelector('input[name="ECID"]').value = '';
+			});
+		  analyticsTrackFormStart(formEl);
         });
 
         /* floating label */
