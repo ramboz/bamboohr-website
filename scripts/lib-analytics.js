@@ -165,11 +165,7 @@ export async function getBlogMetaFromInstrumentation() {
 
 export function getCampaignString(){
   const urlParams = new URLSearchParams(window.location.search);
-  const campaign = `${urlParams.get("utm_campaign") || "not_set"}|
-	${urlParams.get("utm_source") || "not_set"}|
-	${urlParams.get("utm_medium") || "not_set"}|
-	${urlParams.get("utm_term") || "not_set"}|
-	${urlParams.get("utm_content") || "not_set"}`;
+  const campaign = `${urlParams.get("utm_campaign") || "not_set"}|${urlParams.get("utm_source") || "not_set"}|${urlParams.get("utm_medium") || "not_set"}|${urlParams.get("utm_term") || "not_set"}|${urlParams.get("utm_content") || "not_set"}`;
 
   return (campaign !== "not_set|not_set|not_set|not_set|not_set" ? campaign : "");
 }
@@ -367,9 +363,9 @@ export async function analyticsTrackVideo(
 }
 
 export async function analyticsTrackFormStart(form) {
-	
+
 	const rawFormId = form.id.replace('mktoForm_', '');
-	
+
 	// eslint-disable-next-line no-undef
 	return alloy('sendEvent', {
 		documentUnloading: true,
