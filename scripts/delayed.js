@@ -306,9 +306,10 @@ trackWistiaPlayerEvents();
 function trackInteractionExternalLinks() {
   const allLinkTags = document.querySelectorAll('header a, main a:not(main div.article-header-share a), footer a:not(footer div.social a)');
 	allLinkTags.forEach(item => {
-		item.addEventListener('click', async (event) => {
-			await analyticsTrackLinkClicks(event.currentTarget, 'exit');
-		});			
+	  const linkType = item.href.toLowerCase().includes(location.host) ? 'other' : 'exit';	  
+	  item.addEventListener('click', async (event) => {
+		  await analyticsTrackLinkClicks(event.currentTarget, linkType);
+	  });			
   });
 
   const socialMediaLink = document.querySelectorAll('footer div.social a span');

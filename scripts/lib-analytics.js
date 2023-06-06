@@ -191,16 +191,15 @@ export async function analyticsTrackPageViews(document, additionalXdmFields = {}
         webPageDetails: {
           name: `${document.title}`,
           [CUSTOM_SCHEMA_NAMESPACE]: {
-            campaign: getCampaignString(),
-              blogPageDetails,
-            }
-          ,
+            campaign: getCampaignString()
+		  },
           pageViews: {
             value: 1,
           },
         },
       },
       [CUSTOM_SCHEMA_NAMESPACE]: {
+		blogPageDetails,
         ...additionalXdmFields,
       },
     },
