@@ -629,7 +629,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
       //  eslint-disable-next-line
       window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});
 
-      const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper/pricing-timeout-success' : '/live-demo-timeout-success';
+      const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper/pricing-timeout-success' : '/chilipiper/live-demo-timeout-success';
         function redirectTimeout() {
           return setTimeout(() => { window.location.href = timeoutSuccessUrl; }, '240000');
         }
