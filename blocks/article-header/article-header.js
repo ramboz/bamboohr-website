@@ -15,7 +15,7 @@ function createProgress() {
 }
 
 export default async function decorateArticleHeader($block, blockName) {
-  applyClasses(['image', 'eyebrow', 'title', 'author-pub'], $block.children, blockName);
+  applyClasses(['image', 'breadcrumb', 'eyebrow', 'title', 'author-pub'], $block.children, blockName);
   applyClasses(['category', 'read-time'], $block.querySelector('.article-header-eyebrow').firstChild.children, blockName);
   applyClasses(['author', 'publication-date', 'updated-date'], $block.querySelector('.article-header-author-pub').firstChild.children, blockName);
 

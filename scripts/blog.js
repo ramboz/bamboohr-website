@@ -32,6 +32,12 @@ function buildArticleHeader(main) {
       const section = document.createElement('div');
       section.append(buildBlock('article-header', [
         [picture],
+        [`<ul>
+            <li><a href="/blog/">Blog ></a></li>
+            <li><a href="/blog/">${category}</a></li>
+            <li><a href="/blog/">${h1}</a></li>
+          </ul>`
+        ],
         [`<p>${category}</p><p>${readtime}</p>`],
         [h1],
         [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],
