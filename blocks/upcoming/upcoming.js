@@ -73,8 +73,8 @@ function checkForMatch(row, key, defaultReturn, liveDemoWebinarsCnt) {
   if (key === 'futureOnly') {
     return isUpcomingEvent(row.eventDate);
   }
-  if (key === 'liveDemoWebinarsLimit3' && row.path.startsWith('/live-demo-webinars/')) {
-    return liveDemoWebinarsCnt < 3;
+  if (key === 'liveDemoWebinarsLimit2' && row.path.startsWith('/live-demo-webinars/')) {
+    return liveDemoWebinarsCnt < 2;
   }
 
   if (row[key]) {
