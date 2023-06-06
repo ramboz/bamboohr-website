@@ -24,7 +24,7 @@ function getStyle5CardCount(block) {
   const cardPadding = parseFloat(cardStyle.paddingLeft) + parseFloat(cardStyle.paddingRight);
   const cardCnt = Math.floor(block.offsetWidth / (cardMinWidth + cardMargin + cardPadding));
 
-  return cardCnt ? cardCnt : 1;
+  return cardCnt || 1;
 }
 
 function isStyle5ScrolledToFirstCardInGroup(block, activeButtonIndex) {
