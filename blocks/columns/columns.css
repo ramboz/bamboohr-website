@@ -359,6 +359,10 @@ main .section > .card-wrapper {
   border-left: 2px solid var(--theme-tint10);
 }
 
+.columns.step.title-size-medium-info .step-right {
+  text-transform: none;
+}
+
 .columns.step .step-right h4 {
   margin-bottom: -10px;
 }
