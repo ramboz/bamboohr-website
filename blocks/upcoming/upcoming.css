@@ -6,6 +6,10 @@ main .upcoming-results {
     padding: 0;
 }
 
+main .empty-upcoming {
+    text-align: center;
+}
+
 main .upcoming-results > div {
     width: 50%;
     position: relative;

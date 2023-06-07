@@ -1029,7 +1029,19 @@ export async function readIndex(indexPath, collectionCache) {
     json.data.forEach((row) => {
       lookup[row.path] = row;
     });
-    window.pageIndex[collectionCache] = { data: json.data, lookup };
+    let { data } = json;
+    // Include/read live-demo-webinars when reading webinars index.
+    if (indexPath.startsWith('/webinars/query-index')) {
+      const resp2 = await fetch('/live-demo-webinars/query-index.json?sheet=default');
+      const json2 = await resp2.json();
+
+      json2.data.forEach((row) => {
+        lookup[row.path] = row;
+      });
+
+      data = [...json.data, ...json2.data];
+    }
+    window.pageIndex[collectionCache] = { data, lookup };
   }
 }
 
