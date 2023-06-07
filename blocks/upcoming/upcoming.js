@@ -7,8 +7,18 @@ import {
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 import { createArticleCard, loadWistiaBlock, isUpcomingEvent } from '../listing/listing.js';
 
+function formatTitle(article) {
+  let title = article.title.split(' | ')[0];
+  if (article.path.startsWith('/live-demo-webinars/')) {
+    const newTitle = title.split(': ')[1];
+    if (newTitle) title = newTitle.trim();
+  }
+
+  return title;
+}
+
 export function createDateCard(article, classPrefix, hideCategory = false, eager = false, cardLink = {}) {
-  const title = article.title.split(' | ')[0];
+  const title = formatTitle(article);
   const card = document.createElement('div');
   let articleCategory = [article.category, article.topic, article.planType, article.productArea, article.contentType, article.brandedContent];
   articleCategory = articleCategory.filter((str) => (str !== '' && str !== undefined)).join(' | ');
@@ -59,9 +69,12 @@ export function createDateCard(article, classPrefix, hideCategory = false, eager
   return (card);
 }
 
-function checkForMatch(row, key, defaultReturn) {
+function checkForMatch(row, key, defaultReturn, liveDemoWebinarsCnt) {
   if (key === 'futureOnly') {
     return isUpcomingEvent(row.eventDate);
+  }
+  if (key === 'liveDemoWebinarsLimit2' && row.path.startsWith('/live-demo-webinars/')) {
+    return liveDemoWebinarsCnt < 2;
   }
 
   if (row[key]) {
@@ -81,14 +94,20 @@ async function filterResults(indexConfig = {}) {
   if (!indexConfig.filterOn) return listings.data;
 
   const keys = indexConfig.filterOn.split(',').map((t) => t.trim());
+  const isWebinars = indexConfig.indexPath.startsWith('/webinars/query-index');
 
   /* filter */
+  let liveDemoWebinarsCnt = 0;
   const results = listings.data.filter((row) => {
     let matched = false;
     const matchedAll = keys.every((key) => {
-      matched = checkForMatch(row, key, matched);
+      matched = checkForMatch(row, key, matched, liveDemoWebinarsCnt);
       return matched;
     });
+
+    if (isWebinars && matchedAll && row.path.startsWith('/live-demo-webinars/')) {
+      liveDemoWebinarsCnt += 1;
+    }
 
     return matchedAll;
   });
@@ -106,11 +125,14 @@ export default async function decorate(block, blockName) {
   indexConfig.customLinkText = blockConfig['custom-link-text'];
   indexConfig.filterOn = blockConfig.filter;
   indexConfig.sortBy = blockConfig['sort-by'];
+  indexConfig.hideCategory = blockConfig['hide-category'] || false;
   indexConfig.limit = +blockConfig.limit || 0;
   
   let cardLink = {};
   if (blockConfig['card-link'] && blockConfig['card-link-text']) {
     cardLink = {link: blockConfig['card-link'], text: blockConfig['card-link-text']};
+  } else if (indexConfig.customLinkText) {
+    cardLink = {text: indexConfig.customLinkText};
   }
 
   block.innerHTML = '<ul class="upcoming-results"></ul>';
@@ -124,11 +146,13 @@ export default async function decorate(block, blockName) {
       const product = results[i];
 
       if (indexConfig.cardStyle === 'date') {
-        const dateCard = createDateCard(product, 'upcoming-article', false, false, cardLink);
+        const dateCard = createDateCard(product, 'upcoming-article',
+          indexConfig.hideCategory, false, cardLink);
         resultsElement.append(dateCard);
         loadWistiaBlock(product, dateCard);
       } else if (indexConfig.cardStyle === 'article') {
-        const articleCard = createArticleCard(product, 'upcoming-article', indexConfig.customLinkText);
+        const articleCard = createArticleCard(product, 'upcoming-article',
+          indexConfig.customLinkText, false, false, indexConfig.hideCategory);
         resultsElement.append(articleCard);
         loadWistiaBlock(product, articleCard);
       } else resultsElement.append(createAppCard(product, blockName));
@@ -138,6 +162,11 @@ export default async function decorate(block, blockName) {
   const runSearch = async () => {
     const results = await filterResults(indexConfig);
     const { sortBy } = indexConfig;
+
+    if (results.length === 0) {
+      block.innerHTML = '<h2 class="empty-upcoming">More webinars coming soon.</h2>';
+      return;
+    }
 
     if (sortBy && sortOptions(sortBy)) results.sort(sortOptions(sortBy));
     displayResults(results, null);
