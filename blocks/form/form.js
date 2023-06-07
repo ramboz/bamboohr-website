@@ -1,5 +1,6 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
+import { analyticsTrackFormStart, analyticsTrackFormSubmission } from '../../scripts/lib-analytics.js';
 import { addWistia } from '../columns/columns.js';
 
 const loadScript = (url, callback, type) => {
@@ -359,7 +360,7 @@ function mktoFormReset(form, moreStyles) {
   const currentForm = document.getElementById(formId);
 
   const rando = Math.floor(Math.random() * 1000000);
-  
+
   formEl.querySelectorAll('label[for]').forEach((labelEl) => {
     const forEl = formEl.querySelector(`[id="${labelEl.htmlFor}"]`);
     if (forEl) {
@@ -416,7 +417,7 @@ function mktoFormReset(form, moreStyles) {
         gdprInput.parentElement.classList.add('form-checkbox-option');
         gdprLabel.parentElement.classList.add('form-checkbox-flex');
         gdprLabel.firstElementChild.classList.add('form-gdpr-text');
- 
+
         currentForm.querySelector('[name="Disclaimer__c"]').addEventListener('input', () => {
           if (currentForm.querySelector('.form-msg') && currentForm.querySelectorAll('.mktoField.mktoInvalid').length === 0 && currentForm.querySelectorAll('.mktoLogicalField.mktoInvalid').length === 0) {
             currentForm.querySelector('.form-msg').remove();
@@ -425,7 +426,7 @@ function mktoFormReset(form, moreStyles) {
       }
     });
   }
-  
+
   formEl.querySelectorAll('[type="checkbox"]').forEach((el) => {
     el.parentElement.classList.add('form-checkbox-option');
     el.parentElement.parentElement.classList.add('form-checkbox-flex');
@@ -523,15 +524,18 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
 
-        /* Adobe Form Start event tracking when user changes the first field */		  
+        /* Adobe Form Start event tracking when user changes the first field */
         formEl.firstElementChild.addEventListener('change', () => {
-          try {
-            // eslint-disable-next-line
-            formEl.querySelector('input[name="ECID"]').value = s.marketingCloudVisitorID;
-          } catch (e) {
-            formEl.querySelector('input[name="ECID"]').value = '';
-          }
-          adobeEventTracking('Form Start', {"name": form.getId()});
+		  // eslint-disable-next-line
+		  alloy("getIdentity")
+			.then((result) => {
+			  // eslint-disable-next-line
+			  formEl.querySelector('input[name="ECID"]').value = result.identity.ECID;
+			})
+			.catch( () => { 
+			  formEl.querySelector('input[name="ECID"]').value = '';
+			});
+		  analyticsTrackFormStart(formEl);
         });
 
         /* floating label */
@@ -556,7 +560,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
             select.previousElementSibling.classList.add('active');
           });
         }
-		
+
         const readyTalkMeetingID = getMetadata('ready-talk-meeting-id');
         const readyTalkEl = formEl.querySelector('input[name="readyTalkMeetingID"]');
         if (readyTalkMeetingID && readyTalkEl) {
@@ -582,7 +586,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         // addExpansionProduct();
         addFormHeadingText();
         addExpansionProduct();
-        
+
         form.onSuccess(() => {
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
@@ -592,20 +596,14 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
             formName: form.getId(),
           });
 
-          const empText = formEl.querySelector('select[name="Employees_Text__c"]');
-          const formBusinessSize = empText?.value || 'unknown';
-		  
           /* Adobe form complete events tracking */
-          adobeEventTracking('Form Complete', {
-            "name": form.getId(),
-            "business_size": formBusinessSize
-          });
+		      analyticsTrackFormSubmission(formEl);
 
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
             if (successUrl && !chilipiper) window.location.href = successUrl;
           },1000);
-          
+
           return false;
         });
       }
@@ -638,14 +636,14 @@ export function scrollToForm() {
     behavior: 'smooth',
   });
   formEl.querySelector('input:not([type=hidden])').focus();
-};
+}
 
 export default async function decorate(block) {
   const config = readBlockConfig(block);
   let chilipiper; let formUrl; let successUrl;
 
   const floatingLabel = !!block.classList.contains('floating-label');
-  
+
   if (!block.classList.contains('has-content')) {
     const as = block.querySelectorAll('a');
     formUrl = as[0] ? as[0].href : '';
