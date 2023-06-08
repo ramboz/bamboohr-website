@@ -4,6 +4,7 @@ import { createLabel, createInput } from '../form/form.js';
 let currentTab = 0;
 const formFields = [];
 
+// Fetch google sheet json data
 async function fetchData(url) {
   const resp = await fetch(url);
   const json = await resp.json();
