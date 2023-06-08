@@ -592,6 +592,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           form.onSubmit(() => {
             if (demoCheckbox && demoCheckbox.checked) {
               // eslint-disable-next-line
+              ChiliPiper.scheduling("bamboohr", "content-download-form", {title: "Thanks! What time works best for a quick call?"})
               // ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: window.location.origin + successUrl });
             }
           });
