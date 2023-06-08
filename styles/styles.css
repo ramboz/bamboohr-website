@@ -1107,9 +1107,6 @@ main .section.app-cards-container {
 
 main .default-content-wrapper a:any-link,
 main .table-wrapper a:any-link {
-  --category-color: var(--color-1-shade-5);
-  --category-bg-color: var(--color-1-tint-15);
-
   color: var(--category-color);
   background: linear-gradient(#f000 50%, var(--category-bg-color) 50.1%);
   text-decoration: none;
@@ -1365,7 +1362,6 @@ main .center-page-cta-wrapper,
 /* category colors */
 
 /* stylelint-disable-next-line no-duplicate-selectors */
-main,
 .category-hr-insights main,
 .category-color-hr-insights {
   --category-color: var(--color-8-shade-10);
@@ -1396,6 +1392,7 @@ main,
   --category-box-shadow-color: rgba(206 69 55 / 50%);
 }
 
+main,
 .category-product-announcements main,
 div.category-color-product-announcements {
   --category-color: var(--color-1-shade-5);

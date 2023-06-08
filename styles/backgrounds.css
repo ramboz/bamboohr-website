@@ -713,6 +713,10 @@
   background-color: var(--theme-shade10);
 }
 
+.has-bg.pull-down-bg > span.bg {
+  bottom: -100%;
+}
+
 
 /* background image in section metadata */
 .has-bg .bg-image {
