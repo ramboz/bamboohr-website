@@ -612,7 +612,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
             if (successUrl && !chilipiper) window.location.href = successUrl;
-            if (successUrl && chilipiper && chilipiper === 'content-download-form' && !demoCheckbox.checked) window.location.href = successUrl;
+            // if (successUrl && chilipiper && chilipiper === 'content-download-form' && !demoCheckbox.checked) window.location.href = successUrl;
           },1000);
 
           return false;
@@ -640,6 +640,13 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           map: true,
         });
       }
+
+      window.addEventListener("message", (event) => {
+        const action = Object.keys(event.data)[0];
+        // var label = Object.values(event.data)[0];
+        console.log(action);
+        console.log(event.origin);
+      });
     });
   }
 }
