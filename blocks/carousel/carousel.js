@@ -2,6 +2,12 @@ const mediaQueryLarge = window.matchMedia('(min-width: 1800px)');
 const mediaQueryMedium = window.matchMedia('(min-width: 1098px)');
 const mediaQuerySmall = window.matchMedia('(max-width: 707px)');
 
+const inlineCircleLeftSvg = 
+`<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M-9.61651e-07 22C-1.49276e-06 34.1503 9.84973 44 22 44C34.1503 44 44 34.1503 44 22C44 9.84974 34.1503 -4.30546e-07 22 -9.61651e-07C9.84974 -1.49276e-06 -4.30546e-07 9.84973 -9.61651e-07 22Z" fill="currentcolor" class="circle-back-color"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M27.9584 29.6476L24.7108 33L13.8155 22L24.7108 11L27.9584 14.3524L20.3108 22L27.9584 29.6476Z" fill="currentcolor" class="circle-caret-color"/>
+</svg>`;
+
 function calculateScrollbarWidth() {
   document.documentElement.style.setProperty(
     '--scrollbar-width',
@@ -109,6 +115,7 @@ function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause,
   const block = carouselWrapper.firstElementChild;
   const buttons = block.nextElementSibling;
   const carouselControls = buttons.nextElementSibling;
+  const isStyle5 = block.classList.contains('style-5');
 
   if (!block.offsetWidth) return;
 
@@ -122,7 +129,7 @@ function updateButtons(carouselWrapper, carouselInterval, carouselIntervalPause,
   // eslint-disable-next-line no-return-assign
   cards.forEach(card => card.style.maxWidth = `${newCardWidth}px`);
 
-  if (cardCnt > 1) carouselControls.style.display = 'flex';
+  if (isStyle5 || cardCnt > 1) carouselControls.style.display = 'flex';
   else carouselControls.style.display = 'none';
 
   const buttonCount = Math.ceil(block.children.length / cardCnt);
@@ -210,7 +217,9 @@ export default function decorate(block) {
   // arrows
   const arrows = document.createElement('div');
   const prev = document.createElement('button');
+  if (isStyle5) prev.innerHTML = inlineCircleLeftSvg;
   const next = document.createElement('button');
+  if (isStyle5) next.innerHTML = inlineCircleLeftSvg;
 
   arrows.classList.add('carousel-controls');
   prev.classList.add('prev', 'disabled');
@@ -218,17 +227,18 @@ export default function decorate(block) {
   arrows.append(prev);
   arrows.append(next);
   [...arrows.children].forEach((arrow) => arrow.addEventListener('click', ({ target }) => {
+    const btn = target.tagName === 'BUTTON' ? target : target.closest('button');
     const active = buttons.querySelector('.selected');
     const index = [...buttons.children].indexOf(active);
 
-    if (target.classList.contains('disabled')) return;
+    if (btn.classList.contains('disabled')) return;
 
-    if (target.classList.contains('prev')) {
+    if (btn.classList.contains('prev')) {
       let clickIndex = index - 1;
       if (isStyle5 && !isStyle5ScrolledToFirstCardInGroup(block, index)) clickIndex = index;
 
       [...buttons.children].at(clickIndex).click();
-    } else if (target.classList.contains('next')) {
+    } else if (btn.classList.contains('next')) {
       [...buttons.children].at(index + 1).click();
     }
   }));
