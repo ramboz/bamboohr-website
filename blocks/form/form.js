@@ -592,7 +592,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           form.onSubmit(() => {
             if (demoCheckbox && demoCheckbox.checked) {
               // eslint-disable-next-line
-              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: window.location.origin + successUrl });
+              // ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: window.location.origin + successUrl });
             }
           });
         }
@@ -612,7 +612,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
             if (successUrl && !chilipiper) window.location.href = successUrl;
-            // if (successUrl && chilipiper && chilipiper === 'content-download-form' && !demoCheckbox.checked) window.location.href = successUrl;
+            if (successUrl && chilipiper && chilipiper === 'content-download-form' && !demoCheckbox.checked) window.location.href = successUrl;
           },1000);
 
           return false;
