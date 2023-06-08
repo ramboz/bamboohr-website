@@ -642,13 +642,14 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         });
       }
 
-      window.addEventListener('message', (event) => {
+      window.addEventListener('message', (event)=>{
         if (event.origin !== 'https://bamboohr.chilipiper.com') return;
         const eventData = event.data;
         const {action} = eventData;
         console.log(eventData);
         console.log(action);
-      });
+      }, false);
+
     });
   }
 }
