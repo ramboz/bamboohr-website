@@ -14,6 +14,7 @@ function createProgress() {
   return progress;
 }
 
+// Code for Blog Redesign test
 const blogRedesign = getMetadata('blog-redesign');
 // console.log(blogRedesign, 'yep');
 let breadcrumb;

@@ -1,10 +1,11 @@
 import { buildBlock, getMetadata } from './scripts.js';
+import { toSlug } from './integrations-listing.js';
 
-function toSlug(name) {
-  return name && typeof name === 'string'
-    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
-    : '';
-}
+// function toSlug(name) {
+//   return name && typeof name === 'string'
+//     ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+//     : '';
+// }
 
 function buildImageBlocks(main) {
   let floatCounter = 0;
@@ -24,6 +25,7 @@ function buildImageBlocks(main) {
   });
 }
 
+// Code for Blog Redesign test
 const blogRedesign = getMetadata('blog-redesign');
 console.log(blogRedesign, 'yep');
 
@@ -36,18 +38,17 @@ function buildArticleHeader(main) {
     const category = getMetadata('category');
     const h1 = document.querySelector('h1');
     const picture = document.querySelector('h1 + p > picture');
+    // Code for Blog Redesign test
     let breadcrumb;
     if (category && blogRedesign === 'true') {
-      const categories = category.split(',');
-      const blogCategories = categories.reduce((l, cat, i) => {
-        const catVal = i > 0 ? `,${cat}` : cat;
-        return `${l}<a href="/blog/category/${toSlug(cat.trim())}">${catVal}</a>`;
-      }, '');
-      const blogCategoriesLi = `<li>${blogCategories}</li>`;
+      const categoryItems = category.split(',');
+      const categories = categoryItems.map(cat =>
+        `<a href="/blog/category/${toSlug(cat.trim())}">${cat}</a>`).join('');
+      const categoryEl = `<li>${categories}</li>`;
       breadcrumb =
         `<ul>
           <li><a href="/blog/">Blog</a></li>
-          ${blogCategoriesLi}
+          ${categoryEl}
         </ul>`;
     }
 
