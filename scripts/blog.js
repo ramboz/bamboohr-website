@@ -1,5 +1,11 @@
 import { buildBlock, getMetadata } from './scripts.js';
 
+function toSlug(name) {
+  return name && typeof name === 'string'
+    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+    : '';
+}
+
 function buildImageBlocks(main) {
   let floatCounter = 0;
   main.querySelectorAll(':scope > div > p > picture, :scope > div > p > a > picture').forEach((picture) => {
@@ -18,6 +24,9 @@ function buildImageBlocks(main) {
   });
 }
 
+const blogRedesign = getMetadata('blog-redesign');
+console.log(blogRedesign, 'yep');
+
 function buildArticleHeader(main) {
   try {
     const author = getMetadata('author');
@@ -27,17 +36,28 @@ function buildArticleHeader(main) {
     const category = getMetadata('category');
     const h1 = document.querySelector('h1');
     const picture = document.querySelector('h1 + p > picture');
+    let breadcrumb;
+    if (category && blogRedesign === 'true') {
+      const categories = category.split(',');
+      const blogCategories = categories.reduce((l, cat, i) => {
+        const catVal = i > 0 ? `,${cat}` : cat;
+        return `${l}<a href="/blog/category/${toSlug(cat.trim())}">${catVal}</a>`;
+      }, '');
+      const blogCategoriesLi = `<li>${blogCategories}</li>`;
+      breadcrumb =
+        `<ul>
+          <li><a href="/blog/">Blog</a></li>
+          ${blogCategoriesLi}
+        </ul>`;
+    }
+
     if (author && publicationDate) {
       document.body.classList.add('blog-post');
       const section = document.createElement('div');
       section.append(buildBlock('article-header', [
         [picture],
         [`<p>${category}</p><p>${readtime}</p>`],
-        [`<ul>
-            <li><a href="/blog/">Blog</a></li>
-            <li><a href="/blog/">${category}</a></li>
-          </ul>`
-        ],
+        [breadcrumb || ''],
         [h1],
         [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],
       ]));
