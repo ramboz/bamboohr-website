@@ -267,9 +267,7 @@ a.button > svg > use {
 
 /* headings and body */
 
-main,
-main ul li,
-main ol li {
+main {
   font-size: 18px;
   line-height: 27px;
   font-weight: var(--body-font-weight);
@@ -278,7 +276,6 @@ main ol li {
 p,
 dl,
 ol,
-ul,
 pre,
 blockquote {
   margin-top: 1em;
@@ -289,12 +286,10 @@ main .default-content-wrapper ol {
   padding-inline-start: 20px;
 }
 
-main ul,
 main ol {
   list-style-position: inside;
 }
 
-main .default-content-wrapper ul li,
 main .default-content-wrapper ol li {
   margin-bottom: 16px;
   color: var(--color-gray-12);
@@ -304,35 +299,29 @@ main .default-content-wrapper ol li {
   margin-left: 30px;
 }
 
-main .default-content-wrapper ul,
-main .tabs ul,
-main .columns ul {
-  padding-inline-start: 40px;
-  list-style-type: none;
+main ul {
+  padding-left: 10px;
 }
 
-main .default-content-wrapper ul li,
-main .tabs ul li,
-main .columns ul li,
-main .form ul li {
-  position: relative;
-  margin-bottom: 16px;
-  list-style-image: var(--theme-bullet-level1);
-  padding-inline-start: 10px;
+main ul li {
+  list-style: none;
 }
 
-main .default-content-wrapper ul li ul li,
-main .tabs ul li ul li,
-main .columns ul li ul li,
-main .form ul li ul li {
-  list-style-image: var(--theme-bullet-level2);
+main ul li::before {
+  content: "•";
+  font-size: 2.5rem;
+  vertical-align: bottom;
+  padding-right: 10px;
 }
 
-main .default-content-wrapper ul li ul li ul li,
-main .tabs ul li ul li ul li,
-main .columns ul li ul li ul li {
-  list-style-image: var(--theme-bullet-level3);
+main ul li ul li::before {
+  content: "◦";
+  font-size: 2.5rem;
+  vertical-align: bottom;
+  padding-right: 10px;
+  padding-left: 12px;
 }
+
 
 main p:not(:last-of-type) {
   margin-bottom: 32px;
