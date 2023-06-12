@@ -621,18 +621,17 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
     });
   });
   if (chilipiper) {
-    
     loadScript('https://js.chilipiper.com/marketing.js', () => {
-
+      let timeoutSuccessUrl = '';
+      function redirectTimeout() {
+        return setTimeout(() => { window.location.href = timeoutSuccessUrl; }, '240000');
+      }
       //  eslint-disable-next-line
       window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});
-
-      const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper/pricing-timeout-success' : '/chilipiper/live-demo-timeout-success';
-        function redirectTimeout() {
-          return setTimeout(() => { window.location.href = timeoutSuccessUrl; }, '240000');
-        }
-
+      
       if (chilipiper !== 'content-download-form') {
+        timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper/pricing-timeout-success' : '/chilipiper/live-demo-timeout-success';
+
         // eslint-disable-next-line
         ChiliPiper.scheduling('bamboohr', `${chilipiper}`, {
           title: 'Thanks! What time works best for a quick call?',
