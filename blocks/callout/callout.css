@@ -118,5 +118,86 @@ main .callout p {
   main .callout.right {
     width: 400px;
   }
-  
+}
+
+/* Blog Redesign */
+main .callout.blog-redesign {
+  margin: 35px 0;
+  padding: 32px;
+  border: 1px solid #DFDEDC;
+  border-bottom: 7px solid;
+  box-shadow: none;
+}
+
+main .callout.blog-redesign {
+  background-image: unset;
+  background-size: unset;
+}
+
+main .section > div.callout-width {
+  max-width: 560px;
+}
+
+.callout-card {
+  display: flex;
+  align-items: center;
+  column-gap: 40px;
+}
+
+main .callout .callout-card .callout-text h3 {
+  font-family: var(--heading-font-family);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  margin-bottom: 20px;
+  color: var(--color-gray-12);
+  font-style: normal;
+  margin-top: 0;
+}
+
+main .callout .callout-card .callout-text h4 {
+  font-family: var(--body-font-family);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-gray-9);
+  font-style: normal;
+  margin-top: 0;
+}
+
+main .callout .callout-card .callout-text p {
+  color: var(--color-gray-12);
+}
+
+main .section .callout .callout-card p.button-container {
+  margin-top: 38px;
+}
+
+main .callout .callout-card a.button {
+  margin: 0;
+}
+
+@media (max-width: 699px) {
+  .callout-card {
+    flex-flow: column;
+  }
+
+  .callout-image {
+    order: 1;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .callout-text {
+    order: 2;
+    width: 100%;
+  }
+}
+
+@media (min-width: 700px) {
+  main .callout .callout-card {
+    text-align: left;
+  }
 }
