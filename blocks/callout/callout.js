@@ -40,7 +40,7 @@ function findDescription(block) {
     return meta && meta.content;
 }
 
-export default async function decorate(block, blockName) {
+export default async function decorate(block) {
     if (!getMetadata('blog-redesign')) return;
 
     // Create a card with 2 parts: text and image
