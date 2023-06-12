@@ -127,9 +127,6 @@ main .callout.blog-redesign {
   border: 1px solid #DFDEDC;
   border-bottom: 7px solid;
   box-shadow: none;
-}
-
-main .callout.blog-redesign {
   background-image: unset;
   background-size: unset;
 }
