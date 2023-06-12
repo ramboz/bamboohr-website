@@ -6,6 +6,10 @@ main .upcoming-results {
     padding: 0;
 }
 
+main .empty-upcoming {
+    text-align: center;
+}
+
 main .upcoming-results > div {
     width: 50%;
     position: relative;
@@ -83,7 +87,7 @@ main .upcoming ul > div div p a {
   font-weight: 700;
   line-height: 22px;
   display: inline-block;
-  color: var(--color-1-shade-10);
+  color: var(--theme-shade5);
   text-decoration: none;
 }
 
@@ -98,6 +102,13 @@ main .upcoming ul > div div p a::after {
   top: 50%;
   margin-left: 8px;
 }
+
+main .upcoming-article-card-header {
+    font-weight: 500;
+    margin-top: 30px;
+    margin-bottom: 25px;
+    font-size: 12px;
+  }
 
 main .upcoming-article-card .upcoming-article-card-picture img {
     width: 100%;

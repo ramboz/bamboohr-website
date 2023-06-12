@@ -36,7 +36,6 @@ export default async function decorate(block) {
             if (formSubTitleEl) formSubTitleEl.outerHTML = `<p class="modal-form-subtitle">${formSubTitleEl.innerHTML}</p>`;
             modalContent.append(fragment);
           }          
-          initConversionTracking(modal, path);
           wrapper.append(modal);
           block.append(wrapper);
           wrapper.classList.add('visible');
@@ -46,6 +45,7 @@ export default async function decorate(block) {
             wrapper.classList.remove('visible');
             document.body.classList.remove('modal-open');
           });
+          initConversionTracking(modal, path, a);
         } else {
           elem.classList.add('visible');
           document.body.classList.add('modal-open');

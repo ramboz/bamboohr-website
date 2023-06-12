@@ -12,8 +12,14 @@
  */
 
 // eslint-disable-next-line import/no-cycle
-import { getMetadata, sampleRUM } from './scripts.js';
-import { setObject } from './set-object.min.js';
+import { sampleRUM } from './scripts.js';
+// eslint-disable-next-line import/no-cycle
+import {
+  analyticsSetConsent,
+  analyticsTrackLinkClicks,
+  analyticsTrackSocial,
+  analyticsTrackVideo
+} from './lib-analytics.js';
 
 sampleRUM('cwv');
 
@@ -149,7 +155,10 @@ function loadTrustArcFormScript() {
     }
   );
 
+  // PROXIED URL: const trustArcFormSrc =
+  // 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://form-renderer.trustarc.com/browser/client.js';
   const trustArcFormSrc = 'https://form-renderer.trustarc.com/browser/client.js';
+
   loadScript('header', trustArcFormSrc, null, 'text/javascript', true);
 }
 
@@ -171,93 +180,57 @@ function updateExternalLinks() {
   });
 }
 
-loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', null, 'text/javascript');
-
-/**
- * Adobe Tags
- *
- * To set a Development Environment, from your browser's Developer Tools' Console run
- *   localStorage.setItem('Adobe Tags Development Environment', '#')
- * (where # is 1, 2, 3, 4, or 5) and reload the page.
- *
- * To remove the Development Environment, from your browser's Developer Tools' Console run
- *   localStorage.removeItem('Adobe Tags Development Environment')
- * and reload the page.
- */
-let adobeTagsSrc = 'https://assets.adobedtm.com/ae3ff78e29a2/7f43f668d8a7/launch-';
-const adobeTagsDevEnvNumber = (localStorage ? localStorage.getItem('Adobe Tags Development Environment') : undefined);
-const adobeTagsDevEnvURLList = {
-  1: 'f8d48fe68c86-development.min.js',
-  2: 'c043b6e2b351-development.min.js',
-  3: 'ede0a048d603-development.min.js',
-  4: '7565e018a7a2-development.min.js',
-  5: '30e70f4281a7-development.min.js'
-};
-const adobeTagsDevEnv = adobeTagsDevEnvURLList[adobeTagsDevEnvNumber];
-
-if (adobeTagsDevEnv) {
-  adobeTagsSrc += adobeTagsDevEnv;
-} else {
-  const isProdSite = /^(marketplace|partners|www)\.bamboohr\.com$/i.test(document.location.hostname);
-  adobeTagsSrc += (isProdSite ? '58a206bf11f0.min.js' : '9e4820bf112c-staging.min.js');
+function getCookie(name) {
+  const cookieArr = document.cookie.split(";");
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < cookieArr.length; i++) {
+    const cookiePair = cookieArr[i].split("=");
+    if (name === cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  return null;
 }
 
-loadScript('header', adobeTagsSrc, async () => {
-  window.digitalData = {};
-  window.digitalData.push = (obj) => {
-    Object.assign(window.digitalData, window.digitalData, obj);
-  };
+function isTrustArcAdvertisingCookieAllowed() {
+  const noticeGDPRPrefs = getCookie("notice_gdpr_prefs");
+  const noticeBehavior = getCookie("notice_behavior");
 
-  const resp = await fetch('/blog/instrumentation.json');
-  const json = await resp.json();
-  const digitalDataMap = json.digitaldata.data;
-  digitalDataMap.forEach((mapping) => {
-    const metaValue = getMetadata(mapping.metadata);
-    if (metaValue) {
-      setObject(window.digitalData, mapping.digitaldata, metaValue);
-    }
-  });
-
-  /*
-  const digitalDataLists = json['digitaldata-lists'].data;
-  digitalDataLists.forEach((listEntry) => {
-    const metaValue = getMetadata(listEntry.metadata);
-    if (metaValue) {
-      // eslint-disable-next-line no-underscore-dangle
-      let listValue = digitaldata._get(listEntry.digitaldata) || '';
-      const name = listEntry['list-item-name'];
-      const metaValueArr = listEntry.delimiter
-        ? metaValue.split(listEntry.delimiter)
-        : [metaValue];
-      metaValueArr.forEach((value) => {
-        const escapedValue = value.split('|').join(); // well, well...
-        listValue += `${listValue ? ' | ' : ''}${name}: ${escapedValue}`;
-      });
-      // eslint-disable-next-line no-underscore-dangle
-      digitaldata._set(listEntry.digitaldata, listValue);
-    }
-  */
-
-  /* set experiment and variant information */
-  let experiment;
-  if (window.hlx.experiment) {
-    experiment = {
-      id: window.hlx.experiment.id,
-      variant: window.hlx.experiment.selectedVariant,
-    };
+  if (!noticeGDPRPrefs && noticeBehavior && noticeBehavior !== "expressed|eu") {
+    return true;
   }
+  if (noticeGDPRPrefs) {
+    return /^.*2.*$/i.test(noticeGDPRPrefs);
+  }
+  return false;
+}
 
-  window.digitalData.push({
-    event: 'Page View',
-    page: {
-      country: 'us',
-      language: 'en',
-      platform: 'web',
-      site: 'blog'
-    },
-    ...(experiment ? { experiment }: {})
+async function setConsentBasedOnTrustArc() {
+  await analyticsSetConsent(isTrustArcAdvertisingCookieAllowed());
+
+  window.addEventListener('message', async (event) => {
+    if (event.data && event.data.includes && event.data.includes('submit_preferences')) {
+      try {
+        const eventDataJson = JSON.parse(event.data);
+        if (eventDataJson.message === 'submit_preferences' && eventDataJson.source === 'preference_manager') {
+          let approved = false;
+          if (typeof eventDataJson.data === 'string') {
+            approved = /^.*2.*$/i.test(eventDataJson.data);
+          } else if (eventDataJson.data.value) {
+            approved = /^.*2.*$/i.test(eventDataJson.data.value);
+          }
+          await analyticsSetConsent(approved);
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
   });
-});
+}
+
+// PROXIED URL: loadScript('footer',
+// 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
+loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
 
 loadScript('header', 'https://www.googleoptimize.com/optimize.js?id=OPT-PXL7MPD', null);
 
@@ -270,3 +243,86 @@ loadTrustArcFormScript();
 loadSalesforceChatScript();
 
 updateExternalLinks();
+
+/**
+ * Track Wistia Player events with alloy
+ */
+function trackWistiaPlayerEvents() {
+  // eslint-disable-next-line no-underscore-dangle
+  window._wq = window._wq || [];
+  // eslint-disable-next-line no-underscore-dangle
+  window._wq.push({
+    id: "_all", onReady(wistiaItem) {
+      const videoType = /podcast/i.test(document.URL) ? "podcast" : "video";
+
+      wistiaItem.bind("play", async () => {
+        await analyticsTrackVideo({
+          id: `${wistiaItem.hashedId()}`,
+          name: `${wistiaItem.name()}`,
+          type: videoType,
+          hasStarted: true,
+        });
+      });
+
+      wistiaItem.bind("end", async () => {
+        await analyticsTrackVideo({
+          id: `${wistiaItem.hashedId()}`,
+          name: `${wistiaItem.name()}`,
+          type: videoType,
+          hasCompleted: true,
+        });
+      });
+
+      wistiaItem.bind('percentwatchedchanged', async (percent, lastPercent) => {
+        // track progress percentage
+        let progressMarker;
+        if (percent >= .25 && lastPercent < .25) {
+          progressMarker = "progress25";
+        } else if (percent >= .50 && lastPercent < .50) {
+          progressMarker = "progress50";
+        } else if (percent >= .75 && lastPercent < .75) {
+          progressMarker = "progress75";
+        } else if (percent >= .90 && lastPercent < .90) {
+          progressMarker = "progress90";
+        }
+        if (progressMarker) {
+          await analyticsTrackVideo({
+            id: `${wistiaItem.hashedId()}`,
+            name: `${wistiaItem.name()}`,
+            type: videoType,
+            progressMarker,
+          });
+        }
+      });
+    }
+  });
+}
+
+trackWistiaPlayerEvents();
+
+/**
+ * Track external links interaction with alloy
+ */
+function trackInteractionExternalLinks() {
+  const allLinkTags = document.querySelectorAll('header a, main a:not(main div.article-header-share a), footer a:not(footer div.social a)');
+	allLinkTags.forEach(item => {
+	  // eslint-disable-next-line no-restricted-globals
+	  const linkType = item.href.toLowerCase().includes(location.host) ? 'other' : 'exit';	  
+	  item.addEventListener('click', async (event) => {
+		  await analyticsTrackLinkClicks(event.currentTarget, linkType);
+	  });			
+  });
+
+  const socialMediaLink = document.querySelectorAll('footer div.social a span');
+  socialMediaLink.forEach(item => {
+	  const className = Array.from(item.classList).find(name => name.startsWith('icon-'));
+	  if (className) {
+		const socialNetwork = className.replace('icon-','')
+		item.addEventListener('click', async () => {
+		  await analyticsTrackSocial(socialNetwork);
+		});
+	  }
+  });
+}
+
+trackInteractionExternalLinks();

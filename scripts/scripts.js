@@ -10,6 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
+// eslint-disable-next-line import/no-cycle
+import {
+  analyticsTrackCWV,
+  analyticsTrackFormSubmission,
+  analyticsTrackLinkClicks,
+  setupAnalyticsTrackingWithAlloy,
+} from './lib-analytics.js';
+
 const SEGMENTATION_CONFIG = {
   audiences: {
     'is-customer': {
@@ -212,6 +220,7 @@ function loadTemplateCSS() {
       'content-library',
       'webinar',
       'paid-landing-page',
+      'paid-landing-page-b',
       'product-updates',
       'live-demo-webinar-lp',
       'hr-101-guide',
@@ -380,7 +389,7 @@ export function readBlockConfig(block) {
         } else if (col.querySelector('picture')) {
           const imgEl = col.querySelector('picture');
           const imagePath = imgEl.firstElementChild.srcset;
-            value = imagePath.substr(0, imagePath.indexOf('?'));
+          value = imagePath.substr(0, imagePath.indexOf('?'));
         } else value = row.children[1].textContent;
         config[name] = value;
       }
@@ -431,6 +440,9 @@ export function decorateBackgrounds($section) {
     'bg-bottom-cap-3-laptop',
     'bg-bottom-cap-3-tablet',
     'bg-bottom-cap-3-mobile',
+    'bg-bottom-cap-4-laptop',
+    'bg-bottom-cap-4-tablet',
+    'bg-bottom-cap-4-mobile',
     'bg-cover-green-patterns-laptop',
     'bg-cover-green-patterns-tablet',
     'bg-cover-green-patterns-mobile',
@@ -557,7 +569,7 @@ export function decorateSections($main) {
           // eslint-disable-next-line no-use-before-define
           const bgPicture = createOptimizedPicture(bgImg, 'Background Image', false, [
             { media: '(min-width: 1025px)', width: '2000' },
-            { media: '(min-width: 600px)', width: '1200' }
+            { media: '(min-width: 600px)', width: '1200' },
           ]);
           bgPicture.classList.add('bg', 'bg-image');
           if (!section.classList.contains('has-bg')) section.classList.add('has-bg');
@@ -832,8 +844,10 @@ async function loadPage(doc) {
   await loadEager(doc);
   // eslint-disable-next-line no-use-before-define
   await loadLazy(doc);
+  const setupAnalytics = setupAnalyticsTrackingWithAlloy(document);
   // eslint-disable-next-line no-use-before-define
   loadDelayed(doc);
+  await setupAnalytics;
 }
 
 export function initHlx(forceMultiple = false) {
@@ -877,6 +891,25 @@ window.addEventListener('error', (event) => {
 });
 
 window.addEventListener('load', () => sampleRUM('load'));
+
+let cwv = {};
+
+// Forward the RUM CWV cached measurements to edge using WebSDK before the page unloads
+window.addEventListener('beforeunload', () => {
+  if (Object.keys(cwv).length > 0) {
+    analyticsTrackCWV(cwv);
+  }
+});
+
+// Callback to RUM CWV checkpoint in order to cache the measurements
+sampleRUM.always.on('cwv', async (data) => {
+  if (data.cwv) {
+    cwv = {
+      ...cwv,
+      ...data.cwv,
+    };
+  }
+});
 
 if (!window.hlx.suppressLoadPage) loadPage(document);
 
@@ -1025,7 +1058,19 @@ export async function readIndex(indexPath, collectionCache) {
     json.data.forEach((row) => {
       lookup[row.path] = row;
     });
-    window.pageIndex[collectionCache] = { data: json.data, lookup };
+    let { data } = json;
+    // Include/read live-demo-webinars when reading webinars index.
+    if (indexPath.startsWith('/webinars/query-index')) {
+      const resp2 = await fetch('/live-demo-webinars/query-index.json?sheet=default');
+      const json2 = await resp2.json();
+
+      json2.data.forEach((row) => {
+        lookup[row.path] = row;
+      });
+
+      data = [...json.data, ...json2.data];
+    }
+    window.pageIndex[collectionCache] = { data, lookup };
   }
 }
 
@@ -1034,11 +1079,15 @@ export async function lookupPages(pathnames, collection, sheet = '') {
     blog: '/blog/fixtures/blog-query-index.json',
     integrations: '/integrations/query-index.json?sheet=listings',
     hrGlossary: '/resources/hr-glossary/query-index.json',
+    hrSoftware: '/hr-software/query-index.json',
     hrvs: '/resources/events/hr-virtual/2022/query-index.json',
+    liveDemoWebinars: '/live-demo-webinars/query-index.json?sheet=default',
     blockInventory: '/blocks/query-index.json',
     blockTracker: `/website-marketing-resources/block-inventory-tracker2.json?sheet=${sheet}`,
     resources: `/resources/query-index.json?sheet=resources`,
     speakers: `/speakers/query-index.json`,
+    productUpdates: '/product-updates/query-index.json',
+    webinars: '/webinars/query-index.json?sheet=default',
   };
   const indexPath = indexPaths[collection];
   const collectionCache = `${collection}${sheet}`;
@@ -1194,8 +1243,9 @@ function findConversionValue(parent, fieldName) {
  * Registers conversion listeners according to the metadata configured in the document.
  * @param {Element} parent element where to find potential event conversion sources
  * @param {string} path fragment path when the parent element is coming from a fragment
+ * @param {Element} ctaElement element used as CTA for conversion
  */
-export async function initConversionTracking(parent, path) {
+export async function initConversionTracking(parent, path, ctaElement) {
   const conversionElements = {
     form: () => {
       // Track all forms
@@ -1212,7 +1262,11 @@ export async function initConversionTracking(parent, path) {
             ['submit']
           );
         }
-        const formConversionName = section.dataset.conversionName || getMetadata('conversion-name');
+        const formConversionName =
+          section.dataset.conversionName ||
+          getMetadata(`conversion-name--${getLinkLabel(ctaElement)}-`) ||
+          getMetadata('conversion-name');
+
         if (formConversionName) {
           sampleRUM.convert(formConversionName, undefined, element, ['submit']);
         } else {
@@ -1564,7 +1618,10 @@ function loadDelayed() {
 
   if (isOnTestPath) handleLoadDelayed(); // import without delay (for testing page performance)
   // else if (!window.hlx.performance) window.setTimeout(() => handleLoadDelayed(), 4000);
-  else if (!window.hlx.performance) handleLoadDelayed();
+  else if (!window.hlx.performance) {
+    // CURRENTLY THERE IS NO 4 SECOND DELAY IN PLACE
+    handleLoadDelayed();
+  }
 
   // load anything that can be postponed to the latest here
 }
@@ -1767,33 +1824,70 @@ sampleRUM.drain('convert', (cevent, cvalueThunk, element, listenTo = []) => {
   }
 });
 
-// call upon conversion events, pushes them to the datalayer
-sampleRUM.always.on('convert', (data) => {
+// Declare conversionEvent, bufferTimeoutId and tempConversionEvent outside the convert function to persist them for buffering between
+// subsequent convert calls
+let bufferTimeoutId;
+let conversionEvent;
+let tempConversionEvent;
+
+// call upon conversion events, sends them to alloy
+sampleRUM.always.on('convert', async (data) => {
   const { element } = data;
-  if (element && window.digitalData) {
-    let evtDataLayer;
+  // eslint-disable-next-line no-undef
+  if (element && alloy) {
     if (element.tagName === 'FORM') {
-      evtDataLayer = {
+      conversionEvent = {
         event: 'Form Complete',
-        forms: {
-          formsComplete: 1,
-          formName: data.source, // this is the conversion event name
-          conversionValue: data.target,
-          formId: element.id,
-          formsType: '',
-        },
+        ...(data.source ? { conversionName: data.source } : {}),
+        ...(data.target ? { conversionValue: data.target } : {}),
       };
+
+      if (
+        conversionEvent.event === 'Form Complete' &&
+        (data.target === undefined || data.source === undefined)
+      ) {
+        // If a buffer has already been set and tempConversionEvent exists, merge the two conversionEvent objects to send to alloy
+        if (bufferTimeoutId !== undefined && tempConversionEvent !== undefined) {
+          conversionEvent = { ...tempConversionEvent, ...conversionEvent };
+        } else {
+          // Temporarily hold the conversionEvent object until the timeout is complete
+          tempConversionEvent = { ...conversionEvent };
+
+          // If there is partial form conversion data, set the timeout buffer to wait for additional data
+          bufferTimeoutId = setTimeout(async () => {
+            await analyticsTrackFormSubmission(element, {
+              conversion: {
+                ...(conversionEvent.conversionName
+                  ? { conversionName: `${conversionEvent.conversionName}` }
+                  : {}),
+                ...(conversionEvent.conversionValue
+                  ? { conversionValue: `${conversionEvent.conversionValue}` }
+                  : {}),
+              },
+            });
+            tempConversionEvent = undefined;
+            conversionEvent = undefined;
+          }, 100);
+        }
+      }
     } else if (element.tagName === 'A') {
-      evtDataLayer = {
+      conversionEvent = {
         event: 'Link Click',
-        eventData: {
-          linkName: data.source, // this is the conversion event name
-          linkText: element.innerHTML,
-          linkHref: element.href,
-        },
+        ...(data.source ? { conversionName: data.source } : {}),
+        ...(data.target ? { conversionValue: data.target } : {}),
       };
+      await analyticsTrackLinkClicks(element, 'other', {
+        conversion: {
+          ...(conversionEvent.conversionName
+            ? { conversionName: `${conversionEvent.conversionName}` }
+            : {}),
+          ...(conversionEvent.conversionValue
+            ? { conversionValue: `${conversionEvent.conversionValue}` }
+            : {}),
+        },
+      });
+      tempConversionEvent = undefined;
+      conversionEvent = undefined;
     }
-    console.debug('push to datalayer', evtDataLayer);
-    window.digitalData.push(evtDataLayer);
   }
 });
