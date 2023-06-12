@@ -651,7 +651,7 @@ header .nav-limited .nav-buttons .button.small {
   header .nav-section ul,
   header .nav-section .nav-section-wrapper {
     opacity: 0;
-    padding-bottom: 38px;
+    padding-bottom: 20px;
     padding-top: 18px;
     max-height: 0;
     position: absolute;
@@ -665,6 +665,10 @@ header .nav-limited .nav-buttons .button.small {
     box-sizing: border-box;
     color: #666;
     transform: translate(0, -1000px);
+  }
+
+  header .nav-sections .nav-section:nth-child(2) ul {
+    padding-bottom: 75px;
   }
 
   header .nav-section li {

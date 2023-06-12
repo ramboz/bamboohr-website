@@ -493,8 +493,7 @@ main .carousel.style-5 ~ .carousel-controls button {
   padding: .5rem;
 }
 
-main .carousel.style-3 ~ .carousel-controls button::after,
-main .carousel.style-5 ~ .carousel-controls button::after {
+main .carousel.style-3 ~ .carousel-controls button::after {
   background-color: var(--theme-shade10);
   content: '';
   display: block;
@@ -511,13 +510,12 @@ main .carousel.style-5 ~ .carousel-controls button.disabled {
   cursor: auto;
 }
 
-main .carousel.style-3 ~ .carousel-controls button.disabled::after,
-main .carousel.style-5 ~ .carousel-controls button.disabled::after {
+main .carousel.style-3 ~ .carousel-controls button.disabled::after {
   background-color: var(--color-gray-5);
 }
 
 main .carousel.style-3 ~ .carousel-controls button.prev,
-main .carousel.style-5 ~ .carousel-controls button.prev {
+main .carousel.style-5 ~ .carousel-controls button.next {
   transform: rotate(180deg);
 }
 
@@ -628,7 +626,7 @@ main .carousel.style-5 ~ .carousel-controls button.prev {
   --extra-padding: 64px;
 
   flex-direction: column;
-  left: -45px;
+  left: -15px;
   position: absolute;
   top: calc(50% - var(--extra-padding));
 }
@@ -641,13 +639,35 @@ main .carousel.style-5 ~ .carousel-controls button.next {
   --extra-padding: 64px;
 
   flex-direction: column;
-  right: -45px;
+  right: -18px;
   position: absolute;
   top: calc(50% - var(--extra-padding));
 }
 
 .base main .carousel.style-5 ~ .carousel-controls button.next {
   right: 10px;
+}
+
+main .carousel.style-5 ~ .carousel-controls .disabled .circle-back-color {
+  color: var(--color-gray-5);
+}
+
+main .carousel.style-5 ~ .carousel-controls .circle-back-color {
+  color: var(--theme-shade10);
+}
+
+main .carousel.style-5 ~ .carousel-controls .circle-caret-color {
+  color: white;
+}
+
+@media (min-width: 600px) {
+  main .carousel.style-5 ~ .carousel-controls button.prev {
+    left: -48px;
+  }
+  
+  main .carousel.style-5 ~ .carousel-controls button.next {
+    right: -52px;
+  }
 }
 
 @media (min-width: 1038px) {
