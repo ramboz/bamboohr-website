@@ -1,4 +1,4 @@
-import { buildBlock, getMetadata } from './scripts.js';
+import { buildBlock, getMetadata, toClassName } from './scripts.js';
 
 function buildImageBlocks(main) {
   let floatCounter = 0;
@@ -60,6 +60,10 @@ function buildAuthorContainer(main) {
 }
 
 export default async function decorateTemplate(main) {
+  // for blog redesign test, remove after test ends
+  const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
+  if (testVariation === 'blog-redesign') document.body.classList.add(testVariation);
+
   const isBlog = buildArticleHeader(main);
   if (isBlog) {
     buildImageBlocks(main);
