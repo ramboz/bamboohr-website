@@ -530,16 +530,14 @@ const capitalizeKeys = (obj) => {
 const getPrefillFields = async () => {
   try {
     const response = await fetch('/xhr/formfill.php');
-
     if (!response.ok) {
       throw new Error(`Request failed with status: ${response.status}`);
     }
 
-    // const response = '{"formData":{"id":33165778,"firstName":"Meng","lastName":"Tian","email":"mtian+test@bamboohr.com","phone":"8011231234","Employees_Text__c":"76-150","title":"test","company":"BambooHR","jobOpenings":null,"industry":"Apparel","postalCode":null}}'
-
     const data = await response.json();
-    // const { formData: mktoLeadFields } = JSON.parse(response);
-    const mktoLeadFields = data.formData;
+    const { formData } = data;
+    const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
+
     return mktoLeadFields;
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -558,14 +556,8 @@ const fillFormFields = (prefillFields, formEl) => {
 };
 
 const setFormValues = async (formEl) => {
-  try {
-    const prefillFields = await getPrefillFields();
-    const modifiedFields = capitalizeKeys(prefillFields);
-    fillFormFields(modifiedFields, formEl);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-  }
+  const prefillFields = await getPrefillFields();
+  if (prefillFields) fillFormFields(prefillFields, formEl);
 };
 
 
@@ -641,7 +633,10 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         addFormHeadingText();
         addExpansionProduct();
         
-        setFormValues(formEl);
+        setFormValues(formEl).catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(`Error when setting form values: ${error.message}`);
+        });
 
         form.onSuccess(() => {
           /* GA events tracking */
