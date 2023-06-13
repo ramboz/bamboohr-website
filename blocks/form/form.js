@@ -515,9 +515,11 @@ function addExpansionProduct() {
   }
 }
 
-/*
-* capitalize first letter of obj keys
-*/
+/**
+ * Capitalize first letter of object keys
+ * @param {object} obj - The object to capitalize keys for
+ * @returns {object} The object with capitalized keys
+ */
 const capitalizeKeys = (obj) => {
   const modifiedObj = {};
   Object.keys(obj).forEach((key) => {
@@ -527,6 +529,10 @@ const capitalizeKeys = (obj) => {
   return modifiedObj;
 };
 
+/**
+ * Get prefill fields from marketo cookie
+ * @returns {Promise<object|null>} The prefill fields object or null if there was an error
+ */
 const getPrefillFields = async () => {
   try {
     const response = await fetch('/xhr/formfill.php');
@@ -548,6 +554,11 @@ const getPrefillFields = async () => {
   }
 };
 
+/**
+ * Fill form fields with fields that exist in prefillFields
+ * @param {object} prefillFields - The prefill fields object
+ * @param {object} formEl - The form element to fill
+ */
 const fillFormFields = (prefillFields, formEl) => {
   Object.entries(prefillFields).forEach(([fieldName, fieldValue]) => {
     const formField = formEl.querySelector(`[name='${fieldName}']`);
@@ -557,11 +568,14 @@ const fillFormFields = (prefillFields, formEl) => {
   });
 };
 
+/**
+ * Set form values
+ * @param {object} formEl - The form element to set values for
+ */
 const setFormValues = async (formEl) => {
   const prefillFields = await getPrefillFields();
   if (prefillFields) fillFormFields(prefillFields, formEl);
 };
-
 
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
@@ -631,10 +645,10 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
 
-        // addExpansionProduct();
         addFormHeadingText();
         addExpansionProduct();
         
+        // Prefill form fields
         setFormValues(formEl).catch((error) => {
           // eslint-disable-next-line no-console
           console.error(`Error when setting form values: ${error.message}`);
