@@ -515,6 +515,60 @@ function addExpansionProduct() {
   }
 }
 
+/*
+* capitalize first letter of obj keys
+*/
+const capitalizeKeys = (obj) => {
+  const modifiedObj = {};
+  Object.keys(obj).forEach((key) => {
+    const modifiedKey = key.charAt(0).toUpperCase() + key.slice(1);
+    modifiedObj[modifiedKey] = obj[key];
+  });
+  return modifiedObj;
+};
+
+const getPrefillFields = async () => {
+  try {
+    const response = await fetch('https://www.bamboohr.com/xhr/formfill.php');
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status: ${response.status}`);
+    }
+
+    // const response = '{"formData":{"id":33165778,"firstName":"Meng","lastName":"Tian","email":"mtian+test@bamboohr.com","phone":"8011231234","Employees_Text__c":"76-150","title":"test","company":"BambooHR","jobOpenings":null,"industry":"Apparel","postalCode":null}}'
+
+    const data = await response.json();
+    // const { formData: mktoLeadFields } = JSON.parse(response);
+    const mktoLeadFields = data.formData;
+    return mktoLeadFields;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    return null;
+  }
+};
+
+const fillFormFields = (prefillFields, formEl) => {
+  Object.entries(prefillFields).forEach(([fieldName, fieldValue]) => {
+    const formField = formEl.querySelector(`[name='${fieldName}']`);
+    if (formField) {
+      formField.value = fieldValue;
+    }
+  });
+};
+
+const setFormValues = async (formEl) => {
+  try {
+    const prefillFields = await getPrefillFields();
+    const modifiedFields = capitalizeKeys(prefillFields);
+    fillFormFields(modifiedFields, formEl);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+  }
+};
+
+
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -586,6 +640,8 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         // addExpansionProduct();
         addFormHeadingText();
         addExpansionProduct();
+        
+        setFormValues(formEl);
 
         form.onSuccess(() => {
           /* GA events tracking */
