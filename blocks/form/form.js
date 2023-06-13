@@ -531,7 +531,9 @@ const getPrefillFields = async () => {
   try {
     const response = await fetch('/xhr/formfill.php');
     if (!response.ok) {
-      throw new Error(`Request failed with status: ${response.status}`);
+      // eslint-disable-next-line no-console
+      console.error(`Request failed with status: ${response.status}`);
+      return null;
     }
 
     const data = await response.json();
