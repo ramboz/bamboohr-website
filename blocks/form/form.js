@@ -529,7 +529,7 @@ const capitalizeKeys = (obj) => {
 
 const getPrefillFields = async () => {
   try {
-    const response = await fetch('https://www.bamboohr.com/xhr/formfill.php');
+    const response = await fetch('/xhr/formfill.php');
 
     if (!response.ok) {
       throw new Error(`Request failed with status: ${response.status}`);
