@@ -1,5 +1,19 @@
 import { createElem, createOptimizedPicture, getMetadata } from '../../scripts/scripts.js';
 
+function canReadPic(path) {
+    let readPic = true;
+    const noPicList = ['/pl-pages/demo-request/', '/lp/demo/'];
+    noPicList.some(p => {
+        if (path === p) {
+            readPic = false;
+            return true;
+        }
+        return false;
+    });
+
+    return readPic;
+}
+
 function createLinkButton(link) {
     const button = createElem('p', 'button-container');
     const btnLink = document.createElement('a');
@@ -58,9 +72,10 @@ export default async function decorate(block) {
     let button = null;
     if (link.parentElement.classList.contains('button-container')) button = link.parentElement;
     let pic = block.querySelector('picture');
+    const readPic = canReadPic(link.pathname);
 
     // If elements are missing read the link page's metadata and create them.
-    if (link && (!title || !desc || !pic)) {
+    if (link && (!title || !desc || (readPic && !pic))) {
         const resp = await fetch(`${link.pathname}`);
         const text = await resp.text();
         const dom = new DOMParser().parseFromString(text, 'text/html');
@@ -97,10 +112,16 @@ export default async function decorate(block) {
     if (pic) calloutImg.append(pic);
 
     // Add block and wrapper classes
-    if (calloutImg.children.length) block.classList.add('has-image');
-    else calloutImg.remove();
+    if (calloutImg.children.length) calloutText.classList.add('callout-has-image');
+    else {
+        calloutImg.remove();
+        calloutText.classList.add('callout-text-only');
+    }
     block.classList.add('blog-redesign');
-    block.parentElement.classList.add('callout-width');
+    const isSmall = block.classList.contains('small');
+    let wrapperWidth = 'width-medium';
+    if (calloutImg.children.length === 0 || isSmall) wrapperWidth = 'width-small';
+    block.parentElement.classList.add(wrapperWidth);
 
     block.innerHTML = '';
     block.append(card);

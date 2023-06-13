@@ -131,14 +131,45 @@ main .callout.blog-redesign {
   background-size: unset;
 }
 
-main .section > div.callout-width {
+main .section > div.width-small {
   max-width: 560px;
+}
+
+main .section > div.width-medium {
+  max-width: 700px;
 }
 
 .callout-card {
   display: flex;
   align-items: center;
   column-gap: 40px;
+  position: relative;
+}
+
+main .callout .callout-card .callout-text.callout-has-image {
+  width: 50%;
+}
+
+main .callout .callout-card .callout-image {
+  width: 50%;
+}
+
+main .callout .callout-card .callout-image::after,
+main .callout .callout-card .callout-text-only::after {
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  content: '';
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-mask: url('/icons/bamboo-hr-logo.svg') no-repeat 50% 50%;
+  mask: url('/icons/bamboo-hr-logo.svg') no-repeat 50% 50%;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: var(--theme-base);
+  height: 16px;
+  width: 104px;
 }
 
 main .callout .callout-card .callout-text h3 {
@@ -183,13 +214,24 @@ main .callout .callout-card a.button {
 
   .callout-image {
     order: 1;
-    width: 100%;
     margin-bottom: 30px;
+  }
+
+  main .callout .callout-card .callout-image {
+    width: 100%;
   }
 
   .callout-text {
     order: 2;
+  }
+
+  main .callout .callout-card .callout-text.callout-has-image {
     width: 100%;
+  }
+
+  main .callout .callout-card .callout-image::after,
+  main .callout .callout-card .callout-text-only::after {
+    bottom: -20px;
   }
 }
 
