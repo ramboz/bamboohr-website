@@ -460,7 +460,11 @@ export async function analyticsTrackCWV(cwv) {
   });
 }
 
-// widgetId whould be Block Name + Form Id
+/**
+ * Basic tracking for widget start with alloy
+ * @param widgetID [Block Name.Form Id]
+ * @returns {Promise<*>}
+ */
 export async function analyticsTrackWidgetStart(widgetID) {
 	// eslint-disable-next-line no-undef
 	return alloy('sendEvent', {
@@ -476,9 +480,8 @@ export async function analyticsTrackWidgetStart(widgetID) {
 }
 
 /**
- * Basic tracking for form submissions with alloy
- * @param element
- * @param additionalXdmFields
+ * Basic tracking for widget submissions with alloy
+ * @param widgetID [Block Name.Form Id]
  * @returns {Promise<*>}
  */
  export async function analyticsTrackWidgetSubmission(widgetID) {
@@ -496,9 +499,9 @@ export async function analyticsTrackWidgetStart(widgetID) {
 }
 
 /**
- * Basic tracking for form submissions with alloy
- * @param element
- * @param additionalXdmFields
+ * Basic tracking for widget last step with alloy
+ * @param widgetID [Block Name.Form Id]
+ * @param widgetLastStep (Integer last step)
  * @returns {Promise<*>}
  */
  export async function analyticsTrackWidgetLastStep(widgetID, widgetLastStep) {
