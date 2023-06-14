@@ -62,7 +62,7 @@ function buildAuthorContainer(main) {
 export default async function decorateTemplate(main) {
   // for blog redesign test, remove after test ends
   const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
-  if (testVariation === 'blog-redesign') document.body.classList.add(testVariation);
+  if (testVariation) document.body.classList.add(testVariation);
 
   const isBlog = buildArticleHeader(main);
   if (isBlog) {
