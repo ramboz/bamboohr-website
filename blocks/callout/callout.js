@@ -2,7 +2,7 @@ import { createElem, createOptimizedPicture, getMetadata } from '../../scripts/s
 
 function canReadPic(path) {
     let readPic = true;
-    const noPicList = ['/pl-pages/demo-request/', '/lp/demo/'];
+    const noPicList = ['/pl-pages/demo-request/', '/lp/demo/', '/lp/payroll/', '/signup/'];
     noPicList.some(p => {
         if (path === p) {
             readPic = false;
