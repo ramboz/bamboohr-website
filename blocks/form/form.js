@@ -535,17 +535,14 @@ const capitalizeKeys = (obj) => {
  */
 const getPrefillFields = async () => {
   try {
-    // const response = await fetch('/xhr/formfill.php');
-    // if (!response.ok) {
-    //   // eslint-disable-next-line no-console
-    //   console.error(`Request failed with status: ${response.status}`);
-    //   return null;
-    // }
+    const response = await fetch('/xhr/formfill.php');
+    if (!response.ok) {
+      // eslint-disable-next-line no-console
+      console.error(`Request failed with status: ${response.status}`);
+      return null;
+    }
 
-    const response = '{"formData":{"id":33165778,"firstName":"Meng","lastName":"Tian","email":"mtian+test@bamboohr.com","phone":"8011231234","Employees_Text__c":"151-300","title":"Test","company":"BambooHR","jobOpenings":null,"industry":"Apparel","postalCode":null}}';
-    const data = JSON.parse(response);
-
-    // const data = await response.json();
+    const data = await response.json();
     const { formData } = data;
     const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
 
