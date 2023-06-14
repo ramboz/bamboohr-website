@@ -294,25 +294,35 @@ main .default-content-wrapper ol li {
   margin-left: 30px;
 }
 
+/* lists indent - padding includes bullet = 22px(padding) - 11px(bullet) */
 main ul {
-  padding-left: 10px;
+  padding-left: 22px;
+  list-style-position: outside;
 }
 
+/* space between bullet and text */
 main ul li {
-  list-style: none;
+  padding-left: 11px;
 }
 
-main ul li::before {
-  content: "●";
-  vertical-align: bottom;
-  padding-right: 10px;
+main .default-content-wrapper ul,
+main .tabs ul,
+main .columns ul {
+  list-style-type: none;
 }
 
-main ul li ul li::before {
+main .default-content-wrapper ul li::marker,
+main .tabs ul li::marker,
+main .columns ul li::marker,
+main .form ul li::marker {
+  content: "●"; 
+}
+
+main .default-content-wrapper ul li ul li::marker,
+main .tabs ul li ul li::marker,
+main .columns ul li ul li::marker,
+main .form ul li ul li::marker {
   content: "○";
-  vertical-align: bottom;
-  padding-right: 10px;
-  padding-left: 12px;
 }
 
 main p:not(:last-of-type) {
