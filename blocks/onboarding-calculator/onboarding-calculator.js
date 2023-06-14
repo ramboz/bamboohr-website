@@ -1,11 +1,32 @@
 import { createElem } from '../../scripts/scripts.js';
 import { createLabel, createInput } from '../form/form.js';
+import { analyticsTrackWidgetStart, analyticsTrackWidgetSubmission, analyticsTrackWidgetLastStep } from '../../scripts/lib-analytics.js';
 
 let currentTab = 0;
+let farthestTab = 0;
 const jsonUrl = '/website-marketing-resources/roi-calculator-form.json';
 
 const organisationForm = [];
 const individualForm = [];
+
+function onboardingCalcAnalyticsTrack(form, trackType, lastStep) {
+	const [blockName] = [...form.parentElement.classList];
+	const widgetId = `${blockName}.${form.id}`;
+
+	switch (trackType) {
+		case 'LastStep':
+			analyticsTrackWidgetLastStep(widgetId, lastStep);
+			break;
+		case 'Start':
+			analyticsTrackWidgetStart(widgetId);
+			break;
+		case 'Submission':
+			analyticsTrackWidgetSubmission(widgetId);
+			break;
+		default:
+			break;
+	}
+}
 
 async function fetchData(url) {
 	const resp = await fetch(url);
@@ -228,6 +249,8 @@ function formSubmitHandler(form) {
 
 		appendCalcResultToDom(totalEmployeeOnboardingCosts, form.id);
 	}
+
+	onboardingCalcAnalyticsTrack(form, 'Submission');
 }
 
 function progressIndicator(index, form) {
@@ -273,6 +296,7 @@ function resetForm(block) {
 	const contentElement = block.querySelector('.onboarding-calculator__content');
 	const calcResults = block.querySelectorAll('.calc-result');
 	currentTab = 0;
+	farthestTab = 0;
 	
 	contentElement.style.display = '';
 
@@ -328,6 +352,11 @@ function nextPrev(index, form) {
 
 	if (currentTab < 0) {
 		resetForm(navBtn.parentElement.parentElement);
+	}
+
+	if (index === 1 && currentTab > farthestTab) {
+		farthestTab = currentTab;
+		onboardingCalcAnalyticsTrack(form, 'LastStep', farthestTab);
 	}
 
 	if (currentTab >= (tabsArr.length - 1)) {
@@ -610,6 +639,7 @@ function toggleForm(formId) {
 
 	showTab(currentTab, form);
 	progressIndicator(currentTab, form);
+	onboardingCalcAnalyticsTrack(form, 'Start');
 }
 
 function createCtaContainer() {

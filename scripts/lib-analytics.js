@@ -459,3 +459,58 @@ export async function analyticsTrackCWV(cwv) {
     },
   });
 }
+
+// widgetId whould be Block Name + Form Id
+export async function analyticsTrackWidgetStart(widgetID) {
+	// eslint-disable-next-line no-undef
+	return alloy('sendEvent', {
+		xdm: {
+			[CUSTOM_SCHEMA_NAMESPACE]: {
+				form: {
+					widgetID,
+					widgetStart: 1,
+				}
+			},
+		},
+	});
+}
+
+/**
+ * Basic tracking for form submissions with alloy
+ * @param element
+ * @param additionalXdmFields
+ * @returns {Promise<*>}
+ */
+ export async function analyticsTrackWidgetSubmission(widgetID) {
+  // eslint-disable-next-line no-undef
+  return alloy('sendEvent', {
+    xdm: {
+      [CUSTOM_SCHEMA_NAMESPACE]: {
+        form: {
+          widgetID,
+          widgetComplete: 1
+        },
+      },
+    },
+  });
+}
+
+/**
+ * Basic tracking for form submissions with alloy
+ * @param element
+ * @param additionalXdmFields
+ * @returns {Promise<*>}
+ */
+ export async function analyticsTrackWidgetLastStep(widgetID, widgetLastStep) {
+  // eslint-disable-next-line no-undef
+  return alloy('sendEvent', {
+    xdm: {
+      [CUSTOM_SCHEMA_NAMESPACE]: {
+        form: {
+          widgetID,
+          widgetLastStep
+        },
+      },
+    },
+  });
+}

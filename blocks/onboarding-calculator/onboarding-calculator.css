@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern */
 main .onboarding-calculator {
 	border-radius: 12px;
 	box-shadow: 0 4px 12px 4px #86868624;
@@ -103,6 +104,7 @@ main .onboarding-calculator .tab {
 	display: none;
 	flex-wrap: wrap;
 	justify-content: space-between;
+	/* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
 	flex-direction: column;
     align-items: center;
 	row-gap: 25px;
@@ -148,6 +150,7 @@ main .onboarding-calculator .error {
 
 main .onboarding-calculator .tab .field-item input[type="range"]{
 	--percent: 50%;
+
     background-color: var(--secondary-theme-tint10);
     background-image: linear-gradient(var(--theme-shade5),var(--theme-shade5));
     background-size: var(--percent) 100%;
@@ -166,6 +169,7 @@ main .onboarding-calculator .tab .field-item input[type=range]::-webkit-slider-t
 	border-radius: 23px;
 	background-color: var(--theme-shade5);
 	cursor: pointer;
+	/* stylelint-disable-next-line property-no-vendor-prefix */
 	-webkit-appearance: none;
 }
 
@@ -444,7 +448,7 @@ main .onboarding-calculator .icon-dollar::before {
 	content: '';
 	background-image: url('./dollar-logo.svg');
 	position: relative;
-    left: 0px;
+    left: 0;
     top: 20px;
     background-repeat: no-repeat;
 	background-position: center;
@@ -537,7 +541,7 @@ main .onboarding-calculator .icon-dollar::before {
 
 	main .onboarding-calculator__content-left {
 		order: 0;
-		flex: 0 0 33.333333%;
+		flex: 0 0 33.3333%;
 	}
 
 	main .onboarding-calculator__content-left img {
