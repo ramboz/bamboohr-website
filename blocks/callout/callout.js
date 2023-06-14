@@ -55,7 +55,8 @@ function findDescription(block) {
 }
 
 export default async function decorate(block) {
-    if (!getMetadata('blog-redesign')) return;
+    const testVariation = getMetadata('test-variation');
+    if (!testVariation || testVariation.toLowerCase() !== 'blog redesign') return;
 
     // Create a card with 2 parts: text and image
     const card = createElem('div', 'callout-card');
