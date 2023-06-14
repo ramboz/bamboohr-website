@@ -515,6 +515,70 @@ function addExpansionProduct() {
   }
 }
 
+/**
+ * Capitalize first letter of object keys
+ * @param {object} obj - The object to capitalize keys for
+ * @returns {object} The object with capitalized keys
+ */
+const capitalizeKeys = (obj) => {
+  const modifiedObj = {};
+  Object.keys(obj).forEach((key) => {
+    const modifiedKey = key.charAt(0).toUpperCase() + key.slice(1);
+    modifiedObj[modifiedKey] = obj[key];
+  });
+  return modifiedObj;
+};
+
+/**
+ * Get prefill fields from marketo cookie
+ * @returns {Promise<object|null>} The prefill fields object or null if there was an error
+ */
+const getPrefillFields = async () => {
+  try {
+    const response = await fetch('/xhr/formfill.php');
+    if (!response.ok) {
+      // eslint-disable-next-line no-console
+      console.error(`Request failed with status: ${response.status}`);
+      return null;
+    }
+
+    const data = await response.json();
+    const { formData } = data;
+    const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
+
+    return mktoLeadFields;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    return null;
+  }
+};
+
+/**
+ * Fill form fields with fields that exist in prefillFields
+ * @param {object} prefillFields - The prefill fields object
+ * @param {object} formEl - The form element to fill
+ */
+const fillFormFields = (prefillFields, formEl) => {
+  Object.entries(prefillFields).forEach(([fieldName, fieldValue]) => {
+    const formField = formEl.querySelector(`[name='${fieldName}']`);
+    if (formField) {
+      const formLabel = formField.previousElementSibling;
+      formField.value = fieldValue;
+      formLabel.classList.add('active');
+    }
+  });
+};
+
+/**
+ * Set form values
+ * @param {object} formEl - The form element to set values for
+ */
+const setFormValues = async (formEl) => {
+  const prefillFields = await getPrefillFields();
+  if (prefillFields) fillFormFields(prefillFields, formEl);
+};
+
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -537,6 +601,15 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 			});
 		  analyticsTrackFormStart(formEl);
         });
+
+        // Prefill form fields
+        const formPrefill = getMetadata('form-prefill');
+        if (formPrefill === 'yes') {
+          setFormValues(formEl).catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error(`Error when setting form values: ${error.message}`);
+          });
+        }
 
         /* floating label */
         if (floatingLable === true) {
@@ -583,7 +656,6 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
 
-        // addExpansionProduct();
         addFormHeadingText();
         addExpansionProduct();
 

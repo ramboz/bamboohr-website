@@ -80,3 +80,55 @@ main .toc > ol > li::before {
     padding-left: 30px;
   }
 }
+
+.blog-redesign main .toc {
+  color: var(--color-gray-12);
+  background: none;
+  border: 1px solid var(--color-gray-3);
+  border-radius: 15px;
+  padding: 25px;
+  margin: 26px 0;
+}
+
+.blog-redesign main .toc a:any-link {
+  color: var(--color-gray-12);
+  background: none;
+  text-decoration: underline;
+  text-decoration-color: var(--color-1-shade-10);
+  text-underline-offset: 4px;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.blog-redesign main .toc .toc-title {
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+  text-transform: none;
+}
+
+@media (min-width: 600px) {
+  .blog-redesign main .toc .toc-title{
+    font-size: 21px;
+    line-height: 28px;
+  }
+}
+
+.blog-redesign main .toc ul {
+  padding-left: 10px;
+  margin: 20px 0 0;
+}
+
+.blog-redesign main .toc ul li {
+  padding-left: 0;
+}
+
+.blog-redesign main .toc ul li:not(:first-child) {
+  margin-top: 8px;
+}
+
+.blog-redesign main .toc ul li::marker {
+  font-size: 12px;
+}
