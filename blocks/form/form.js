@@ -188,7 +188,7 @@ function createButton(fd) {
   return button;
 }
 
-function createInput(fd) {
+export function createInput(fd) {
   const input = document.createElement('input');
   input.type = fd.Type;
   input.id = fd.Field;
@@ -239,7 +239,7 @@ function createTextarea(fd) {
   return textarea;
 }
 
-function createLabel(fd) {
+export function createLabel(fd) {
   const label = document.createElement('label');
   if (fd.Label) {
     label.setAttribute('for', fd.Field);
