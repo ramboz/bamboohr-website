@@ -590,26 +590,23 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 
         /* Adobe Form Start event tracking when user changes the first field */
         formEl.firstElementChild.addEventListener('change', () => {
-		  // eslint-disable-next-line
-		  alloy("getIdentity")
-			.then((result) => {
-			  // eslint-disable-next-line
-			  formEl.querySelector('input[name="ECID"]').value = result.identity.ECID;
-			})
-			.catch( () => { 
-			  formEl.querySelector('input[name="ECID"]').value = '';
-			});
-		  analyticsTrackFormStart(formEl);
+          // eslint-disable-next-line
+          alloy("getIdentity")
+          .then((result) => {
+            // eslint-disable-next-line
+            formEl.querySelector('input[name="ECID"]').value = result.identity.ECID;
+          })
+          .catch( () => { 
+            formEl.querySelector('input[name="ECID"]').value = '';
+          });
+          analyticsTrackFormStart(formEl);
         });
 
         // Prefill form fields
-        const formPrefill = getMetadata('form-prefill');
-        if (formPrefill === 'yes') {
-          setFormValues(formEl).catch((error) => {
-            // eslint-disable-next-line no-console
-            console.error(`Error when setting form values: ${error.message}`);
-          });
-        }
+        setFormValues(formEl).catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(`Error when setting form values: ${error.message}`);
+        });
 
         /* floating label */
         if (floatingLable === true) {
