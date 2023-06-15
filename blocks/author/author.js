@@ -1,8 +1,4 @@
-import {
-  createOptimizedPicture,
-  getMetadata,
-  toClassName,
-} from '../../scripts/scripts.js';
+import { createOptimizedPicture, getMetadata, toClassName } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const authorPath = `/blog/author/${toClassName(getMetadata('author'))}`;
@@ -15,11 +11,14 @@ export default async function decorate(block) {
   fullname.remove();
   const title = dom.querySelector('p');
   if (title) title.remove();
+  const description = dom.querySelector('p');
+  if (description) description.remove();
 
   const picture = createOptimizedPicture(img.src, false, [{ width: '200' }]);
   block.innerHTML = `<div class="author-image">${picture.outerHTML}</div>
   <div class="author-description">
-    <a href="${authorPath}">${fullname.textContent}</a>
-    ${title ? title.outerHTML : ''}
+    <p class="author-name">${fullname.textContent}</p>
+    ${description ? description.outerHTML : ''}
+    <a class="learn-more" href="${authorPath}">More from this author > </a>
   </div>`;
 }
