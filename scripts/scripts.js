@@ -895,7 +895,7 @@ window.addEventListener('load', () => sampleRUM('load'));
 let cwv = {};
 
 // Forward the RUM CWV cached measurements to edge using WebSDK before the page unloads
-window.addEventListener("beforeunload", () => {
+window.addEventListener('beforeunload', () => {
   if (Object.keys(cwv).length > 0) {
     analyticsTrackCWV(cwv);
   }
@@ -906,7 +906,7 @@ sampleRUM.always.on('cwv', async (data) => {
   if (data.cwv) {
     cwv = {
       ...cwv,
-      ...data.cwv
+      ...data.cwv,
     };
   }
 });
@@ -1114,8 +1114,8 @@ export async function loadHeader(header) {
   await loadBlock(headerBlock);
   // Patch logo URL for is-customer audience
   if (getBhrFeaturesCookie()) {
-    if (SEGMENTATION_CONFIG.audiences['is-customer'].test()) {
-      const usp = new URLSearchParams(window.location.search);
+	const usp = new URLSearchParams(window.location.search);
+    if (SEGMENTATION_CONFIG.audiences['is-customer'].test() && !usp.has('segment')) {
       usp.append('segment', 'general');
       document.querySelector('.nav-brand a').href += `?${usp.toString()}`;
     }
@@ -1619,8 +1619,8 @@ function loadDelayed() {
   if (isOnTestPath) handleLoadDelayed(); // import without delay (for testing page performance)
   // else if (!window.hlx.performance) window.setTimeout(() => handleLoadDelayed(), 4000);
   else if (!window.hlx.performance) {
-	  // CURRENTLY THERE IS NO 4 SECOND DELAY IN PLACE
-	  handleLoadDelayed();
+    // CURRENTLY THERE IS NO 4 SECOND DELAY IN PLACE
+    handleLoadDelayed();
   }
 
   // load anything that can be postponed to the latest here
@@ -1832,30 +1832,37 @@ let tempConversionEvent;
 
 // call upon conversion events, sends them to alloy
 sampleRUM.always.on('convert', async (data) => {
-  const {element} = data;
+  const { element } = data;
   // eslint-disable-next-line no-undef
   if (element && alloy) {
     if (element.tagName === 'FORM') {
       conversionEvent = {
-        event: "Form Complete",
-        ...(data.source ? {conversionName: data.source} : {}),
-        ...(data.target ? {conversionValue: data.target} : {}),
+        event: 'Form Complete',
+        ...(data.source ? { conversionName: data.source } : {}),
+        ...(data.target ? { conversionValue: data.target } : {}),
       };
 
-      if (conversionEvent.event === "Form Complete" && (data.target === undefined || data.source === undefined)) {
+      if (
+        conversionEvent.event === 'Form Complete' &&
+        (data.target === undefined || data.source === undefined)
+      ) {
         // If a buffer has already been set and tempConversionEvent exists, merge the two conversionEvent objects to send to alloy
         if (bufferTimeoutId !== undefined && tempConversionEvent !== undefined) {
-          conversionEvent = {...tempConversionEvent, ...conversionEvent}
+          conversionEvent = { ...tempConversionEvent, ...conversionEvent };
         } else {
           // Temporarily hold the conversionEvent object until the timeout is complete
-          tempConversionEvent = {...conversionEvent};
+          tempConversionEvent = { ...conversionEvent };
 
           // If there is partial form conversion data, set the timeout buffer to wait for additional data
           bufferTimeoutId = setTimeout(async () => {
             await analyticsTrackFormSubmission(element, {
-              "conversion": {
-                ...(conversionEvent.conversionName ? {"conversionName": `${conversionEvent.conversionName}`} : {}),
-                ...(conversionEvent.conversionValue ? {"conversionValue": `${conversionEvent.conversionValue}`} : {}),
+              conversion: {
+                ...(conversionEvent.conversionName
+                  ? { conversionName: `${conversionEvent.conversionName}` }
+                  : {}),
+                ...(conversionEvent.conversionValue
+                  ? { conversionValue: `${conversionEvent.conversionValue}` }
+                  : {}),
               },
             });
             tempConversionEvent = undefined;
@@ -1865,14 +1872,18 @@ sampleRUM.always.on('convert', async (data) => {
       }
     } else if (element.tagName === 'A') {
       conversionEvent = {
-        event: "Link Click",
-        ...(data.source ? {conversionName: data.source} : {}),
-        ...(data.target ? {conversionValue: data.target} : {}),
+        event: 'Link Click',
+        ...(data.source ? { conversionName: data.source } : {}),
+        ...(data.target ? { conversionValue: data.target } : {}),
       };
       await analyticsTrackLinkClicks(element, 'other', {
-        "conversion": {
-          ...(conversionEvent.conversionName ? {"conversionName": `${conversionEvent.conversionName}`} : {}),
-          ...(conversionEvent.conversionValue ? {"conversionValue": `${conversionEvent.conversionValue}`} : {}),
+        conversion: {
+          ...(conversionEvent.conversionName
+            ? { conversionName: `${conversionEvent.conversionName}` }
+            : {}),
+          ...(conversionEvent.conversionValue
+            ? { conversionValue: `${conversionEvent.conversionValue}` }
+            : {}),
         },
       });
       tempConversionEvent = undefined;
@@ -1880,5 +1891,3 @@ sampleRUM.always.on('convert', async (data) => {
     }
   }
 });
-
-// comment to trigger header update

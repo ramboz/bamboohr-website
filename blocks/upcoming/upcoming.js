@@ -9,7 +9,7 @@ import { createArticleCard, loadWistiaBlock, isUpcomingEvent } from '../listing/
 
 function formatTitle(article) {
   let title = article.title.split(' | ')[0];
-  if (article.path.startsWith('/live-demo-webinars/')) {
+  if (article.path?.startsWith('/live-demo-webinars/')) {
     const newTitle = title.split(': ')[1];
     if (newTitle) title = newTitle.trim();
   }

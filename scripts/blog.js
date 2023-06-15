@@ -1,4 +1,4 @@
-import { buildBlock, getMetadata } from './scripts.js';
+import { buildBlock, getMetadata, toClassName } from './scripts.js';
 import { toSlug } from './integrations-listing.js';
 
 // function toSlug(name) {
@@ -26,8 +26,8 @@ function buildImageBlocks(main) {
 }
 
 // Code for Blog Redesign test
-const blogRedesign = getMetadata('blog-redesign');
-console.log(blogRedesign, 'yep');
+const testVariation = getMetadata('test-variation').trim().toLowerCase().replace(/\s+/g, '-');
+console.log(testVariation, 'yep');
 
 function buildArticleHeader(main) {
   try {
@@ -40,7 +40,7 @@ function buildArticleHeader(main) {
     const picture = document.querySelector('h1 + p > picture');
     // Code for Blog Redesign test
     let breadcrumb;
-    if (category && blogRedesign === 'true') {
+    if (category && testVariation === 'blog-redesign') {
       const categoryItems = category.split(',');
       const categories = categoryItems.map(cat =>
         `<a href="/blog/category/${toSlug(cat.trim())}">${cat}</a>`).join('');
@@ -86,6 +86,10 @@ function buildAuthorContainer(main) {
 }
 
 export default async function decorateTemplate(main) {
+  // for blog redesign test, remove after test ends
+  const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
+  if (testVariation) document.body.classList.add(testVariation);
+
   const isBlog = buildArticleHeader(main);
   if (isBlog) {
     buildImageBlocks(main);

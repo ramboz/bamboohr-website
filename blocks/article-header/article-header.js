@@ -15,10 +15,10 @@ function createProgress() {
 }
 
 // Code for Blog Redesign test
-const blogRedesign = getMetadata('blog-redesign');
+const testVariation = getMetadata('test-variation').trim().toLowerCase().replace(/\s+/g, '-');
 // console.log(blogRedesign, 'yep');
 let breadcrumb;
-if (blogRedesign === 'true') {
+if (testVariation === 'blog-redesign') {
   breadcrumb = 'breadcrumb';
 }
 
