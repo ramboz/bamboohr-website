@@ -11,14 +11,29 @@ export default async function decorate(block) {
   fullname.remove();
   const title = dom.querySelector('p');
   if (title) title.remove();
-  const description = dom.querySelector('p');
-  if (description) description.remove();
+
+  const isTestVariation = document.body.classList.contains('blog-redesign');
 
   const picture = createOptimizedPicture(img.src, false, [{ width: '200' }]);
-  block.innerHTML = `<div class="author-image">${picture.outerHTML}</div>
-  <div class="author-description">
-    <p class="author-name">${fullname.textContent}</p>
-    ${description ? description.outerHTML : ''}
-    <a class="learn-more" href="${authorPath}">More from this author > </a>
-  </div>`;
+
+  if (isTestVariation) {
+    const description = dom.querySelector('p');
+    if (description) description.remove();
+
+    block.innerHTML = `
+    <div class="author-image">${picture.outerHTML}</div>
+      
+    <div class="author-description">
+      <p class="author-name">${fullname.textContent}</p>
+      ${description ? description.outerHTML : ''}
+      <a class="learn-more" href="${authorPath}">More from this author > </a>
+    </div>`;
+  } else {
+    block.innerHTML = `
+    <div class="author-image">${picture.outerHTML}</div>
+    <div class="author-description">
+      <a href="${authorPath}">${fullname.textContent}</a>
+      ${title ? title.outerHTML : ''}
+    </div>`;
+  }
 }
