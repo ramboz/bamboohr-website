@@ -181,6 +181,7 @@ export async function analyticsTrackPageViews(document, additionalXdmFields = {}
   // eslint-disable-next-line no-undef
   return alloy('sendEvent', {
 	renderDecisions: true,
+	decisionScopes: ['__view__'],
     xdm: {
       eventType: 'web.webpagedetails.pageViews',
       web: {
