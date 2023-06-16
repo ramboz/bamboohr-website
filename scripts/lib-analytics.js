@@ -143,6 +143,11 @@ export async function analyticsSetConsent(approved) {
 }
 
 export async function getBlogMetaFromInstrumentation() {
+  
+  if(window.location.href.indexOf("/blog/") < 0){
+	return {};
+  }
+  
   try {
     const resp = await fetch('/blog/instrumentation.json');
     const json = await resp.json();
@@ -456,6 +461,64 @@ export async function analyticsTrackCWV(cwv) {
       [CUSTOM_SCHEMA_NAMESPACE]: {
         cwv,
       }
+    },
+  });
+}
+
+/**
+ * Basic tracking for widget start with alloy
+ * @param widgetID [Block Name.Form Id]
+ * @returns {Promise<*>}
+ */
+export async function analyticsTrackWidgetStart(widgetID) {
+	// eslint-disable-next-line no-undef
+	return alloy('sendEvent', {
+		xdm: {
+			[CUSTOM_SCHEMA_NAMESPACE]: {
+				form: {
+					widgetID,
+					widgetStart: 1,
+				}
+			},
+		},
+	});
+}
+
+/**
+ * Basic tracking for widget submissions with alloy
+ * @param widgetID [Block Name.Form Id]
+ * @returns {Promise<*>}
+ */
+ export async function analyticsTrackWidgetSubmission(widgetID) {
+  // eslint-disable-next-line no-undef
+  return alloy('sendEvent', {
+    xdm: {
+      [CUSTOM_SCHEMA_NAMESPACE]: {
+        form: {
+          widgetID,
+          widgetComplete: 1
+        },
+      },
+    },
+  });
+}
+
+/**
+ * Basic tracking for widget last step with alloy
+ * @param widgetID [Block Name.Form Id]
+ * @param widgetLastStep (Integer last step)
+ * @returns {Promise<*>}
+ */
+ export async function analyticsTrackWidgetLastStep(widgetID, widgetLastStep) {
+  // eslint-disable-next-line no-undef
+  return alloy('sendEvent', {
+    xdm: {
+      [CUSTOM_SCHEMA_NAMESPACE]: {
+        form: {
+          widgetID,
+          widgetLastStep
+        },
+      },
     },
   });
 }
