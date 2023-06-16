@@ -143,6 +143,11 @@ export async function analyticsSetConsent(approved) {
 }
 
 export async function getBlogMetaFromInstrumentation() {
+  
+  if(window.location.href.indexOf("/blog/") < 0){
+	return {};
+  }
+  
   try {
     const resp = await fetch('/blog/instrumentation.json');
     const json = await resp.json();
