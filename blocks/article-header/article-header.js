@@ -15,15 +15,12 @@ function createProgress() {
 }
 
 // Code for Blog Redesign test
-const blogTestVariation = toClassName(getMetadata('test-variation'));
-let breadcrumb;
-if (blogTestVariation === 'blog-redesign') {
-  breadcrumb = 'breadcrumb';
-}
+const testVariation = toClassName(getMetadata('test-variation'));
+const breadcrumb = (testVariation === 'blog-redesign') ? 'breadcrumb' : '';
 // END
 
 export default async function decorateArticleHeader($block, blockName) {
-  applyClasses(['image', 'eyebrow', breadcrumb || '', 'title', 'author-pub'], $block.children, blockName);
+  applyClasses(['image', 'eyebrow', breadcrumb, 'title', 'author-pub'], $block.children, blockName);
   applyClasses(['category', 'read-time'], $block.querySelector('.article-header-eyebrow').firstChild.children, blockName);
   applyClasses(['author', 'publication-date', 'updated-date'], $block.querySelector('.article-header-author-pub').firstChild.children, blockName);
 
