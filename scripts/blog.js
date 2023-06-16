@@ -1,6 +1,10 @@
 import { buildBlock, getMetadata, toClassName } from './scripts.js';
 import { toSlug } from './integrations-listing.js';
 
+// Code for Blog Redesign test
+const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
+// END
+
 function buildImageBlocks(main) {
   let floatCounter = 0;
   main.querySelectorAll(':scope > div > p > picture, :scope > div > p > a > picture').forEach((picture) => {
@@ -18,8 +22,6 @@ function buildImageBlocks(main) {
     }
   });
 }
-
-const testVariation = getMetadata('test-variation').trim().toLowerCase().replace(/\s+/g, '-'); // Code for Blog Redesign test
 
 function buildArticleHeader(main) {
   try {
@@ -81,7 +83,6 @@ function buildAuthorContainer(main) {
 
 export default async function decorateTemplate(main) {
   // for blog redesign test, remove after test ends
-  const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
   if (testVariation) document.body.classList.add(testVariation);
 
   const isBlog = buildArticleHeader(main);

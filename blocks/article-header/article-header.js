@@ -15,9 +15,9 @@ function createProgress() {
 }
 
 // Code for Blog Redesign test
-const testVariation = getMetadata('test-variation').trim().toLowerCase().replace(/\s+/g, '-');
+const blogTestVariation = toClassName(getMetadata('test-variation'));
 let breadcrumb;
-if (testVariation === 'blog-redesign') {
+if (blogTestVariation === 'blog-redesign') {
   breadcrumb = 'breadcrumb';
 }
 // END
