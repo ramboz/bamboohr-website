@@ -1,12 +1,6 @@
 import { buildBlock, getMetadata, toClassName } from './scripts.js';
 import { toSlug } from './integrations-listing.js';
 
-// function toSlug(name) {
-//   return name && typeof name === 'string'
-//     ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
-//     : '';
-// }
-
 function buildImageBlocks(main) {
   let floatCounter = 0;
   main.querySelectorAll(':scope > div > p > picture, :scope > div > p > a > picture').forEach((picture) => {
