@@ -25,9 +25,7 @@ function buildImageBlocks(main) {
   });
 }
 
-// Code for Blog Redesign test
-const testVariation = getMetadata('test-variation').trim().toLowerCase().replace(/\s+/g, '-');
-console.log(testVariation, 'yep');
+const testVariation = getMetadata('test-variation').trim().toLowerCase().replace(/\s+/g, '-'); // Code for Blog Redesign test
 
 function buildArticleHeader(main) {
   try {
@@ -47,10 +45,12 @@ function buildArticleHeader(main) {
       const categoryEl = `<li>${categories}</li>`;
       breadcrumb =
         `<ul>
+          <li><a href="/">Home</a></li>
           <li><a href="/blog/">Blog</a></li>
           ${categoryEl}
         </ul>`;
     }
+    // END
 
     if (author && publicationDate) {
       document.body.classList.add('blog-post');
@@ -58,7 +58,7 @@ function buildArticleHeader(main) {
       section.append(buildBlock('article-header', [
         [picture],
         [`<p>${category}</p><p>${readtime}</p>`],
-        [breadcrumb || ''],
+        [breadcrumb || ''], // Code for Blog Redesign test
         [h1],
         [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],
       ]));

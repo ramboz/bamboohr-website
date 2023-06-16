@@ -16,11 +16,11 @@ function createProgress() {
 
 // Code for Blog Redesign test
 const testVariation = getMetadata('test-variation').trim().toLowerCase().replace(/\s+/g, '-');
-// console.log(blogRedesign, 'yep');
 let breadcrumb;
 if (testVariation === 'blog-redesign') {
   breadcrumb = 'breadcrumb';
 }
+// END
 
 export default async function decorateArticleHeader($block, blockName) {
   applyClasses(['image', 'eyebrow', breadcrumb || '', 'title', 'author-pub'], $block.children, blockName);
