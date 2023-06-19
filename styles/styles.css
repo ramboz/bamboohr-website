@@ -87,6 +87,9 @@ main {
   overflow: hidden;
   margin: 0;
   color: var(--color-gray-12);
+  font-size: 18px;
+  line-height: 27px;
+  font-weight: var(--body-font-weight);
 }
 
 /* buttons */
@@ -267,18 +270,10 @@ a.button > svg > use {
 
 /* headings and body */
 
-main,
-main ul li,
-main ol li {
-  font-size: 18px;
-  line-height: 27px;
-  font-weight: var(--body-font-weight);
-}
 
 p,
 dl,
 ol,
-ul,
 pre,
 blockquote {
   margin-top: 1em;
@@ -289,49 +284,45 @@ main .default-content-wrapper ol {
   padding-inline-start: 20px;
 }
 
-main ul,
 main ol {
   list-style-position: inside;
 }
 
-main .default-content-wrapper ul li,
 main .default-content-wrapper ol li {
   margin-bottom: 16px;
   color: var(--color-gray-12);
+  margin-left: 30px;
 }
 
-main .default-content-wrapper ol li {
-  margin-left: 30px;
+/* lists indent - padding includes bullet = 22px(padding) - 11px(bullet) */
+main ul {
+  padding-left: 22px;
+  list-style-position: outside;
+}
+
+/* space between bullet and text */
+main ul li {
+  padding-left: 11px;
 }
 
 main .default-content-wrapper ul,
 main .tabs ul,
 main .columns ul {
-  padding-inline-start: 40px;
   list-style-type: none;
 }
 
-main .default-content-wrapper ul li,
-main .tabs ul li,
-main .columns ul li,
-main .form ul li {
-  position: relative;
-  margin-bottom: 16px;
-  list-style-image: var(--theme-bullet-level1);
-  padding-inline-start: 10px;
+main .default-content-wrapper ul li::marker,
+main .tabs ul li::marker,
+main .columns ul li::marker,
+main .form ul li::marker {
+  content: "●"; 
 }
 
-main .default-content-wrapper ul li ul li,
-main .tabs ul li ul li,
-main .columns ul li ul li,
-main .form ul li ul li {
-  list-style-image: var(--theme-bullet-level2);
-}
-
-main .default-content-wrapper ul li ul li ul li,
-main .tabs ul li ul li ul li,
-main .columns ul li ul li ul li {
-  list-style-image: var(--theme-bullet-level3);
+main .default-content-wrapper ul li ul li::marker,
+main .tabs ul li ul li::marker,
+main .columns ul li ul li::marker,
+main .form ul li ul li::marker {
+  content: "○";
 }
 
 main p:not(:last-of-type) {
@@ -1829,4 +1820,42 @@ main .section[data-section-status='initialized'] {
 
 .hide-element {
   display: none;
+}
+
+/* blog redesign layout */
+.blog-redesign.blog-post main .section > div:not(.author-wrapper) {
+  max-width: unset;
+}
+
+.blog-redesign main .section.article-header-container {
+  margin-top: 46px;
+}
+
+.blog-redesign main .section:first-child {
+  max-width: var(--width-md);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (min-width: 900px) {
+  .blog-redesign main .section.toc-container {
+    display: grid;
+    grid-template-columns: 62.5% 37.5%;
+    grid-gap: 40px;
+  }
+  
+  .blog-redesign main .toc-container > div {
+    grid-column: 1;
+  }
+  
+  .blog-redesign main .toc-container .toc-wrapper {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .blog-redesign main .section:first-child {
+    max-width: var(--width-lg);
+  }
 }

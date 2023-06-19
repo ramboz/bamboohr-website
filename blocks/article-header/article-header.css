@@ -140,6 +140,33 @@ main .article-header-share .icon svg {
   object-fit: contain;
 }
 
+.blog-redesign .article-header-breadcrumb ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.blog-redesign .article-header-breadcrumb ul li {
+  padding: 0;
+  margin-right: 10px;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+}
+
+.blog-redesign .article-header-breadcrumb ul li a {
+  color: var(--color-gray-13);
+}
+
+.blog-redesign .article-header-breadcrumb ul li::after {
+  content: '>';
+  position: relative;
+  left: 5px;
+}
+
+
 @media (min-width: 900px) {
   main .article-header-eyebrow {
     font-size: 18px;
@@ -200,4 +227,35 @@ main .article-header-share .icon svg {
 
 .article-header progress::-webkit-progress-value {
   background-color: var(--color-1);
+}
+
+.blog-redesign main .article-header-container {
+  padding: 0 30px;
+}
+
+@media (min-width: 900px) {
+  .blog-redesign main .article-header-container {
+    padding: 0 54px;
+  }
+}
+
+.blog-redesign main .article-header .article-header-image {
+  height: auto;
+  background: none;
+}
+
+.blog-redesign main .article-header picture {
+  position: relative;
+}
+
+.blog-redesign main .article-header picture img {
+  border-radius: 15px;
+}
+
+.blog-redesign main .article-header .article-header-author-pub {
+  margin: 13px 0 25px;
+}
+
+.blog-redesign main .article-header .article-header-author-pub::after {
+  content: none;
 }
