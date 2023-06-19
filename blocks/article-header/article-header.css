@@ -224,3 +224,11 @@ main .article-header-share .icon svg {
 .blog-redesign main .article-header picture img {
   border-radius: 15px;
 }
+
+.blog-redesign main .article-header .article-header-author-pub {
+  margin: 13px 0 25px;
+}
+
+.blog-redesign main .article-header .article-header-author-pub::after {
+  content: none;
+}

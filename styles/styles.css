@@ -1823,8 +1823,12 @@ main .section[data-section-status='initialized'] {
 }
 
 /* blog redesign layout */
-.blog-redesign.blog-post main .section > div {
+.blog-redesign.blog-post main .section > div:not(.author-wrapper) {
   max-width: unset;
+}
+
+.blog-redesign main .section.article-header-container {
+  margin-top: 46px;
 }
 
 @media screen and (min-width: 900px) {
@@ -1833,7 +1837,8 @@ main .section[data-section-status='initialized'] {
     grid-template-columns: 62.5% 37.5%;
     grid-gap: 40px;
     max-width: var(--width-md);
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .blog-redesign main .toc-container > div {
