@@ -33,32 +33,44 @@ function buildArticleHeader(main) {
     const h1 = document.querySelector('h1');
     const picture = document.querySelector('h1 + p > picture');
     // Code for Blog Redesign test
-    let breadcrumb;
-    if (category && testVariation === 'blog-redesign') {
-      const categoryItems = category.split(',');
-      const categories = categoryItems.map(cat =>
-        `<a href="/blog/category/${toSlug(cat.trim())}">${cat}</a>`).join('');
-      const categoryEl = `<li>${categories}</li>`;
-      breadcrumb =
-        `<ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/blog/">Blog</a></li>
-          ${categoryEl}
-        </ul>`;
-    }
+    const categoryItems = category.split(',');
+    const categories = categoryItems.map(cat =>
+      `<a href="/blog/category/${toSlug(cat.trim())}">${cat}</a>`).join('');
+    const categoryEl = `<li>${categories}</li>`;
+    const breadcrumb =
+      `<ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        ${categoryEl}
+      </ul>`;
     // END
 
     if (author && publicationDate) {
       document.body.classList.add('blog-post');
       const section = document.createElement('div');
-      section.append(buildBlock('article-header', [
-        [picture],
-        [`<p>${category}</p><p>${readtime}</p>`],
-        [breadcrumb || ''], // Code for Blog Redesign test
-        [h1],
-        [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],
-      ]));
-      main.prepend(section);
+
+      // const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
+      if (testVariation === 'blog-redesign') {
+        const articleHeaderBlock = buildBlock('article-header', [
+          [breadcrumb],
+
+          [h1],
+          [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],
+          [picture],
+        ])
+        main.querySelector('main>div').prepend(articleHeaderBlock);
+
+      } else {
+        section.append(buildBlock('article-header', [
+          [picture],
+          [`<p>${category}</p><p>${readtime}</p>`],
+          [h1],
+          [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],
+        ]));
+        main.prepend(section);
+      }
+      
+      
       return (true);
     }
   } catch (e) {
@@ -89,8 +101,13 @@ export default async function decorateTemplate(main) {
   if (isBlog) {
     buildImageBlocks(main);
     const related = main.querySelector('.related-posts');
-    if (related) related.parentElement.insertBefore(buildBlock('author', [['']]), related);
+    if (related && !testVariation) related.parentElement.insertBefore(buildBlock('author', [['']]), related);
+    const authorBlock = buildBlock('author', [['']]);
+    const authorSection = document.createElement('div');
+    authorSection.append(authorBlock);
+
     if (!related.nextElementSibling && !related.parentElement.nextElementSibling) {
+      if (testVariation === 'blog-redesign') main.append(authorSection);
       const section = document.createElement('div');
       section.append(related);
       main.append(section);
