@@ -1,6 +1,10 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
-import { analyticsTrackFormStart, analyticsTrackFormSubmission } from '../../scripts/lib-analytics.js';
+import {
+  analyticsTrackChiliPiper,
+  analyticsTrackFormStart,
+  analyticsTrackFormSubmission
+} from '../../scripts/lib-analytics.js';
 import { addWistia } from '../columns/columns.js';
 
 const loadScript = (url, callback, type) => {
@@ -656,6 +660,16 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         addFormHeadingText();
         addExpansionProduct();
 
+        const demoCheckbox = formEl.querySelector('input[name="Demo_Request_Checkbox__c"]');
+        if (chilipiper && chilipiper === 'content-download-form') {
+          form.onSubmit(() => {
+            if (demoCheckbox && demoCheckbox.checked) {
+              // eslint-disable-next-line
+              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: window.location.origin + successUrl });
+            }
+          });
+        }
+        
         form.onSuccess(() => {
           /* GA events tracking */
           window.dataLayer = window.dataLayer || [];
@@ -671,6 +685,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
             if (successUrl && !chilipiper) window.location.href = successUrl;
+            if (successUrl && chilipiper && chilipiper === 'content-download-form' && !demoCheckbox.checked) window.location.href = successUrl;
           },1000);
 
           return false;
@@ -679,19 +694,54 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
     });
   });
   if (chilipiper) {
-    const timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper/pricing-timeout-success' : '/live-demo-timeout-success';
     loadScript('https://js.chilipiper.com/marketing.js', () => {
+      let timeoutSuccessUrl = '';
       function redirectTimeout() {
-        return setTimeout(() => { window.location.href = timeoutSuccessUrl; }, '240000');
+        return setTimeout(() => {
+		  setTimeout(() =>{
+			analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
+		  },1000);		  
+		  window.location.href = timeoutSuccessUrl; 
+		}, '240000');
       }
       //  eslint-disable-next-line
       window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});
-      // eslint-disable-next-line
-      ChiliPiper.scheduling('bamboohr', `${chilipiper}`, {
-        title: 'Thanks! What time works best for a quick call?',
-        onRouted: redirectTimeout,
-        map: true,
-      });
+      
+      if (chilipiper !== 'content-download-form') {
+        timeoutSuccessUrl = chilipiper === 'pricing-request-form' ? '/chilipiper/pricing-timeout-success' : '/chilipiper/live-demo-timeout-success';
+
+        // eslint-disable-next-line
+        ChiliPiper.scheduling('bamboohr', `${chilipiper}`, {
+          title: 'Thanks! What time works best for a quick call?',
+          onRouted: redirectTimeout,
+          map: true,
+        });
+      }
+
+      window.addEventListener('message', (event)=>{
+        if (event.origin !== 'https://bamboohr.chilipiper.com') return;
+        const eventData = event.data;
+        const {action} = eventData;
+        const trackedActions = ["booked", "phone-selected", "close"];
+		if (trackedActions.includes(action)) {
+		  let cpEvent = {};
+		  // eslint-disable-next-line default-case
+		  switch (action) {
+			case "booked":	
+			  cpEvent = {"cpBookedEvent": 1};
+			  break;
+			case "phone-selected":
+			  cpEvent = {"cpCalledEvent": 1};
+			  break;
+			case "close":
+			  cpEvent = {"cpClosedEvent": 1};
+			  break;			  
+		  }
+		  analyticsTrackChiliPiper(cpEvent);
+		}
+		
+      }, false);
+
     });
   }
 }

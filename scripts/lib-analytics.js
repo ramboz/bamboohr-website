@@ -522,3 +522,17 @@ export async function analyticsTrackWidgetStart(widgetID) {
     },
   });
 }
+
+export async function analyticsTrackChiliPiper(cpEvent = {}) {
+  // eslint-disable-next-line no-undef
+  return alloy('sendEvent', {
+	documentUnloading: true,
+	xdm: {
+	  [CUSTOM_SCHEMA_NAMESPACE]: {
+		form: {
+		  ...cpEvent
+		}
+	  },
+	},
+  });
+}
