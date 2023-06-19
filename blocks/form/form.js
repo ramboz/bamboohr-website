@@ -703,7 +703,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         return setTimeout(() => {
 		  analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
 		  window.location.href = timeoutSuccessUrl; 
-		}, '11000');
+		}, '240000');
       }
       //  eslint-disable-next-line
       window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});
@@ -737,8 +737,6 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 			  cpEvent = {"cpClosedEvent": 1};
 			  break;			  
 		  }
-		  console.log(action);
-		  console.log(cpEvent);
 		  analyticsTrackChiliPiper(cpEvent);
 		}
 		
