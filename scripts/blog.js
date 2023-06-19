@@ -32,28 +32,25 @@ function buildArticleHeader(main) {
     const category = getMetadata('category');
     const h1 = document.querySelector('h1');
     const picture = document.querySelector('h1 + p > picture');
-    // Code for Blog Redesign test
-    const categoryItems = category.split(',');
-    const categories = categoryItems.map(cat =>
-      `<a href="/blog/category/${toSlug(cat.trim())}">${cat}</a>`).join('');
-    const categoryEl = `<li>${categories}</li>`;
-    const breadcrumb =
-      `<ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/blog/">Blog</a></li>
-        ${categoryEl}
-      </ul>`;
-    // END
 
     if (author && publicationDate) {
       document.body.classList.add('blog-post');
       const section = document.createElement('div');
 
-      // const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
       if (testVariation === 'blog-redesign') {
+        const categoryItems = category.split(',');
+        const categories = categoryItems.map(cat =>
+          `<a href="/blog/category/${toSlug(cat.trim())}">${cat}</a>`).join('');
+        const categoryEl = `<li>${categories}</li>`;
+        const breadcrumb =
+          `<ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            ${categoryEl}
+          </ul>`;
+  
         const articleHeaderBlock = buildBlock('article-header', [
           [breadcrumb],
-
           [h1],
           [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],
           [picture],
@@ -69,8 +66,6 @@ function buildArticleHeader(main) {
         ]));
         main.prepend(section);
       }
-      
-      
       return (true);
     }
   } catch (e) {

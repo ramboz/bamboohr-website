@@ -14,14 +14,8 @@ function createProgress() {
   return progress;
 }
 
-// Code for Blog Redesign test
-const testVariation = toClassName(getMetadata('test-variation'));
-// const breadcrumb = (testVariation === 'blog-redesign') ? 'breadcrumb' : '';
-// END
-
 export default async function decorateArticleHeader($block, blockName) {
-  
-  // const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
+  const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
   if (testVariation) {
     applyClasses(['breadcrumb', 'title', 'author-pub', 'image'], $block.children, blockName);
   } else {
