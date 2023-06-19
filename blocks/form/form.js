@@ -734,7 +734,6 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 			  cpEvent = {"cpCalledEvent": 1};
 			  break;
 			case "close":
-			  alert('close');
 			  cpEvent = {"cpClosedEvent": 1};
 			  break;			  
 		  }
