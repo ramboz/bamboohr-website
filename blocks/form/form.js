@@ -737,6 +737,8 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 			  cpEvent = {"cpClosedEvent": 1};
 			  break;			  
 		  }
+		  console.log(action);
+		  console.log(cpEvent);
 		  analyticsTrackChiliPiper(cpEvent);
 		}
 		
