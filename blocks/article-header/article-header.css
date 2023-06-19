@@ -140,6 +140,52 @@ main .article-header-share .icon svg {
   object-fit: contain;
 }
 
+.article-header progress {
+  position: fixed;
+  left: 0;
+  top: 70px;
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  color: var(--color-1);
+  z-index: 1;
+}
+
+.article-header progress::-webkit-progress-bar {
+  background-color: transparent;
+}
+
+.article-header progress::-webkit-progress-value {
+  background-color: var(--color-1);
+}
+
+.blog-redesign main .article-header-container {
+  padding: 0 30px;
+}
+
+.blog-redesign main .article-header .article-header-image {
+  height: auto;
+  background: none;
+}
+
+.blog-redesign main .article-header picture {
+  position: relative;
+}
+
+.blog-redesign main .article-header picture img {
+  border-radius: 15px;
+}
+
+.blog-redesign main .article-header .article-header-author-pub {
+  margin: 13px 0 25px;
+}
+
+.blog-redesign main .article-header .article-header-author-pub::after {
+  content: none;
+}
+
 .blog-redesign .article-header-breadcrumb ul {
   list-style: none;
   padding: 0;
@@ -147,6 +193,7 @@ main .article-header-share .icon svg {
 }
 
 .blog-redesign .article-header-breadcrumb ul li {
+  display: none;
   padding: 0;
   margin-right: 10px;
   text-transform: uppercase;
@@ -154,6 +201,10 @@ main .article-header-share .icon svg {
   line-height: 15px;
   font-weight: 500;
   letter-spacing: 1.5px;
+}
+
+.blog-redesign .article-header-breadcrumb ul li:last-child {
+  display: block;
 }
 
 .blog-redesign .article-header-breadcrumb ul li a {
@@ -165,7 +216,6 @@ main .article-header-share .icon svg {
   position: relative;
   left: 5px;
 }
-
 
 @media (min-width: 900px) {
   main .article-header-eyebrow {
@@ -206,56 +256,12 @@ main .article-header-share .icon svg {
   main .article-header-share a:hover {
     background-color: var(--color-gray-1);
   } 
-}
 
-.article-header progress {
-  position: fixed;
-  left: 0;
-  top: 70px;
-  width: 100%;
-  height: 4px;
-  appearance: none;
-  border: none;
-  background-color: transparent;
-  color: var(--color-1);
-  z-index: 1;
-}
-
-.article-header progress::-webkit-progress-bar {
-  background-color: transparent;
-}
-
-.article-header progress::-webkit-progress-value {
-  background-color: var(--color-1);
-}
-
-.blog-redesign main .article-header-container {
-  padding: 0 30px;
-}
-
-@media (min-width: 900px) {
   .blog-redesign main .article-header-container {
     padding: 0 54px;
   }
-}
 
-.blog-redesign main .article-header .article-header-image {
-  height: auto;
-  background: none;
-}
-
-.blog-redesign main .article-header picture {
-  position: relative;
-}
-
-.blog-redesign main .article-header picture img {
-  border-radius: 15px;
-}
-
-.blog-redesign main .article-header .article-header-author-pub {
-  margin: 13px 0 25px;
-}
-
-.blog-redesign main .article-header .article-header-author-pub::after {
-  content: none;
+  .blog-redesign .article-header-breadcrumb ul li {
+    display: block;
+  }
 }
