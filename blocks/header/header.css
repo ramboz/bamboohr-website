@@ -541,6 +541,10 @@ header .nav-limited .nav-buttons .button.small {
   border: solid 2px var(--color-1);
 }
 
+header .nav-limited .nav-buttons .nav-login-btn {
+  display: none;
+}
+
 /* desktop nav styles */
 @media (min-width: 1025px) {
   header .nav {
@@ -774,6 +778,10 @@ header .nav-limited .nav-buttons .button.small {
   header .nav-section.nav-section-subscribe .nav-section-wrapper {
     padding: 42px;
     width: 500px;
+  }
+
+  header .nav-limited .nav-buttons .nav-login-btn {
+    display: block;
   }
 }
 

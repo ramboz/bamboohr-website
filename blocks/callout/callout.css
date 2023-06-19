@@ -118,5 +118,125 @@ main .callout p {
   main .callout.right {
     width: 400px;
   }
-  
+}
+
+/* Blog Redesign */
+main .callout.blog-redesign {
+  margin: 35px 0;
+  padding: 32px;
+  border: 1px solid #DFDEDC;
+  border-bottom: 7px solid;
+  box-shadow: none;
+  background-image: unset;
+  background-size: unset;
+}
+
+main .section > div.width-small {
+  max-width: 560px;
+}
+
+main .section > div.width-medium {
+  max-width: 700px;
+}
+
+.callout-card {
+  display: flex;
+  align-items: center;
+  column-gap: 40px;
+  position: relative;
+}
+
+main .callout .callout-card .callout-text.callout-has-image {
+  width: 50%;
+}
+
+main .callout .callout-card .callout-image {
+  width: 50%;
+}
+
+main .callout .callout-card .callout-image::after,
+main .callout .callout-card .callout-text-only::after {
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  content: '';
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-mask: url('/icons/bamboo-hr-logo.svg') no-repeat 50% 50%;
+  mask: url('/icons/bamboo-hr-logo.svg') no-repeat 50% 50%;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: var(--theme-base);
+  height: 16px;
+  width: 104px;
+}
+
+main .callout .callout-card .callout-text h3 {
+  font-family: var(--heading-font-family);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  margin-bottom: 20px;
+  color: var(--color-gray-12);
+  font-style: normal;
+  margin-top: 0;
+}
+
+main .callout .callout-card .callout-text h4 {
+  font-family: var(--body-font-family);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-gray-9);
+  font-style: normal;
+  margin-top: 0;
+}
+
+main .callout .callout-card .callout-text p {
+  color: var(--color-gray-12);
+}
+
+main .section .callout .callout-card p.button-container {
+  margin-top: 38px;
+}
+
+main .callout .callout-card a.button {
+  margin: 0;
+}
+
+@media (max-width: 699px) {
+  .callout-card {
+    flex-flow: column;
+  }
+
+  .callout-image {
+    order: 1;
+    margin-bottom: 30px;
+  }
+
+  main .callout .callout-card .callout-image {
+    width: 100%;
+  }
+
+  .callout-text {
+    order: 2;
+  }
+
+  main .callout .callout-card .callout-text.callout-has-image {
+    width: 100%;
+  }
+
+  main .callout .callout-card .callout-image::after,
+  main .callout .callout-card .callout-text-only::after {
+    bottom: -20px;
+  }
+}
+
+@media (min-width: 700px) {
+  main .callout .callout-card {
+    text-align: left;
+  }
 }
