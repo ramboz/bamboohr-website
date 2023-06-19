@@ -1,4 +1,4 @@
-import { formatDate, toCategory, toClassName } from '../../scripts/scripts.js';
+import { formatDate, toCategory, toClassName, getMetadata } from '../../scripts/scripts.js';
 import { createSharing } from '../page-header/page-header.js';
 
 function applyClasses(styles, elements, prefix) {
@@ -15,7 +15,13 @@ function createProgress() {
 }
 
 export default async function decorateArticleHeader($block, blockName) {
-  applyClasses(['image', 'eyebrow', 'title', 'author-pub'], $block.children, blockName);
+  
+  const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
+  if (testVariation) {
+    applyClasses(['eyebrow', 'title', 'author-pub', 'image'], $block.children, blockName);
+  } else {
+    applyClasses(['image', 'eyebrow', 'title', 'author-pub'], $block.children, blockName);
+  }
   applyClasses(['category', 'read-time'], $block.querySelector('.article-header-eyebrow').firstChild.children, blockName);
   applyClasses(['author', 'publication-date', 'updated-date'], $block.querySelector('.article-header-author-pub').firstChild.children, blockName);
 
