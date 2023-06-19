@@ -149,3 +149,9 @@ main .related-posts-card-body a:any-link::after {
     padding: 150px 0;
   }
 }
+
+.blog-redesign main .section > .related-posts-wrapper {
+  background-color: unset;
+  background-image: none;
+  margin-top: 0;
+}

@@ -1,6 +1,6 @@
 import { buildBlock, getMetadata, toClassName } from './scripts.js';
 
-function toSlug(name) {
+export function toSlug(name) {
   return name && typeof name === 'string'
     ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
     : '';

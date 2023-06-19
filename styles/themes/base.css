@@ -950,3 +950,7 @@
 #base .bg-solid {
   background-color: var(--theme-base);
 }
+
+#base .onboarding-calculator {
+  background-color: var(--secondary-theme-tint15);
+}
