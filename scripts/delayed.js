@@ -23,50 +23,11 @@ import {
 
 sampleRUM('cwv');
 
-function initESW(gslbBaseURL) {
-  // eslint-disable-next-line
-  embedded_svc.settings.displayHelpButton = true; //Or false
-  // eslint-disable-next-line
-  embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
-  // embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
-  // embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
-  // embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
-  // embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
-  // Settings for Chat
-  // embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
-    // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
-    // Returns a valid button ID.
-  // };
-  // embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
-  // embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
-  // embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
-  // eslint-disable-next-line
-  embedded_svc.settings.enabledFeatures = ['LiveAgent'];
-  // eslint-disable-next-line
-  embedded_svc.settings.entryFeature = 'LiveAgent';
-  if (gslbBaseURL) {
-    // eslint-disable-next-line
-    embedded_svc.init(
-      'https://bamboohr.my.salesforce.com',
-      'https://bamboohr.my.site.com/surveys',
-      gslbBaseURL,
-      '00D50000000JMqp',
-      'BambooHR_Chat',
-      {
-        baseLiveAgentContentURL: 'https://c.la3-c1-ia5.salesforceliveagent.com/content',
-        deploymentId: '5724z000000Gn92',
-        buttonId: '5734z00000000gZ',
-        baseLiveAgentURL: 'https://d.la3-c1-ia5.salesforceliveagent.com/chat',
-        eswLiveAgentDevName: 'BambooHR_Chat',
-        isOfflineSupportEnabled: false
-      }
-    );
-  }
-}
-
 function initEmbeddedMessaging() {
   try {
+    // eslint-disable-next-line
     embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+    // eslint-disable-next-line
     embeddedservice_bootstrap.init(
       '00D7h0000004j7W',
       'BambooHR_Sales_Chat',
@@ -76,6 +37,7 @@ function initEmbeddedMessaging() {
       }
     );
   } catch (err) {
+    // eslint-disable-next-line
     console.error('Error loading Embedded Messaging: ', err);
   }
 };
@@ -103,20 +65,6 @@ function loadScript(location, url, callback, type, defer) {
   }
   $script.onload = callback;
   return $script;
-}
-
-function loadStyle(location, css) {
-  const $head = document.querySelector('head');
-  const $body = document.querySelector('body');
-  const $style = document.createElement('style');
-  $style.setAttribute('type', 'text/css');
-  $style.appendChild(document.createTextNode(css));
-  if (location === 'header') {
-    $head.append($style);
-  } else if (location === 'footer') {
-    $body.append($style);
-  }
-  return $style;
 }
 
 function loadSalesforceChatScript() {
