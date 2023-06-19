@@ -44,23 +44,41 @@ function initESW(gslbBaseURL) {
   embedded_svc.settings.enabledFeatures = ['LiveAgent'];
   // eslint-disable-next-line
   embedded_svc.settings.entryFeature = 'LiveAgent';
-  // eslint-disable-next-line
-  embedded_svc.init(
-    'https://bamboohr.my.salesforce.com',
-    'https://bamboohr.my.site.com/surveys',
-    gslbBaseURL,
-    '00D50000000JMqp',
-    'BambooHR_Chat',
-    {
-      baseLiveAgentContentURL: 'https://c.la3-c1-ia5.salesforceliveagent.com/content',
-      deploymentId: '5724z000000Gn92',
-      buttonId: '5734z00000000gZ',
-      baseLiveAgentURL: 'https://d.la3-c1-ia5.salesforceliveagent.com/chat',
-      eswLiveAgentDevName: 'BambooHR_Chat',
-      isOfflineSupportEnabled: false
-    }
-  );
+  if (gslbBaseURL) {
+    // eslint-disable-next-line
+    embedded_svc.init(
+      'https://bamboohr.my.salesforce.com',
+      'https://bamboohr.my.site.com/surveys',
+      gslbBaseURL,
+      '00D50000000JMqp',
+      'BambooHR_Chat',
+      {
+        baseLiveAgentContentURL: 'https://c.la3-c1-ia5.salesforceliveagent.com/content',
+        deploymentId: '5724z000000Gn92',
+        buttonId: '5734z00000000gZ',
+        baseLiveAgentURL: 'https://d.la3-c1-ia5.salesforceliveagent.com/chat',
+        eswLiveAgentDevName: 'BambooHR_Chat',
+        isOfflineSupportEnabled: false
+      }
+    );
+  }
 }
+
+function initEmbeddedMessaging() {
+  try {
+    embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+    embeddedservice_bootstrap.init(
+      '00D7h0000004j7W',
+      'BambooHR_Sales_Chat',
+      'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468',
+      {
+        scrt2URL: 'https://bamboohr--webchat.sandbox.my.salesforce-scrt.com'
+      }
+    );
+  } catch (err) {
+    console.error('Error loading Embedded Messaging: ', err);
+  }
+};
 
 /**
  * loads a script by adding a script tag to the head.
@@ -109,23 +127,8 @@ function loadSalesforceChatScript() {
   const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
   if (!isOnChatTestPath) return;
 
-  // load style
-  loadStyle('footer', `.embeddedServiceHelpButton .helpButton .uiButton {
-    background-color: #444444;
-    font-family: "Salesforce Sans", sans-serif;
-  }
-  .embeddedServiceHelpButton .helpButton .uiButton:focus {
-    outline: 1px solid #444444;
-  }
-  @font-face {
-    font-family: 'Salesforce Sans';
-    src: url('https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.woff') format('woff'),
-    url('https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.ttf') format('truetype');
-  }`);
-  loadScript('footer', 'https://service.force.com/embeddedservice/5.0/esw.min.js', null, 'text/javascript');
-  loadScript('footer', 'https://bamboohr.my.salesforce.com/embeddedservice/5.0/esw.min.js', async () => {
-    if (!window.embedded_svc) initESW(null);
-    else initESW('https://service.force.com');
+  loadScript('footer', 'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468/assets/js/bootstrap.min.js', async () => {
+    initEmbeddedMessaging();
   }, 'text/javascript');
 }
 
