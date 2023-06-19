@@ -1,6 +1,10 @@
 import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
-import { analyticsTrackFormStart, analyticsTrackFormSubmission } from '../../scripts/lib-analytics.js';
+import {
+  analyticsTrackChiliPiper,
+  analyticsTrackFormStart,
+  analyticsTrackFormSubmission
+} from '../../scripts/lib-analytics.js';
 import { addWistia } from '../columns/columns.js';
 
 const loadScript = (url, callback, type) => {
@@ -693,7 +697,12 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
     loadScript('https://js.chilipiper.com/marketing.js', () => {
       let timeoutSuccessUrl = '';
       function redirectTimeout() {
-        return setTimeout(() => { window.location.href = timeoutSuccessUrl; }, '240000');
+        return setTimeout(() => {
+		  setTimeout(() =>{
+			analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
+		  },1000);		  
+		  window.location.href = timeoutSuccessUrl; 
+		}, '240000');
       }
       //  eslint-disable-next-line
       window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});
@@ -713,8 +722,23 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         if (event.origin !== 'https://bamboohr.chilipiper.com') return;
         const eventData = event.data;
         const {action} = eventData;
-        console.log(eventData);
-        console.log(action);
+        const trackedActions = ["booked", "phone-selected", "close"];
+		if (trackedActions.includes(action)) {
+		  let cpEvent = {};		  
+		  switch (action) {
+			case "booked":	
+			  cpEvent = {"cpBookedEvent": 1};
+			  break;
+			case "phone-selected":
+			  cpEvent = {"cpCalledEvent": 1};
+			  break;
+			case "close":
+			  cpEvent = {"cpClosedEvent": 1};
+			  break;			  
+		  }
+		  analyticsTrackChiliPiper(cpEvent);
+		}
+		
       }, false);
 
     });
