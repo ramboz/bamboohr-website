@@ -1821,3 +1821,41 @@ main .section[data-section-status='initialized'] {
 .hide-element {
   display: none;
 }
+
+/* blog redesign layout */
+.blog-redesign.blog-post main .section > div:not(.author-wrapper) {
+  max-width: unset;
+}
+
+.blog-redesign main .section.article-header-container {
+  margin-top: 46px;
+}
+
+.blog-redesign main .section:first-child {
+  max-width: var(--width-md);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (min-width: 900px) {
+  .blog-redesign main .section.toc-container {
+    display: grid;
+    grid-template-columns: 62.5% 37.5%;
+    grid-gap: 40px;
+  }
+  
+  .blog-redesign main .toc-container > div {
+    grid-column: 1;
+  }
+  
+  .blog-redesign main .toc-container .toc-wrapper {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .blog-redesign main .section:first-child {
+    max-width: var(--width-lg);
+  }
+}

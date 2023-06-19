@@ -201,3 +201,34 @@ main .article-header-share .icon svg {
 .article-header progress::-webkit-progress-value {
   background-color: var(--color-1);
 }
+
+.blog-redesign main .article-header-container {
+  padding: 0 30px;
+}
+
+@media (min-width: 900px) {
+  .blog-redesign main .article-header-container {
+    padding: 0 54px;
+  }
+}
+
+.blog-redesign main .article-header .article-header-image {
+  height: auto;
+  background: none;
+}
+
+.blog-redesign main .article-header picture {
+  position: relative;
+}
+
+.blog-redesign main .article-header picture img {
+  border-radius: 15px;
+}
+
+.blog-redesign main .article-header .article-header-author-pub {
+  margin: 13px 0 25px;
+}
+
+.blog-redesign main .article-header .article-header-author-pub::after {
+  content: none;
+}

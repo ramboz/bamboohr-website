@@ -30,13 +30,28 @@ function buildArticleHeader(main) {
     if (author && publicationDate) {
       document.body.classList.add('blog-post');
       const section = document.createElement('div');
-      section.append(buildBlock('article-header', [
-        [picture],
-        [`<p>${category}</p><p>${readtime}</p>`],
-        [h1],
-        [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],
-      ]));
-      main.prepend(section);
+
+      const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
+      if (testVariation === 'blog-redesign') {
+        const articleHeaderBlock = buildBlock('article-header', [
+          [`<p>${category}</p><p>${readtime}</p>`],
+          [h1],
+          [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],
+          [picture],
+        ])
+        main.querySelector('main>div').prepend(articleHeaderBlock);
+
+      } else {
+        section.append(buildBlock('article-header', [
+          [picture],
+          [`<p>${category}</p><p>${readtime}</p>`],
+          [h1],
+          [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],
+        ]));
+        main.prepend(section);
+      }
+      
+      
       return (true);
     }
   } catch (e) {
@@ -68,8 +83,13 @@ export default async function decorateTemplate(main) {
   if (isBlog) {
     buildImageBlocks(main);
     const related = main.querySelector('.related-posts');
-    if (related) related.parentElement.insertBefore(buildBlock('author', [['']]), related);
+    if (related && !testVariation) related.parentElement.insertBefore(buildBlock('author', [['']]), related);
+    const authorBlock = buildBlock('author', [['']]);
+    const authorSection = document.createElement('div');
+    authorSection.append(authorBlock);
+
     if (!related.nextElementSibling && !related.parentElement.nextElementSibling) {
+      if (testVariation === 'blog-redesign') main.append(authorSection);
       const section = document.createElement('div');
       section.append(related);
       main.append(section);

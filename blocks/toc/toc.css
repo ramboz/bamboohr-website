@@ -87,7 +87,7 @@ main .toc > ol > li::before {
   border: 1px solid var(--color-gray-3);
   border-radius: 15px;
   padding: 25px;
-  margin: 26px 0;
+  margin: 0 0 26px;
 }
 
 .blog-redesign main .toc a:any-link {
