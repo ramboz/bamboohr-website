@@ -1403,7 +1403,9 @@ async function loadEager(doc) {
   const $head = document.querySelector('head');
   const $script = document.createElement('script');
   $script.src = 'https://cdn-4.convertexperiments.com/js/10004673-10005501.js';
-  $head.append($script);
+  if(window.hlxSegmented){
+  	$head.append($script);
+  }
   // }
   /* This is the end of the temporary convert test code */
 
