@@ -723,21 +723,22 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         const eventData = event.data;
         const {action} = eventData;
         const trackedActions = ["booked", "phone-selected", "close"];
-		if (trackedActions.includes(action)) {
-		  let cpEvent = {};		  
-		  switch (action) {
-			case "booked":	
-			  cpEvent = {"cpBookedEvent": 1};
-			  break;
-			case "phone-selected":
-			  cpEvent = {"cpCalledEvent": 1};
-			  break;
-			case "close":
-			  cpEvent = {"cpClosedEvent": 1};
-			  break;			  
-		  }
-		  analyticsTrackChiliPiper(cpEvent);
-		}
+        if (trackedActions.includes(action)) {
+          let cpEvent = {};		  
+          // eslint-disable-next-line default-case
+          switch (action) {
+            case "booked":	
+              cpEvent = {"cpBookedEvent": 1};
+              break;
+            case "phone-selected":
+              cpEvent = {"cpCalledEvent": 1};
+              break;
+            case "close":
+              cpEvent = {"cpClosedEvent": 1};
+              break;
+          }
+          analyticsTrackChiliPiper(cpEvent);
+        }
 		
       }, false);
 
