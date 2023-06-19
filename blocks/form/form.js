@@ -701,7 +701,9 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
       let timeoutSuccessUrl = '';
       function redirectTimeout() {
         return setTimeout(() => {
-		  analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
+		  setTimeout(() =>{
+			analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
+		  },1000);		  
 		  window.location.href = timeoutSuccessUrl; 
 		}, '240000');
       }
