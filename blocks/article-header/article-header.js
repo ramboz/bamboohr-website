@@ -15,10 +15,9 @@ function createProgress() {
 }
 
 export default async function decorateArticleHeader($block, blockName) {
-  
   const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
   if (testVariation) {
-    applyClasses(['eyebrow', 'title', 'author-pub', 'image'], $block.children, blockName);
+    applyClasses(['breadcrumb', 'title', 'author-pub', 'image'], $block.children, blockName);
   } else {
     applyClasses(['image', 'eyebrow', 'title', 'author-pub'], $block.children, blockName);
   }
