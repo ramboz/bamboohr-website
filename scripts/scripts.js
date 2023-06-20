@@ -27,9 +27,8 @@ const SEGMENTATION_CONFIG = {
         const features = getBhrFeaturesCookie();
 		if (!features) {
 		  return false;
-		} else {
-        	return features.is_admin && !features.bhr_user;		  
-		}
+		} 
+		return features.is_admin && !features.bhr_user;		  
       },
     },
     'not-customer': {
