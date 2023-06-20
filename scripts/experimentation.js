@@ -338,7 +338,6 @@ export async function runSegmentation(segments, config = {}) {
 
   // Fullpage segmentation
   if (config.resolution === 'redirect') {
-	window.hlxSegmented = true;
     window.location.replace(segmentPath);
   } else {
     document.body.classList.add(`segment-${segment.id}`);
