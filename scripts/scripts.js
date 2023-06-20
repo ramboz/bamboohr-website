@@ -25,7 +25,10 @@ const SEGMENTATION_CONFIG = {
       test: () => {
         // eslint-disable-next-line no-use-before-define
         const features = getBhrFeaturesCookie();
-        return features.is_admin && !features.bhr_user;
+		if (!features) {
+		  return false;
+		} 
+		return features.is_admin && !features.bhr_user;		  
       },
     },
     'not-customer': {
@@ -33,6 +36,9 @@ const SEGMENTATION_CONFIG = {
       test: () => {
         // eslint-disable-next-line no-use-before-define
         const features = getBhrFeaturesCookie();
+		if (!features) {
+		  return true;
+		}
         return !(features.is_admin && !features.bhr_user);
       },
     },
