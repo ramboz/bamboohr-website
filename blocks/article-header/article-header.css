@@ -161,6 +161,15 @@ main .article-header-share .icon svg {
   background-color: var(--color-1);
 }
 
+.blog-redesign main .article-header > div {
+  padding: 0;
+}
+
+.blog-redesign main .article-header h1 {
+  font-style: normal;
+  margin: 0 0 24px;
+}
+
 .blog-redesign main .article-header-container {
   padding: 0 30px;
 }
@@ -179,17 +188,28 @@ main .article-header-share .icon svg {
 }
 
 .blog-redesign main .article-header .article-header-author-pub {
-  margin: 13px 0 25px;
+  margin: 0 0 24px;
+}
+
+.blog-redesign main .article-header .article-header-author-pub span:not(:last-child)::after {
+  content: ' | ';
 }
 
 .blog-redesign main .article-header .article-header-author-pub::after {
   content: none;
 }
 
+.blog-redesign main .article-header .article-header-author-pub a:any-link {
+  color: var(--color-1-shade-10);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .blog-redesign .article-header-breadcrumb ul {
   list-style: none;
   padding: 0;
   display: flex;
+  margin: 0 0 16px;
 }
 
 .blog-redesign .article-header-breadcrumb ul li {
