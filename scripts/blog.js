@@ -48,8 +48,6 @@ function buildArticleHeader(main) {
             <li><a href="/blog/">Blog</a></li>
             ${categoryEl}
           </ul>`;
-        const publicationDateEl = `Published on ${publicationDate}`;
-        const updatedDateEl = updatedDate ? `Updated on ${updatedDate}` : '';
   
         const articleHeaderBlock = buildBlock('article-header', [
           [breadcrumb],
