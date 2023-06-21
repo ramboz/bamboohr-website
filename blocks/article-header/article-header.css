@@ -162,6 +162,7 @@ main .article-header-share .icon svg {
 }
 
 .blog-redesign main .article-header > div {
+  max-width: unset;
   padding: 0;
 }
 
