@@ -1534,6 +1534,33 @@ function createFaqPageSchemaMarkup() {
   $head.append($faqPageSchema);
 }
 
+function createBreadcrumbListSchemaMarkup() {
+  let positionCounter = 1;
+  const breadcrumbListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [],
+  };
+  document.querySelectorAll('.article-header-breadcrumb div ul li').forEach((item) => {
+    const crumbItem = item.querySelector('a').textContent.trim();
+    const hrefVal = item.querySelector('a').href;
+    if (crumbItem && hrefVal) {
+      breadcrumbListSchema.itemListElement.push({
+        '@type': 'ListItem',
+        // eslint-disable-next-line no-plusplus
+        position: positionCounter++,
+        name: crumbItem,
+        item: hrefVal,
+      });
+    }
+  });
+  const $breadcrumbListSchema = document.createElement('script');
+  $breadcrumbListSchema.innerHTML = JSON.stringify(breadcrumbListSchema, null, 2);
+  $breadcrumbListSchema.setAttribute('type', 'application/ld+json');
+  const $head = document.head;
+  $head.append($breadcrumbListSchema);
+}
+
 /**
  * loads everything that doesn't need to be delayed.
  */
@@ -1575,6 +1602,15 @@ async function loadLazy(doc) {
           break;
       }
     });
+  }
+
+  /**
+   * Calls the Schema markup function for the blog redesign breadcrumb. 
+   */
+  const testVariation = toClassName(getMetadata('test-variation'));
+  const breadcrumb = document.querySelector('.article-header-breadcrumb');
+  if (testVariation === 'blog-redesign' && breadcrumb) {
+    createBreadcrumbListSchemaMarkup();
   }
 
   const headerloaded = loadHeader(header);
