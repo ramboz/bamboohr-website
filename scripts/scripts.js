@@ -1401,18 +1401,12 @@ async function loadEager(doc) {
      we are loading here to avoid the delay "long flicker" before the test page is loaded.
      This type of test should be handled in Adobe Franklin experiments going forward.
    */
-  // const testPaths = [
-  //   '/resources/hr-glossary/performance-review'
-  // ];
-  // const isOnTestPath = testPaths.includes(window.location.pathname);
-  // if (isOnTestPath) {
   const $head = document.querySelector('head');
   const $script = document.createElement('script');
   $script.src = 'https://cdn-4.convertexperiments.com/js/10004673-10005501.js';
   if(!SEGMENTATION_CONFIG.audiences['is-customer'].test()){
   	$head.append($script);
   }
-  // }
   /* This is the end of the temporary convert test code */
 
   decorateTemplateAndTheme();
