@@ -205,6 +205,27 @@ main .article-header-share .icon svg {
   text-underline-offset: 4px;
 }
 
+.blog-redesign main .article-header-read-time::before,
+.blog-redesign main .article-header-publication-date::before {
+  content: none;
+}
+
+.blog-redesign main .article-header-publication-date::before {
+  content: 'Published on ';
+  font-size: unset;
+  margin: 0;
+  display: unset;
+}
+
+.blog-redesign main .article-header-updated-date::before {
+  content: 'Updated on ';
+}
+
+.blog-redesign main .article-header .article-header-author-pub span:empty::before,
+.blog-redesign main .article-header .article-header-author-pub span:empty::after {
+  content: none;
+}
+
 .blog-redesign .article-header-breadcrumb ul {
   list-style: none;
   padding: 0;
@@ -283,5 +304,23 @@ main .article-header-share .icon svg {
 
   .blog-redesign .article-header-breadcrumb ul li {
     display: block;
+  }
+}
+
+@media (max-width: 899px) {
+  .blog-redesign main .article-header > .article-header-share {
+    margin-top: 10px;
+  }
+  
+  .blog-redesign main .article-header-share img,
+  main .article-header-share .icon svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+@media (min-width: 900px) {
+  .blog-redesign main .article-header-share {
+    right: 20px;
   }
 }

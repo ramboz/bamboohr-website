@@ -26,7 +26,6 @@ function buildImageBlocks(main) {
 function buildArticleHeader(main) {
   try {
     const author = getMetadata('author');
-    const authorPath = author ? `/blog/author/${toClassName(author)}` : '';
     const publicationDate = getMetadata('publication-date');
     const updatedDate = getMetadata('updated-date') || '';
     const readtime = getMetadata('read-time');
@@ -39,7 +38,6 @@ function buildArticleHeader(main) {
       const section = document.createElement('div');
 
       if (testVariation === 'blog-redesign') {
-        const date = updatedDate || publicationDate;
         const categoryItems = category.split(',');
         const categories = categoryItems.map(cat =>
           `<a href="/blog/category/${toSlug(cat.trim())}">${cat}</a>`).join('');
@@ -50,11 +48,13 @@ function buildArticleHeader(main) {
             <li><a href="/blog/">Blog</a></li>
             ${categoryEl}
           </ul>`;
+        const publicationDateEl = `Published on ${publicationDate}`;
+        const updatedDateEl = updatedDate ? `Updated on ${updatedDate}` : '';
   
         const articleHeaderBlock = buildBlock('article-header', [
           [breadcrumb],
           [h1],
-          [`<span>By <a href="${authorPath}">${author}</a></span><span>Updated on ${date}</span><span>${readtime} read</span>`],
+          [`<span>${author}</span><span>${publicationDate}</span><span>${updatedDate}</span><span>${readtime} read</span>`],
           [picture],
         ])
         main.querySelector('main>div').prepend(articleHeaderBlock);
