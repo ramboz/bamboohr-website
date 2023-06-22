@@ -1851,6 +1851,12 @@ main .section[data-section-status='initialized'] {
   margin-right: auto;
 }
 
+.blog-redesign main .section:first-child:not(.toc-container) {
+  max-width: var(--width-sm);
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .blog-redesign.blog-post main .section > div.author-wrapper,
 .blog-redesign.blog-post main .section > div.related-posts-wrapper {
   padding: 0 30px;
