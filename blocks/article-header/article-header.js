@@ -14,10 +14,38 @@ function createProgress() {
   return progress;
 }
 
+function createBreadcrumbListSchemaMarkup() {
+  let positionCounter = 1;
+  const breadcrumbListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [],
+  };
+  document.querySelectorAll('.article-header-breadcrumb div ul li').forEach((item) => {
+    const crumbItem = item.querySelector('a').textContent.trim();
+    const hrefVal = item.querySelector('a').href;
+    if (crumbItem && hrefVal) {
+      breadcrumbListSchema.itemListElement.push({
+        '@type': 'ListItem',
+        // eslint-disable-next-line no-plusplus
+        position: positionCounter++,
+        name: crumbItem,
+        item: hrefVal,
+      });
+    }
+  });
+  const $breadcrumbListSchema = document.createElement('script');
+  $breadcrumbListSchema.innerHTML = JSON.stringify(breadcrumbListSchema, null, 2);
+  $breadcrumbListSchema.setAttribute('type', 'application/ld+json');
+  const $head = document.head;
+  $head.append($breadcrumbListSchema);
+}
+
 export default async function decorateArticleHeader($block, blockName) {
   const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
   if (testVariation) {
     applyClasses(['breadcrumb', 'title', 'author-pub', 'image'], $block.children, blockName);
+    createBreadcrumbListSchemaMarkup();
   } else {
     applyClasses(['image', 'eyebrow', 'title', 'author-pub'], $block.children, blockName);
   }
