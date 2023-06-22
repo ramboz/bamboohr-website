@@ -48,8 +48,8 @@ function buildArticleHeader(main) {
             <li><a href="/blog/">Blog</a></li>
             ${categoryEl}
           </ul>`;
-  
-        const articleHeaderBlock = buildBlock('article-header', [
+
+          const articleHeaderBlock = buildBlock('article-header', [
           [breadcrumb],
           [h1],
           [`<p>${author}</p><p>${publicationDate}</p><p>${updatedDate}</p>`],

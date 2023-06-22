@@ -21,7 +21,9 @@ function createBreadcrumbListSchemaMarkup() {
     '@type': 'BreadcrumbList',
     itemListElement: [],
   };
-  document.querySelectorAll('.article-header-breadcrumb div ul li').forEach((item) => {
+  const items = Array.from(document.querySelectorAll('.article-header-breadcrumb div ul li'));
+
+  items.slice(1).forEach((item) => {
     const crumbItem = item.querySelector('a').textContent.trim();
     const hrefVal = item.querySelector('a').href;
     if (crumbItem && hrefVal) {
@@ -34,6 +36,20 @@ function createBreadcrumbListSchemaMarkup() {
       });
     }
   });
+
+  const h1 = document.querySelector('h1').textContent.trim();
+  const pageUrl = window.location.href;
+  const url = new URL(pageUrl);
+  url.search = '';
+  const updatedUrl = url.href;
+  breadcrumbListSchema.itemListElement.push({
+    '@type': 'ListItem',
+    // eslint-disable-next-line no-plusplus
+    position: positionCounter++,
+    name: h1,
+    item: updatedUrl,
+  });
+
   const $breadcrumbListSchema = document.createElement('script');
   $breadcrumbListSchema.innerHTML = JSON.stringify(breadcrumbListSchema, null, 2);
   $breadcrumbListSchema.setAttribute('type', 'application/ld+json');
