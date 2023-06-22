@@ -80,5 +80,4 @@ export default async function decorateArticleHeader($block, blockName) {
     progress.setAttribute('value', window.scrollY);
     progress.setAttribute('max', document.querySelector('main').clientHeight - window.innerHeight);
   });
-
 }
