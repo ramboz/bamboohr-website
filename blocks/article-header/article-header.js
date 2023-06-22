@@ -21,9 +21,8 @@ function createBreadcrumbListSchemaMarkup() {
     '@type': 'BreadcrumbList',
     itemListElement: [],
   };
-  const items = Array.from(document.querySelectorAll('.article-header-breadcrumb div ul li'));
-
-  items.slice(1).forEach((item) => {
+  const breadcrumbItems = Array.from(document.querySelectorAll('.article-header-breadcrumb div ul li'));
+  breadcrumbItems.slice(1).forEach((item) => {
     const crumbItem = item.querySelector('a').textContent.trim();
     const hrefVal = item.querySelector('a').href;
     if (crumbItem && hrefVal) {
