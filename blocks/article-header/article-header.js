@@ -29,7 +29,7 @@ function createBreadcrumbListSchemaMarkup() {
       breadcrumbListSchema.itemListElement.push({
         '@type': 'ListItem',
         // eslint-disable-next-line no-plusplus
-        position: positionCounter++,
+        position: ++positionCounter,
         name: crumbItem,
         item: hrefVal,
       });
@@ -44,7 +44,7 @@ function createBreadcrumbListSchemaMarkup() {
   breadcrumbListSchema.itemListElement.push({
     '@type': 'ListItem',
     // eslint-disable-next-line no-plusplus
-    position: positionCounter++,
+    position: ++positionCounter,
     name: h1,
     item: updatedUrl,
   });
