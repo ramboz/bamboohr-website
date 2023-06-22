@@ -1829,7 +1829,6 @@ main .section[data-section-status='initialized'] {
 
 .blog-redesign.blog-post main .default-content-wrapper a:any-link,
 .blog-redesign.blog-post main .table-wrapper a:any-link {
-  color: var(--color-1-shade-10);
   background: none;
   text-decoration: underline;
   text-underline-offset: 4px;

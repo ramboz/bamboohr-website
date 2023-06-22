@@ -52,7 +52,7 @@ main .author-description a:any-link {
 }
 
 .blog-redesign main .author-description a:any-link {
-    color: var(--color-1-shade-10);
+    color: var(--category-color);
 }
 
 .blog-redesign main .learn-more {

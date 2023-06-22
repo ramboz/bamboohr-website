@@ -147,7 +147,7 @@ main .toc > ol > li::before {
   color: var(--color-gray-12);
   background: none;
   text-decoration: underline;
-  text-decoration-color: var(--color-1-shade-10);
+  text-decoration-color: var(--category-color);
   text-underline-offset: 4px;
   font-size: 16px;
   line-height: 1.5;
