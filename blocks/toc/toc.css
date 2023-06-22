@@ -119,7 +119,7 @@ main .toc > ol > li::before {
 @media (min-width: 900px) {
   .blog-redesign main .toc-wrapper {
     position: relative;
-    width: 100%;
+    width: calc(100% - 54px);
   }
 
   .blog-redesign main .toc {
