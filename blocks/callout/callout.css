@@ -129,6 +129,8 @@ main .callout.blog-redesign {
   box-shadow: none;
   background-image: unset;
   background-size: unset;
+  min-width: var(--width-sm);
+  max-width: 100%;
 }
 
 main .section > div.width-small {
@@ -238,5 +240,11 @@ main .callout .callout-card a.button {
 @media (min-width: 700px) {
   main .callout .callout-card {
     text-align: left;
+  }
+}
+
+@media (min-width: 900px) {
+  .blog-redesign main .callout .callout-card .button-container {
+    padding-right: 150px;
   }
 }

@@ -1835,7 +1835,7 @@ main .section[data-section-status='initialized'] {
 }
 
 .blog-redesign.blog-post main .section > div:not(.author-wrapper) {
-  max-width: unset;
+  max-width: 100%;
 }
 
 .blog-redesign main .section.article-header-container {
