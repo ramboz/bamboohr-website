@@ -30,7 +30,7 @@ function buildArticleHeader(main) {
     const updatedDate = getMetadata('updated-date') || '';
     const readtime = getMetadata('read-time');
     const category = getMetadata('category');
-    const h1 = document.querySelector('h1');
+    const h1 = main.querySelector('h1');
     const picture = document.querySelector('h1 + p > picture');
 
     if (author && publicationDate) {
@@ -54,7 +54,7 @@ function buildArticleHeader(main) {
           [h1],
           [`<span>${author}</span><span>${publicationDate}</span><span>${updatedDate}</span><span>${readtime} read</span>`],
           [picture],
-        ])
+        ]);
         main.querySelector('main>div').prepend(articleHeaderBlock);
 
       } else {
