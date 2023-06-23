@@ -240,3 +240,15 @@ main .callout .callout-card a.button {
     text-align: left;
   }
 }
+
+@media (min-width: 900px) {
+  .blog-redesign main .callout .callout-card .button-container {
+    padding-right: 150px;
+  }
+}
+
+.blog-redesign main .callout.left,
+.blog-redesign main .callout.right {
+  float: none;
+  width: unset;
+}

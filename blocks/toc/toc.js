@@ -22,6 +22,9 @@ export default function decorate(block) {
   if (testVariation === 'blog-redesign') {
     tocItems = document.querySelectorAll('.default-content-wrapper h2, .title-wrapper h2, .columns-wrapper .add-to-toc h2');
     olStack = [document.createElement('ul')];
+    const tocSiblings = document.querySelector('.toc-container').children?.length;
+    const tocWrapper = document.querySelector('.toc-wrapper');
+    tocWrapper.style.gridRow = `1 / span ${tocSiblings - 1}`;
   }
   let lastChapter = '';
   tocItems.forEach((h) => {
@@ -46,4 +49,15 @@ export default function decorate(block) {
     }
   });
   block.append(olStack[0]);
+
+  if (testVariation === 'blog-redesign') {
+    title.setAttribute('aria-selected', false);
+    const tocContent = block.querySelector('ul');
+    tocContent.setAttribute('aria-hidden', true);
+    title.addEventListener('click', ()=>{
+      const isSelected = title.getAttribute('aria-selected') === 'true';
+      title.setAttribute('aria-selected', !isSelected);
+      tocContent.setAttribute('aria-hidden', isSelected);
+    });
+  }
 }

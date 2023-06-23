@@ -27,4 +27,9 @@
         margin: 60px -54px;
         border-radius: 15px;
     }
+
+    .blog-redesign main .checklist {
+        margin-left: 0;
+        margin-right: 0;
+    }
 }

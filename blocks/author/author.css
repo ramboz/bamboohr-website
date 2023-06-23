@@ -51,6 +51,10 @@ main .author-description a:any-link {
     font-size: 18px;
 }
 
+.blog-redesign main .author-description a:any-link {
+    color: var(--category-color);
+}
+
 .blog-redesign main .learn-more {
     align-self: flex-end;
     font-weight: 500;

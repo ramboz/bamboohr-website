@@ -60,12 +60,15 @@ export default async function decorateArticleHeader($block, blockName) {
   const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
   if (testVariation) {
     applyClasses(['breadcrumb', 'title', 'author-pub', 'image'], $block.children, blockName);
+    applyClasses(['author', 'publication-date', 'updated-date', 'read-time'], $block.querySelector('.article-header-author-pub').firstChild.children, blockName);
     createBreadcrumbListSchemaMarkup();
   } else {
     applyClasses(['image', 'eyebrow', 'title', 'author-pub'], $block.children, blockName);
+    applyClasses(['category', 'read-time'], $block.querySelector('.article-header-eyebrow').firstChild.children, blockName);
+    applyClasses(['author', 'publication-date', 'updated-date'], $block.querySelector('.article-header-author-pub').firstChild.children, blockName);
+    const category = $block.querySelector('.article-header-category');
+    category.innerHTML = `<a href="/blog/category/${toCategory(category.textContent)}">${category.textContent}</a>`;
   }
-  applyClasses(['category', 'read-time'], $block.querySelector('.article-header-eyebrow').firstChild.children, blockName);
-  applyClasses(['author', 'publication-date', 'updated-date'], $block.querySelector('.article-header-author-pub').firstChild.children, blockName);
 
   // link author
   const $author = $block.querySelector(`.${blockName}-author`);
@@ -76,15 +79,12 @@ export default async function decorateArticleHeader($block, blockName) {
   $author.textContent = '';
   $author.append(a);
 
-  const category = $block.querySelector('.article-header-category');
-  category.innerHTML = `<a href="/blog/category/${toCategory(category.textContent)}">${category.textContent}</a>`;
-
   // format dates
   const $pubdate = $block.querySelector(`.${blockName}-publication-date`);
-  $pubdate.textContent = formatDate($pubdate.textContent);
+  if ($pubdate && $pubdate.textContent) $pubdate.textContent = formatDate($pubdate.textContent);
 
   const $update = $block.querySelector(`.${blockName}-updated-date`);
-  if ($update.textContent) $update.textContent = formatDate($update.textContent);
+  if ($update && $update.textContent) $update.textContent = formatDate($update.textContent);
 
   // sharing + progress
   $block.append(createSharing('article-header-share'));

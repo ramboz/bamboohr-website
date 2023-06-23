@@ -161,6 +161,16 @@ main .article-header-share .icon svg {
   background-color: var(--color-1);
 }
 
+.blog-redesign main .article-header > div {
+  max-width: unset;
+  padding: 0;
+}
+
+.blog-redesign main .article-header h1 {
+  font-style: normal;
+  margin: 0 0 24px;
+}
+
 .blog-redesign main .article-header-container {
   padding: 0 30px;
 }
@@ -179,10 +189,41 @@ main .article-header-share .icon svg {
 }
 
 .blog-redesign main .article-header .article-header-author-pub {
-  margin: 13px 0 25px;
+  margin: 0 0 24px;
+}
+
+.blog-redesign main .article-header .article-header-author-pub span:not(:last-child)::after {
+  content: ' | ';
 }
 
 .blog-redesign main .article-header .article-header-author-pub::after {
+  content: none;
+}
+
+.blog-redesign main .article-header .article-header-author-pub a:any-link {
+  color: var(--category-color);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.blog-redesign main .article-header-read-time::before,
+.blog-redesign main .article-header-publication-date::before {
+  content: none;
+}
+
+.blog-redesign main .article-header-publication-date::before {
+  content: 'Published on ';
+  font-size: unset;
+  margin: 0;
+  display: unset;
+}
+
+.blog-redesign main .article-header-updated-date::before {
+  content: 'Updated on ';
+}
+
+.blog-redesign main .article-header .article-header-author-pub span:empty::before,
+.blog-redesign main .article-header .article-header-author-pub span:empty::after {
   content: none;
 }
 
@@ -190,6 +231,7 @@ main .article-header-share .icon svg {
   list-style: none;
   padding: 0;
   display: flex;
+  margin: 0 0 16px;
 }
 
 .blog-redesign .article-header-breadcrumb ul li {
@@ -262,5 +304,48 @@ main .article-header-share .icon svg {
 
   .blog-redesign .article-header-breadcrumb ul li:first-child {
     display: block;
+  }
+}
+
+@media (max-width: 899px) {
+  .blog-redesign main .article-header > .article-header-share {
+    margin-top: 10px;
+  }
+  
+  .blog-redesign main .article-header-share img,
+  main .article-header-share .icon svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+@media (min-width: 900px) {
+  .blog-redesign main .article-header-share {
+    right: 20px;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 999px) {
+  .blog-redesign main .article-header-share {
+    position: relative;
+    left: 0;
+    top: 0;
+    margin-top: 0;
+    flex-direction: row;
+  }
+
+  .blog-redesign main .article-header-share > a {
+    width: auto;
+    height: auto;
+    line-height: unset;
+    box-shadow: unset;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media (min-width: 1000px) and (max-width: 1100px) {
+  .blog-redesign main .article-header-share {
+    right: 0
   }
 }
