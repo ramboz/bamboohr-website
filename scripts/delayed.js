@@ -23,47 +23,52 @@ import {
 
 sampleRUM('cwv');
 
-function initEmbeddedMessaging() {
-  try {
-    // eslint-disable-next-line
-    embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-    // eslint-disable-next-line
-    embeddedservice_bootstrap.init(
-      '00D7h0000004j7W',
-      'BambooHR_Sales_Chat',
-      'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468',
-      {
-        scrt2URL: 'https://bamboohr--webchat.sandbox.my.salesforce-scrt.com'
-      }
-    );
-  } catch (err) {
-    // eslint-disable-next-line
-    console.error('Error loading Embedded Messaging: ', err);
-  }
-};
+// function initEmbeddedMessaging() {
+//   try {
+//     // eslint-disable-next-line
+//     embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+//     // eslint-disable-next-line
+//     embeddedservice_bootstrap.init(
+//       '00D7h0000004j7W',
+//       'BambooHR_Sales_Chat',
+//       'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468',
+//       {
+//         scrt2URL: 'https://bamboohr--webchat.sandbox.my.salesforce-scrt.com'
+//       }
+//     );
+//   } catch (err) {
+//     // eslint-disable-next-line
+//     console.error('Error loading Embedded Messaging: ', err);
+//   }
+// };
 
 function initESW(gslbBaseURL) {
+  // eslint-disable-next-line
   embedded_svc.settings.displayHelpButton = true; //Or false
+  // eslint-disable-next-line
   embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
 
-  //embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
-  //embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+  // embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+  // embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
 
-  //embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
-  //embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+  // embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+  // embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
 
   // Settings for Chat
-  //embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+  // embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
   // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
   // Returns a valid button ID.
-  //};
-  //embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
-  //embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
-  //embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+  // };
+  // embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+  // embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+  // embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
 
+  // eslint-disable-next-line
   embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+  // eslint-disable-next-line
   embedded_svc.settings.entryFeature = 'LiveAgent';
 
+  // eslint-disable-next-line
   embedded_svc.init(
       'https://bamboohr--webchat.sandbox.my.salesforce.com',
       'https://bamboohr--webchat.sandbox.my.site.com/ESWSalesChat1687214538054vforcesite',
