@@ -193,7 +193,6 @@ main .article-header-share .icon svg {
 }
 
 .blog-redesign .article-header-breadcrumb ul li {
-  display: none;
   padding: 0;
   margin-right: 10px;
   text-transform: uppercase;
@@ -203,8 +202,8 @@ main .article-header-share .icon svg {
   letter-spacing: 1.5px;
 }
 
-.blog-redesign .article-header-breadcrumb ul li:last-child {
-  display: block;
+.blog-redesign .article-header-breadcrumb ul li:first-child {
+  display: none;
 }
 
 .blog-redesign .article-header-breadcrumb ul li a {
@@ -261,7 +260,7 @@ main .article-header-share .icon svg {
     padding: 0 54px;
   }
 
-  .blog-redesign .article-header-breadcrumb ul li {
+  .blog-redesign .article-header-breadcrumb ul li:first-child {
     display: block;
   }
 }

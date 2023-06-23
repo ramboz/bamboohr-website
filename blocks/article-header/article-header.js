@@ -21,15 +21,15 @@ function createBreadcrumbListSchemaMarkup() {
     '@type': 'BreadcrumbList',
     itemListElement: [],
   };
-  const breadcrumbItems = Array.from(document.querySelectorAll('.article-header-breadcrumb div ul li'));
-  breadcrumbItems.slice(1).forEach((item) => {
+  const breadcrumbItems = document.querySelectorAll('.article-header-breadcrumb div ul li');
+  breadcrumbItems.forEach((item) => {
     const crumbItem = item.querySelector('a').textContent.trim();
     const hrefVal = item.querySelector('a').href;
     if (crumbItem && hrefVal) {
       breadcrumbListSchema.itemListElement.push({
         '@type': 'ListItem',
         // eslint-disable-next-line no-plusplus
-        position: ++positionCounter,
+        position: positionCounter++,
         name: crumbItem,
         item: hrefVal,
       });
@@ -44,7 +44,7 @@ function createBreadcrumbListSchemaMarkup() {
   breadcrumbListSchema.itemListElement.push({
     '@type': 'ListItem',
     // eslint-disable-next-line no-plusplus
-    position: ++positionCounter,
+    position: positionCounter++,
     name: h1,
     item: updatedUrl,
   });
