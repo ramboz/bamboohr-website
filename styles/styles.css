@@ -1354,7 +1354,9 @@ main .center-page-cta-wrapper,
 
 /* stylelint-disable-next-line no-duplicate-selectors */
 .category-hr-insights main,
-.category-color-hr-insights {
+.category-color-hr-insights,
+.category-onboarding main,
+div.category-color-onboarding {
   --category-color: var(--color-8-shade-10);
   --category-darker-color: var(--color-8-shade-15);
   --category-darker-bg-color: var(--color-8-tint-10);
@@ -1435,28 +1437,13 @@ div.category-color-benefits-comp {
   --category-darker-color: var(--color-7-shade-10);
   --category-darker-bg-color: var(--color-7-tint-10);
   --category-bg-color: var(--color-7-tint-15);
-  --category-callout-bg: url('./bg/red-cta.svg');
+  --category-callout-bg: url('./bg/pink-cta.svg');
   --category-quote-bg: radial-gradient(
     100% 416.67% at 0% 100%,
     var(--color-6-shade-5) 0%,
     var(--color-7-shade-5) 100%
   );
   --category-box-shadow-color: rgba(204 67 115 / 50%);
-}
-
-.category-onboarding main,
-div.category-color-onboarding {
-  --category-color: var(--color-3-shade-5);
-  --category-darker-color: var(--color-3-shade-10);
-  --category-darker-bg-color: var(--color-3-tint-10);
-  --category-bg-color: var(--color-3-tint-15);
-  --category-callout-bg: url('./bg/pink-cta.svg');
-  --category-quote-bg: radial-gradient(
-    100% 416.67% at 0% 0%,
-    var(--color-3-shade-5) 0%,
-    var(--color-2-shade-5) 100%
-  );
-  --category-box-shadow-color: rgba(179 81 0 / 50%);
 }
 
 .category-people-data-analytics main,
