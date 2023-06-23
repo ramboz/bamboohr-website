@@ -23,24 +23,68 @@ import {
 
 sampleRUM('cwv');
 
-function initEmbeddedMessaging() {
-  try {
-    // eslint-disable-next-line
-    embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-    // eslint-disable-next-line
-    embeddedservice_bootstrap.init(
+// function initEmbeddedMessaging() {
+//   try {
+//     // eslint-disable-next-line
+//     embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+//     // eslint-disable-next-line
+//     embeddedservice_bootstrap.init(
+//       '00D7h0000004j7W',
+//       'BambooHR_Sales_Chat',
+//       'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468',
+//       {
+//         scrt2URL: 'https://bamboohr--webchat.sandbox.my.salesforce-scrt.com'
+//       }
+//     );
+//   } catch (err) {
+//     // eslint-disable-next-line
+//     console.error('Error loading Embedded Messaging: ', err);
+//   }
+// };
+
+function initESW(gslbBaseURL) {
+  // eslint-disable-next-line
+  embedded_svc.settings.displayHelpButton = true; //Or false
+  // eslint-disable-next-line
+  embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+
+  // embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+  // embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+
+  // embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+  // embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+  // Settings for Chat
+  // embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+  // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+  // Returns a valid button ID.
+  // };
+  // embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+  // embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+  // embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+
+  // eslint-disable-next-line
+  embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+  // eslint-disable-next-line
+  embedded_svc.settings.entryFeature = 'LiveAgent';
+
+  // eslint-disable-next-line
+  embedded_svc.init(
+      'https://bamboohr--webchat.sandbox.my.salesforce.com',
+      'https://bamboohr--webchat.sandbox.my.site.com/ESWSalesChat1687214538054vforcesite',
+      gslbBaseURL,
       '00D7h0000004j7W',
-      'BambooHR_Sales_Chat',
-      'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468',
+      'BambooHR_Sales_Chat_Bot',
       {
-        scrt2URL: 'https://bamboohr--webchat.sandbox.my.salesforce-scrt.com'
+        baseLiveAgentContentURL: 'https://c.la3-c1cs-ia5.salesforceliveagent.com/content',
+        deploymentId: '5724z000000Gn92',
+        buttonId: '5734z00000000gZ',
+        baseLiveAgentURL: 'https://d.la3-c1cs-ia5.salesforceliveagent.com/chat',
+        eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I7h000000CalMEAS_188e519943b',
+        isOfflineSupportEnabled: false
       }
-    );
-  } catch (err) {
-    // eslint-disable-next-line
-    console.error('Error loading Embedded Messaging: ', err);
-  }
-};
+  );
+}
 
 /**
  * loads a script by adding a script tag to the head.
@@ -75,9 +119,39 @@ function loadSalesforceChatScript() {
   const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
   if (!isOnChatTestPath) return;
 
-  loadScript('footer', 'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468/assets/js/bootstrap.min.js', async () => {
-    initEmbeddedMessaging();
-  }, 'text/javascript');
+  /* Code added by Josh Wadsworth for testing on Friday */
+  const $head = document.querySelector('head');
+  const $script = document.createElement('script');
+  $script.setAttribute('type', 'text/css');
+  $script.innerHTML = '' +
+  '.embeddedServiceHelpButton .helpButton .uiButton {' +
+      'background-color: #9fe12d;' +
+      'font-family: "Salesforce Sans", sans-serif' +
+  '}' +
+  '.embeddedServiceHelpButton .helpButton .uiButton:focus {' +
+      'outline: 1px solid #9fe12d;' +
+  '}' +
+  '@font-face {' +
+      'font-family: "Salesforce Sans";' +
+      'src: url("https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.woff") format("woff"),' +
+      'url("https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.ttf") format("truetype");' +
+  '}'
+  $head.append($script);
+
+  if (!window.embedded_svc) {
+    loadScript('footer', 'https://bamboohr--webchat.sandbox.my.salesforce.com/embeddedservice/5.0/esw.min.js', async () => {
+      initESW(null);
+    }, 'text/javascript');
+  } else {
+    initESW('https://service.force.com');
+  }
+  /* End of Josh's added code */
+
+  /* This was the original from Scott Clayton - replaced with the above by Josh Wadsworth trying to get a Chat Bot style working */
+  // loadScript('footer', 'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468/assets/js/bootstrap.min.js', async () => {
+  //   initEmbeddedMessaging();
+  // }, 'text/javascript');
+  /* End of Scott Claytons original code for Salesforce chat */
 }
 
 function loadTrustArcFormScript() {
@@ -258,10 +332,10 @@ function trackInteractionExternalLinks() {
   const allLinkTags = document.querySelectorAll('header a, main a:not(main div.article-header-share a), footer a:not(footer div.social a)');
 	allLinkTags.forEach(item => {
 	  // eslint-disable-next-line no-restricted-globals
-	  const linkType = item.href.toLowerCase().includes(location.host) ? 'other' : 'exit';	  
+	  const linkType = item.href.toLowerCase().includes(location.host) ? 'other' : 'exit';
 	  item.addEventListener('click', async (event) => {
 		  await analyticsTrackLinkClicks(event.currentTarget, linkType);
-	  });			
+	  });
   });
 
   const socialMediaLink = document.querySelectorAll('footer div.social a span');
