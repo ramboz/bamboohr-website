@@ -346,6 +346,10 @@ main .search .search-box {
   }
 }
 
-.blog-post .header-search-modal .search-container .title-wrapper {
+.blog-post .header-search-modal main .section.search-container .title-wrapper {
   max-width: 800px;
+}
+
+.blog-redesign.blog-post .header-search-modal main {
+  overflow-y: scroll;
 }
