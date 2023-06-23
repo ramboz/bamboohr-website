@@ -44,7 +44,6 @@ function buildArticleHeader(main) {
         const categoryEl = `<li>${categories}</li>`;
         const breadcrumb =
           `<ul>
-            <li><a href="/">Home</a></li>
             <li><a href="/blog/">Blog</a></li>
             ${categoryEl}
           </ul>`;
