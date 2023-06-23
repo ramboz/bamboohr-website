@@ -71,7 +71,7 @@
 }
 
 /** block wrapper **/
-#base .section > div {
+/* #base .section > div {
   max-width: calc(960px + var(--section-padding-mobile) * 2);
   padding-left: var(--section-padding-mobile);
   padding-right: var(--section-padding-mobile);
@@ -184,7 +184,7 @@
   max-width: 100%;
   padding-left: 0;
   padding-right: 0;
-}
+} */
 
 /* reset section spacing on modal */
 #base .modal .section > div {
@@ -902,14 +902,14 @@
   margin: 0;
 }
 
-#base .section > .image-wrapper {
+/* #base .section > .image-wrapper {
   max-width: calc(960px + var(--section-padding-mobile) * 2);
-}
+} */
 
 @media (min-width: 600px) {
-  #base .section > .image-wrapper {
+  /* #base .section > .image-wrapper {
     max-width: calc(960px + var(--section-padding) * 2);
-  }
+  } */
 
   #base .title-size-hero-subhead :is(h1, h2, h3, h4, h5, h6) {
     font-size: 21px;
@@ -918,11 +918,11 @@
   }
 }
 
-@media (min-width: 1440px) {
+/* @media (min-width: 1440px) {
   #base .section > .image-wrapper {
     max-width: calc(1160px + var(--section-padding) * 2);
   }
-}
+} */
 
 #base .toc {
   padding: 40px 50px;

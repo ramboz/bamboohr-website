@@ -15,6 +15,11 @@
 @import 'backgrounds.css';
 @import 'themes/base.css';
 
+:root{
+  --section-padding: 54px;
+  --section-padding-mobile: 30px;
+}
+
 html {
   box-sizing: border-box;
 }
@@ -1074,6 +1079,127 @@ main .section.max-width-small > div {
     max-width: 1000px;
   }
 }
+
+/* end containers */
+
+/* ex base wrapper/container */
+
+main .section > div {
+  max-width: calc(960px + var(--section-padding-mobile) * 2);
+  padding-left: var(--section-padding-mobile);
+  padding-right: var(--section-padding-mobile);
+}
+
+@media (min-width: 600px) {
+  main .section > div {
+    max-width: calc(1160px + var(--section-padding) * 2);
+    padding-left: var(--section-padding);
+    padding-right: var(--section-padding);
+  }
+}
+
+@media (min-width: 1440px) {
+  main .section > div {
+    max-width: calc(1160px + var(--section-padding) * 2);
+  }
+}
+
+@media (min-width: 1800px) {
+  main .section > div {
+    max-width: calc(1520px + var(--section-padding) * 2);
+  }
+}
+
+main .section > div.content-width-xs,
+main .section.content-width-xs > div:not([class*='content-width-']) {
+  max-width: calc(560px + var(--section-padding-mobile) * 2);
+}
+
+@media (min-width: 600px) {
+  main .section > div.content-width-xs,
+  main .section.content-width-xs > div:not([class*='content-width-']) {
+    max-width: calc(560px + var(--section-padding) * 2);
+  }
+}
+
+main .section > div.content-width-sm,
+main .section.content-width-sm > div:not([class*='content-width-']) {
+  max-width: calc(760px + var(--section-padding-mobile) * 2);
+}
+
+@media (min-width: 600px) {
+  main .section > div.content-width-sm,
+  main .section.content-width-sm > div:not([class*='content-width-']) {
+    max-width: calc(760px + var(--section-padding) * 2);
+  }
+}
+
+main .section > div.content-width-md,
+main .section.content-width-md > div:not([class*='content-width-']) {
+  max-width: calc(960px + var(--section-padding-mobile) * 2);
+}
+
+@media (min-width: 600px) {
+  main .section > div.content-width-md,
+  main .section.content-width-md > div:not([class*='content-width-']) {
+    max-width: calc(960px + var(--section-padding) * 2);
+  }
+}
+
+@media (min-width: 1440px) {
+  main .section > div.content-width-md,
+  main .section.content-width-md > div:not([class*='content-width-']) {
+    max-width: calc(1160px + var(--section-padding) * 2);
+  }
+}
+
+main .section > div.content-width-lg,
+main .section > div.content-width-lg .form,
+main .section.content-width-lg > div:not([class*='content-width-']) {
+  max-width: calc(1160px + var(--section-padding-mobile) * 2);
+}
+
+@media (min-width: 600px) {
+  main .section > div.content-width-lg,
+  main .section.content-width-lg > div:not([class*='content-width-']) {
+    max-width: calc(1160px + var(--section-padding) * 2);
+  }
+}
+
+@media (min-width: 1440px) {
+  main .section > div.content-width-lg,
+  main .section.content-width-lg > div:not([class*='content-width-']) {
+    max-width: calc(1360px + var(--section-padding) * 2);
+  }
+}
+
+main .section > div.content-width-xl,
+main .section.content-width-xl > div:not([class*='content-width-']) {
+  max-width: calc(1360px + var(--section-padding-mobile) * 2);
+}
+
+@media (min-width: 600px) {
+  main .section > div.content-width-xl,
+  main .section.content-width-xl > div:not([class*='content-width-']) {
+    max-width: calc(1360px + var(--section-padding) * 2);
+  }
+}
+
+@media (min-width: 1440px) {
+  main .section > div.content-width-xl,
+  main .section.content-width-xl > div:not([class*='content-width-']) {
+    max-width: calc(1560px + var(--section-padding) * 2);
+  }
+}
+
+main .section > div.content-width-full,
+main .section.content-width-full > div:not([class*='content-width-']) {
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* end ex-base container */
 
 main .section p.button-container {
   margin-top: 16px;
