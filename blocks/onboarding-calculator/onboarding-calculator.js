@@ -368,20 +368,22 @@ function nextPrev(index, form) {
 	progressIndicator(currentTab, form);
 }
 
-function createCalcResultHtml() {
+function createCalcResultHtml(isOrg) {
 	const divWrapper = document.createElement('div');
 	divWrapper.classList.add('tab');
 
+	const resultsDesc = isOrg ? 'Is the annual estimated cost of onboarding for your organization.'
+		: 'Is the estimated cost of onboarding this new employee.';
 	const contentHtml = `<div class="result__wrapper">
 	<div class="result__left">
 	<p class="calc-result"></p>
-	<p>Is the estimated cost of onboarding this new employee.</p>
+	<p>${resultsDesc}</p>
 	<button type="button" class="reset-calc-btn">Calculate Again</button>
 	</div>
 	<div class="result__right">
 	<div class="result__right-text">
-	<p>Get the right HR software to build for the future</p>
-	<a class="button accent" href="/hr-software/video-tour">Video Product Tour</a>
+	<p>With BambooHR, you can save time and money—while creating better first days.</p>
+	<a class="button accent" href="/hr-software/employee-self-onboarding">Discover BambooHR Onboarding</a>
 	</div>
 	</div>
 	</div>`;
@@ -596,7 +598,7 @@ function createOrganisationForm(fields) {
 	form.classList.add('d-none');
 
 	form.append(createFields(fields));
-	form.append(createCalcResultHtml());
+	form.append(createCalcResultHtml(true));
 	form.append(createNavBtn());
 	form.append(div);
 
