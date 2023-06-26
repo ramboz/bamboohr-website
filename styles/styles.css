@@ -781,7 +781,6 @@ main video {
 
 main .section {
   margin-top: 64px;
-  padding: 0 30px;
 }
 
 @media (min-width: 600px) {
