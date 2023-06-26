@@ -844,3 +844,9 @@ header .nav-limited .nav-buttons .nav-login-btn {
     right: 0
   }
 }
+
+@media (max-width: 899px) {
+  .blog-redesign.blog-post .header-search {
+    display: none;
+  }
+}
