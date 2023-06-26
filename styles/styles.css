@@ -805,12 +805,6 @@ main .section:last-of-type {
   padding-bottom: 0;
 }
 
-main .section > div {
-  max-width: 1160px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 main .section > div.width-full {
   max-width: 100%;
   padding-left: 0;
@@ -1081,12 +1075,14 @@ main .section.max-width-small > div {
 
 /* end containers */
 
-/* ex base wrapper/container */
+/* updated wrapper/container */
 
 main .section > div {
   max-width: calc(960px + var(--section-padding-mobile) * 2);
   padding-left: var(--section-padding-mobile);
   padding-right: var(--section-padding-mobile);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (min-width: 600px) {
