@@ -641,7 +641,7 @@ export function buildBlock(blockName, content) {
     const rowEl = document.createElement('div');
     row.forEach((col) => {
       const colEl = document.createElement('div');
-      const vals = col.elems ? col.elems : [col];
+      const vals = col?.elems ? col.elems : [col];
       vals.forEach((val) => {
         if (val) {
           if (typeof val === 'string') {
