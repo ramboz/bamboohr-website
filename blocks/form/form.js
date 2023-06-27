@@ -266,7 +266,11 @@ function createEmail(fd) {
 
   eventTypes.forEach(eventType => {
     input.addEventListener(eventType, () => {
-      input.parentNode.classList.toggle('error', !emailPattern.test(input.value));
+      if (emailPattern.test(input.value)) {
+        removeValidationError(input);
+      } else {
+        addValidationError(input);
+      }
     });
   });
 
