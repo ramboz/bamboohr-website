@@ -1,3 +1,5 @@
+import { scrollToForm } from '../form/form.js';
+
 export default function decorate(block) {
   // convert "number" classes
   [...block.classList].forEach((name) => {
@@ -49,4 +51,17 @@ export default function decorate(block) {
 
     row.remove();
   });
+
+   // enable links/buttons to scroll to form
+   const links = block.querySelectorAll('a');
+   if (links) {
+     links.forEach((a) => {
+       if(a.hash === '#scroll-to-form') {
+         a.addEventListener('click', (e) => {
+           e.preventDefault();
+           scrollToForm();
+         })
+       }
+     });
+   }
 }

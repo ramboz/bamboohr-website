@@ -3,8 +3,6 @@ import decorateWistia from '../wistia/wistia.js';
 import { buildPicture } from '../multi-hero/multi-hero.js';
 import decorateVideo from '../video/video.js';
 import { analyticsTrackPreformEmailEntered, analyticsTrackPreformEmailSubmitted } from "../../scripts/lib-analytics.js";
-// eslint-disable-next-line import/no-cycle
-import { scrollToForm } from '../form/form.js';
 
 function addBreakpointImages(col, block) {
   if (block.classList.contains('has-breakpoint-images')) {
@@ -502,19 +500,6 @@ export default function decorate(block) {
             colToUse.style.marginLeft = `${marginValue}px`;
           }
         }
-      }
-    });
-  }
-
-  // enable links/buttons to scroll to form
-  const links = block.querySelectorAll('a');
-  if (links) {
-    links.forEach((a) => {
-      if(a.hash === '#scroll-to-form') {
-        a.addEventListener('click', (e) => {
-          e.preventDefault();
-          scrollToForm();
-        })
       }
     });
   }
