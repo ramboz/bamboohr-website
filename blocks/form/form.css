@@ -71,15 +71,6 @@ main .form textarea {
   height: 160px;
 }
 
-main .form select:focus,
-main .form textarea:focus,
-main .form input:focus,
-main .form .mktoForm .mktoInvalid:focus {
-  outline: none;
-  border-image-source: linear-gradient(120deg, var(--color-1-tint-5) 13.4%, var(--color-8-shade-5) 86.6%);
-  border-image-slice: 1;
-}
-
 main .form option {
   box-sizing: border-box;
   display: block;
@@ -191,6 +182,15 @@ main .form .mktoForm .mktoInvalid.form-checkbox-option label::before {
 
 main .form .error input[type='checkbox'] + label::before {
   border-color: var(--color-2);
+}
+
+main .form select:focus,
+main .form textarea:focus,
+main .form input:focus,
+main .form .mktoForm .mktoInvalid:focus {
+  outline: none;
+  border-image-source: linear-gradient(120deg, var(--color-1-tint-5) 13.4%, var(--color-8-shade-5) 86.6%);
+  border-image-slice: 1;
 }
 
 main .form .form-msg {

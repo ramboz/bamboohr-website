@@ -7,6 +7,8 @@ import {
 } from '../../scripts/lib-analytics.js';
 import { addWistia } from '../columns/columns.js';
 
+// Regular expression pattern to validate email format
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
   const script = document.createElement('script');
@@ -149,6 +151,11 @@ async function submitForm(form) {
       } else if (fe.type === 'select-multiple') {
         const selected = [...fe.selectedOptions].map((option) => sanitizeInput(option.value));
         payload[fe.id] = selected.join(', ');
+      } else if (fe.type === 'email') {
+        if (!emailPattern.test(fe.value)) {
+          isError = true;
+          addValidationError(fe);
+        }
       } else if (fe.id) {
         payload[fe.id] = sanitizeInput(fe.value);
       }
@@ -211,14 +218,61 @@ export function createInput(fd) {
   if (fd.Mandatory === 'x') {
     input.setAttribute('required', '');
 
-    input.addEventListener('change, blur', () => {
-      if (input.value && input.parentNode.classList.contains('error')) {
-        input.parentNode.classList.remove('error');
-      } else {
-        input.parentNode.classList.add('error');
-      }
+    const eventTypes = ['blur', 'change'];
+    eventTypes.forEach(eventType => {
+      input.addEventListener(eventType, () => {
+        if (input.value && input.parentNode.classList.contains('error')) {
+          removeValidationError(input);
+        } else {
+          addValidationError(input);
+        }
+      });
     });
   }
+
+  return input;
+}
+
+function createEmail(fd) {
+  const input = document.createElement('input');
+  input.type = fd.Type;
+  input.id = fd.Field;
+  const eventTypes = ['blur', 'change'];
+
+  if (fd.Value) {
+    input.value = fd.Value;
+  }
+
+  const param = getURLParam(input.id);
+  if (param) {
+    input.value = param;
+  }
+
+  input.setAttribute('placeholder', fd.Placeholder);
+
+  if (fd.Mandatory === 'x') {
+    input.setAttribute('required', '');
+
+    eventTypes.forEach(eventType => {
+      input.addEventListener(eventType, () => {
+        if (input.value && input.parentNode.classList.contains('error')) {
+          removeValidationError(input);
+        } else {
+          addValidationError(input);
+        }
+      });
+    });
+  }
+
+  eventTypes.forEach(eventType => {
+    input.addEventListener(eventType, () => {
+      if (emailPattern.test(input.value)) {
+        removeValidationError(input);
+      } else {
+        addValidationError(input);
+      }
+    });
+  });
 
   return input;
 }
@@ -231,12 +285,14 @@ function createTextarea(fd) {
   if (fd.Mandatory === 'x') {
     textarea.setAttribute('required', '');
 
-    textarea.addEventListener('change', () => {
-      if (textarea.value && textarea.parentNode.classList.contains('error')) {
-        textarea.parentNode.classList.remove('error');
-      } else {
-        textarea.parentNode.classList.add('error');
-      }
+    ['change', 'blur'].forEach(eventType => {
+      textarea.addEventListener(eventType, () => {
+        if (textarea.value && textarea.parentNode.classList.contains('error')) {
+          removeValidationError(textarea);
+        } else {
+          addValidationError(textarea);
+        }
+      });
     });
   }
 
@@ -307,6 +363,11 @@ async function createForm(formURL) {
     const fieldId = `form-${fd.Field}-wrapper${style}`;
     fieldWrapper.className = fieldId;
     switch (fd.Type) {
+      case 'email':
+        fieldWrapper.append(createLabel(fd));
+        fieldWrapper.append(createDescription(fd));
+        fieldWrapper.append(createEmail(fd));
+        break;
       case 'select':
         fieldWrapper.append(createLabel(fd));
         fieldWrapper.append(createDescription(fd));
