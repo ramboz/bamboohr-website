@@ -984,6 +984,8 @@ main .section > div:empty {
 
   .integrations main .section > div {
     max-width: 1200px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .resources-guides main .section > div {
@@ -1317,6 +1319,8 @@ main .center-page-cta-wrapper,
 .integrations-listing .links-container .default-content-wrapper {
   max-width: 250px;
   margin-left: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 #integrations-request-info {
@@ -1603,6 +1607,10 @@ div.category-color-people-data-analytics {
 
 .integrations-listing .details-container ul li {
   list-style-image: none;
+}
+
+.integrations-listing .details-container ul li::marker {
+  content: '';
 }
 
 /* Tables */
