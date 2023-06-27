@@ -371,6 +371,7 @@ main .onboarding-calculator .result__wrapper .result__right .button {
 	line-height: 20px;
 	transition: all 0.3s;
 	font-family: var(--body-font-family);
+	margin-left: -14px;
 }
 
 main .onboarding-calculator .result__wrapper .result__right {
@@ -382,10 +383,11 @@ main .onboarding-calculator .result__wrapper .result__right {
     width: 100%;
 	background: #D2E5F0;
 	background-color: var(--secondary-theme-tint5);
+	padding: 0 1rem;
 }
 
 main .onboarding-calculator .result__wrapper .result__right-text {
-	max-width: 240px;
+	max-width: 285px;
 	padding: 4.5em 0;
 }
 
@@ -455,6 +457,22 @@ main .onboarding-calculator .icon-dollar::before {
 	background-position: center;
 	padding-right: 35px;
 	border-right: 1px solid #D6DDEA;
+}
+
+@media (min-width: 410px) {
+	main .onboarding-calculator .result__wrapper .result__right-text {
+		max-width: 310px;
+	}
+
+	main .onboarding-calculator .result__wrapper .result__right .button {
+		margin-left: 0;
+	}
+}
+
+@media (min-width: 432px) {
+	main .onboarding-calculator .result__wrapper .result__right {
+		padding: 0 2rem;
+	}
 }
 
 @media screen and (min-width: 782px) {
