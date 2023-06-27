@@ -211,14 +211,65 @@ export function createInput(fd) {
   if (fd.Mandatory === 'x') {
     input.setAttribute('required', '');
 
-    input.addEventListener('change, blur', () => {
-      if (input.value && input.parentNode.classList.contains('error')) {
+    const eventTypes = ['blur', 'change'];
+    eventTypes.forEach(eventType => {
+      input.addEventListener(eventType, () => {
+        if (input.value && input.parentNode.classList.contains('error')) {
+          input.parentNode.classList.remove('error');
+        } else {
+          input.parentNode.classList.add('error');
+        }
+      });
+    });
+  }
+
+  return input;
+}
+
+function createEmail(fd) {
+  const input = document.createElement('input');
+  input.type = fd.Type;
+  input.id = fd.Field;
+  const eventTypes = ['blur', 'change'];
+
+  if (fd.Value) {
+    input.value = fd.Value;
+  }
+
+  const param = getURLParam(input.id);
+  if (param) {
+    input.value = param;
+  }
+
+  input.setAttribute('placeholder', fd.Placeholder);
+
+  if (fd.Mandatory === 'x') {
+    input.setAttribute('required', '');
+
+    eventTypes.forEach(eventType => {
+      input.addEventListener(eventType, () => {
+        if (input.value && input.parentNode.classList.contains('error')) {
+          input.parentNode.classList.remove('error');
+        } else {
+          input.parentNode.classList.add('error');
+        }
+      });
+    });
+
+    
+  }
+
+  // Regular expression pattern to validate email format
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  eventTypes.forEach(eventType => {
+    input.addEventListener(eventType, () => {
+      if (emailPattern.test(input.value)) {
         input.parentNode.classList.remove('error');
       } else {
         input.parentNode.classList.add('error');
       }
     });
-  }
+  });
 
   return input;
 }
@@ -307,6 +358,11 @@ async function createForm(formURL) {
     const fieldId = `form-${fd.Field}-wrapper${style}`;
     fieldWrapper.className = fieldId;
     switch (fd.Type) {
+      case 'email':
+        fieldWrapper.append(createLabel(fd));
+        fieldWrapper.append(createDescription(fd));
+        fieldWrapper.append(createEmail(fd));
+        break;
       case 'select':
         fieldWrapper.append(createLabel(fd));
         fieldWrapper.append(createDescription(fd));
