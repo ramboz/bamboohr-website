@@ -7,6 +7,8 @@ import {
 } from '../../scripts/lib-analytics.js';
 import { addWistia } from '../columns/columns.js';
 
+// Regular expression pattern to validate email format
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
   const script = document.createElement('script');
@@ -149,6 +151,11 @@ async function submitForm(form) {
       } else if (fe.type === 'select-multiple') {
         const selected = [...fe.selectedOptions].map((option) => sanitizeInput(option.value));
         payload[fe.id] = selected.join(', ');
+      } else if (fe.type === 'email') {
+        if (!emailPattern.test(fe.value)) {
+          isError = true;
+          addValidationError(fe);
+        }
       } else if (fe.id) {
         payload[fe.id] = sanitizeInput(fe.value);
       }
@@ -215,9 +222,9 @@ export function createInput(fd) {
     eventTypes.forEach(eventType => {
       input.addEventListener(eventType, () => {
         if (input.value && input.parentNode.classList.contains('error')) {
-          input.parentNode.classList.remove('error');
+          removeValidationError(input);
         } else {
-          input.parentNode.classList.add('error');
+          addValidationError(input);
         }
       });
     });
@@ -230,7 +237,7 @@ function createEmail(fd) {
   const input = document.createElement('input');
   input.type = fd.Type;
   input.id = fd.Field;
-  const eventTypes = ['blur', 'change', 'input'];
+  const eventTypes = ['blur', 'change'];
 
   if (fd.Value) {
     input.value = fd.Value;
@@ -249,25 +256,17 @@ function createEmail(fd) {
     eventTypes.forEach(eventType => {
       input.addEventListener(eventType, () => {
         if (input.value && input.parentNode.classList.contains('error')) {
-          input.parentNode.classList.remove('error');
+          removeValidationError(input);
         } else {
-          input.parentNode.classList.add('error');
+          addValidationError(input);
         }
       });
     });
-
-    
   }
 
-  // Regular expression pattern to validate email format
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   eventTypes.forEach(eventType => {
     input.addEventListener(eventType, () => {
-      if (emailPattern.test(input.value)) {
-        input.parentNode.classList.remove('error');
-      } else {
-        input.parentNode.classList.add('error');
-      }
+      input.parentNode.classList.toggle('error', !emailPattern.test(input.value));
     });
   });
 
@@ -282,12 +281,14 @@ function createTextarea(fd) {
   if (fd.Mandatory === 'x') {
     textarea.setAttribute('required', '');
 
-    textarea.addEventListener('change', () => {
-      if (textarea.value && textarea.parentNode.classList.contains('error')) {
-        textarea.parentNode.classList.remove('error');
-      } else {
-        textarea.parentNode.classList.add('error');
-      }
+    ['change', 'blur'].forEach(eventType => {
+      textarea.addEventListener(eventType, () => {
+        if (textarea.value && textarea.parentNode.classList.contains('error')) {
+          removeValidationError(textarea);
+        } else {
+          addValidationError(textarea);
+        }
+      });
     });
   }
 
