@@ -230,7 +230,7 @@ function createEmail(fd) {
   const input = document.createElement('input');
   input.type = fd.Type;
   input.id = fd.Field;
-  const eventTypes = ['blur', 'change'];
+  const eventTypes = ['blur', 'change', 'input'];
 
   if (fd.Value) {
     input.value = fd.Value;
