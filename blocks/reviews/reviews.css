@@ -1,0 +1,10 @@
+main .reviews {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px
+}
+
+main .reviews picture, main .reviews img {
+  width: 100%;
+}
