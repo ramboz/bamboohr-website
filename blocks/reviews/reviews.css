@@ -4,3 +4,7 @@ main .reviews {
   align-items: center;
   gap: 24px
 }
+
+main .reviews picture, main .reviews img {
+  width: 100%;
+}
