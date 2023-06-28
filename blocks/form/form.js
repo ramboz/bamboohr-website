@@ -134,6 +134,10 @@ async function submitForm(form) {
         isError = true;
         addValidationError(fe);
       }
+      if (fe.type === 'email' && !emailPattern.test(fe.value)) {
+        isError = true;
+        addValidationError(fe);
+      }
       if (fe.type === 'checkbox') {
         if (fe.required && !form.querySelector(`input[name="${fe.name}"]:checked`)) {
           isError = true;
@@ -151,11 +155,6 @@ async function submitForm(form) {
       } else if (fe.type === 'select-multiple') {
         const selected = [...fe.selectedOptions].map((option) => sanitizeInput(option.value));
         payload[fe.id] = selected.join(', ');
-      } else if (fe.type === 'email') {
-        if (!emailPattern.test(fe.value)) {
-          isError = true;
-          addValidationError(fe);
-        }
       } else if (fe.id) {
         payload[fe.id] = sanitizeInput(fe.value);
       }
