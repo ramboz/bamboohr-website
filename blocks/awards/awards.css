@@ -20,6 +20,7 @@ main .awards picture img {
   main .awards {
     gap: 5%;
   }
+  
   main .awards picture {
     flex-basis: 20%;
   }
