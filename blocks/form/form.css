@@ -136,6 +136,11 @@ main .form .form-checkbox-option > label::before {
   cursor: pointer;
 }
 
+main .form .form-checkbox-option label a {
+  font-style: italic;
+  text-decoration: underline;
+}
+
 main .form input[type="radio"] + label {
   margin-bottom: 10px;
 }

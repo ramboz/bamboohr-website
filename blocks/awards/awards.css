@@ -1,0 +1,39 @@
+main .awards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px 10% ;
+}
+
+main .awards picture {
+  flex: 1 1 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main .awards picture img {
+  max-height: 97px;
+}
+
+@media (min-width:600px){
+  main .awards {
+    gap: 5%;
+  }
+  
+  main .awards picture {
+    flex-basis: 20%;
+  }
+}
+
+@media (min-width:900px){
+  main .awards picture img {
+    max-height: 124px;
+  }
+}
+
+@media (min-width:1800px){
+  main .awards picture img {
+    max-height: 148px;
+  }
+}
