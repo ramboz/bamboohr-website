@@ -678,6 +678,17 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
               const currentForm = document.getElementById(`mktoForm_${formId}`);
               currentForm.classList.add('minimized-form');
 
+              const formCol = currentForm.closest('.form-col');
+              // set new form title
+              const formTitle = formCol?.firstElementChild?.firstElementChild;
+              if (formTitle) formTitle.textContent = `Welcome Back ${result.FirstName}!`;
+              const formSubheading = formCol?.firstElementChild?.nextSibling;
+              const clearFormEl = document.createElement('a');
+              clearFormEl.href = '#';
+              clearFormEl.textContent = 'Tell us about yourself';
+              console.log(clearFormEl);
+              if (formSubheading) formSubheading.innerHTML = `Not you? ${clearFormEl.outerHTML}`;
+
               const formFields = formEl.querySelectorAll('.mktoField');
               formFields.forEach((field) => {
                 const fieldType = field.getAttribute('type');
