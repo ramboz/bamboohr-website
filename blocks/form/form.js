@@ -1,4 +1,4 @@
-import { readBlockConfig, getMetadata } from '../../scripts/scripts.js';
+import { readBlockConfig, getMetadata, toClassName } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
 import {
   analyticsTrackChiliPiper,
@@ -600,14 +600,16 @@ const capitalizeKeys = (obj) => {
  */
 const getPrefillFields = async () => {
   try {
-    const response = await fetch('/xhr/formfill.php');
-    if (!response.ok) {
-      // eslint-disable-next-line no-console
-      console.error(`Request failed with status: ${response.status}`);
-      return null;
-    }
+    // const response = await fetch('/xhr/formfill.php');
+    // if (!response.ok) {
+    //   // eslint-disable-next-line no-console
+    //   console.error(`Request failed with status: ${response.status}`);
+    //   return null;
+    // }
 
-    const data = await response.json();
+    // const data = await response.json();
+    const response = '{"formData":{"id":35898882,"firstName":"Meng","lastName":"Tian","email":"deegd@gmail.com","phone":"8011231234","Employees_Text__c":"25-75","title":"test","company":"bamboohr","jobOpenings":null,"industry":null,"postalCode":null}}';
+    const data = JSON.parse(response);
     const { formData } = data;
     const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
 
@@ -642,6 +644,7 @@ const fillFormFields = (prefillFields, formEl) => {
 const setFormValues = async (formEl) => {
   const prefillFields = await getPrefillFields();
   if (prefillFields) fillFormFields(prefillFields, formEl);
+  return prefillFields;
 };
 
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
@@ -667,11 +670,51 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           analyticsTrackFormStart(formEl);
         });
 
-        // Prefill form fields
-        setFormValues(formEl).catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error(`Error when setting form values: ${error.message}`);
-        });
+        /* Prefill form fields */
+        setFormValues(formEl)
+          .then((result) => {
+            const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
+            if (testVariation === 'minimized-form') {
+              // Hide all form fields except email input
+              const currentForm = document.getElementById(`mktoForm_${formId}`);
+              currentForm.classList.add('minimized-form');
+
+              const formFields = formEl.querySelectorAll('.mktoField');
+              formFields.forEach((field) => {
+                const fieldType = field.getAttribute('type');
+                if (fieldType !== 'email' && fieldType !== 'checkbox' && field.value.trim() !== '') {
+                  const formRow = field.closest('.mktoFormRow');
+                  if (formRow) formRow.classList.add('hide');
+                  const partnerConsent = formEl.querySelector('.bhrForm__partnerDisclaimer');
+                  if (partnerConsent) partnerConsent.closest('.mktoFormRow').classList.add('hide');
+                }
+              });
+
+              // show all fields if user change email
+              const email = formEl.querySelector(`[name='Email']`);
+              email.addEventListener('change', () => {
+                if (email !== result.Email) {
+                  currentForm.classList.remove('minimized-form');
+                  formFields.forEach((field) => {
+                    const formRow = field.closest('.mktoFormRow');
+                    if (formRow) formRow.classList.remove('hide');
+                    const fieldType = field.getAttribute('type');
+
+                    if (field.tagName === 'SELECT') {
+                      field.selectedIndex = 0;
+                    }
+                    if (fieldType !== 'hidden' && fieldType !== 'email' && field.tagName !== 'SELECT') {
+                      field.value = '';
+                    }
+                  });
+                }
+              });
+            }
+          })
+          .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error(`Error when setting form values: ${error.message}`);
+          });
 
         /* floating label */
         if (floatingLable === true) {
