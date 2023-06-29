@@ -722,10 +722,12 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 
         const demoCheckbox = formEl.querySelector('input[name="Demo_Request_Checkbox__c"]');
         if (chilipiper && chilipiper === 'content-download-form') {
+          const isAbsoluteURL = str => /^[a-z][a-z0-9+.-]*:/.test(str);
+          const cpRedirectUrl = isAbsoluteURL(successUrl) ? successUrl : window.location.origin + successUrl;
           form.onSubmit(() => {
             if (demoCheckbox && demoCheckbox.checked) {
               // eslint-disable-next-line
-              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: window.location.origin + successUrl });
+              ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: cpRedirectUrl });
             }
           });
         }
