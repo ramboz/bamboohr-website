@@ -597,18 +597,16 @@ const capitalizeKeys = (obj) => {
  * Get prefill fields from marketo cookie
  * @returns {Promise<object|null>} The prefill fields object or null if there was an error
  */
-const getPrefillFields = async () => {
+export const getPrefillFields = async () => {
   try {
-    // const response = await fetch('/xhr/formfill.php');
-    // if (!response.ok) {
-    //   // eslint-disable-next-line no-console
-    //   console.error(`Request failed with status: ${response.status}`);
-    //   return null;
-    // }
+    const response = await fetch('/xhr/formfill.php');
+    if (!response.ok) {
+      // eslint-disable-next-line no-console
+      console.error(`Request failed with status: ${response.status}`);
+      return null;
+    }
 
-    // const data = await response.json();
-    const response = '{"formData":{"id":35898882,"firstName":"Meng","lastName":"Tian","email":"deegd@gmail.com","phone":"8011231234","Employees_Text__c":"25-75","title":"test","company":"bamboohr","jobOpenings":null,"industry":null,"postalCode":null}}';
-    const data = JSON.parse(response);
+    const data = await response.json();
     const { formData } = data;
     const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
 
@@ -646,6 +644,49 @@ const setFormValues = async (formEl) => {
   return prefillFields;
 };
 
+/**
+ * Clear form values
+ *  @param {string} formId - markto form id
+ * @param {object} formFields - The form fields to clear the values
+ * @param {boolean} includeEmail - include email to clear email value
+ */
+function clearFormValues(formId, formFields, includeEmail = true) {
+  const currentForm = document.getElementById(`mktoForm_${formId}`);
+  currentForm.classList.remove('minimized-form');
+  formFields.forEach((field) => {
+    const formRow = field.closest('.mktoFormRow');
+    if (formRow) formRow.classList.remove('hide');
+    const fieldType = field.getAttribute('type');
+
+    if (field.tagName === 'SELECT') {
+      field.selectedIndex = 0;
+    }
+    if (fieldType !== 'hidden' && fieldType !== 'email' && field.tagName !== 'SELECT') {
+      field.value = '';
+    }
+    if (includeEmail && fieldType === 'email') {
+      field.value = '';
+    }
+  });
+}
+
+/**
+ * Minimize marketo form to show email only
+ * @param {object} formEl - form elements
+ */
+function minimizeForm(formEl) {
+  const formFields = formEl.querySelectorAll('.mktoField');
+  formFields.forEach((field) => {
+    const fieldType = field.getAttribute('type');
+    if (fieldType !== 'email' && fieldType !== 'checkbox' && field.value.trim() !== '') {
+      const formRow = field.closest('.mktoFormRow');
+      if (formRow) formRow.classList.add('hide');
+      const partnerConsent = formEl.querySelector('.bhrForm__partnerDisclaimer');
+      if (partnerConsent) partnerConsent.closest('.mktoFormRow').classList.add('hide');
+    }
+  });
+}
+
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -673,10 +714,11 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         setFormValues(formEl)
           .then((result) => {
             const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
-            if (testVariation === 'minimized-form') {
+            if (result && testVariation === 'minimized-form') {
               // Hide all form fields except email input
               const currentForm = document.getElementById(`mktoForm_${formId}`);
               currentForm.classList.add('minimized-form');
+              currentForm.closest('.form').classList.add('has-minimized-form');
 
               const formCol = currentForm.closest('.form-col');
               // set new form title
@@ -686,37 +728,29 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
               const clearFormEl = document.createElement('a');
               clearFormEl.href = '#';
               clearFormEl.textContent = 'Tell us about yourself';
-              console.log(clearFormEl);
               if (formSubheading) formSubheading.innerHTML = `Not you? ${clearFormEl.outerHTML}`;
 
+              const formConsentEl = document.createElement('p');
+              formConsentEl.className = 'form-consent';
+              formConsentEl.innerHTML = 'Please see our <a href="/privacy-policy/">Privacy Notice.</a>';
+              const formLogos = formCol.querySelector('.form-logos');
+              formCol.insertBefore(formConsentEl, formLogos);
+
+              // minimize form
               const formFields = formEl.querySelectorAll('.mktoField');
-              formFields.forEach((field) => {
-                const fieldType = field.getAttribute('type');
-                if (fieldType !== 'email' && fieldType !== 'checkbox' && field.value.trim() !== '') {
-                  const formRow = field.closest('.mktoFormRow');
-                  if (formRow) formRow.classList.add('hide');
-                  const partnerConsent = formEl.querySelector('.bhrForm__partnerDisclaimer');
-                  if (partnerConsent) partnerConsent.closest('.mktoFormRow').classList.add('hide');
-                }
+              minimizeForm(formEl);
+
+              // show all form fields and clear form values
+              formSubheading.addEventListener('click', (e) => {
+                e.preventDefault();
+                clearFormValues(formId, formFields);
               });
 
-              // show all fields if user change email
+              // show all fields if user change email, keep email prefilled
               const email = formEl.querySelector(`[name='Email']`);
               email.addEventListener('change', () => {
                 if (email !== result.Email) {
-                  currentForm.classList.remove('minimized-form');
-                  formFields.forEach((field) => {
-                    const formRow = field.closest('.mktoFormRow');
-                    if (formRow) formRow.classList.remove('hide');
-                    const fieldType = field.getAttribute('type');
-
-                    if (field.tagName === 'SELECT') {
-                      field.selectedIndex = 0;
-                    }
-                    if (fieldType !== 'hidden' && fieldType !== 'email' && field.tagName !== 'SELECT') {
-                      field.value = '';
-                    }
-                  });
+                  clearFormValues(formId, formFields, false);
                 }
               });
             }
