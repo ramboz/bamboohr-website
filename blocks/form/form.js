@@ -753,6 +753,16 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
                   clearFormValues(formId, formFields, false);
                 }
               });
+
+              // show phone number field if user check the request a demo checkbox
+              const demoCheckbox = formEl.querySelector('input[name="Demo_Request_Checkbox__c"]');
+              demoCheckbox.addEventListener('change', () => {
+                const phoneNumber = formEl.querySelector('input[name="Phone"]');
+                const phoneNumberRow = phoneNumber.closest('.mktoFormRow');
+                if (demoCheckbox.checked && phoneNumberRow && phoneNumberRow.classList.contains('hide')) {
+                  phoneNumberRow.classList.remove('hide');
+                }
+              });
             }
           })
           .catch((error) => {
