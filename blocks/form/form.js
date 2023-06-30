@@ -911,9 +911,10 @@ const getDefaultEmbed = (url) => `<iframe frameborder="0" src="${url}" allowfull
 
 export function scrollToForm() {
   const formEl = document.querySelector('.form-wrapper');
-  const formTop = formEl.offsetTop;
-  window.scrollTo({ top: formTop, behavior: 'smooth' });
-  // formEl.querySelector('input:not([type=hidden])').focus();
+  formEl.scrollIntoView({
+    behavior: 'smooth',
+  });
+  if (!/Mobi/.test(navigator.userAgent)) formEl.querySelector('input:not([type=hidden])').focus();
 }
 
 export default async function decorate(block) {
