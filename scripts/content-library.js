@@ -1,5 +1,4 @@
 import { buildBlock, getMetadata, toClassName } from './scripts.js';
-import { getPrefillFields } from '../blocks/form/form.js';
 
 async function buildLandingPage(main) {
   const blockContent = [];

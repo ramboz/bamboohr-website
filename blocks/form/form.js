@@ -597,7 +597,7 @@ const capitalizeKeys = (obj) => {
  * Get prefill fields from marketo cookie
  * @returns {Promise<object|null>} The prefill fields object or null if there was an error
  */
-export const getPrefillFields = async () => {
+const getPrefillFields = async () => {
   try {
     const response = await fetch('/xhr/formfill.php');
     if (!response.ok) {
@@ -671,7 +671,7 @@ function clearFormValues(formId, formFields, includeEmail = true) {
 }
 
 /**
- * Minimize marketo form to show email only
+ * Minimize marketo form to show email and checkboxes only
  * @param {object} formEl - form elements
  */
 function minimizeForm(formEl) {
