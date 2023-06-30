@@ -599,14 +599,16 @@ const capitalizeKeys = (obj) => {
  */
 const getPrefillFields = async () => {
   try {
-    const response = await fetch('/xhr/formfill.php');
-    if (!response.ok) {
-      // eslint-disable-next-line no-console
-      console.error(`Request failed with status: ${response.status}`);
-      return null;
-    }
+    // const response = await fetch('/xhr/formfill.php');
+    // if (!response.ok) {
+    //   // eslint-disable-next-line no-console
+    //   console.error(`Request failed with status: ${response.status}`);
+    //   return null;
+    // }
 
-    const data = await response.json();
+    // const data = await response.json();
+    const response = '{"formData":{"id":36155844,"firstName":"MengTest","lastName":"Tian","email":"45dfmeng@gmail.com","phone":"8011231234","Employees_Text__c":"76-150","title":"Test","company":"Bamboohr","jobOpenings":null,"industry":"Software","postalCode":null}}';
+    const data = JSON.parse(response);
     const { formData } = data;
     const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
 
@@ -646,13 +648,16 @@ const setFormValues = async (formEl) => {
 
 /**
  * Clear form values
- *  @param {string} formId - markto form id
+ *  @param {string} formEl - form element
  * @param {object} formFields - The form fields to clear the values
  * @param {boolean} includeEmail - include email to clear email value
  */
-function clearFormValues(formId, formFields, includeEmail = true) {
-  const currentForm = document.getElementById(`mktoForm_${formId}`);
-  currentForm.classList.remove('minimized-form');
+function clearFormValues(formEl, formFields, includeEmail = true) {
+  console.log(formEl.classList);
+  formEl.classList.remove('minimized-form');
+  const partnerConsent = formEl.querySelector('.bhrForm__partnerDisclaimer');
+  if (partnerConsent) partnerConsent.closest('.mktoFormRow').classList.remove('hide');
+
   formFields.forEach((field) => {
     const formRow = field.closest('.mktoFormRow');
     if (formRow && formRow.classList.contains('hide')) formRow.classList.remove('hide');
@@ -672,7 +677,7 @@ function clearFormValues(formId, formFields, includeEmail = true) {
 
 /**
  * Minimize marketo form to show email and checkboxes only
- * @param {object} formEl - form elements
+ * @param {object} formEl - form element
  */
 function minimizeForm(formEl) {
   const formFields = formEl.querySelectorAll('.mktoField');
@@ -716,15 +721,17 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
             const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
             if (result && testVariation === 'minimized-form') {
               // Hide all form fields except email input
-              const currentForm = document.getElementById(`mktoForm_${formId}`);
-              currentForm.classList.add('minimized-form');
-              currentForm.closest('.form').classList.add('has-minimized-form');
+              formEl.classList.add('minimized-form');
+              formEl.closest('.form').classList.add('has-minimized-form');
 
-              const formCol = currentForm.closest('.form-col');
+              const formCol = formEl.closest('.form-col');
               // set new form title
               const formTitle = formCol?.firstElementChild?.firstElementChild;
-              if (formTitle) formTitle.textContent = `Welcome Back ${result.FirstName}!`;
+              const originalFormTitle = formCol?.firstElementChild?.firstElementChild.textContent;
+              if (formTitle && result.FirstName) formTitle.textContent = `Welcome Back ${result.FirstName}!`;
               const formSubheading = formCol?.firstElementChild?.nextSibling;
+              const originalFormSubheading = formCol?.firstElementChild?.nextSibling.textContent;
+
               const clearFormEl = document.createElement('a');
               clearFormEl.href = '#';
               clearFormEl.textContent = 'Tell us about yourself';
@@ -743,14 +750,18 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
               // show all form fields and clear form values
               formSubheading.addEventListener('click', (e) => {
                 e.preventDefault();
-                clearFormValues(formId, formFields);
+                clearFormValues(formEl, formFields);
+                formConsentEl.remove();
+                if (formTitle) formTitle.textContent = originalFormTitle;
+                if (formSubheading) formSubheading.textContent = originalFormSubheading;
               });
 
               // show all fields if user change email, keep email prefilled
               const email = formEl.querySelector(`[name='Email']`);
               email.addEventListener('change', () => {
                 if (email !== result.Email) {
-                  clearFormValues(formId, formFields, false);
+                  clearFormValues(formEl, formFields, false);
+                  formConsentEl.remove();
                 }
               });
 
