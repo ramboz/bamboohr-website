@@ -914,7 +914,7 @@ export function scrollToForm() {
   formEl.scrollIntoView({
     behavior: 'smooth',
   });
-  formEl.querySelector('input:not([type=hidden])').focus();
+  if (!/Mobi/.test(navigator.userAgent)) formEl.querySelector('input:not([type=hidden])').focus();
 }
 
 export default async function decorate(block) {
