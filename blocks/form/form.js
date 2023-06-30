@@ -599,16 +599,14 @@ const capitalizeKeys = (obj) => {
  */
 const getPrefillFields = async () => {
   try {
-    // const response = await fetch('/xhr/formfill.php');
-    // if (!response.ok) {
-    //   // eslint-disable-next-line no-console
-    //   console.error(`Request failed with status: ${response.status}`);
-    //   return null;
-    // }
+    const response = await fetch('/xhr/formfill.php');
+    if (!response.ok) {
+      // eslint-disable-next-line no-console
+      console.error(`Request failed with status: ${response.status}`);
+      return null;
+    }
 
-    // const data = await response.json();
-    const response = '{"formData":{"id":36155844,"firstName":"MengTest","lastName":"Tian","email":"45dfmeng@gmail.com","phone":"8011231234","Employees_Text__c":"76-150","title":"Test","company":"Bamboohr","jobOpenings":null,"industry":"Software","postalCode":null}}';
-    const data = JSON.parse(response);
+    const data = await response.json();
     const { formData } = data;
     const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
 
@@ -653,7 +651,6 @@ const setFormValues = async (formEl) => {
  * @param {boolean} includeEmail - include email to clear email value
  */
 function clearFormValues(formEl, formFields, includeEmail = true) {
-  console.log(formEl.classList);
   formEl.classList.remove('minimized-form');
   const partnerConsent = formEl.querySelector('.bhrForm__partnerDisclaimer');
   if (partnerConsent) partnerConsent.closest('.mktoFormRow').classList.remove('hide');
