@@ -299,6 +299,14 @@ main .form .mktoForm .mktoLabel {
   }
 }
 
+main .form .mktoForm.minimized-form .mktoFormRow.form-input-width50 {
+  width: 100%;
+}
+
+main .form .mktoForm .mktoFormRow.hide {
+  display: none;
+}
+
 main .form .mktoForm .mktoErrorMsg {
   position: absolute;
   right: 2px;
@@ -343,7 +351,8 @@ main .form .mktoForm .mktoButton {
   margin-top: 16px;
 }
 
-main .form .bhrForm__partnerDisclaimer {
+main .form .bhrForm__partnerDisclaimer,
+main .form.has-minimized-form .form-col .form-consent {
   color: var(--color-gray-9);
   font-size: 14px;
   line-height: 20px;
@@ -416,6 +425,7 @@ main .form.has-content .content-col h1 {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 40px;
+    align-items: start;
   }
 
   main .form.has-content .content-col {
@@ -516,4 +526,48 @@ main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mkt
 main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel.active + select,
 main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel.active + textarea {
   padding: 17px 12px 3px;
+}
+
+/* minimized form */
+main .form.has-minimized-form .form-col p:nth-child(2) a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--theme-shade5);
+}
+
+main .form.has-minimized-form .form-col .form-consent {
+  text-align: center;
+  margin: 30px 0 10px;
+}
+
+main .form.has-minimized-form .form-col .form-consent a,
+main .form.minimized-form-test .form-col .bhrForm__partnerDisclaimer a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: var(--theme-shade10);
+  font-weight: 600;
+  font-style: normal;
+}
+
+main .form.has-minimized-form .form-col .mktoForm .mktoButton {
+  margin-top: 25px;
+}
+
+main .form.minimized-form-test.has-content .form-col {
+  padding: 32px;
+  background-color: var(--color-white);
+  border-radius: 30px;
+}
+
+main .form.minimized-form-test .form-col .form-container {
+  margin-top: 10px;
+}
+
+main .form.minimized-form-test .form-col p:nth-child(2) {
+  color: var(--color-gray-12);
+}
+
+main .form.minimized-form-test .form-col .form-logos img {
+  max-width: 100%;
+  margin-top: 20px;
 }

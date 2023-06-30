@@ -18,11 +18,18 @@ function buildLandingPage(main) {
   const resourceType = window.location.pathname.replace('/resources/','').split('/');
   const formTitle = getMetadata('form-title') || `Download your free ${resourceType[0].slice(0, -1)}`;
   const formSubheading = getMetadata('form-subheading') || 'All you need to do is complete the form below.';
-  blockContent.push(`<p><strong>${formTitle}</strong></p><p>${formSubheading}</p>${logos}<p>form</p>`);
+
+  const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
+  if (testVariation === 'minimized-form') {
+    blockContent.push(`<p><strong>${formTitle}</strong></p><p>${formSubheading}</p><p>form</p>${logos}`);
+  } else {
+    blockContent.push(`<p><strong>${formTitle}</strong></p><p>${formSubheading}</p>${logos}<p>form</p>`);
+  }
   
   const section = document.createElement('div');
   const block = buildBlock('form', [blockContent]);
   block?.classList?.add('grid-7-5', 'has-content');
+  if (testVariation === 'minimized-form') block?.classList?.add('minimized-form-test');
   section.prepend(block);
   main.innerHTML = section.outerHTML;
 }
