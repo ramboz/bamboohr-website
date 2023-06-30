@@ -911,9 +911,8 @@ const getDefaultEmbed = (url) => `<iframe frameborder="0" src="${url}" allowfull
 
 export function scrollToForm() {
   const formEl = document.querySelector('.form-wrapper');
-  formEl.scrollIntoView({
-    behavior: 'smooth',
-  });
+  const formTop = formEl.offsetTop;
+  window.scrollTo({ top: formTop, behavior: 'smooth' });
   formEl.querySelector('input:not([type=hidden])').focus();
 }
 
