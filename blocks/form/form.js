@@ -599,14 +599,16 @@ const capitalizeKeys = (obj) => {
  */
 const getPrefillFields = async () => {
   try {
-    const response = await fetch('/xhr/formfill.php');
-    if (!response.ok) {
-      // eslint-disable-next-line no-console
-      console.error(`Request failed with status: ${response.status}`);
-      return null;
-    }
+    // const response = await fetch('/xhr/formfill.php');
+    // if (!response.ok) {
+    //   // eslint-disable-next-line no-console
+    //   console.error(`Request failed with status: ${response.status}`);
+    //   return null;
+    // }
 
-    const data = await response.json();
+    // const data = await response.json();
+    const response = '{"formData":{"id":36155844,"firstName":"MengTest","lastName":"Tian","email":"45dfmeng@gmail.com","phone":"8011231234","Employees_Text__c":"76-150","title":"Test","company":"Bamboohr","jobOpenings":null,"industry":"Software","postalCode":null}}';
+    const data = JSON.parse(response);
     const { formData } = data;
     const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
 
@@ -678,7 +680,7 @@ function minimizeForm(formEl) {
   const formFields = formEl.querySelectorAll('.mktoField');
   formFields.forEach((field) => {
     const fieldType = field.getAttribute('type');
-    if (fieldType !== 'email' && fieldType !== 'checkbox' && field.value.trim() !== '') {
+    if (fieldType !== 'email' && fieldType !== 'checkbox' && fieldType !== 'hidden' && field.value.trim() !== '') {
       const formRow = field.closest('.mktoFormRow');
       if (formRow) formRow.classList.add('hide');
       const partnerConsent = formEl.querySelector('.bhrForm__partnerDisclaimer');
