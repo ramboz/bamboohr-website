@@ -1,6 +1,6 @@
 import { buildBlock, getMetadata, toClassName } from './scripts.js';
 
-async function buildLandingPage(main) {
+function buildLandingPage(main) {
   const blockContent = [];
   blockContent.push(main.querySelector(':scope > div').innerHTML);
   
