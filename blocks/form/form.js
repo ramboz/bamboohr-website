@@ -913,7 +913,7 @@ export function scrollToForm() {
   const formEl = document.querySelector('.form-wrapper');
   const formTop = formEl.offsetTop;
   window.scrollTo({ top: formTop, behavior: 'smooth' });
-  formEl.querySelector('input:not([type=hidden])').focus();
+  // formEl.querySelector('input:not([type=hidden])').focus();
 }
 
 export default async function decorate(block) {
