@@ -532,7 +532,7 @@ main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mkt
 main .form.has-minimized-form .form-col p:nth-child(2) a {
   text-decoration: underline;
   text-underline-offset: 4px;
-  text-decoration-color: var(--theme-shade5);
+  text-decoration-color: var(--color-1-shade-10);
 }
 
 main .form.has-minimized-form .form-col .form-consent {
@@ -544,7 +544,7 @@ main .form.has-minimized-form .form-col .form-consent a,
 main .form.minimized-form-test .form-col .bhrForm__partnerDisclaimer a {
   text-decoration: underline;
   text-underline-offset: 4px;
-  color: var(--theme-shade10);
+  color: var(--color-1-shade-10);
   font-weight: 600;
   font-style: normal;
 }
