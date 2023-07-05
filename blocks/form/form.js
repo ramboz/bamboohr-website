@@ -756,7 +756,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
               // show all fields if user change email, keep email prefilled
               const email = formEl.querySelector(`[name='Email']`);
               email.addEventListener('change', () => {
-                if (email !== result.Email) {
+                if (email !== result.Email && formEl.classList.contains('minimized-form')) {
                   clearFormValues(formEl, formFields, false);
                   formConsentEl.remove();
                 }
