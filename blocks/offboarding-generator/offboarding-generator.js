@@ -642,4 +642,8 @@ export default async function decorate(block) {
       resetForm(block)
     });
   });
+
+  // Prevent mobile select field default behaviour
+  const selectLabel = block.querySelector('label[for="template-options"]')
+  selectLabel.addEventListener('click', e => e.preventDefault())
 }
