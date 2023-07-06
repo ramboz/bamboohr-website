@@ -345,6 +345,9 @@ main .offboarding-generator select {
   outline: none;
   text-transform: capitalize;
   background-color: white;
+  text-overflow: ellipsis;
+  padding-right: 2rem;
+  white-space: nowrap;
 }
 
 /* Input Elements */
