@@ -146,14 +146,14 @@ function createSelect(id, label, options, tooltip) {
 }
 
 // Generate Input
-function createInput(id, type, label, placeholder, value, tooltip, options, data) {
+function createInput(id, type, label, placeholder, value, tooltip, options, data, mandatory) {
   let inputHtml = '';
   let optionsArr = '';
 
   if (type !== "select") {
     inputHtml = `<div class="field_item">
     <label for="${id}">${label} ${tooltip ? createTooltip(tooltip) : ''}</label>
-    <input type="${type}" id="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} ${type === 'date' ? 'min="2023-01-01" max="2050-12-31"' : ''} ${type === 'datetime-local' ? 'min="2023-01-01T00:00" max="2050-12-31T23:30"' : ''} ${data ? `data-field="${data}"` : ""} required/>
+    <input type="${type}" id="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} ${type === 'date' ? 'min="2023-01-01" max="2050-12-31"' : ''} ${type === 'datetime-local' ? 'min="2023-01-01T00:00" max="2050-12-31T23:30"' : ''} ${data ? `data-field="${data}"` : ""} ${mandatory ? 'required' : ''}/>
     <div class="error hidden"></div>
     </div>`
   }
@@ -202,8 +202,8 @@ function getTemplatesTone(template) {
 // Generate Inputs
 function generateInputs(template) {
   const output = template.map(item => {
-    const {Field, Label, Placeholder, Tooltip, Type, Options, Data} = item
-    return `${createInput(Field, Type, Label, Placeholder, null, Tooltip, Options, Data)}`
+    const {Field, Label, Placeholder, Tooltip, Type, Options, Data, Mandatory} = item
+    return `${createInput(Field, Type, Label, Placeholder, null, Tooltip, Options, Data, Mandatory)}`
   }).join('')
   return output
 }
