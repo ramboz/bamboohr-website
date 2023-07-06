@@ -361,7 +361,7 @@ function templatePreview(values, block) {
         time = new Date(value.value).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
       }
 
-      if (token.dataset.token === key) {
+      if (token.dataset.token === key && value.value) {
         token.textContent = data
       } else if (token.dataset.token === 'name') {
         token.textContent = `${values.firstName.value} ${values.secondName.value}`
