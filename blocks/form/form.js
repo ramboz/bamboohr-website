@@ -550,6 +550,7 @@ export function adobeEventTracking(event, componentData) {
 }
 
 function getUniqueFormSubmissionHash(ecid) {
+  // eslint-disable-next-line no-undef
   return md5(ecid + Date.now());
 }
 
