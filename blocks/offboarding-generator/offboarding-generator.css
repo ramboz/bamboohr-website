@@ -530,6 +530,11 @@ main .offboarding-generator .overlay-close .button{
   text-decoration: underline;
 }
 
+main .offboarding-generator a {
+  color: var(--theme-shade10);
+  text-decoration: underline;
+}
+
 @media (min-width: 685px) and (max-width: 781px) {
   main .offboarding-generator-step--overlay::before {
     width: 67%;
