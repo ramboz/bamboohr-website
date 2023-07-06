@@ -78,7 +78,7 @@ function validateForm(form, block) {
       message = getMessage(input);
       valid = false;
     } else if (input.type === 'text' && input.dataset.field !== 'address') {
-      regex = /^[A-Za-z\s]+$/;
+      regex = /^[A-Za-z\s']+$/;
       if (!input.value.match(regex)) {
         message = 'Please enter letters only.';
         valid = false;
