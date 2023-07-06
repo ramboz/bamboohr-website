@@ -285,7 +285,7 @@ export async function analyticsTrackFormSubmission(element, additionalXdmFields 
           formId: rawFormId,
           formComplete: 1,
 		  businessSize: formBusinessSize,
-		  uniqueFormSubmissionHash: formUniqueSubmissionHash
+		  uniqueSubmissionHash: formUniqueSubmissionHash
         },
         ...additionalXdmFields,
       },
