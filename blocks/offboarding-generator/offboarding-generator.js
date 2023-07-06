@@ -74,10 +74,10 @@ function validateForm(form, block) {
     let message = '';
     let regex = '';
   
-    if (input.validity.valueMissing) {
+    if (input.validity.valid === false) {
       message = getMessage(input);
       valid = false;
-    } else if (input.type === 'text' && input.dataset.field !== 'address') {
+    } else if (input.type === 'text' && input.dataset.field !== 'address' && !input.validity.valid) {
       regex = /^[A-Za-z\s']+$/;
       if (!input.value.match(regex)) {
         message = 'Please enter letters only.';
