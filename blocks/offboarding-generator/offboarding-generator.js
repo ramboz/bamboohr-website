@@ -84,7 +84,7 @@ function validateForm(form, block) {
         valid = false;
       }
     } else if (input.type === 'tel') {
-      regex = /^\d+$/;
+      regex = /^[\d\s]+$/;
       if (!input.value.match(regex)) {
         message = 'Please enter numbers only.';
         valid = false;
