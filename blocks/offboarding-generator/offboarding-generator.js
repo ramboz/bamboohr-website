@@ -134,7 +134,7 @@ function createTooltip(content) {
 }
 
 function createSelect(id, label, options, tooltip) {
-  const optionsHtml = options.map(item => `<option value="${item.formValue}">${item.formLabel}</option>`)
+  const optionsHtml = options.map(item => `<option value="${item.formValue}" ${item.formValue === 'United States' ? 'selected="selected"' : ''} >${item.formLabel}</option>`)
 
   const selectHTML = `<div class="template-options__wrapper">
   <label for="${id}"> ${label} ${tooltip ? createTooltip(tooltip) : ''}</label>
