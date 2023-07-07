@@ -823,8 +823,39 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
 
+        console.log(formId, " this is the form id");
+        if (formId === '3457') {
+          const checkboxPayroll = formEl.querySelector('input[name="requestPayroll"]');
+          const checkboxBenAdmin = formEl.querySelector('input[name="requestBenefitsAdministration"]');
+          const checkboxTimeTrack = formEl.querySelector('input[name="requestTimeTracking"]');
+          const checkboxPerfMgmt = formEl.querySelector('input[name="requestPerformanceManagement"]');
+          const requestType = formEl.querySelector('input[name="Request_Type__c"]').value;
+          console.log(requestType, ' this is the request type');
+          console.log(checkboxPayroll, ' this is the payroll checkbox');
+          switch (requestType) {
+            case 'Payroll':
+              checkboxPayroll.checked = true;
+              checkboxPayroll.disabled = true;
+              break;
+            case 'Benefits Administration':
+              checkboxBenAdmin.checked = true;
+              checkboxBenAdmin.disabled = true;
+              break;
+            case 'Time Tracking':
+              checkboxTimeTrack.checked = true;
+              checkboxTimeTrack.disabled = true;
+              break;
+            case 'Performance Management':
+              checkboxPerfMgmt.checked = true;
+              checkboxPerfMgmt.disabled = true;
+              break;
+            default:
+              break;
+          }
+        }
+
         addFormHeadingText();
-        addExpansionProduct();
+        // addExpansionProduct();
 
         const demoCheckbox = formEl.querySelector('input[name="Demo_Request_Checkbox__c"]');
         if (chilipiper && chilipiper === 'content-download-form') {
@@ -868,7 +899,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         return setTimeout(() => {
 		  setTimeout(() =>{
 			analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
-		  },1000);		  
+		  },1000);
 		  window.location.href = timeoutSuccessUrl; 
 		}, '240000');
       }
