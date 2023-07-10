@@ -841,24 +841,27 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           const checkboxTimeTrack = formEl.querySelector('input[name="requestTimeTracking"]');
           const checkboxPerfMgmt = formEl.querySelector('input[name="requestPerformanceManagement"]');
           const requestType = formEl.querySelector('input[name="Request_Type__c"]').value;
+
+          const selectCheckbox = (checkbox) => {
+            checkbox.checked = true;
+            checkbox.disabled = true;
+          };
+
           console.log(requestType, ' this is the request type');
           console.log(checkboxPayroll, ' this is the payroll checkbox');
+
           switch (requestType) {
             case 'Payroll':
-              checkboxPayroll.checked = true;
-              checkboxPayroll.disabled = true;
+              selectCheckbox(checkboxPayroll);
               break;
             case 'Benefits Administration':
-              checkboxBenAdmin.checked = true;
-              checkboxBenAdmin.disabled = true;
+              selectCheckbox(checkboxBenAdmin);
               break;
             case 'Time Tracking':
-              checkboxTimeTrack.checked = true;
-              checkboxTimeTrack.disabled = true;
+              selectCheckbox(checkboxTimeTrack);
               break;
             case 'Performance Management':
-              checkboxPerfMgmt.checked = true;
-              checkboxPerfMgmt.disabled = true;
+              selectCheckbox(checkboxPerfMgmt);
               break;
             default:
               break;
