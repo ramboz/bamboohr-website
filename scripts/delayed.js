@@ -97,12 +97,12 @@ function loadTrustArcFormScript() {
   });
   r.irm.init(
     {
-      formId: '62f6991b-9d92-4ba0-8736-4b9e0b0df291',
+      id: '62f6991b-9d92-4ba0-8736-4b9e0b0df291',
       gpcDetection: true
     },
     (error) => {
-      document.body.innerHTML = error;
-      document.body.style.color = 'red';
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
   );
 
