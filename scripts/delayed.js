@@ -97,7 +97,7 @@ function loadTrustArcFormScript() {
   });
   r.irm.init(
     {
-      id: '62f6991b-9d92-4ba0-8736-4b9e0b0df291',
+      formId: '62f6991b-9d92-4ba0-8736-4b9e0b0df291',
       gpcDetection: true
     },
     (error) => {
