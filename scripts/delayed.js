@@ -82,6 +82,7 @@ function loadStyle(location, css) {
   return $style;
 }
 
+// eslint-disable-next-line no-unused-vars
 function loadSalesforceChatScript() {
   const chatTestPaths = [
     '/drafts/sclayton/chat-test',
