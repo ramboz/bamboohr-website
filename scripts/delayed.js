@@ -80,7 +80,6 @@ function loadSalesforceChatScript() {
   }, 'text/javascript');
 }
 
-// eslint-disable-next-line no-unused-vars
 function loadTrustArcFormScript() {
   window.trustarc = window.trustarc || {};
   const r = window.trustarc;
@@ -98,12 +97,12 @@ function loadTrustArcFormScript() {
   });
   r.irm.init(
     {
-      formId: '62f6991b-9d92-4ba0-8736-4b9e0b0df291',
+      id: '62f6991b-9d92-4ba0-8736-4b9e0b0df291',
       gpcDetection: true
     },
     (error) => {
-      document.body.innerHTML = error;
-      document.body.style.color = 'red';
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
   );
 
@@ -157,7 +156,6 @@ function isTrustArcAdvertisingCookieAllowed() {
   return false;
 }
 
-// eslint-disable-next-line no-unused-vars
 async function setConsentBasedOnTrustArc() {
   await analyticsSetConsent(isTrustArcAdvertisingCookieAllowed());
 
@@ -183,11 +181,11 @@ async function setConsentBasedOnTrustArc() {
 
 // PROXIED URL: loadScript('footer',
 // 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
-// loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
+loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
 
 loadScript('header', 'https://www.googleoptimize.com/optimize.js?id=OPT-PXL7MPD', null);
 
-// loadTrustArcFormScript();
+loadTrustArcFormScript();
 
 /* google tag manager */
 // eslint-disable-next-line
