@@ -181,11 +181,11 @@ async function setConsentBasedOnTrustArc() {
 
 // PROXIED URL: loadScript('footer',
 // 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
-loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
+// loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
 
 loadScript('header', 'https://www.googleoptimize.com/optimize.js?id=OPT-PXL7MPD', null);
 
-loadTrustArcFormScript();
+// loadTrustArcFormScript();
 
 /* google tag manager */
 // eslint-disable-next-line
