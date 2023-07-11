@@ -180,8 +180,7 @@ function loadSalesforceChatScript3() {
   // eslint-disable-next-line
   chatLink.href = 'javascript://Chat';
   chatLink.style.display = 'none';
-  // eslint-disable-next-line
-  chatLink.onclick = () => liveagent.startChat('5734z00000000gZ');
+  chatLink.setAttribute('onclick', "liveagent.startChat('5734z00000000gZ')");
   chatLink.innerHTML = '<!-- Online Chat Content -->';
   $body.append(chatLink);
 
