@@ -96,6 +96,7 @@ function loadSalesforceChatScript() {
   }, 'text/javascript');
 }
 
+// eslint-disable-next-line no-unused-vars
 function loadSalesforceChatScript2() {
   const chatTestPaths = [
     '/drafts/sclayton/chat-test',
@@ -139,6 +140,79 @@ function loadSalesforceChatScript2() {
 		embedded_svc.init(
 			'https://bamboohr--webchat.sandbox.my.salesforce.com',
 			'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468vforces',
+			gslbBaseURL,
+			'00D7h0000004j7W',
+			'eric_and_jordan_test',
+			{
+				baseLiveAgentContentURL: 'https://c.la3-c1cs-ia5.salesforceliveagent.com/content',
+				deploymentId: '5724z000000Gn92',
+				buttonId: '5734z00000000gZ',
+				baseLiveAgentURL: 'https://d.la3-c1cs-ia5.salesforceliveagent.com/chat',
+				eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I7h000000CapnEAC_18940bf130e',
+				isOfflineSupportEnabled: false
+			}
+		);
+	};
+
+	if (!window.embedded_svc) {
+		var s = document.createElement('script');
+		s.setAttribute('src', 'https://bamboohr--webchat.sandbox.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+		s.onload = function() {
+			initESW(null);
+		};
+		document.body.appendChild(s);
+	} else {
+		initESW('https://service.force.com');
+	}`);
+}
+
+function loadSalesforceChatScript3() {
+  const chatTestPaths = [
+    '/drafts/sclayton/chat-test',
+  ];
+
+  const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
+  if (!isOnChatTestPath) return;
+
+  // load style
+  loadStyle('footer', `.embeddedServiceHelpButton .helpButton .uiButton {
+		background-color: #005290;
+		font-family: "Salesforce Sans", sans-serif;
+	}
+	.embeddedServiceHelpButton .helpButton .uiButton:focus {
+		outline: 1px solid #005290;
+	}
+	@font-face {
+		font-family: 'Salesforce Sans';
+		src: url('https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.woff') format('woff'),
+		url('https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.ttf') format('truetype');
+	}`);
+
+  loadScript('footer', null, null, 'text/javascript', false, `var initESW = function(gslbBaseURL) {
+		embedded_svc.settings.displayHelpButton = true; //Or false
+		embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
+
+		//embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+		//embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+
+		//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+		//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+		// Settings for Chat
+		//embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+			// Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+			// Returns a valid button ID.
+		//};
+		//embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+		//embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+		//embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+
+		embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+		embedded_svc.settings.entryFeature = 'LiveAgent';
+
+		embedded_svc.init(
+			'https://bamboohr--webchat.sandbox.my.salesforce.com',
+			'https://bamboohr--webchat.sandbox.my.site.com/ESWEricTestChat1688658886259vforcesite',
 			gslbBaseURL,
 			'00D7h0000004j7W',
 			'eric_and_jordan_test',
@@ -276,8 +350,9 @@ loadTrustArcFormScript();
 // eslint-disable-next-line
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-ZLCX');
 
-loadSalesforceChatScript();
-loadSalesforceChatScript2();
+// loadSalesforceChatScript();
+// loadSalesforceChatScript2();
+loadSalesforceChatScript3();
 
 updateExternalLinks();
 
