@@ -96,6 +96,7 @@ function loadSalesforceChatScript() {
   }, 'text/javascript');
 }
 
+// eslint-disable-next-line no-unused-vars
 function loadSalesforceChatScript2() {
   const chatTestPaths = [
     '/drafts/sclayton/chat-test',
@@ -163,6 +164,36 @@ function loadSalesforceChatScript2() {
 	} else {
 		initESW('https://service.force.com');
 	}`);
+}
+
+function loadSalesforceChatScript3() {
+  const chatTestPaths = [
+    '/drafts/sclayton/chat-test',
+  ];
+
+  const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
+  if (!isOnChatTestPath) return;
+
+  const $body = document.querySelector('body');
+  const chatLink = document.createElement('a');
+  chatLink.id = 'liveagent_button_online_5734z00000000gZ';
+  // eslint-disable-next-line
+  chatLink.href = 'javascript://Chat';
+  chatLink.style.display = 'none';
+  chatLink.setAttribute('onclick', "liveagent.startChat('5734z00000000gZ')");
+  chatLink.innerHTML = '<!-- Online Chat Content -->';
+  $body.append(chatLink);
+
+  const chatOffline = document.createElement('div');
+  chatOffline.id = 'liveagent_button_offline_5734z00000000gZ';
+  chatOffline.style.display = 'none';
+  chatOffline.innerHTML = '<!-- Offline Chat Content -->';
+  $body.append(chatOffline);
+
+  loadScript('footer', null, null, 'text/javascript', false, `if (!window._laq) { window._laq = []; }
+    window._laq.push(function(){liveagent.showWhenOnline('5734z00000000gZ', document.getElementById('liveagent_button_online_5734z00000000gZ'));
+    liveagent.showWhenOffline('5734z00000000gZ', document.getElementById('liveagent_button_offline_5734z00000000gZ'));
+    });`);
 }
 
 function loadTrustArcFormScript() {
@@ -276,8 +307,9 @@ loadTrustArcFormScript();
 // eslint-disable-next-line
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-ZLCX');
 
-loadSalesforceChatScript();
-loadSalesforceChatScript2();
+// loadSalesforceChatScript();
+// loadSalesforceChatScript2();
+loadSalesforceChatScript3();
 
 updateExternalLinks();
 
