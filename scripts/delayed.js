@@ -96,6 +96,7 @@ function loadSalesforceChatScript() {
   }, 'text/javascript');
 }
 
+// eslint-disable-next-line no-unused-vars
 function loadSalesforceChatScript2() {
   const chatTestPaths = [
     '/drafts/sclayton/chat-test',
@@ -176,8 +177,10 @@ function loadSalesforceChatScript3() {
   const $body = document.querySelector('body');
   const chatLink = document.createElement('a');
   chatLink.id = 'liveagent_button_online_5734z00000000gZ';
+  // eslint-disable-next-line
   chatLink.href = 'javascript://Chat';
   chatLink.style.display = 'none';
+  // eslint-disable-next-line
   chatLink.onclick = () => liveagent.startChat('5734z00000000gZ');
   chatLink.innerHTML = '<!-- Online Chat Content -->';
   $body.append(chatLink);
