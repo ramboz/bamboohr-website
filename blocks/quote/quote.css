@@ -116,6 +116,14 @@ main .quote.full.image-420 .image {
   max-width: 26.25rem;
 }
 
+main .quote.full.image-500 .image {
+  max-width: 31.25rem;
+}
+
+main .quote.full.image-520 .image {
+  max-width: 32.5rem;
+}
+
 /* Colors */
 main .quote.full {
   background-clip: revert;
@@ -264,4 +272,12 @@ main .quote.color-shade-10 {
 
 .block-inventory main .quote.hero .content {
   background-image: linear-gradient(90deg, var(--theme-shade5) 0%, var(--theme-shade10) 100%);
+}
+
+.blog-redesign main .quote.left,
+.blog-redesign main .quote.right {
+  float: none;
+  width: unset;
+  margin-left: unset;
+  margin-right: unset;
 }

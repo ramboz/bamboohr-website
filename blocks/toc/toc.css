@@ -80,3 +80,109 @@ main .toc > ol > li::before {
     padding-left: 30px;
   }
 }
+
+@media (max-width: 899px) {
+  .blog-redesign main .toc .toc-title {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .blog-redesign main .toc .toc-title::after {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: rotate(45deg) translateY(-50%);
+    margin-left: 15px;
+    border: solid var(--color-gray-12);
+    border-width: 0 3px 3px 0;
+    padding: 3px;
+    content: '';
+    transition: all .2s ease-in-out;
+  }
+
+  .blog-redesign main .toc .toc-title[aria-selected="true"]::after {
+    transform: rotate(-135deg);
+  }
+
+  .blog-redesign main .toc ul {
+    display: none;
+    visibility: hidden;
+  }
+
+  .blog-redesign main .toc ul[aria-hidden="false"] {
+    display: block;
+    visibility: visible;
+  }
+}
+
+@media (min-width: 900px) {
+  .blog-redesign main .toc-wrapper {
+    position: relative;
+    width: calc(100% - 54px);
+  }
+
+  .blog-redesign main .toc {
+    position: sticky;
+    top: 100px;
+  }
+}
+
+.blog-redesign main .toc {
+  color: var(--color-gray-12);
+  background: none;
+  border: 1px solid var(--color-gray-3);
+  border-radius: 15px;
+  padding: 20px 25px;
+  margin: 0 0 26px;
+}
+
+@media (min-width: 600px) {
+  .blog-redesign main .toc {
+    padding: 25px;
+  }
+}
+
+.blog-redesign main .toc a:any-link {
+  color: var(--color-gray-12);
+  background: none;
+  text-decoration: underline;
+  text-decoration-color: var(--category-color);
+  text-underline-offset: 4px;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.blog-redesign main .toc .toc-title {
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+@media (min-width: 600px) {
+  .blog-redesign main .toc .toc-title{
+    font-size: 21px;
+    line-height: 28px;
+  }
+}
+
+.blog-redesign main .toc ul {
+  padding-left: 10px;
+  margin: 20px 0 0;
+}
+
+.blog-redesign main .toc ul li {
+  padding-left: 0;
+}
+
+.blog-redesign main .toc ul li:not(:first-child) {
+  margin-top: 8px;
+}
+
+.blog-redesign main .toc ul li::marker {
+  font-size: 12px;
+}

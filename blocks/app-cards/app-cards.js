@@ -61,7 +61,8 @@ export function sortOptions(sortBy) {
                               : b.category.toLowerCase() === 'keynote' ? 1
                               : a.category.localeCompare(b.category),
     publicationDate: (a, b) => b.publicationDate.localeCompare(a.publicationDate)
-                                || a.title.localeCompare(b.title),
+                                || (a.jobTitle && b.jobTitle && a.jobTitle.localeCompare(b.jobTitle))
+                                || (a.title && b.title && a.title.localeCompare(b.title)),
     eventDate: (a, b) => a.eventDate.localeCompare(b.eventDate),
     eventDateDesc: (a, b) => b.eventDate.localeCompare(a.eventDate),
     lastModified: (a, b) => b.lastModified.localeCompare(a.lastModified)
@@ -156,6 +157,12 @@ async function decorateAppsFeed(
     const app = apps[i];
     ul.append(createAppCard(app, 'app-cards'));
   }
+
+  window.setTimeout(() => {
+    appsFeedEl.querySelectorAll('.app-cards-card-header h4').forEach(h4 => {
+      if (h4.scrollWidth > h4.clientWidth) h4.title = h4.innerText;
+    });
+  }, 1000);
 
   /* add load more if needed */
   if ((apps.length > pageEnd && config.maxLimit?.toLowerCase() !== 'yes') || !feed.complete) {

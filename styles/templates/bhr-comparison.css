@@ -88,7 +88,7 @@
     top: 38%;
 }
 
-.bhr-comparison main .section.bg-bottom-multi-3 .default-content-wrapper p:last-child {
+.bhr-comparison main .section.bg-bottom-multi-3 .default-content-wrapper p:not(.modal-form-subtitle):last-child {
     margin-bottom: 0;
     padding-bottom: 50px;
     color: var(--color-white);

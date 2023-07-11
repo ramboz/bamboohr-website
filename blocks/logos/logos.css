@@ -103,3 +103,8 @@ main .logos.partner-logos ul li picture {
 main .logos.partner-logos ul li picture img {
   max-height: 100%;
 }
+
+main .logos.partner-logos.no-box-shadow ul li picture {
+  box-shadow: none;
+  border-radius: 0;
+}

@@ -10,6 +10,12 @@
   color: #9CA393;
 }
 
+.nav-search-btn .icon-search {
+  height: 18px;
+  width: 18px;
+  display: inline-block;
+}
+
 .nav-search-btn .icon-search svg {
   color: var(--color-1);
 }
@@ -107,6 +113,44 @@
   transform: rotate(-45deg);
 }
 
+/* SlideDown */
+#slide-down {
+  z-index: 999;
+  font-size: 22px;
+  position: fixed;
+  top: -150px;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  font-weight: 600;
+  max-height: 150px;
+  width: 100%;
+  transition: top 0.5s ease-in-out;
+  max-width: var(--width-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+#slide-down.success {
+  background-color: var(--color-1-shade-5);
+  color: var(--color-white);
+}
+
+#slide-down.error {
+  background-color: var(--color-2-shade-5);
+  color: var(--color-white);
+}
+
+#slide-down.info {
+  background-color: var(--color-5-shade-10);
+  color: var(--color-white);
+}
+
+#slide-down.show {
+  top:0;
+}
+
 /* header and nav layout */
 
 header {
@@ -139,6 +183,7 @@ header .nav-hamburger {
   height: 22px;
   padding-top: 3px;
   color: var(--color-gray3);
+  cursor: pointer;
 }
 
 header .nav[aria-expanded="false"] .nav-hamburger-icon,
@@ -260,6 +305,7 @@ header .nav[aria-expanded="true"] {
 
 header .nav-sections h2 {
   border-bottom: 2px solid var(--color-gray-2);
+  cursor: default;
 }
 
 header .nav-sections h2,
@@ -277,7 +323,7 @@ header .nav-section .nav-section-wrapper {
   opacity: 0;
   max-height: 0;
   position: absolute;
-  display: block;
+  display: none;
   box-sizing: border-box;
   transform: translate(0, -1000px);
 }
@@ -291,6 +337,7 @@ header .nav-section li {
   font-size: 14px;
   color: var(--color-gray-8);
   padding: 10px 0;
+  cursor: default;
 }
 
 header .nav-section li a:any-link {
@@ -330,7 +377,6 @@ header .nav-section[aria-expanded="true"] li[aria-expanded="true"] > ul {
 header .nav-buttons {
   grid-area: buttons;
   display: none;
-  width: 100vw;
   width: 100%;
 }
 
@@ -458,6 +504,47 @@ header .nav-section.nav-section-subscribe form {
   position: relative;
 }
 
+/* nav limited styles */
+header .nav-limited .nav {
+  overflow: unset;
+  grid-template-areas: "brand sections buttons";
+  grid-template-columns: 155px 1fr 105px;
+  background-color: var(--color-white);
+}
+
+header .nav-limited .nav-hamburger {
+  display: none;
+}
+
+header .nav-limited .nav-buttons {
+  margin: auto 0;
+  display: inline-block;
+  width: 100%;
+  text-align: right;
+}
+
+header .nav-limited .nav-buttons .button {
+  padding: 5px 20px;
+  min-width: 60px;
+  margin: 0 5px;
+  box-sizing: unset;
+  width: auto;
+}
+
+header .nav-limited .nav-buttons .button.small {
+  padding: 8px 20px;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.5px;
+  font-weight: 900;
+  font-family: var(--body-font-family);
+  border: solid 2px var(--color-1);
+}
+
+header .nav-limited .nav-buttons .nav-login-btn {
+  display: none;
+}
+
 /* desktop nav styles */
 @media (min-width: 1025px) {
   header .nav {
@@ -532,7 +619,7 @@ header .nav-section.nav-section-subscribe form {
   }
 
   header .nav-section {
-    padding: 0 22px;
+    padding: 0 12px;
     position: relative;
     border-width: 3px 0 0;
     border-style: solid;
@@ -568,7 +655,7 @@ header .nav-section.nav-section-subscribe form {
   header .nav-section ul,
   header .nav-section .nav-section-wrapper {
     opacity: 0;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
     padding-top: 18px;
     max-height: 0;
     position: absolute;
@@ -582,6 +669,10 @@ header .nav-section.nav-section-subscribe form {
     box-sizing: border-box;
     color: #666;
     transform: translate(0, -1000px);
+  }
+
+  header .nav-sections .nav-section:nth-child(2) ul {
+    padding-bottom: 75px;
   }
 
   header .nav-section li {
@@ -662,7 +753,8 @@ header .nav-section.nav-section-subscribe form {
   header .nav-buttons {
     margin: auto 0;
     display: flex;
-    width: 100vw;
+    justify-content: flex-end;
+    width: 100%;
   }
 
   header .nav-buttons .button {
@@ -686,6 +778,10 @@ header .nav-section.nav-section-subscribe form {
   header .nav-section.nav-section-subscribe .nav-section-wrapper {
     padding: 42px;
     width: 500px;
+  }
+
+  header .nav-limited .nav-buttons .nav-login-btn {
+    display: block;
   }
 }
 
@@ -720,7 +816,11 @@ header .nav-section.nav-section-subscribe form {
 }
 
 @media (min-width: 1300px) {
-  header .nav.extra-buttons {
+  header .nav-section {
+    padding: 0 20px;
+  }
+
+	header .nav.extra-buttons {
     grid-template-columns: 180px 1fr 425px;
   }
 
@@ -736,5 +836,17 @@ header .nav-section.nav-section-subscribe form {
 @media (min-width: 1330px) {
   header .nav.extra-buttons.search-open {
     grid-template-columns: 180px 1fr 541px;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1100px) {
+  .blog-redesign .header-search {
+    right: 0
+  }
+}
+
+@media (max-width: 899px) {
+  .blog-redesign.blog-post .header-search {
+    display: none;
   }
 }

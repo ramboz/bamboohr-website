@@ -13,9 +13,21 @@ import {
 import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 import decorateWistia from '../wistia/wistia.js';
 
+export function isUpcomingEvent(eventDateStr) {
+  let isUpcoming = false;
+  if (eventDateStr) {
+    const [year, month, day] = eventDateStr.split('-');
+    const eventDate = new Date(+year, +month - 1, +day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    isUpcoming = eventDate >= today;
+  }
+  return isUpcoming;
+}
+
 let gLoadWistiaCSS = true;
 
-function getLinkText(format, mediaType) {
+export function getLinkText(format, mediaType) {
   let linkText = 'Read Now';
   if (format) linkText = format.toLowerCase() === 'video' ? 'Watch Now' : 'Read Now';
   else if (mediaType) {
@@ -37,13 +49,22 @@ function getLinkText(format, mediaType) {
   return linkText;
 }
 
-export function createArticleCard(article, classPrefix, customLinkText = '', eager = false) {
-  const title = article.title.split(' | ')[0];
+export function createArticleCard(
+  article,
+  classPrefix,
+  customLinkText = '',
+  excludeMediaType = false,
+  simple = false,
+  hideCategory = false,
+  eager = false
+) {
+  const title = article.jobTitle || article.title.split(' | ')[0];
   const card = document.createElement('div');
-  const productCategory = (article.planType && article.productArea) ? `${article.planType} | ${article.productArea}` : '';
-  const articleCategory = article.category || article.topic || productCategory
-    || article.contentType || article.brandedContent || '';
-  const articleFormat = article?.format || article?.mediaType || '';
+  let articleCategory = [article.category, article.topic, article.planType, article.productArea, article.contentType, article.brandedContent];
+  articleCategory = articleCategory.filter((str) => (str !== '' && str !== undefined)).join(' | ');
+
+  const articleMediaType = excludeMediaType === false ? article.mediaType : '';
+  const articleFormat = article?.format || articleMediaType || '';
   card.className = `${classPrefix}-card`;
   card.setAttribute('am-region', `${articleCategory} . ${articleFormat}`.toUpperCase());
   let articlePicture = '';
@@ -69,22 +90,33 @@ export function createArticleCard(article, classPrefix, customLinkText = '', eag
   const category = toCategory(articleCategory);
   const linkText = customLinkText || getLinkText(article?.format, article?.mediaType);
 
-  const isProductUpdates = window.location.pathname.includes('/product-updates/'); 
-  const [year, month, day] = article.publicationDate.split('-');
-  const releaseDate = isProductUpdates ? `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>` : '';
+  const isProductUpdates = window.location.pathname.includes('/product-updates/');
+  let releaseDate = '';
+  if (isProductUpdates && article.publicationDate) {
+    const [year, month, day] = article.publicationDate.split('-');
+    releaseDate = `<div class="typ-small-info">Date of release: ${month}/${day}/${year}</div>`;
+  } 
 
   const articleFormatSpan = articleFormat ? `<span class="${classPrefix}-card-format">${articleFormat}</span>` : '';
+  const articleCategorySpan = !article.readTime && articleCategory ? `<span class="${classPrefix}-card-category">${articleCategory}</span>` : '';
+  const blogCategorySpan = article.readTime && articleCategory ? `<span class="${classPrefix}-card-category">${article.category}</span> 
+    <span class="${classPrefix}-card-readtime">${article.readTime || ''}</span>` : '';
+  const articlePresenter = article?.presenter || article?.customerName ? `<h5>${article?.presenter || article?.customerName || ''}</h5>` : '';
+  const articleDesc = !simple ? `<p class="${classPrefix}-card-detail">${article.description}</p>` : '';
+  const articleCardHeader = !simple && !hideCategory ? `<div class="${classPrefix}-card-header category-color-${category}">
+      ${articleCategorySpan}
+      ${blogCategorySpan}
+      ${articleFormatSpan}
+    </div>` : '';
 
-  card.innerHTML = `<div class="${classPrefix}-card-header category-color-${category}">
-    <span class="${classPrefix}-card-category">${articleCategory}</span> 
-    ${articleFormatSpan}
-    </div>
+  card.innerHTML = `
     ${articleImage}
     <div class="${classPrefix}-card-body" am-region="${title}">
-    <h5>${article?.presenter || ''}</h5>
+    ${articlePresenter}
     <h3>${title}</h3>
     ${releaseDate}
-    <p>${article.description}</p>
+    ${articleDesc}
+    ${articleCardHeader}
     <p><a href="${article.path}">${linkText}</a></p>
     </div>`;
   return (card);
@@ -130,6 +162,7 @@ function getBlockHTML(ph, theme, indexConfig = {}) {
   <p class="listing-results-count"><span id="listing-results-count"></span> ${ph.results}</p>
   <div class="listing-facets">
   </div>
+  <div class="listing-search"><input id="fulltext" placeholder="${ph.typeToSearch}" /></div>
   <div class="listing-sortby">
     <div class="listing-filter-button">${ph.filter}</div>
     <p class="listing-sort-button">${ph.sortBy} <span data-sort="${defaultSortProp}" id="listing-sortby">${defaultSortText}</span></p>
@@ -189,14 +222,21 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
 
   /* filter */
   const results = listings.data.filter((row) => {
+    if (isUpcomingEvent(row.eventDate)) return false;
     const filterMatches = {};
-    let matchedAll = keys.every((key) => {
+    let matchedAll = true;
+    keys.forEach((key) => {
       let matched = false;
       if (row[key]) {
         const rowValues = row[key].split(',').map((t) => t.trim());
         matched = tokens[key].some((t) => rowValues.includes(t));
       }
+      if (key === 'fulltext') {
+        const {fulltext} = config;
+        matched = row.title.toLowerCase().includes(fulltext.toLowerCase()) || row.description.toLowerCase().includes(fulltext.toLowerCase());
+      }
       filterMatches[key] = matched;
+      if (!matched) matchedAll = false;
       return matched;
     });
 
@@ -212,17 +252,12 @@ export async function filterResults(theme, config, facets = {}, indexConfig = {}
           includeInFacet = false;
 
           if (filterKey !== facetKey) {
-            keys.every((key) => {
+            includeInFacet = keys.every((key) => {
               let matched = false;
 
               if (row[key]) {
                 const rowValues = row[key].split(',').map((t) => t.trim());
                 matched = tokens[key].some((t) => rowValues.includes(t));
-
-                if (matched) {
-                  includeInFacet = true;
-                }
-                includeInFacet = false;
               }
 
               return matched;
@@ -258,7 +293,9 @@ export default async function decorate(block, blockName) {
   const themeOverride = themeOverrides[0] ? themeOverrides[0].substring(firstHyphenIdx) : '';
   const theme = themeOverride || getMetadata('theme');
   const ph = await fetchPlaceholders('/integrations');
-  const indexConfig = {indexPath: '', indexName: '', cardStyle: '', facetStyle: ''};
+  const indexConfig = {indexPath: '', indexName: '', cardStyle: '', facetStyle: '', customLinkText: '', excludeSearch: ''};
+
+  let excludeSearch = '';
 
   const addEventListeners = (elements, event, callback) => {
     elements.forEach((e) => {
@@ -274,9 +311,14 @@ export default async function decorate(block, blockName) {
     indexConfig.indexPath = blockConfig['index-path'];
     indexConfig.indexName = blockConfig['index-name'];
     indexConfig.cardStyle = blockConfig['card-style'];
+    indexConfig.limit = +blockConfig.limit || 0;
     indexConfig.facetStyle = blockConfig['facet-style'] || 'taxonomyV1';
     indexConfig.customLinkText = blockConfig['custom-link-text'];
+    indexConfig.excludeMediaType = blockConfig['exclude-media-type']?.toLowerCase() === 'yes';
+    indexConfig.excludeSearch = blockConfig['exclude-search'];
+    excludeSearch = indexConfig.excludeSearch;
   } else {
+    excludeSearch = 'yes';
     Object.keys(blockConfig).forEach((key) => {
       config[toCamelCase(key)] = blockConfig[key];
     });
@@ -452,17 +494,68 @@ export default async function decorate(block, blockName) {
     block.querySelector('#listing-results-count').textContent = getHRVSVisibleCount();
   };
 
+  const highlightResults = (res) => {
+    const fulltext = document.getElementById('fulltext').value;
+    if (fulltext) {
+      res.querySelectorAll('h4 a').forEach((title) => {
+        const content = title.textContent;
+        const offset = content.toLowerCase().indexOf(fulltext.toLowerCase());
+        if (offset >= 0) {
+          title.innerHTML = `${content.substr(0, offset)}<span class="highlight">${content.substr(offset, fulltext.length)}</span>${content.substr(offset + fulltext.length)}`;
+        }
+      });
+    }
+  };
+
+  const displayLimitedResults = (results) => {
+    const currentSelected = getSelectedFilters();
+    // If there's a filter on and the results are <100 disable the limit.
+    const limit = currentSelected.length && results.length < 100 ? 0 : indexConfig.limit;
+    const pageEnd = limit ? indexConfig.limitOffset + indexConfig.limit : results.length;
+    const offset = indexConfig.limitOffset || 0;
+    const max = pageEnd > results.length ? results.length : pageEnd;
+    const listingWrapper = block.parentElement;
+    for (let i = offset; i < max; i += 1) {
+      const product = results[i];
+
+      if (indexConfig.cardStyle === 'article') {
+        const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkText, indexConfig.excludeMediaType);
+        resultsElement.append(articleCard);
+        loadWistiaBlock(product, articleCard);
+      } else resultsElement.append(createAppCard(product, blockName));
+    }
+
+    if (limit) indexConfig.limitOffset += indexConfig.limit;
+
+    // Remove existing load more.
+    const existingLoadMore = listingWrapper.lastElementChild;
+    if (existingLoadMore.classList.contains('load-more-wrapper')) existingLoadMore.remove();
+
+    /* add load more if needed */
+    if (results.length > pageEnd) {
+      const loadMoreWrapper = document.createElement('div');
+      loadMoreWrapper.className = 'listing-limited load-more-wrapper';
+      const loadMore = document.createElement('a');
+      loadMore.className = 'load-more button small light';
+      loadMore.href = '#';
+      loadMore.textContent = 'Load More';
+      loadMoreWrapper.append(loadMore);
+      listingWrapper.append(loadMoreWrapper);
+      loadMore.addEventListener('click', (event) => {
+        event.preventDefault();
+        loadMoreWrapper.remove();
+        displayLimitedResults(results);
+      });
+    }
+
+    highlightResults(resultsElement);
+  };
+
   const displayResults = async (results) => {
     if (theme === 'hrvs') displayHRVSResults(results);
     else {
       resultsElement.innerHTML = '';
-      results.forEach((product) => {
-        if (indexConfig.cardStyle === 'article') {
-          const articleCard = createArticleCard(product, 'listing-article', indexConfig.customLinkText);
-          resultsElement.append(articleCard);
-          loadWistiaBlock(product, articleCard);
-        } else resultsElement.append(createAppCard(product, blockName));
-      });
+      displayLimitedResults(results);
     }
 
     window.setTimeout(() => {
@@ -487,7 +580,7 @@ export default async function decorate(block, blockName) {
         industry: {},
         companySize: {},
         companyGrowthStage: {},
-        userRole: {},
+        jobTitleCategory: {},
       };
     } else {
       facets = {
@@ -498,6 +591,8 @@ export default async function decorate(block, blockName) {
         locationRestrictions: {},
       };
     }
+
+    if (indexConfig.limit) indexConfig.limitOffset = 0;
     
     const results = await filterResults(theme, filterConfig, facets, indexConfig);
     // eslint-disable-next-line no-nested-ternary
@@ -520,6 +615,7 @@ export default async function decorate(block, blockName) {
       if (filterConfig[facetKey]) filterConfig[facetKey] += `, ${facetValue}`;
       else filterConfig[facetKey] = facetValue;
     });
+    filterConfig.fulltext = document.getElementById('fulltext').value;
     return filterConfig;
   };
 
@@ -566,7 +662,8 @@ export default async function decorate(block, blockName) {
       span.className = 'listing-filters-tag';
       span.textContent = tag;
       span.addEventListener('click', () => {
-        document.getElementById(`listing-filter-${tag}`).checked = false;
+        const selFilter = document.getElementById(`listing-filter-${tag}`);
+        if (selFilter) selFilter.checked = false;
         const filterConfig = createFilterConfig();
 
         runSearch(filterConfig);
@@ -598,7 +695,8 @@ export default async function decorate(block, blockName) {
         block.querySelector('#listing-results-count').textContent = getHRVSVisibleCount();
       } else {
         selected.forEach((tag) => {
-          document.getElementById(`listing-filter-${tag}`).checked = false;
+          const selFilter = document.getElementById(`listing-filter-${tag}`);
+          if (selFilter) selFilter.checked = false;
         });
 
         const filterConfig = createFilterConfig();
@@ -705,6 +803,16 @@ export default async function decorate(block, blockName) {
       }
     });
   };
+
+  // search box
+  const fulltextElement = block.querySelector('#fulltext');
+  fulltextElement.addEventListener('input', () => {
+    runSearch(createFilterConfig());
+  });
+  
+  if (excludeSearch && excludeSearch.toLowerCase() === 'yes') {
+    fulltextElement.style.display = 'none';
+  }
 
   runSearch(config);
 }

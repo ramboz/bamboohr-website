@@ -26,12 +26,14 @@ function hideSearchInput(navSearchBtn, phoneNumElem, navButtons) {
   navSearchBtn.parentElement.classList.remove('search-open');
   navSearchBtn.parentElement.parentElement.parentElement.classList.remove('search-open');
   // eslint-disable-next-line no-return-assign
-  if (mediaQuerySearchOpen.matches) navButtons?.forEach(b => b.style.display = '');
+  if (mediaQuerySearchOpen.matches) navButtons?.forEach((b) => (b.style.display = ''));
   else if (mediaQueryDesktop.matches && phoneNumElem) phoneNumElem.style.display = '';
 }
 
 function addSearch(buttonsContainer) {
-  const search = [...buttonsContainer.children].find(b => b.textContent?.toLowerCase() === '[search]');
+  const search = [...buttonsContainer.children].find(
+    (b) => b.textContent?.toLowerCase() === '[search]'
+  );
   if (search) {
     buttonsContainer.parentElement.classList.add('has-search');
     // Build search.
@@ -66,7 +68,7 @@ function addSearch(buttonsContainer) {
       navSearchBtn.parentElement.parentElement.parentElement.classList.add('search-open');
       navSearchBtn.classList.add('hide-btn');
       // eslint-disable-next-line no-return-assign
-      if (mediaQuerySearchOpen.matches) navButtons?.forEach(b => b.style.display = 'none');
+      if (mediaQuerySearchOpen.matches) navButtons?.forEach((b) => (b.style.display = 'none'));
       else if (mediaQueryDesktop.matches && phoneNumElem) phoneNumElem.style.display = 'none';
       navSearchBtn.nextElementSibling.classList.add('show-input');
       navSearchInput.focus();
@@ -102,13 +104,43 @@ const submenuAction = (nav, li, delayed = true) => {
 
   if (delayed) {
     submenuActionTimer = window.setTimeout(() => {
-      [...nav.querySelectorAll('li.show-sub-menu')].forEach(e => e.classList.remove('show-sub-menu'));
+      [...nav.querySelectorAll('li.show-sub-menu')].forEach((e) =>
+        e.classList.remove('show-sub-menu')
+      );
       li?.classList.add('show-sub-menu');
     }, 300);
   } else {
-    [...nav.querySelectorAll('li.show-sub-menu')].forEach(e => e.classList.remove('show-sub-menu'));
+    [...nav.querySelectorAll('li.show-sub-menu')].forEach((e) =>
+      e.classList.remove('show-sub-menu')
+    );
   }
 };
+
+function addSlideDown() {
+  const container = document.createElement('div');
+  container.setAttribute('id', 'slide-down');
+  container.setAttribute('role', 'alert');
+  const paragraph = document.createElement('p');
+  container.appendChild(paragraph);
+  document.body.appendChild(container);
+}
+
+/**
+ *
+ * @param {String} text - text displayed by the slideDown
+ * @param {'success' | 'error' | 'info'} type - "success" | "error" | "info"
+ * @param {Number} [dismissTimer] - ms to dismiss the timer. 3500 default
+ */
+export function showSlideDown(text, type = 'success', dismissTimer = 3500) {
+  const slideDown = document.getElementById('slide-down');
+  slideDown.setAttribute('aria-live', 'polite');
+  slideDown.classList.add('show', type);
+  const paragraph = slideDown.querySelector('p');
+  paragraph.innerText = text;
+  setTimeout(() => {
+    slideDown.classList.remove('show');
+  }, dismissTimer);
+}
 
 /**
  * decorates the header, mainly the nav
@@ -131,6 +163,8 @@ export default async function decorate(block) {
   html = html.replaceAll('<ol>', '<ul>');
   html = html.replaceAll('</ol>', '</ul>');
 
+  if (navPath === '/nav-limited') block.classList.add('nav-limited');
+
   // decorate nav DOM
   const nav = document.createElement('div');
   nav.classList.add('nav');
@@ -143,7 +177,7 @@ export default async function decorate(block) {
     if (!i) {
       // first section is the brand section
       const brand = navSection;
-      if (navPath === '/nav') brand.classList.add('simple');
+      if (navPath === '/nav' || navPath === '/nav-limited') brand.classList.add('simple');
       brand.classList.add('nav-brand');
       nav.insertBefore(navSections, brand.nextElementSibling);
     } else {
@@ -207,7 +241,14 @@ export default async function decorate(block) {
         const buttons = buttonsContainer.querySelectorAll('a');
         if (buttons.length === 3) buttonsContainer.parentElement.classList.add('extra-buttons');
         buttons.forEach((a) => {
-          if (a.href.startsWith('tel:')) a.classList.add('phone-number');
+          if (a.href.startsWith('tel:')) {
+            a.classList.add('phone-number');
+            a.parentElement.classList.add('nav-phone-num');
+          } else if (a.href.endsWith('/login/')) {
+            a.parentElement.parentElement.classList.add('nav-login-btn');
+          } else if (a.href.endsWith('/signup.php')) {
+            a.parentElement.classList.add('nav-free-trial-btn');
+          }
           a.classList.add('button', 'small');
           if (a.parentElement.tagName === 'EM') {
             a.classList.add('light');
@@ -261,8 +302,12 @@ export default async function decorate(block) {
 
   block.append(nav);
 
+  // Adds hidden slideDown
+  addSlideDown();
+
   insertNewsletterForm(block, () => {
     collapseAll([...nav.querySelectorAll('[aria-expanded="true"]')]);
+    showSlideDown('Your form has been submitted successfully.', 'success');
   });
 
   let collection = 'prelogin';
@@ -275,4 +320,17 @@ export default async function decorate(block) {
 
   if (collection === 'blog') block.append(createSearch());
   decorateIcons(block);
+
+  // Adds the ability to hide the free trial button in the nav
+  if (getMetadata('nav-control')) {
+    const navControlVal = getMetadata('nav-control').trim().toLowerCase().replace(/\s+/g, '-');
+    const freeTrialButton = document.querySelector('.nav-free-trial-btn');
+    const freeTrialButtonLink = document.querySelector('.nav-free-trial-btn a');
+    if (navControlVal === 'hide-free-trial-button' && freeTrialButton) {
+      freeTrialButton.classList.add('hide-element');
+    } else if (navControlVal === 'swap-free-trial-for-free-demo' && freeTrialButton) {
+      freeTrialButtonLink.innerHTML = 'Get a Demo';
+      freeTrialButtonLink.setAttribute('href', 'https://www.bamboohr.com/demo');
+    }
+  }
 }

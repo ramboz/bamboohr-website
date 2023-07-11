@@ -75,20 +75,28 @@
   /* body */
   --body-background-color: var(--color-white);
   --body-alt-background-color: var(--color-gray-10);
-  --body-font-family: 'Red Hat Text', 'Arial', 'Helvetica', sans-serif;
+  --body-font-family: 'Red Hat Text', 'Red Hat Text-fallback';
   --body-font-weight: 400;
-  --body-color: var(--color-gray-9);
+  --body-color: var(--color-gray-12);
 
   /* headings */
   --heading-font-weight: 700;
   --heading-color: var(--color-gray-12);
-  --heading-font-family: 'Fira Sans', 'Arial', 'Helvetica', 'Trebuchet', sans-serif;
+  --heading-font-family: 'Fira Sans', 'Fira Sans-fallback';
+
+  /* wrappers/containers sizes */
+  --width-xs: 560px;
+  --width-sm: 760px;
+  --width-md: 960px;
+  --width-lg: 1160px;
+  --width-xl: 1360px;
+  --width-2xl: 1560px;
 
   /* stylized font */
-  --stylized-font-family: 'Permanent Marker', sans-serif;
+  --stylized-font-family: 'Permanent Marker', 'Permanent Marker-fallback';
 
   /* display font */
-  --display-font-family: 'Red Hat Display', 'Arial', 'Helvetica', sans-serif;
+  --display-font-family: 'Red Hat Display', 'Red Hat Display-fallback';
 
   /* box-shadow */
   --box-shadow-transition-default: 0 0 0 0 rgb(0 0 0 / 0%);
@@ -486,6 +494,35 @@ div.teal {
   --theme-shadow2-shade10: var(--box-shadow-2-color8-shade10);
   --theme-shadow3-shade10: var(--box-shadow-3-color8-shade10);
   --theme-shadow4-shade10: var(--box-shadow-4-color8-shade10);
+  --secondary-theme-base: var(--theme-base);
+  --secondary-theme-tint5: var(--theme-tint5);
+  --secondary-theme-tint10: var(--theme-tint10);
+  --secondary-theme-tint15: var(--theme-tint15);
+  --secondary-theme-shade5: var(--theme-shade5);
+  --secondary-theme-shade10: var(--theme-shade10);
+  --secondary-theme-shade15: var(--theme-shade15);
+}
+
+.gray main,
+div.gray{
+  --theme-base: var(--color-gray-8);
+  --theme-tint5: var(--color-gray-6);
+  --theme-tint10: var(--color-gray-5);
+  --theme-tint15: var(--color-gray-4);
+  --theme-shade5: var(--color-gray-11);
+  --theme-shade10: var(--color-gray-12);
+  --theme-shade15: var(--color-gray-13);
+  --theme-bullet-level1: var(--bullet-level1-gray);
+  --theme-bullet-level2: var(--bullet-level2-gray);
+  --theme-bullet-level3: var(--bullet-level3-gray);
+  --theme-shadow1-shade5: var(--box-shadow-1-gray-shade5);
+  --theme-shadow2-shade5: var(--box-shadow-2-gray-shade5);
+  --theme-shadow3-shade5: var(--box-shadow-3-gray-shade5);
+  --theme-shadow4-shade5: var(--box-shadow-4-gray-shade5);
+  --theme-shadow1-shade10: var(--box-shadow-1-gray-shade10);
+  --theme-shadow2-shade10: var(--box-shadow-2-gray-shade10);
+  --theme-shadow3-shade10: var(--box-shadow-3-gray-shade10);
+  --theme-shadow4-shade10: var(--box-shadow-4-gray-shade10);
   --secondary-theme-base: var(--theme-base);
   --secondary-theme-tint5: var(--theme-tint5);
   --secondary-theme-tint10: var(--theme-tint10);

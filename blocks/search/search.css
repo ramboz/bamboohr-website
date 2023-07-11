@@ -73,7 +73,7 @@ main .search-results .search-app-card {
 }
 
 .search-app-card-detail {
-  color: var(--color-gray-9);
+  color: var(--color-gray-12);
 }
 
 .search-app-card-body > *:first-child {
@@ -344,4 +344,12 @@ main .search .search-box {
     margin-right: auto;
     max-width: 83.33%;
   }
+}
+
+.header-search-modal main .section.search-container .title-wrapper {
+  max-width: 800px;
+}
+
+.blog-redesign.blog-post .header-search-modal main {
+  overflow-y: scroll;
 }

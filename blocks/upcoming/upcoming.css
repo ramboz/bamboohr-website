@@ -6,6 +6,10 @@ main .upcoming-results {
     padding: 0;
 }
 
+main .empty-upcoming {
+    text-align: center;
+}
+
 main .upcoming-results > div {
     width: 50%;
     position: relative;
@@ -68,6 +72,7 @@ main .upcoming-article-card .upcoming-article-card-format::before {
 
 main .upcoming ul > div {
   width: 100%;
+  margin-bottom: 30px;
 }
 
 main .upcoming ul > div div a img,
@@ -82,13 +87,13 @@ main .upcoming ul > div div p a {
   font-weight: 700;
   line-height: 22px;
   display: inline-block;
-  color: var(--heading-color);
+  color: var(--theme-shade5);
   text-decoration: none;
 }
 
 main .upcoming ul > div div p a::after {
   content: "";
-  border: solid var(--heading-color);
+  border: solid var(--color-1-shade-10);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
@@ -98,33 +103,45 @@ main .upcoming ul > div div p a::after {
   margin-left: 8px;
 }
 
+main .upcoming-article-card-header {
+    font-weight: 500;
+    margin-top: 30px;
+    margin-bottom: 25px;
+    font-size: 12px;
+  }
+
 main .upcoming-article-card .upcoming-article-card-picture img {
     width: 100%;
 }
 
 @media (min-width: 1025px) {
-    main .upcoming-results {
+      main .upcoming ul > div {
+        margin-bottom: 0;
+      }
+
+      main .upcoming-results {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-gap: 30px;
+        row-gap: 60px;
+        column-gap: 40px;
     }
 
     main .upcoming-article-card:first-child {
         grid-column: 1 / -1;
         display: flex;
         column-gap: 40px;
-        margin-bottom: 80px;
+        margin-bottom: 50px;
         align-items: center;
     }
 
     main .upcoming-article-card:first-child .upcoming-article-card-picture {
         flex: 0 0 auto;
-        width: calc(66.67% - 20px);
+        width: calc(58.33% - 20px);
     }
 
     main .upcoming-article-card:first-child .upcoming-article-card-body {
         flex: 0 0 auto;
-        width: calc(33.33% - 20px);
+        width: calc(41.67% - 20px);
     }
 
     main .upcoming-results > li {
@@ -136,9 +153,20 @@ main .upcoming-article-card .upcoming-article-card-picture img {
     main .upcoming-results {
         grid-area: results;
         grid-template-columns: repeat(3, 1fr);
+        row-gap: 80px;
     }
 
     main .upcoming-results > div {
         width: calc(100% / 3);
     }
+
+    main .upcoming-article-card:first-child {
+        margin-bottom: 100px;
+    }
+}
+
+main .upcoming .upcoming-results .upcoming-article-card .upcoming-article-card-category {
+    font-size: 14px;
+    line-height: 1.3;
+    margin-bottom: 20px;
 }

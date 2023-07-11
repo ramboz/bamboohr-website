@@ -1,7 +1,7 @@
 /* stylelint-disable no-descending-specificity */
 
 .multi-element {
-    --column-gap: 2rem;
+    --column-gap: 40px;
     --columns: repeat(2, 1fr);
     --row-gap: 1rem;
 
@@ -351,7 +351,7 @@ main .multi-element p {
 .multi-element.hero {
     --row-gap: 2rem;
 
-    color: var(--color-gray-11);
+    color: var(--color-gray-12);
 }
 
 @media (min-width: 769px) and (max-width: 1440px) {
@@ -491,7 +491,7 @@ main .multi-element p {
 }
 
 .multi-element.industry {
-    --row-gap: 14px;
+    --row-gap: 40px;
 
     position: relative;
     padding-top: 70px;

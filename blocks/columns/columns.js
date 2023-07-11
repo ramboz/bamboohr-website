@@ -1,6 +1,8 @@
 import { hasClassStartsWith, getValuesFromClassName, loadCSS } from '../../scripts/scripts.js';
 import decorateWistia from '../wistia/wistia.js';
 import { buildPicture } from '../multi-hero/multi-hero.js';
+import decorateVideo from '../video/video.js';
+import { analyticsTrackPreformEmailEntered, analyticsTrackPreformEmailSubmitted } from "../../scripts/lib-analytics.js";
 
 function addBreakpointImages(col, block) {
   if (block.classList.contains('has-breakpoint-images')) {
@@ -26,9 +28,88 @@ function addBreakpointImages(col, block) {
   }
 }
 
+function isValidEmail(email) {
+  const emailRegex = /^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/;
+  return emailRegex.test(email);
+}
+
+function handleEmailFormSubmit (event) {
+  event.preventDefault();
+  const form = event.target;
+  const emailInput = document.querySelector('.inline-form-input');
+  const email = emailInput.value;
+  const formLabel = document.querySelector('.inline-form-label');
+  const errorContainer = document.querySelector('.error-container');
+
+  // eslint-disable-next-line
+  function handleEmailInputKeyup(event) {
+    if (event.key === 'Enter') {
+	    analyticsTrackPreformEmailEntered();
+       // eslint-disable-next-line
+      handleEmailFormSubmit(event);
+    }
+  }
+
+  emailInput.addEventListener('keyup', handleEmailInputKeyup);
+
+  if (event.type === 'focusin') {
+    // Add active class when user focuses inside emailInput
+    formLabel.classList.add('inline-form-label-active');
+    errorContainer.textContent = '';
+    emailInput.classList.remove('inline-form-input-error');
+  } else if (event.type === 'focusout') {
+    // Remove active class when user focuses out and no value in emailInput
+    if (email.trim() === '') {
+      formLabel.classList.remove('inline-form-label-active');
+      errorContainer.textContent = '';
+      emailInput.classList.remove('inline-form-input-error');
+    } else {
+		  analyticsTrackPreformEmailEntered();
+	  }
+  }
+
+  const { link } = form.dataset;
+
+  if (event.type === 'submit') {
+    if (email.trim() === '') {
+      // Display error message for blank email
+      errorContainer.textContent = 'Please enter an email address.';
+      emailInput.classList.add('inline-form-input-error');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      // Display error message for incorrect email format
+      errorContainer.textContent = 'Please enter a valid email address.';
+      emailInput.classList.add('inline-form-input-error');
+      return;
+    }
+
+    // Redirect the user to the provided link
+    if (link) {
+      // Adobe analytics tracking event
+	    analyticsTrackPreformEmailSubmitted();
+
+      const url = new URL(link);
+      url.searchParams.set('email', email);
+
+      // Delay the redirection to allow the digitalData.push to work
+      setTimeout(() => {
+        window.location.href = url.toString();
+      }, 750);
+    }
+  }
+}
+
+// Add the event listener to the form
+const emailForm = document.querySelector('form.inline-form');
+if (emailForm) {
+  emailForm.addEventListener('submit', handleEmailFormSubmit);
+}
+
 function addButtonClasses(col, block) {
   const noLeftButtons = block.classList.contains('no-left-buttons');
-    
+
   if (!noLeftButtons) {
     const isButtonLinks = block.classList.contains('button-style-link');
     const buttons = col.querySelectorAll('a.button');
@@ -44,6 +125,66 @@ function addButtonClasses(col, block) {
       });
     }
   }
+
+  if (block.classList.contains('email-form')) {
+    const link = col.querySelector('a');
+
+    if (link) {
+      // Remove existing button
+      link.parentElement.remove();
+
+      // Build embedded form
+      const formContainer = document.createElement('div');
+      formContainer.classList.add('inline-form-container');
+
+      const form = document.createElement('form');
+      form.classList.add('inline-form');
+      form.addEventListener('submit', handleEmailFormSubmit);
+      form.dataset.link = link.href;
+      form.setAttribute('novalidate', '');
+
+      const errorContainer = document.createElement('div');
+      errorContainer.classList.add('error-container');
+
+      const formLeft = document.createElement('div');
+      formLeft.classList.add('inline-form-left');
+      form.appendChild(formLeft);
+
+      const formInputWrapper = document.createElement('div');
+      formInputWrapper.classList.add('inline-form-input-wrapper');
+      formLeft.appendChild(formInputWrapper);
+
+      const emailInput = document.createElement('input');
+      emailInput.type = 'email';
+      emailInput.name = 'email';
+      emailInput.required = true;
+      emailInput.classList.add('inline-form-input');
+      formInputWrapper.appendChild(emailInput);
+
+      emailInput.addEventListener('focusin', handleEmailFormSubmit);
+      emailInput.addEventListener('focusout', handleEmailFormSubmit);
+
+      const formLabel = document.createElement('label');
+      formLabel.for = 'email';
+      formLabel.innerText = 'Enter your email';
+      formLabel.classList.add('inline-form-label');
+      formInputWrapper.appendChild(formLabel);
+
+      // Moves label on focus
+      formLabel.addEventListener('click', () => {
+        emailInput.focus();
+      });
+
+      const submitButton = document.createElement('button');
+      submitButton.type = 'submit';
+      submitButton.innerText = link.title;
+      form.appendChild(submitButton);
+
+      formContainer.appendChild(form);
+      formContainer.appendChild(errorContainer);
+      col.appendChild(formContainer);
+    }
+  }
 }
 
 function addIconBtnClass(buttonContainer, icon) {
@@ -53,32 +194,41 @@ function addIconBtnClass(buttonContainer, icon) {
 }
 
 function addLinkToIconSVG(icon, link) {
-  // Clone the link: 
+  // Clone the link:
   if (link?.tagName === 'A') {
     const imageLink = link.cloneNode(true);
     imageLink.innerText = '';
     imageLink.classList.add('column-svg-link');
     if (icon.firstElementChild) imageLink.append(icon.firstElementChild);
     icon.append(imageLink);
-  } 
+  }
 }
 
-function addIconContainer(col) {
+function addIconContainer(col, block) {
+  const mixedIconLink = block.classList.contains('mixed-icon-link');
   if (!col.classList.contains('columns-title-span')) {
     const icons = col.querySelectorAll('span.icon');
     if (icons.length) {
       const iconContainer = document.createElement('div');
-      iconContainer.classList.add('column-small-icons-container', 'column-multi-element');
+      if (mixedIconLink) iconContainer.classList.add('mixed-icon-link-container');
+      else iconContainer.classList.add('column-small-icons-container', 'column-multi-element');
 
       icons.forEach(icon => {
         let link = icon.parentElement.querySelector('a');
-        if (link) {
+        if (mixedIconLink && link && icon.parentElement.tagName === 'P') {
+          const nonImageContainer = document.createElement('div');
+          nonImageContainer.classList.add('mix-non-img-container');
+          nonImageContainer.append(icon.parentElement);
+
+          iconContainer.append(icon);
+          iconContainer.append(nonImageContainer);
+        } else if (link) {
           const buttonContainer = document.createElement('p');
           buttonContainer.classList.add('button-container');
           buttonContainer.append(link);
           icon.parentElement.append(buttonContainer);
 
-          addLinkToIconSVG(icon, link);
+          if (!mixedIconLink) addLinkToIconSVG(icon, link);
           addIconBtnClass(buttonContainer, icon);
         } else if (icon.parentElement.nextElementSibling?.tagName === 'P'
             && icon.parentElement.nextElementSibling.classList.contains('button-container')) {
@@ -89,7 +239,7 @@ function addIconContainer(col) {
           icon.parentElement.append(icon.parentElement.nextElementSibling);
         }
 
-        if (link) iconContainer.append(icon.parentElement);
+        if (link && !mixedIconLink) iconContainer.append(icon.parentElement);
       });
 
       if (iconContainer.children) col.appendChild(iconContainer);
@@ -97,15 +247,35 @@ function addIconContainer(col) {
   }
 }
 
-function hasOnlyWistiaChildren(colChildren) {
+function addVideo(col) {
+  const videoBlock = document.createElement('div');
+  videoBlock.classList.add('video', 'block');
+
+  const colChildren = [...col.children];
+
+  colChildren?.forEach((child) => {
+    if ((child.tagName === 'A' && child.href?.endsWith('.mp4')) ||
+        child.querySelector('a')?.href?.endsWith('.mp4')) {
+      videoBlock.append(child);
+    }
+  });
+
+  col.append(videoBlock);
+  decorateVideo(videoBlock);
+
+  col.classList.remove('button-container');
+  col.classList.add('img-col', 'video-col');
+}
+
+export function hasOnlyWistiaChildren(colChildren) {
   let hasWistiaChildrenOnly = false;
-  // Assumption: wistia block content is thumbnail (picture) + wistia link or just wistia link 
+  // Assumption: wistia block content is thumbnail (picture) + wistia link or just wistia link
   if (colChildren?.length === 2 &&
       colChildren[0].firstElementChild?.tagName === 'PICTURE' &&
       colChildren[1].firstElementChild?.tagName === 'A' &&
       colChildren[1].firstElementChild?.href?.includes('wistia')) {
       hasWistiaChildrenOnly = true;
-  } else if (colChildren?.length === 1 && 
+  } else if (colChildren?.length === 1 &&
             colChildren[0].tagName === 'A' &&
             colChildren[0].href?.includes('wistia')) {
       hasWistiaChildrenOnly = true;
@@ -114,7 +284,7 @@ function hasOnlyWistiaChildren(colChildren) {
   return hasWistiaChildrenOnly;
 }
 
-function addWistia(col, loadWistiaCSS) {
+export function addWistia(col, loadWistiaCSS) {
   const wistiaBlock = document.createElement('div');
   wistiaBlock.classList.add('wistia', 'block');
 
@@ -171,6 +341,8 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
   cols.forEach((col, i) => {
     if (splitVals) col.classList.add(`column${splitVals[i + extraSplits]}`);
 
+    const anchor = col.querySelector('a');
+
     if (col.innerText.toLowerCase() === 'title span') {
       if (colParent.nextElementSibling) {
         const secondRowCols = [...colParent.nextElementSibling.children];
@@ -179,7 +351,7 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
 
       cols[1].classList.add('columns-title-span');
       colsToRemove.push(col);
-    } else if (col.querySelector('a')?.href?.includes('wistia')) {
+    } else if (anchor?.href?.includes('wistia')) {
       addWistia(col, loadWistiaCSS);
       loadWistiaCSS = false;
       hasImage = true;
@@ -188,15 +360,26 @@ function setupColumns(cols, splitVals, block, needToLoadWistiaCSS) {
       if (!col.parentElement.classList.contains('column-flex-container')) {
         col.parentElement.classList.add('column-flex-container', 'columns-align-start');
       }
-    } else if (col.querySelector('img')) {
-      col.classList.add('img-col');
+    } else if (anchor?.href?.endsWith('.mp4')) {
+      addVideo(col);
       hasImage = true;
-      addBreakpointImages(col, block);
-    } else col.classList.add('non-img-col');
-    
-    addButtonClasses(col, block);
 
-    addIconContainer(col);
+      if (!col.parentElement.classList.contains('column-flex-container')) {
+        col.parentElement.classList.add('column-flex-container', 'columns-align-start');
+      }
+    } else if (col.querySelector('img')) {
+      if (col.classList.contains('col1-img-and-text') ||
+          col.classList.contains('col2-img-and-text')) {
+        col.classList.add('non-img-col');
+      } else {
+        col.classList.add('img-col');
+        addBreakpointImages(col, block);
+      }
+      hasImage = true;
+    } else col.classList.add('non-img-col');
+
+    addButtonClasses(col, block);
+    addIconContainer(col, block);
   });
 
   colsToRemove.forEach((col) => col.remove());
@@ -255,6 +438,14 @@ export default function decorate(block) {
     });
 
     if (splitVals) {
+      if (block.classList.contains('col1-img-and-text')) {
+        cols[0].classList.add('col1-img-and-text');
+        block.classList.remove('col1-img-and-text');
+      }
+      if (block.classList.contains('col2-img-and-text')) {
+        cols[1].classList.add('col2-img-and-text');
+        block.classList.remove('col2-img-and-text');
+      }
       setupColumns(cols, splitVals, block, true);
     }
   } else if (cols.length === 1) {

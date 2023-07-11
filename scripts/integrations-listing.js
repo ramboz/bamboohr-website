@@ -1,6 +1,6 @@
 import { buildBlock, getMetadata, toClassName } from './scripts.js';
 
-function toSlug(name) {
+export function toSlug(name) {
   return name && typeof name === 'string'
     ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
     : '';
@@ -110,9 +110,10 @@ export default async function decorateTemplate(main) {
   const appName = window.location.pathname.split('/').pop();
   const level = getMetadata('level');
   const requestType = getMetadata('form-request-type');
+  const utm = getMetadata('form-utm') ? `&${getMetadata('form-utm')}` : '';
   let formPageLink = `/integrations/request-information?appName=${appName}`;
-  if (level === 'BambooHR Product') {
-    formPageLink = `/integrations/request-information-bamboohr-products?requestType=${requestType}`;
+  if (level === 'BambooHR Product' && requestType) {
+    formPageLink = `/integrations/request-information-bamboohr-products?requestType=${requestType}${utm}`;
   }
   const extraFormFields = getMetadata('extra-form-fields');
   if (extraFormFields) {

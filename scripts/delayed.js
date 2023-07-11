@@ -12,10 +12,35 @@
  */
 
 // eslint-disable-next-line import/no-cycle
-import { getMetadata, sampleRUM } from './scripts.js';
-import { setObject } from './set-object.min.js';
+import { sampleRUM } from './scripts.js';
+// eslint-disable-next-line import/no-cycle
+import {
+  analyticsSetConsent,
+  analyticsTrackLinkClicks,
+  analyticsTrackSocial,
+  analyticsTrackVideo
+} from './lib-analytics.js';
 
 sampleRUM('cwv');
+
+function initEmbeddedMessaging() {
+  try {
+    // eslint-disable-next-line
+    embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+    // eslint-disable-next-line
+    embeddedservice_bootstrap.init(
+      '00D7h0000004j7W',
+      'BambooHR_Sales_Chat',
+      'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468',
+      {
+        scrt2URL: 'https://bamboohr--webchat.sandbox.my.salesforce-scrt.com'
+      }
+    );
+  } catch (err) {
+    // eslint-disable-next-line
+    console.error('Error loading Embedded Messaging: ', err);
+  }
+};
 
 /**
  * loads a script by adding a script tag to the head.
@@ -26,17 +51,14 @@ sampleRUM('cwv');
  * @param {boolean} defer defer attribute of script tag
  * @returns {Element} script element
  */
-function loadScript(location, url, callback, type, defer) {
+function loadScript(location, url, callback, type, defer, code) {
   const $head = document.querySelector('head');
   const $body = document.querySelector('body');
   const $script = document.createElement('script');
-  $script.src = url;
-  if (type) {
-    $script.setAttribute('type', type);
-  }
-  if (defer && $script.src) {
-    $script.defer = defer;
-  }
+  if (url) $script.src = url;
+  if (type) $script.setAttribute('type', type);
+  if (defer && $script.src) $script.defer = defer;
+  if (code) $script.appendChild(document.createTextNode(code));
   if (location === 'header') {
     $head.append($script);
   } else if (location === 'footer') {
@@ -44,6 +66,177 @@ function loadScript(location, url, callback, type, defer) {
   }
   $script.onload = callback;
   return $script;
+}
+
+function loadStyle(location, css) {
+  const $head = document.querySelector('head');
+  const $body = document.querySelector('body');
+  const $style = document.createElement('style');
+  $style.setAttribute('type', 'text/css');
+  $style.appendChild(document.createTextNode(css));
+  if (location === 'header') {
+    $head.append($style);
+  } else if (location === 'footer') {
+    $body.append($style);
+  }
+  return $style;
+}
+
+// eslint-disable-next-line no-unused-vars
+function loadSalesforceChatScript() {
+  const chatTestPaths = [
+    '/drafts/sclayton/chat-test',
+  ];
+
+  const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
+  if (!isOnChatTestPath) return;
+
+  loadScript('footer', 'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468/assets/js/bootstrap.min.js', async () => {
+    initEmbeddedMessaging();
+  }, 'text/javascript');
+}
+
+// eslint-disable-next-line no-unused-vars
+function loadSalesforceChatScript2() {
+  const chatTestPaths = [
+    '/drafts/sclayton/chat-test',
+  ];
+
+  const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
+  if (!isOnChatTestPath) return;
+
+  // load style
+  loadStyle('footer', `.embeddedServiceHelpButton .helpButton .uiButton {
+		background-color: #005290;
+		font-family: "Arial", sans-serif;
+	}
+	.embeddedServiceHelpButton .helpButton .uiButton:focus {
+		outline: 1px solid #005290;
+	}`);
+
+  loadScript('footer', 'https://service.force.com/embeddedservice/5.0/esw.min.js', null, 'text/javascript');
+  loadScript('footer', null, null, 'text/javascript', false, `var initESW = function(gslbBaseURL) {
+		embedded_svc.settings.displayHelpButton = true; //Or false
+		embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
+
+		//embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+		//embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+
+		//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+		//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+		// Settings for Chat
+		//embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+			// Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+			// Returns a valid button ID.
+		//};
+		//embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+		//embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+		//embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+
+		embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+		embedded_svc.settings.entryFeature = 'LiveAgent';
+
+		embedded_svc.init(
+			'https://bamboohr--webchat.sandbox.my.salesforce.com',
+			'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468vforces',
+			gslbBaseURL,
+			'00D7h0000004j7W',
+			'eric_and_jordan_test',
+			{
+				baseLiveAgentContentURL: 'https://c.la3-c1cs-ia5.salesforceliveagent.com/content',
+				deploymentId: '5724z000000Gn92',
+				buttonId: '5734z00000000gZ',
+				baseLiveAgentURL: 'https://d.la3-c1cs-ia5.salesforceliveagent.com/chat',
+				eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I7h000000CapnEAC_18940bf130e',
+				isOfflineSupportEnabled: false
+			}
+		);
+	};
+
+	if (!window.embedded_svc) {
+		var s = document.createElement('script');
+		s.setAttribute('src', 'https://bamboohr--webchat.sandbox.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+		s.onload = function() {
+			initESW(null);
+		};
+		document.body.appendChild(s);
+	} else {
+		initESW('https://service.force.com');
+	}`);
+}
+
+function loadSalesforceChatScript3() {
+  const chatTestPaths = [
+    '/drafts/sclayton/chat-test',
+  ];
+
+  const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
+  if (!isOnChatTestPath) return;
+
+  // load style
+  loadStyle('footer', `.embeddedServiceHelpButton .helpButton .uiButton {
+		background-color: #005290;
+		font-family: "Salesforce Sans", sans-serif;
+	}
+	.embeddedServiceHelpButton .helpButton .uiButton:focus {
+		outline: 1px solid #005290;
+	}
+	@font-face {
+		font-family: 'Salesforce Sans';
+		src: url('https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.woff') format('woff'),
+		url('https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.ttf') format('truetype');
+	}`);
+
+  loadScript('footer', null, null, 'text/javascript', false, `var initESW = function(gslbBaseURL) {
+		embedded_svc.settings.displayHelpButton = true; //Or false
+		embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
+
+		//embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+		//embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+
+		//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+		//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+		// Settings for Chat
+		//embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+			// Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+			// Returns a valid button ID.
+		//};
+		//embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+		//embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+		//embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+
+		embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+		embedded_svc.settings.entryFeature = 'LiveAgent';
+
+		embedded_svc.init(
+			'https://bamboohr--webchat.sandbox.my.salesforce.com',
+			'https://bamboohr--webchat.sandbox.my.site.com/ESWEricTestChat1688658886259vforcesite',
+			gslbBaseURL,
+			'00D7h0000004j7W',
+			'eric_and_jordan_test',
+			{
+				baseLiveAgentContentURL: 'https://c.la3-c1cs-ia5.salesforceliveagent.com/content',
+				deploymentId: '5724z000000Gn92',
+				buttonId: '5734z00000000gZ',
+				baseLiveAgentURL: 'https://d.la3-c1cs-ia5.salesforceliveagent.com/chat',
+				eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I7h000000CapnEAC_18940bf130e',
+				isOfflineSupportEnabled: false
+			}
+		);
+	};
+
+	if (!window.embedded_svc) {
+		var s = document.createElement('script');
+		s.setAttribute('src', 'https://bamboohr--webchat.sandbox.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+		s.onload = function() {
+			initESW(null);
+		};
+		document.body.appendChild(s);
+	} else {
+		initESW('https://service.force.com');
+	}`);
 }
 
 function loadTrustArcFormScript() {
@@ -67,102 +260,87 @@ function loadTrustArcFormScript() {
       gpcDetection: true
     },
     (error) => {
-      document.body.innerHTML = error;
-      document.body.style.color = 'red';
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
   );
 
+  // PROXIED URL: const trustArcFormSrc =
+  // 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://form-renderer.trustarc.com/browser/client.js';
   const trustArcFormSrc = 'https://form-renderer.trustarc.com/browser/client.js';
+
   loadScript('header', trustArcFormSrc, null, 'text/javascript', true);
 }
 
-loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', null, 'text/javascript');
-
 /**
- * Adobe Tags
- *
- * To set a Development Environment, from your browser's Developer Tools' Console run
- *   localStorage.setItem('Adobe Tags Development Environment', '#')
- * (where # is 1, 2, 3, 4, or 5) and reload the page.
- *
- * To remove the Development Environment, from your browser's Developer Tools' Console run
- *   localStorage.removeItem('Adobe Tags Development Environment')
- * and reload the page.
+ * opens external links in new window
  */
-let adobeTagsSrc = 'https://assets.adobedtm.com/ae3ff78e29a2/7f43f668d8a7/launch-';
-const adobeTagsDevEnvNumber = (localStorage ? localStorage.getItem('Adobe Tags Development Environment') : undefined);
-const adobeTagsDevEnvURLList = {
-  1: 'f8d48fe68c86-development.min.js',
-  2: 'c043b6e2b351-development.min.js',
-  3: 'ede0a048d603-development.min.js',
-  4: '7565e018a7a2-development.min.js',
-  5: '30e70f4281a7-development.min.js'
-};
-const adobeTagsDevEnv = adobeTagsDevEnvURLList[adobeTagsDevEnvNumber];
-
-if (adobeTagsDevEnv) {
-  adobeTagsSrc += adobeTagsDevEnv;
-} else {
-  const isProdSite = /^(marketplace|partners|www)\.bamboohr\.com$/i.test(document.location.hostname);
-  adobeTagsSrc += (isProdSite ? '58a206bf11f0.min.js' : '9e4820bf112c-staging.min.js');
+function updateExternalLinks() {
+  document.querySelectorAll('main a').forEach((a) => {
+    try {
+      const { origin } = new URL(a.href, window.location.href);
+      if (origin && origin !== window.location.origin) {
+        a.setAttribute('rel', 'noopener');
+        a.setAttribute('target', '_blank');
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(`Invalid link: ${a.href}`);
+    }
+  });
 }
 
-loadScript('header', adobeTagsSrc, async () => {
-  window.digitalData = {};
-  window.digitalData.push = (obj) => {
-    Object.assign(window.digitalData, window.digitalData, obj);
-  };
-
-  const resp = await fetch('/blog/instrumentation.json');
-  const json = await resp.json();
-  const digitalDataMap = json.digitaldata.data;
-  digitalDataMap.forEach((mapping) => {
-    const metaValue = getMetadata(mapping.metadata);
-    if (metaValue) {
-      setObject(window.digitalData, mapping.digitaldata, metaValue);
+function getCookie(name) {
+  const cookieArr = document.cookie.split(";");
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < cookieArr.length; i++) {
+    const cookiePair = cookieArr[i].split("=");
+    if (name === cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
     }
-  });
-
-  /*
-  const digitalDataLists = json['digitaldata-lists'].data;
-  digitalDataLists.forEach((listEntry) => {
-    const metaValue = getMetadata(listEntry.metadata);
-    if (metaValue) {
-      // eslint-disable-next-line no-underscore-dangle
-      let listValue = digitaldata._get(listEntry.digitaldata) || '';
-      const name = listEntry['list-item-name'];
-      const metaValueArr = listEntry.delimiter
-        ? metaValue.split(listEntry.delimiter)
-        : [metaValue];
-      metaValueArr.forEach((value) => {
-        const escapedValue = value.split('|').join(); // well, well...
-        listValue += `${listValue ? ' | ' : ''}${name}: ${escapedValue}`;
-      });
-      // eslint-disable-next-line no-underscore-dangle
-      digitaldata._set(listEntry.digitaldata, listValue);
-    }
-  */
-
-  /* set experiment and variant information */
-  let experiment;
-  if (window.hlx.experiment) {
-    experiment = {
-      id: window.hlx.experiment.id,
-      variant: window.hlx.experiment.selectedVariant,
-    };
   }
+  return null;
+}
 
-  window.digitalData.push({
-    event: 'Page View',
-    page: {
-      country: 'us',
-      language: 'en',
-      platform: 'web',
-      site: 'blog'
-    },
-    ...(experiment ? { experiment }: {})
+function isTrustArcAdvertisingCookieAllowed() {
+  const noticeGDPRPrefs = getCookie("notice_gdpr_prefs");
+  const noticeBehavior = getCookie("notice_behavior");
+
+  if (!noticeGDPRPrefs && noticeBehavior && noticeBehavior !== "expressed|eu") {
+    return true;
+  }
+  if (noticeGDPRPrefs) {
+    return /^.*2.*$/i.test(noticeGDPRPrefs);
+  }
+  return false;
+}
+
+async function setConsentBasedOnTrustArc() {
+  await analyticsSetConsent(isTrustArcAdvertisingCookieAllowed());
+
+  window.addEventListener('message', async (event) => {
+    if (event.data && event.data.includes && event.data.includes('submit_preferences')) {
+      try {
+        const eventDataJson = JSON.parse(event.data);
+        if (eventDataJson.message === 'submit_preferences' && eventDataJson.source === 'preference_manager') {
+          let approved = false;
+          if (typeof eventDataJson.data === 'string') {
+            approved = /^.*2.*$/i.test(eventDataJson.data);
+          } else if (eventDataJson.data.value) {
+            approved = /^.*2.*$/i.test(eventDataJson.data.value);
+          }
+          await analyticsSetConsent(approved);
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
   });
-});
+}
+
+// PROXIED URL: loadScript('footer',
+// 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
+loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
 
 loadScript('header', 'https://www.googleoptimize.com/optimize.js?id=OPT-PXL7MPD', null);
 
@@ -171,3 +349,92 @@ loadTrustArcFormScript();
 /* google tag manager */
 // eslint-disable-next-line
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-ZLCX');
+
+// loadSalesforceChatScript();
+// loadSalesforceChatScript2();
+loadSalesforceChatScript3();
+
+updateExternalLinks();
+
+/**
+ * Track Wistia Player events with alloy
+ */
+function trackWistiaPlayerEvents() {
+  // eslint-disable-next-line no-underscore-dangle
+  window._wq = window._wq || [];
+  // eslint-disable-next-line no-underscore-dangle
+  window._wq.push({
+    id: "_all", onReady(wistiaItem) {
+      const videoType = /podcast/i.test(document.URL) ? "podcast" : "video";
+
+      wistiaItem.bind("play", async () => {
+        await analyticsTrackVideo({
+          id: `${wistiaItem.hashedId()}`,
+          name: `${wistiaItem.name()}`,
+          type: videoType,
+          hasStarted: true,
+        });
+      });
+
+      wistiaItem.bind("end", async () => {
+        await analyticsTrackVideo({
+          id: `${wistiaItem.hashedId()}`,
+          name: `${wistiaItem.name()}`,
+          type: videoType,
+          hasCompleted: true,
+        });
+      });
+
+      wistiaItem.bind('percentwatchedchanged', async (percent, lastPercent) => {
+        // track progress percentage
+        let progressMarker;
+        if (percent >= .25 && lastPercent < .25) {
+          progressMarker = "progress25";
+        } else if (percent >= .50 && lastPercent < .50) {
+          progressMarker = "progress50";
+        } else if (percent >= .75 && lastPercent < .75) {
+          progressMarker = "progress75";
+        } else if (percent >= .90 && lastPercent < .90) {
+          progressMarker = "progress90";
+        }
+        if (progressMarker) {
+          await analyticsTrackVideo({
+            id: `${wistiaItem.hashedId()}`,
+            name: `${wistiaItem.name()}`,
+            type: videoType,
+            progressMarker,
+          });
+        }
+      });
+    }
+  });
+}
+
+trackWistiaPlayerEvents();
+
+/**
+ * Track external links interaction with alloy
+ */
+function trackInteractionExternalLinks() {
+  const allLinkTags = document.querySelectorAll('header a, main a:not(main div.article-header-share a), footer a:not(footer div.social a)');
+	allLinkTags.forEach(item => {
+	  // eslint-disable-next-line no-restricted-globals
+	  const linkType = item.href.toLowerCase().includes(location.host) ? 'other' : 'exit';
+	  item.addEventListener('click', async (event) => {
+		  await analyticsTrackLinkClicks(event.currentTarget, linkType);
+	  });
+  });
+
+  const socialMediaLink = document.querySelectorAll('footer div.social a span');
+  socialMediaLink.forEach(item => {
+	  const className = Array.from(item.classList).find(name => name.startsWith('icon-'));
+	  if (className) {
+		const socialNetwork = className.replace('icon-','')
+		item.addEventListener('click', async () => {
+		  await analyticsTrackSocial(socialNetwork);
+		});
+	  }
+  });
+}
+
+trackInteractionExternalLinks();

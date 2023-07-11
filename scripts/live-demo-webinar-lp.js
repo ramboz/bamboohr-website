@@ -35,7 +35,7 @@ function buildSuccessJoinCommunity(main) {
 
   main.querySelector('.join-community-title')?.after(subheadingBlock);
 
-  const joinCommunityBtn = '<a href="https://join.slack.com/t/hrheroesworkspace/shared_invite/zt-1imk9fc2a-GSWqro2M1U3U77Fj6xClOA" title="Join the Community Now" alt="Join the Community Now" class="button accent" target="_blank">Join the Community Now</a>';
+  const joinCommunityBtn = '<a href="https://join.slack.com/t/hrheroesworkspace/shared_invite/zt-1usy3miol-acExquC0eKS0KKlYMXi~WA" title="Join the Community Now" alt="Join the Community Now" class="button accent" target="_blank">Join the Community Now</a>';
   const joinCommunityBtnBlock = buildBlock('title', joinCommunityBtn);
   joinCommunityBtnBlock?.classList.add('button-color-shade-5', 'join-community-btn');
   joinCommunityBtnBlock?.querySelector('div').setAttribute('data-align', 'center');

@@ -3,10 +3,18 @@
 	color: var(--color-gray-5);
 }
 
+main .form-container {
+  margin-bottom: 10px;
+}
+
 @media (min-width: 1800px) {
   main .form {
     max-width: 83.33%;
     margin: 0 auto;
+  }
+
+  main .modal .form {
+    max-width: 100%;
   }
 }
 
@@ -63,15 +71,6 @@ main .form textarea {
   height: 160px;
 }
 
-main .form select:focus,
-main .form textarea:focus,
-main .form input:focus,
-main .form .mktoForm .mktoInvalid:focus {
-  outline: none;
-  border-image-source: linear-gradient(120deg, var(--color-1-tint-5) 13.4%, var(--color-8-shade-5) 86.6%);
-  border-image-slice: 1;
-}
-
 main .form option {
   box-sizing: border-box;
   display: block;
@@ -91,19 +90,16 @@ main .form input[type='radio'] {
   width: 13px;
 }
 
-main .form .form-checkbox-option {
-  margin-right: 10px;
-}
-
-main .form .form-radio-option:not(:last-child),
 main .form .form-checkbox-option:not(:last-child) {
   display: flex;
   align-items: flex-start;
   margin-bottom: 15px;
+  width: 24px;
+  margin-right: 10px;
 }
 
 main .form .form-checkbox-option input,
-main .form .form-radio-option input {
+main .form input[type="radio"] {
   position: absolute;
   opacity: 0;
   height: 0;
@@ -111,13 +107,19 @@ main .form .form-radio-option input {
 }
 
 main .form .form-checkbox-option > label,
-main .form .form-radio-option > label {
+main .form .form-checkbox-flex label,
+main .form input[type="radio"] + label {
   position: relative;
   display: flex;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+  color: var(--color-gray-12);
 }
 
 main .form .form-checkbox-option > label {
-  padding-left: 42px;
+  padding-left: 34px;
 }
 
 main .form .form-checkbox-option > label::before {
@@ -134,13 +136,22 @@ main .form .form-checkbox-option > label::before {
   cursor: pointer;
 }
 
-main .form .form-radio-option > label::before {
+main .form .form-checkbox-option label a {
+  font-style: italic;
+  text-decoration: underline;
+}
+
+main .form input[type="radio"] + label {
+  margin-bottom: 10px;
+}
+
+main .form input[type="radio"] + label::before {
   content: '';
   display: inline-block;
   width: 26px;
   height: 26px;
   padding: 2px;
-  margin-right: 16px;
+  margin-right: 10px;
   background-clip: content-box;
   border: 2px solid var(--color-gray-3);
   background-color: var(--color-white);
@@ -161,7 +172,7 @@ main .form .form-checkbox-option input:checked + label::after {
   box-sizing: border-box;
 }
 
-main .form .form-radio-option input:checked + label::before {
+main .form input[type="radio"]:checked + label::before {
   background-color: var(--color-1);
 }
 
@@ -176,6 +187,15 @@ main .form .mktoForm .mktoInvalid.form-checkbox-option label::before {
 
 main .form .error input[type='checkbox'] + label::before {
   border-color: var(--color-2);
+}
+
+main .form select:focus,
+main .form textarea:focus,
+main .form input:focus,
+main .form .mktoForm .mktoInvalid:focus {
+  outline: none;
+  border-image-source: linear-gradient(120deg, var(--color-1-tint-5) 13.4%, var(--color-8-shade-5) 86.6%);
+  border-image-slice: 1;
 }
 
 main .form .form-msg {
@@ -254,6 +274,7 @@ main .form .mktoForm .mktoFieldWrap {
   margin-top: 16px;
 }
 
+main .form .mktoForm .mktoRadioList,
 main .form .mktoForm .mktoField,
 main .form .mktoForm .mktoLabel {
   width: 100% !important;
@@ -276,6 +297,14 @@ main .form .mktoForm .mktoLabel {
   main .form .mktoForm .mktoFormRow.form-input-width50 {
     width: calc(50% - 8px);
   }
+}
+
+main .form .mktoForm.minimized-form .mktoFormRow.form-input-width50 {
+  width: 100%;
+}
+
+main .form .mktoForm .mktoFormRow.hide {
+  display: none;
 }
 
 main .form .mktoForm .mktoErrorMsg {
@@ -322,7 +351,8 @@ main .form .mktoForm .mktoButton {
   margin-top: 16px;
 }
 
-main .form .bhrForm__partnerDisclaimer {
+main .form .bhrForm__partnerDisclaimer,
+main .form.has-minimized-form .form-col .form-consent {
   color: var(--color-gray-9);
   font-size: 14px;
   line-height: 20px;
@@ -364,6 +394,10 @@ main .form.has-content .content-col img {
   width: 100%;
 }
 
+main .form.has-content.no-box-shadow .content-col img {
+  box-shadow: none;
+}
+
 main .form.white-container .form-col {
   background-color: var(--color-white);
   border-radius: 16px;
@@ -371,7 +405,6 @@ main .form.white-container .form-col {
   box-shadow: var(--box-shadow-2);
   height: fit-content;
 }
-
 
 .form .content-col a:not(.button):not(form) {
   font-weight: var(--heading-font-weight);
@@ -392,6 +425,7 @@ main .form.has-content .content-col h1 {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 40px;
+    align-items: start;
   }
 
   main .form.has-content .content-col {
@@ -427,6 +461,16 @@ main .form .form-col .form-logos img {
   max-width: 120px;
 }
 
+main .form .form-col p > em {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+main .form .form-col p > em > a {
+  text-decoration: underline;
+}
+
 main .form.with-google-map .content-col iframe {
   width: 100%;
   height: 200px;
@@ -444,4 +488,86 @@ main .form.with-google-map .content-col iframe {
   main .form.with-google-map .content-col iframe {
     height: 550px;
   }
+}
+
+main .form.floating-label .mktoForm select,
+main .form.floating-label .mktoForm textarea,
+main .form.floating-label .mktoForm input {
+  border-width: 1px;
+  border-color: var(--color-gray-6);
+  padding: 11px 12px 9px;
+  height: 44px;
+}
+
+main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--color-gray-7);
+  padding: 0 12px;
+  cursor: text;
+  text-align: left;
+  transition: all ease-out .3s;
+  margin-bottom: 0;
+}
+
+main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel.active {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-gray-12);
+  top: 10px;
+}
+
+main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel.active + input,
+main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel.active + select,
+main .form.floating-label .mktoForm .mktoFieldWrap:not(.form-checkbox-flex) .mktoLabel.active + textarea {
+  padding: 17px 12px 3px;
+}
+
+/* minimized form */
+main .form.has-minimized-form .form-col p:nth-child(2) a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--color-1-shade-10);
+}
+
+main .form.has-minimized-form .form-col .form-consent {
+  text-align: center;
+  margin: 30px 0 10px;
+}
+
+main .form.has-minimized-form .form-col .form-consent a,
+main .form.minimized-form-test .form-col .bhrForm__partnerDisclaimer a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: var(--color-1-shade-10);
+  font-weight: 600;
+  font-style: normal;
+}
+
+main .form.has-minimized-form .form-col .mktoForm .mktoButton {
+  margin-top: 25px;
+}
+
+main .form.minimized-form-test.has-content .form-col {
+  padding: 32px;
+  background-color: var(--color-white);
+  border-radius: 30px;
+}
+
+main .form.minimized-form-test .form-col .form-container {
+  margin-top: 10px;
+}
+
+main .form.minimized-form-test .form-col p:nth-child(2) {
+  color: var(--color-gray-12);
+}
+
+main .form.minimized-form-test .form-col .form-logos img {
+  max-width: 100%;
+  margin-top: 20px;
 }

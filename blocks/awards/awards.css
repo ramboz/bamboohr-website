@@ -1,0 +1,46 @@
+main .awards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  row-gap: 24px;
+}
+
+main .awards > picture {
+  flex: 0 1 50%;
+  padding: 0 12px;
+  display: flex;
+  justify-content: center;
+}
+
+main .awards picture img {
+  max-height: 124px;
+}
+
+@media (min-width:600px){
+  main .awards > picture {
+    flex: 0 1 25%;
+  }
+}
+
+@media (min-width:900px){
+  main .awards {
+    row-gap: 32px;
+  }
+
+  main .awards picture {
+    display: flex;
+    justify-content: center;
+    padding: 0 24px;
+  }
+
+  main .awards picture img {
+    max-height: 124px;
+  }
+}
+
+@media (min-width:1800px){
+  main .awards picture img {
+    max-height: 148px;
+  }
+}

@@ -210,6 +210,26 @@ main .listing-results-count {
     text-align: center;
 }
 
+main .listing-search {
+    text-align: center;
+}
+
+main .listing-search input {
+    height: 36px;
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 400;
+    color: var(--color-gray-12);
+    padding: 16px 20px;
+    border-radius: 50px;
+    border: 2px solid var(--color-gray-8);
+    background-image: url('/icons/search.svg');
+    background-position: calc(100% - 16px) 50%;
+    background-repeat: no-repeat;
+    margin: 18px 0;
+    width: 100%;
+}
+
 main .listing-sortby {
     text-align: center;
     font-size: 16px;
@@ -430,8 +450,7 @@ main .listing-results .hrvs-card-header {
     margin-bottom: 10px;
 }
 
-main .hrvs-card .hrvs-card-format::before,
-main .listing-article-card .listing-article-card-format::before {
+main .hrvs-card .hrvs-card-format::before {
     content: '•';
     display: inline-block;
     margin: 1px 8px 0 4px;
@@ -493,7 +512,8 @@ main .listing-results .hrvs-card-body a::after {
     font-style: italic;
 }
 
-.listing-group .load-more-wrapper {
+.listing-group .load-more-wrapper,
+.listing-limited.load-more-wrapper {
     text-align: center;
     margin-top: 60px;
 }
@@ -553,6 +573,7 @@ main .listing-results .hrvs-card-body a::after {
 
 main .article-cards ul > div {
   width: 100%;
+  margin-bottom: 30px;
 }
 
 main .article-cards ul > div div a img,
@@ -574,13 +595,13 @@ main .article-cards ul > div div p a {
   font-weight: 700;
   line-height: 22px;
   display: inline-block;
-  color: var(--heading-color);
+  color: var(--theme-shade5);
   text-decoration: none;
 }
 
 main .article-cards ul > div div p a::after {
   content: "";
-  border: solid var(--heading-color);
+  border: solid var(--color-1-shade-10);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
@@ -621,8 +642,13 @@ main .article-cards ul > div div p a::after {
 @media (min-width: 600px) {
     main .listing-results {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 30px;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 40px;
+    }
+
+
+    main .article-cards ul > div {
+        margin-bottom: 0;
     }
 
     main .listing-results > li {
@@ -669,6 +695,9 @@ main .article-cards ul > div div p a::after {
 
     main .listing-results {
         grid-area: results;
+    }
+
+    .integrations main .listing-results {
         grid-template-columns: repeat(3, 1fr);
     }
 
@@ -679,12 +708,17 @@ main .article-cards ul > div div p a::after {
 
     main .listing {
         display: grid;
-        grid-template-areas: '- count sortby' 'facets results results';
+        grid-template-areas: 'count search sortby' 'facets results results';
         align-items: flex-start;
     }
 
     main .listing.horizontal-filters {
         grid-template-areas: 'count - sortby' 'facets facets facets' 'results results results';
+    }
+
+    main .listing-search {
+        grid-area: search;
+        text-align: left;
     }
 
     main .listing-sortby {
@@ -779,4 +813,120 @@ main .article-cards ul > div div p a::after {
     main .listing-facets  {
         margin-left: -70px;
     }
+}
+
+@media (min-width: 1800px) {
+    main .listing-results {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+main .listing-results [class*="-card"] [class*="-card-header"] {
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+main .listing.no-controls .listing-results-count,
+main .listing.no-controls .listing-sortby,
+main .listing.no-controls .listing-search {
+    display: none;
+}
+
+main .listing-article-card-detail {
+    max-height: 110px;
+    /* stylelint-disable value-no-vendor-prefix */
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+main .listing-article-card .listing-article-card-body p {
+    margin-bottom: 10px;
+}
+
+main .listing-article-card .listing-article-card-header span:not(:last-child)::after {
+    content: '•';
+    display: inline-block;
+    margin: 0 2px 0 5px;
+    vertical-align: top;
+}
+
+main .listing.one-column .listing-results {
+    display: block;
+}
+
+main .listing.one-column .listing-results .listing-article-card {
+    margin-bottom: 80px;
+}
+
+@media screen and (min-width: 600px) {
+    main .listing.one-column .listing-results .listing-article-card {
+        margin-bottom: 100px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    main .listing.one-column .listing-results .listing-article-card {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        align-content: stretch;
+    }
+
+    main .listing.one-column .listing-results .listing-article-card:nth-child(2n) {
+        flex-direction: row-reverse;
+    }
+}
+
+main .listing-results .listing-article-card .listing-article-card-picture,
+main .listing-results .listing-article-card .wistia.block,
+main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture {
+    margin-bottom: 40px;
+}
+
+main .listing-article-card-header {
+    font-weight: 500;
+    margin-top: 30px;
+    margin-bottom: 25px;
+    font-size: 12px;
+  }
+
+@media screen and (min-width: 600px) {
+    main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture {
+        margin-bottom: 60px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    main .listing.one-column .listing-results .listing-article-card .listing-article-card-picture,
+    main .listing.one-column .listing-results .listing-article-card .listing-article-card-body,
+    main .listing.one-column .listing-results .listing-article-card .wistia {
+        margin-bottom: 0;
+        flex: 0 0 auto;
+        width: calc(50% - 20px);
+    }
+}
+
+main .listing.one-column.article-cards ul > div div h3 {
+    font-family: var(--heading-font-family);
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+@media screen and (min-width: 1200px) {
+    main .listing.one-column.article-cards ul > div div h3 {
+        font-size: 36px;
+        line-height: 44px;
+    }
+}
+
+main .listing.one-column .listing-results .listing-article-card .listing-article-card-header {
+    margin-top: 20px;
+    color: var(--color-1-shade-10);
 }
