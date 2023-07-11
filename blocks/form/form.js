@@ -845,6 +845,11 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           const selectCheckbox = (checkbox) => {
             checkbox.checked = true;
             checkbox.disabled = true;
+            const parentEl = checkbox.parentNode;
+            parentEl.classList.add('gray-check', 'mrktoValid');
+            parentEl.setAttribute('aria-invalid', 'false');
+            const parentOfParent = parentEl.parentNode.parentNode;
+            parentOfParent.classList.add('disable-events');
           };
 
           console.log(requestType, ' this is the request type');
