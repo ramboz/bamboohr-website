@@ -188,7 +188,6 @@ function loadSalesforceChatScript3() {
 		url('https://c1.sfdcstatic.com/etc/clientlibs/sfdc-aem-master/clientlibs_base/fonts/SalesforceSans-Regular.ttf') format('truetype');
 	}`);
 
-  loadScript('footer', 'https://service.force.com/embeddedservice/5.0/esw.min.js', null, 'text/javascript');
   loadScript('footer', null, null, 'text/javascript', false, `var initESW = function(gslbBaseURL) {
 		embedded_svc.settings.displayHelpButton = true; //Or false
 		embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
