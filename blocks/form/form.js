@@ -846,8 +846,8 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
             checkbox.checked = true;
             checkbox.disabled = true;
             const parentEl = checkbox.parentNode;
-            parentEl.classList.add('gray-check', 'mrktoValid');
-            parentEl.setAttribute('aria-invalid', 'false');
+            parentEl.classList.add('gray-check');
+            // parentEl.setAttribute('aria-invalid', 'false');
             const parentOfParent = parentEl.parentNode.parentNode;
             parentOfParent.classList.add('disable-events');
           };
@@ -874,7 +874,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         }
 
         addFormHeadingText();
-        // addExpansionProduct();
+        addExpansionProduct();
 
         const demoCheckbox = formEl.querySelector('input[name="Demo_Request_Checkbox__c"]');
         if (chilipiper && chilipiper === 'content-download-form') {
