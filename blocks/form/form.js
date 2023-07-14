@@ -694,40 +694,6 @@ function minimizeForm(formEl) {
   });
 }
 
-function expansionAutoSelectCheckbox() {
-  const checkboxPayroll = document.querySelector('input[name="requestPayroll"]');
-  const checkboxBenAdmin = document.querySelector('input[name="requestBenefitsAdministration"]');
-  const checkboxTimeTrack = document.querySelector('input[name="requestTimeTracking"]');
-  const checkboxPerfMgmt = document.querySelector('input[name="requestPerformanceManagement"]');
-  const requestType = document.querySelector('input[name="Request_Type__c"]').value;
-
-  const selectCheckbox = (checkbox) => {
-    checkbox.checked = true;
-    checkbox.disabled = true;
-    const parentEl = checkbox.parentNode;
-    parentEl.classList.add('gray-check');
-    const parentOfParent = parentEl.parentNode.parentNode;
-    parentOfParent.classList.add('disable-events');
-  };
-
-  switch (requestType) {
-    case 'Payroll':
-      selectCheckbox(checkboxPayroll);
-      break;
-    case 'Benefits Administration':
-      selectCheckbox(checkboxBenAdmin);
-      break;
-    case 'Time Tracking':
-      selectCheckbox(checkboxTimeTrack);
-      break;
-    case 'Performance Management':
-      selectCheckbox(checkboxPerfMgmt);
-      break;
-    default:
-      break;
-  }
-}
-
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -858,9 +824,38 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           const requestTypeInput = formEl.querySelector('input[name="Request_Type__c"]');
           if (requestTypeInput && searchParams?.requestType) requestTypeInput.value = searchParams.requestType;
         }
-        if (formId === '3457') {
-          expansionAutoSelectCheckbox();
-        }
+
+        const requestTypeVal = formEl.querySelector('input[name="Request_Type__c"]').value;
+        const requestTypeFormat = requestTypeVal.charAt(0).toUpperCase() + requestTypeVal.slice(1).replace(/\s+/g, '');
+        const requestTypeFinal = `request${requestTypeFormat}`;
+        const checkboxPayroll = formEl.querySelector(`input[name="${requestTypeFinal}"]`);
+        const checkboxBenAdmin = formEl.querySelector(`input[name="${requestTypeFinal}"]`);
+        const checkboxTimeTrack = formEl.querySelector(`input[name="${requestTypeFinal}"]`);
+        const checkboxPerfMgmt = formEl.querySelector(`input[name="${requestTypeFinal}"]`);
+        const selectCheckbox = (checkbox) => {
+          if (checkbox) {
+            checkbox.checked = true;
+            checkbox.disabled = true;
+            const parentEl = checkbox.parentNode;
+            if (parentEl) {
+              parentEl.classList.add('gray-check');
+              const parentOfParent = parentEl.parentNode;
+              if (parentOfParent) {
+                parentOfParent.classList.add('disable-events');
+              }
+            }
+          }
+        };
+        const checkboxes = [checkboxPayroll, checkboxBenAdmin, checkboxTimeTrack, checkboxPerfMgmt];
+        checkboxes.forEach((checkbox) => {
+          switch (checkbox?.name) {
+            case requestTypeFinal:
+              selectCheckbox(checkbox);
+              break;
+            default:
+              break;
+          }
+        });
 
         const formSubmitText = getMetadata('form-submit-text');
         const formSubmitBtn = formEl.querySelector('.mktoButton');
