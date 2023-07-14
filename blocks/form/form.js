@@ -694,6 +694,40 @@ function minimizeForm(formEl) {
   });
 }
 
+function expansionAutoSelectCheckbox() {
+  const checkboxPayroll = document.querySelector('input[name="requestPayroll"]');
+  const checkboxBenAdmin = document.querySelector('input[name="requestBenefitsAdministration"]');
+  const checkboxTimeTrack = document.querySelector('input[name="requestTimeTracking"]');
+  const checkboxPerfMgmt = document.querySelector('input[name="requestPerformanceManagement"]');
+  const requestType = document.querySelector('input[name="Request_Type__c"]').value;
+
+  const selectCheckbox = (checkbox) => {
+    checkbox.checked = true;
+    checkbox.disabled = true;
+    const parentEl = checkbox.parentNode;
+    parentEl.classList.add('gray-check');
+    const parentOfParent = parentEl.parentNode.parentNode;
+    parentOfParent.classList.add('disable-events');
+  };
+
+  switch (requestType) {
+    case 'Payroll':
+      selectCheckbox(checkboxPayroll);
+      break;
+    case 'Benefits Administration':
+      selectCheckbox(checkboxBenAdmin);
+      break;
+    case 'Time Tracking':
+      selectCheckbox(checkboxTimeTrack);
+      break;
+    case 'Performance Management':
+      selectCheckbox(checkboxPerfMgmt);
+      break;
+    default:
+      break;
+  }
+}
+
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -824,6 +858,9 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           const requestTypeInput = formEl.querySelector('input[name="Request_Type__c"]');
           if (requestTypeInput && searchParams?.requestType) requestTypeInput.value = searchParams.requestType;
         }
+        if (formId === '3457') {
+          expansionAutoSelectCheckbox();
+        }
 
         const formSubmitText = getMetadata('form-submit-text');
         const formSubmitBtn = formEl.querySelector('.mktoButton');
@@ -832,40 +869,6 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         } else if (window.location.pathname.includes('/webinars/')) {
           const eventDateStr = getMetadata('event-date');
           formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
-        }
-
-        if (formId === '3457') {
-          const checkboxPayroll = formEl.querySelector('input[name="requestPayroll"]');
-          const checkboxBenAdmin = formEl.querySelector('input[name="requestBenefitsAdministration"]');
-          const checkboxTimeTrack = formEl.querySelector('input[name="requestTimeTracking"]');
-          const checkboxPerfMgmt = formEl.querySelector('input[name="requestPerformanceManagement"]');
-          const requestType = formEl.querySelector('input[name="Request_Type__c"]').value;
-
-          const selectCheckbox = (checkbox) => {
-            checkbox.checked = true;
-            checkbox.disabled = true;
-            const parentEl = checkbox.parentNode;
-            parentEl.classList.add('gray-check');
-            const parentOfParent = parentEl.parentNode.parentNode;
-            parentOfParent.classList.add('disable-events');
-          };
-
-          switch (requestType) {
-            case 'Payroll':
-              selectCheckbox(checkboxPayroll);
-              break;
-            case 'Benefits Administration':
-              selectCheckbox(checkboxBenAdmin);
-              break;
-            case 'Time Tracking':
-              selectCheckbox(checkboxTimeTrack);
-              break;
-            case 'Performance Management':
-              selectCheckbox(checkboxPerfMgmt);
-              break;
-            default:
-              break;
-          }
         }
 
         addFormHeadingText();
