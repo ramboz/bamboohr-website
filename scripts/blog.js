@@ -33,7 +33,7 @@ function buildArticleHeader(main) {
     const h1 = main.querySelector('h1');
     const picture = document.querySelector('h1 + p > picture');
 
-    if (author && publicationDate) {
+    if (author && publicationDate && main.parentNode === document.body) {
       document.body.classList.add('blog-post');
       const section = document.createElement('div');
 
@@ -100,7 +100,7 @@ export default async function decorateTemplate(main) {
     const authorSection = document.createElement('div');
     authorSection.append(authorBlock);
 
-    if (!related.nextElementSibling && !related.parentElement.nextElementSibling) {
+    if (related && !related.nextElementSibling && !related.parentElement.nextElementSibling) {
       if (testVariation === 'blog-redesign') main.append(authorSection);
       const section = document.createElement('div');
       section.append(related);
