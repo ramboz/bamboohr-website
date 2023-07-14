@@ -549,6 +549,11 @@ export function adobeEventTracking(event, componentData) {
   });
 }
 
+function getUniqueFormSubmissionHash(ecid) {
+  // eslint-disable-next-line no-undef
+  return md5(ecid + Date.now());
+}
+
 function getMktoSearchParams(url) {
   const link = new URL(url);
   const requestType = link.searchParams?.get('requestType');
@@ -705,9 +710,15 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           .then((result) => {
             // eslint-disable-next-line
             formEl.querySelector('input[name="ECID"]').value = result.identity.ECID;
+			if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
+			  formEl.querySelector('input[name="UniqueSubmissionHash"]').value = getUniqueFormSubmissionHash(result.identity.ECID);			  
+			}
           })
           .catch( () => { 
             formEl.querySelector('input[name="ECID"]').value = '';
+			if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
+              formEl.querySelector('input[name="UniqueSubmissionHash"]').value = '';
+			}
           });
           analyticsTrackFormStart(formEl);
         });
@@ -756,7 +767,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
               // show all fields if user change email, keep email prefilled
               const email = formEl.querySelector(`[name='Email']`);
               email.addEventListener('change', () => {
-                if (email !== result.Email) {
+                if (email !== result.Email && formEl.classList.contains('minimized-form')) {
                   clearFormValues(formEl, formFields, false);
                   formConsentEl.remove();
                 }

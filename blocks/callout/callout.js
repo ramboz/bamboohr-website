@@ -2,7 +2,7 @@ import { createElem, createOptimizedPicture, getMetadata } from '../../scripts/s
 
 function canReadPic(path) {
     let readPic = true;
-    const noPicList = ['/pl-pages/demo-request/', '/lp/demo/', '/lp/payroll/', '/signup/'];
+    const noPicList = ['/pl-pages/demo-request/', '/lp/demo/', '/lp/payroll/', '/signup/', '/pricing/'];
     noPicList.some(p => {
         if (path === p) {
             readPic = false;
@@ -31,7 +31,7 @@ function findDescription(block) {
     const pList = block.querySelectorAll('p');
     const ps = [...pList];
     ps.some(p => {
-        if (!p.children.length && p.textContent) {
+        if (!p.classList.contains('button-container') && p.textContent) {
             desc = p;
             return true;
         }
@@ -55,6 +55,7 @@ function findDescription(block) {
 }
 
 export default async function decorate(block) {
+    const skipImageRead = block.classList.contains('no-image');
     const testVariation = getMetadata('test-variation');
     if (!testVariation || testVariation.toLowerCase() !== 'blog redesign') return;
 
@@ -73,7 +74,7 @@ export default async function decorate(block) {
     let button = null;
     if (link.parentElement.classList.contains('button-container')) button = link.parentElement;
     let pic = block.querySelector('picture');
-    const readPic = canReadPic(link.pathname);
+    const readPic = skipImageRead ? false : canReadPic(link.pathname);
 
     // If elements are missing read the link page's metadata and create them.
     if (link && (!title || !desc || (readPic && !pic))) {
@@ -97,7 +98,7 @@ export default async function decorate(block) {
             }
         }
 
-        if (!pic) {
+        if (readPic && !pic) {
             const img = getDomMetadata(dom, 'og:image');
             if (img) pic = createOptimizedPicture(img, title, false, [{ width: 750 }]);
         }

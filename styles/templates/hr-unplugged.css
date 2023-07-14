@@ -60,6 +60,8 @@
 .hr-unplugged .section-1 .image-wrapper,
 .hr-unplugged .section-3 .image-wrapper {
   max-width: 100vw;
+  padding-left: unset;
+  padding-right: unset;
 }
 
 .hr-unplugged .hexie-cap-1 img,

@@ -117,7 +117,7 @@ function createInlineScript(document, element, innerHTML, type) {
   const script = document.createElement('script');
   if (type) {
     script.type = type;
-  }
+  }	
   script.innerHTML = innerHTML;
   element.appendChild(script);
   return script;
@@ -267,10 +267,13 @@ export async function analyticsTrackLinkClicks(element, linkType = 'other', addi
  * @returns {Promise<*>}
  */
 export async function analyticsTrackFormSubmission(element, additionalXdmFields = {}) {
-	const empText = element.querySelector('select[name="Employees_Text__c"]');
-	const formBusinessSize = empText?.value || 'unknown';
-	const rawFormId = element.id.replace('mktoForm_', '');
-
+  
+  const empText = element.querySelector('select[name="Employees_Text__c"]');
+  const formBusinessSize = empText?.value || 'unknown';
+  const rawFormId = element.id.replace('mktoForm_', '');
+  const uniqueHashElement = element.querySelector('input[name="UniqueSubmissionHash"]');
+  const formUniqueSubmissionHash = uniqueHashElement?.value || '';
+  
   // eslint-disable-next-line no-undef
   return alloy('sendEvent', {
     documentUnloading: true,
@@ -280,7 +283,8 @@ export async function analyticsTrackFormSubmission(element, additionalXdmFields 
         form: {
           formId: rawFormId,
           formComplete: 1,
-		      businessSize: formBusinessSize
+		  businessSize: formBusinessSize,
+		  uniqueSubmissionHash: formUniqueSubmissionHash
         },
         ...additionalXdmFields,
       },
