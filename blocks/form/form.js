@@ -834,7 +834,6 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           formSubmitBtn.textContent = isUpcomingEvent(eventDateStr) ? 'Register for this event' : 'Watch Now';
         }
 
-        console.log(formId, " this is the form id");
         if (formId === '3457') {
           const checkboxPayroll = formEl.querySelector('input[name="requestPayroll"]');
           const checkboxBenAdmin = formEl.querySelector('input[name="requestBenefitsAdministration"]');
@@ -847,13 +846,9 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
             checkbox.disabled = true;
             const parentEl = checkbox.parentNode;
             parentEl.classList.add('gray-check');
-            // parentEl.setAttribute('aria-invalid', 'false');
             const parentOfParent = parentEl.parentNode.parentNode;
             parentOfParent.classList.add('disable-events');
           };
-
-          console.log(requestType, ' this is the request type');
-          console.log(checkboxPayroll, ' this is the payroll checkbox');
 
           switch (requestType) {
             case 'Payroll':
