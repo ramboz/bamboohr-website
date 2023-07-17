@@ -694,6 +694,24 @@ function minimizeForm(formEl) {
   });
 }
 
+// Auto selects the corresponding checkbox for the expansion product form
+const selectCheckbox = (formEl, requestTypeVal) => {
+  const requestTypeFormat = requestTypeVal.charAt(0).toUpperCase() + requestTypeVal.slice(1).replace(/\s+/g, '');
+  const requestTypeEl = formEl.querySelector(`input[name="request${requestTypeFormat}"]`);
+  if (requestTypeEl) {
+    requestTypeEl.checked = true;
+    requestTypeEl.disabled = true;
+    const parentEl = requestTypeEl.parentNode;
+    if (parentEl) {
+      parentEl.classList.add('gray-check');
+      const parentOfParent = parentEl.parentNode;
+      if (parentOfParent) {
+        parentOfParent.classList.add('disable-events');
+      }
+    }
+  }
+};
+
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -825,25 +843,9 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           if (requestTypeInput && searchParams?.requestType) requestTypeInput.value = searchParams.requestType;
         }
 
-        const requestTypeVal = formEl.querySelector('input[name="Request_Type__c"]').value;
+        const requestTypeVal = formEl.querySelector('input[name="Request_Type__c"]')?.value;
         if (requestTypeVal) {
-          const requestTypeFormat = requestTypeVal.charAt(0).toUpperCase() + requestTypeVal.slice(1).replace(/\s+/g, '');
-          const requestTypeEl = formEl.querySelector(`input[name="request${requestTypeFormat}"]`);
-          const selectCheckbox = (checkbox) => {
-            if (checkbox) {
-              checkbox.checked = true;
-              checkbox.disabled = true;
-              const parentEl = checkbox.parentNode;
-              if (parentEl) {
-                parentEl.classList.add('gray-check');
-                const parentOfParent = parentEl.parentNode;
-                if (parentOfParent) {
-                  parentOfParent.classList.add('disable-events');
-                }
-              }
-            }
-          };
-          selectCheckbox(requestTypeEl);
+          selectCheckbox(formEl, requestTypeVal);
         }
 
         const formSubmitText = getMetadata('form-submit-text');
