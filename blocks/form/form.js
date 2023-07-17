@@ -827,35 +827,24 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 
         const requestTypeVal = formEl.querySelector('input[name="Request_Type__c"]').value;
         const requestTypeFormat = requestTypeVal.charAt(0).toUpperCase() + requestTypeVal.slice(1).replace(/\s+/g, '');
-        const requestTypeFinal = `request${requestTypeFormat}`;
-        const checkboxPayroll = formEl.querySelector(`input[name="${requestTypeFinal}"]`);
-        const checkboxBenAdmin = formEl.querySelector(`input[name="${requestTypeFinal}"]`);
-        const checkboxTimeTrack = formEl.querySelector(`input[name="${requestTypeFinal}"]`);
-        const checkboxPerfMgmt = formEl.querySelector(`input[name="${requestTypeFinal}"]`);
-        const selectCheckbox = (checkbox) => {
-          if (checkbox) {
-            checkbox.checked = true;
-            checkbox.disabled = true;
-            const parentEl = checkbox.parentNode;
-            if (parentEl) {
-              parentEl.classList.add('gray-check');
-              const parentOfParent = parentEl.parentNode;
-              if (parentOfParent) {
-                parentOfParent.classList.add('disable-events');
+        const requestTypeEl = formEl.querySelector(`input[name="request${requestTypeFormat}"]`);
+        if (requestTypeEl) {
+          const selectCheckbox = (checkbox) => {
+            if (checkbox) {
+              checkbox.checked = true;
+              checkbox.disabled = true;
+              const parentEl = checkbox.parentNode;
+              if (parentEl) {
+                parentEl.classList.add('gray-check');
+                const parentOfParent = parentEl.parentNode;
+                if (parentOfParent) {
+                  parentOfParent.classList.add('disable-events');
+                }
               }
             }
-          }
-        };
-        const checkboxes = [checkboxPayroll, checkboxBenAdmin, checkboxTimeTrack, checkboxPerfMgmt];
-        checkboxes.forEach((checkbox) => {
-          switch (checkbox?.name) {
-            case requestTypeFinal:
-              selectCheckbox(checkbox);
-              break;
-            default:
-              break;
-          }
-        });
+          };
+          selectCheckbox(requestTypeEl);
+        }
 
         const formSubmitText = getMetadata('form-submit-text');
         const formSubmitBtn = formEl.querySelector('.mktoButton');
