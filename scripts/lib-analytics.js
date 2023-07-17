@@ -185,7 +185,8 @@ export function getCampaignString(){
 export async function analyticsTrackPageViews(document, additionalXdmFields = {}, blogPageDetails = {}) {
   // eslint-disable-next-line no-undef
   return alloy('sendEvent', {
-    documentUnloading: true,
+    renderDecisions: true,
+    decisionScopes: ['__view__'],
     xdm: {
       eventType: 'web.webpagedetails.pageViews',
       web: {
