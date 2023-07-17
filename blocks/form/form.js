@@ -710,15 +710,15 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           .then((result) => {
             // eslint-disable-next-line
             formEl.querySelector('input[name="ECID"]').value = result.identity.ECID;
-			if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
-			  formEl.querySelector('input[name="UniqueSubmissionHash"]').value = getUniqueFormSubmissionHash(result.identity.ECID);			  
-			}
+      if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
+        formEl.querySelector('input[name="UniqueSubmissionHash"]').value = getUniqueFormSubmissionHash(result.identity.ECID);			  
+      }
           })
           .catch( () => { 
             formEl.querySelector('input[name="ECID"]').value = '';
-			if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
+      if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
               formEl.querySelector('input[name="UniqueSubmissionHash"]').value = '';
-			}
+      }
           });
           analyticsTrackFormStart(formEl);
         });
@@ -891,7 +891,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           });
 
           /* Adobe form complete events tracking */
-		      analyticsTrackFormSubmission(formEl);
+          analyticsTrackFormSubmission(formEl);
 
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
@@ -909,11 +909,11 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
       let timeoutSuccessUrl = '';
       function redirectTimeout() {
         return setTimeout(() => {
-		  setTimeout(() =>{
-			analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
-		  },1000);
-		  window.location.href = timeoutSuccessUrl; 
-		}, '240000');
+      setTimeout(() =>{
+      analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
+      },1000);
+      window.location.href = timeoutSuccessUrl; 
+    }, '240000');
       }
       //  eslint-disable-next-line
       window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});
@@ -934,23 +934,23 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         const eventData = event.data;
         const {action} = eventData;
         const trackedActions = ["booked", "phone-selected", "close"];
-		if (trackedActions.includes(action)) {
-		  let cpEvent = {};
-		  // eslint-disable-next-line default-case
-		  switch (action) {
-			case "booked":	
-			  cpEvent = {"cpBookedEvent": 1};
-			  break;
-			case "phone-selected":
-			  cpEvent = {"cpCalledEvent": 1};
-			  break;
-			case "close":
-			  cpEvent = {"cpClosedEvent": 1};
-			  break;			  
-		  }
-		  analyticsTrackChiliPiper(cpEvent);
-		}
-		
+    if (trackedActions.includes(action)) {
+      let cpEvent = {};
+      // eslint-disable-next-line default-case
+      switch (action) {
+      case "booked":	
+        cpEvent = {"cpBookedEvent": 1};
+        break;
+      case "phone-selected":
+        cpEvent = {"cpCalledEvent": 1};
+        break;
+      case "close":
+        cpEvent = {"cpClosedEvent": 1};
+        break;			  
+      }
+      analyticsTrackChiliPiper(cpEvent);
+    }
+    
       }, false);
 
     });
