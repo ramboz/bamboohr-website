@@ -829,7 +829,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         if (requestTypeVal) {
           const requestTypeFormat = requestTypeVal.charAt(0).toUpperCase() + requestTypeVal.slice(1).replace(/\s+/g, '');
           const requestTypeEl = formEl.querySelector(`input[name="request${requestTypeFormat}"]`);
-            const selectCheckbox = (checkbox) => {
+          const selectCheckbox = (checkbox) => {
             if (checkbox) {
               checkbox.checked = true;
               checkbox.disabled = true;
