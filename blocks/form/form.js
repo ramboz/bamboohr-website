@@ -695,19 +695,15 @@ function minimizeForm(formEl) {
 }
 
 // Auto selects the corresponding checkbox for the expansion product form
-const selectCheckbox = (formEl, requestTypeVal) => {
-  const requestTypeFormat = requestTypeVal.charAt(0).toUpperCase() + requestTypeVal.slice(1).replace(/\s+/g, '');
-  const requestTypeEl = formEl.querySelector(`input[name="request${requestTypeFormat}"]`);
-  if (requestTypeEl) {
-    requestTypeEl.checked = true;
-    requestTypeEl.disabled = true;
-    const parentEl = requestTypeEl.parentNode;
-    if (parentEl) {
-      parentEl.classList.add('gray-check');
-      const parentOfParent = parentEl.parentNode;
-      if (parentOfParent) {
-        parentOfParent.classList.add('disable-events');
-      }
+const selectCheckbox = (requestTypeEl) => {
+  requestTypeEl.checked = true;
+  requestTypeEl.disabled = true;
+  const parentEl = requestTypeEl.parentNode;
+  if (parentEl) {
+    parentEl.classList.add('gray-check');
+    const parentOfParent = parentEl.parentNode;
+    if (parentOfParent) {
+      parentOfParent.classList.add('disable-events');
     }
   }
 };
@@ -845,7 +841,9 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 
         const requestTypeVal = formEl.querySelector('input[name="Request_Type__c"]')?.value;
         if (requestTypeVal) {
-          selectCheckbox(formEl, requestTypeVal);
+          const requestTypeFormat = requestTypeVal.charAt(0).toUpperCase() + requestTypeVal.slice(1).replace(/\s+/g, '');
+          const requestTypeEl = formEl.querySelector(`input[name="request${requestTypeFormat}"]`);
+          if (requestTypeEl) selectCheckbox(requestTypeEl);
         }
 
         const formSubmitText = getMetadata('form-submit-text');
