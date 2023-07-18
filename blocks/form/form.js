@@ -695,10 +695,10 @@ function minimizeForm(formEl) {
 }
 
 // Auto selects the corresponding checkbox for the expansion product form
-const selectCheckbox = (requestTypeEl) => {
-  requestTypeEl.checked = true;
-  requestTypeEl.disabled = true;
-  const parentEl = requestTypeEl.parentNode;
+const selectCheckbox = (requestTypeCheckbox) => {
+  requestTypeCheckbox.checked = true;
+  requestTypeCheckbox.disabled = true;
+  const parentEl = requestTypeCheckbox.parentNode;
   if (parentEl) {
     parentEl.classList.add('gray-check');
     const parentOfParent = parentEl.parentNode;
@@ -842,8 +842,8 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         const requestTypeVal = formEl.querySelector('input[name="Request_Type__c"]')?.value;
         if (requestTypeVal) {
           const requestTypeFormat = requestTypeVal.charAt(0).toUpperCase() + requestTypeVal.slice(1).replace(/\s+/g, '');
-          const requestTypeEl = formEl.querySelector(`input[name="request${requestTypeFormat}"]`);
-          if (requestTypeEl) selectCheckbox(requestTypeEl);
+          const requestTypeCheckbox = formEl.querySelector(`input[name="request${requestTypeFormat}"]`);
+          if (requestTypeCheckbox) selectCheckbox(requestTypeCheckbox);
         }
 
         const formSubmitText = getMetadata('form-submit-text');
