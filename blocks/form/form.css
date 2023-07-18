@@ -172,6 +172,14 @@ main .form .form-checkbox-option input:checked + label::after {
   box-sizing: border-box;
 }
 
+main .form .disable-events {
+  pointer-events: none;
+}
+
+main .form .form-checkbox-option.gray-check input:checked + label::after {
+  border-color: var(--color-gray-6);
+}
+
 main .form input[type="radio"]:checked + label::before {
   background-color: var(--color-1);
 }
