@@ -100,7 +100,7 @@
 
 .cards-col a.button:any-link {
   color: #1087cc;
-  font-family: 'Red Hat Text', Arial, Helvetica, sans-serif;
+  font-family: var(--body-font-family);
   font-weight: 700;
   font-size: 12px;
   line-height: 15px;

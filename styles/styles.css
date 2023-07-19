@@ -274,8 +274,6 @@ a.button > svg > use {
 }
 
 /* headings and body */
-
-
 p,
 dl,
 ol,
@@ -328,6 +326,7 @@ main p:not(:last-of-type) {
   margin-bottom: 32px;
 }
 
+/* typography font family, font size, font weight etc */
 main h1,
 main h2,
 main h3,
@@ -385,6 +384,10 @@ main h1.hidden {
 
 main .font-style-normal h1 {
   font-style: normal;
+}
+
+main .title-margin-top-none :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 0;
 }
 
 .comparison-matrix main h1 {
