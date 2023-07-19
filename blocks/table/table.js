@@ -139,6 +139,7 @@ export default async function decorate(block) {
   let popupDataColIdx = -1;
   let addBlockClickHandler = true;
   const colWidths = [];
+  let popupDataAddToColIdx = 0;
 
   [...block.classList].forEach((c) => {
     if (c.startsWith('width-col-')) {
@@ -147,6 +148,10 @@ export default async function decorate(block) {
       const [, , , colWidth] = splitVals;
 
       colWidths.push({ colNum, colWidth });
+    } else if (c.startsWith('popup-data-col-')) {
+      const splitVals = c.split('-');
+      [, , , popupDataAddToColIdx] = splitVals;
+      popupDataAddToColIdx -= 1;
     }
   });
 
@@ -161,7 +166,7 @@ export default async function decorate(block) {
       if (j === popupDataColIdx) {
         // Add popupData to first column.
         if (i > 0 && col.innerHTML) {
-          addPopupDataToFirstCol(col, tr.firstElementChild);
+          addPopupDataToFirstCol(col, tr.children[popupDataAddToColIdx]);
 
           if (addBlockClickHandler) {
             // Only need to do this once
