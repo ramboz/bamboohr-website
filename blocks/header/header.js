@@ -142,6 +142,27 @@ export function showSlideDown(text, type = 'success', dismissTimer = 3500) {
   }, dismissTimer);
 }
 
+function addEyelash() {
+  console.log("I'm here!!!!!");
+  const headElement = document.querySelector('head');
+  // const defaultNav = document.querySelector('.extra-buttons');
+  // console.log(defaultNav, 'these are the extra buttons');
+  // if (defaultNav) {
+    // Check if the code has already been added
+    if (!headElement.nextElementSibling.classList.contains('eyelash')) {
+      // Create the new div element
+      const newDiv = document.createElement('div');
+      newDiv.classList.add('eyelash');
+
+      // Create the inner HTML content
+      newDiv.innerHTML = '<img src="path_to_your_image"><p>It’s our birthday! Save 15% on implementation <span>Claim Your Discount</span></p>';
+
+      // Insert the new div after the head element
+      headElement.parentNode.insertBefore(newDiv, headElement.nextSibling);
+    }
+  // }
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -257,6 +278,8 @@ export default async function decorate(block) {
 
         addSearch(buttonsContainer);
       }
+      // const defaultNav = document.querySelector('.extra-buttons');
+      addEyelash();
     }
   });
 
