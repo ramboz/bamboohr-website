@@ -107,6 +107,7 @@ function loadSalesforceChatScript() {
     // '/a3/',
     // '/a4/',
     '/drafts/sclayton/chat-test',
+    '/drafts/sclayton/chat-test-benefits-administration',
   ];
 
   const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
@@ -124,6 +125,7 @@ function loadSalesforceChatScriptSandbox() {
     // '/a3/',
     // '/a4/',
     '/drafts/sclayton/chat-test',
+    '/drafts/sclayton/chat-test-benefits-administration',
   ];
 
   const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
