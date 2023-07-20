@@ -708,7 +708,7 @@ const selectCheckbox = (requestTypeCheckbox) => {
   }
 };
 
-function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
+export function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
