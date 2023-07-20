@@ -604,14 +604,16 @@ const capitalizeKeys = (obj) => {
  */
 const getPrefillFields = async () => {
   try {
-    const response = await fetch('/xhr/formfill.php');
-    if (!response.ok) {
-      // eslint-disable-next-line no-console
-      console.error(`Request failed with status: ${response.status}`);
-      return null;
-    }
+    // const response = await fetch('/xhr/formfill.php');
+    // if (!response.ok) {
+    //   // eslint-disable-next-line no-console
+    //   console.error(`Request failed with status: ${response.status}`);
+    //   return null;
+    // }
 
-    const data = await response.json();
+    // const data = await response.json();
+    const response = '{"formData":{"id":20806813,"firstName":"Meng","lastName":"Tian","email":"mtian+test@bamboohr.com","phone":"8011231234","Employees_Text__c":"25-75","title":"test","company":"Test Co","jobOpenings":null,"industry":"Professional Services","postalCode":null}}';
+    const data = JSON.parse(response);
     const { formData } = data;
     const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
 
@@ -708,6 +710,26 @@ const selectCheckbox = (requestTypeCheckbox) => {
   }
 };
 
+/**
+ * Adobe Form Start event tracking to first field
+ * @param {object} formEl - form element
+ */
+function firstFieldTracking(formEl) {
+  const ecidInput = formEl.querySelector('input[name="ECID"]');
+  const hashInput = formEl.querySelector('input[name="UniqueSubmissionHash"]');
+  // eslint-disable-next-line no-undef
+  alloy("getIdentity")
+  .then((identityResult) => {
+    ecidInput.value = identityResult.identity.ECID;
+    if (hashInput) hashInput.value = getUniqueFormSubmissionHash(identityResult.identity.ECID);
+  })
+  .catch( () => { 
+    ecidInput.value = '';
+    if (hashInput) hashInput.value = '';
+  });
+  analyticsTrackFormStart(formEl);
+}
+
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -717,28 +739,18 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
 
+        /* Adobe Form Start event tracking when user changes the first field */
+        formEl.firstElementChild.addEventListener('change', () => {
+          firstFieldTracking(formEl);
+        });
+
         /* Prefill form fields */
         setFormValues(formEl)
           .then((result) => {
-          /* Adobe Form Start event tracking when user changes the first field */
-          formEl.firstElementChild.addEventListener('change', () => {
-            // eslint-disable-next-line
-            alloy("getIdentity")
-            .then((identityResult) => {
-              // eslint-disable-next-line
-              formEl.querySelector('input[name="ECID"]').value = identityResult.identity.ECID;
-              if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
-                formEl.querySelector('input[name="UniqueSubmissionHash"]').value = getUniqueFormSubmissionHash(identityResult.identity.ECID);			  
-              }
-            })
-            .catch( () => { 
-              formEl.querySelector('input[name="ECID"]').value = '';
-              if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
-                      formEl.querySelector('input[name="UniqueSubmissionHash"]').value = '';
-              }
-            });
-            analyticsTrackFormStart(formEl);
-          });
+            /* Adobe Form Start event tracking when first field is auto filled */
+            const firstElValue = formEl.firstElementChild?.querySelector('.mktoField')?.value;
+            if (firstElValue) firstFieldTracking(formEl);
+
             const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
             if (result && testVariation === 'minimized-form') {
               // Hide all form fields except email input
