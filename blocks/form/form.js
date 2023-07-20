@@ -717,29 +717,28 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
 
-        /* Adobe Form Start event tracking when user changes the first field */
-        formEl.firstElementChild.addEventListener('change', () => {
-          // eslint-disable-next-line
-          alloy("getIdentity")
-          .then((result) => {
-            // eslint-disable-next-line
-            formEl.querySelector('input[name="ECID"]').value = result.identity.ECID;
-      if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
-        formEl.querySelector('input[name="UniqueSubmissionHash"]').value = getUniqueFormSubmissionHash(result.identity.ECID);			  
-      }
-          })
-          .catch( () => { 
-            formEl.querySelector('input[name="ECID"]').value = '';
-      if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
-              formEl.querySelector('input[name="UniqueSubmissionHash"]').value = '';
-      }
-          });
-          analyticsTrackFormStart(formEl);
-        });
-
         /* Prefill form fields */
         setFormValues(formEl)
           .then((result) => {
+          /* Adobe Form Start event tracking when user changes the first field */
+          formEl.firstElementChild.addEventListener('change', () => {
+            // eslint-disable-next-line
+            alloy("getIdentity")
+            .then((identityResult) => {
+              // eslint-disable-next-line
+              formEl.querySelector('input[name="ECID"]').value = identityResult.identity.ECID;
+              if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
+                formEl.querySelector('input[name="UniqueSubmissionHash"]').value = getUniqueFormSubmissionHash(identityResult.identity.ECID);			  
+              }
+            })
+            .catch( () => { 
+              formEl.querySelector('input[name="ECID"]').value = '';
+              if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
+                      formEl.querySelector('input[name="UniqueSubmissionHash"]').value = '';
+              }
+            });
+            analyticsTrackFormStart(formEl);
+          });
             const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
             if (result && testVariation === 'minimized-form') {
               // Hide all form fields except email input
