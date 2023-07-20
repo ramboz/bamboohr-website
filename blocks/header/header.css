@@ -545,6 +545,54 @@ header .nav-limited .nav-buttons .nav-login-btn {
   display: none;
 }
 
+/* Eyelash Banner styles */
+.eyelash-banner {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  top: 70px;
+  display: flex;
+  justify-content: center;
+  background-color: var(--color-1-shade-5);
+  box-shadow: var(--box-shadow-1);
+}
+
+.eyelash-banner p {
+  color: var(--color-white);
+  font-family: var(--heading-font-family);
+  font-size: 20px;
+  line-height: 28px;
+
+}
+
+.eyelash-banner-text-wrap {
+  text-transform: uppercase;
+}
+
+.eyelash-banner-link-wrap {
+  text-decoration: underline var(--color-white);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+.eyelash-banner a {
+  color: var(--color-white);
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+  text-decoration: none;
+  border-bottom: 2px solid;
+}
+
+.eyelash-banner a::after {
+  content: '>';
+  position: relative;
+  left: 3px;
+}
+
 /* desktop nav styles */
 @media (min-width: 1025px) {
   header .nav {

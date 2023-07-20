@@ -142,25 +142,16 @@ export function showSlideDown(text, type = 'success', dismissTimer = 3500) {
   }, dismissTimer);
 }
 
-function addEyelash() {
-  console.log("I'm here!!!!!");
-  const headElement = document.querySelector('head');
-  // const defaultNav = document.querySelector('.extra-buttons');
-  // console.log(defaultNav, 'these are the extra buttons');
-  // if (defaultNav) {
-    // Check if the code has already been added
-    if (!headElement.nextElementSibling.classList.contains('eyelash')) {
-      // Create the new div element
-      const newDiv = document.createElement('div');
-      newDiv.classList.add('eyelash');
-
-      // Create the inner HTML content
-      newDiv.innerHTML = '<img src="path_to_your_image"><p>It’s our birthday! Save 15% on implementation <span>Claim Your Discount</span></p>';
-
-      // Insert the new div after the head element
-      headElement.parentNode.insertBefore(newDiv, headElement.nextSibling);
-    }
-  // }
+function addEyelashBanner() {
+  const headEl = document.querySelector('head');
+  // prevents eyelash banner from being inserted multiple times
+  if (!headEl.nextElementSibling.classList.contains('eyelash-banner')) {
+    const eyelashBanner = document.createElement('div');
+    eyelashBanner.classList.add('eyelash-banner');
+    const eyelashLink = getMetadata('eyelash-link') || 'https://www.bamboohr.com/pl/promo-bhr15-anniversary?utm_source=bhrpublic&utm_medium=banner&utm_campaign=PROMO+BHR15';
+    eyelashBanner.innerHTML = `<img src="${window.hlx.codeBasePath}/icons/pudgy-birthday.svg"><p><span class="eyelansh-banner-text-wrap">It’s our birthday!</span> Save 15% on implementation <a class="eyelash-banner-link" href="${eyelashLink}">Claim Your Discount</a></p>`;
+    headEl.parentNode.insertBefore(eyelashBanner, headEl.nextSibling);
+  }
 }
 
 /**
@@ -279,7 +270,7 @@ export default async function decorate(block) {
         addSearch(buttonsContainer);
       }
       // const defaultNav = document.querySelector('.extra-buttons');
-      addEyelash();
+      addEyelashBanner();
     }
   });
 
