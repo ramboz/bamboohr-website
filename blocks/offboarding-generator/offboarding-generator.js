@@ -227,7 +227,7 @@ function templateTone(el) {
 
 // Lead Gen Shortcode Template
 async function leadGenTemplate(el, useMarketoForm) {
-  let formUrl;
+  let leadFormUrl;
   let chilipiper;
   let successUrl;
 
@@ -239,7 +239,7 @@ async function leadGenTemplate(el, useMarketoForm) {
       if (
         entry.URL === window.location.pathname || (entry.URL.endsWith('**') && window.location.pathname.startsWith(entry.URL.split('**')[0]))
       ) {
-        formUrl = entry.Form;
+        leadFormUrl = entry.Form;
         let fbTracking = '';
         if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php';
         successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
@@ -251,8 +251,8 @@ async function leadGenTemplate(el, useMarketoForm) {
   const form = createElem('form', 'form-wrap');
   const closeTextHTML = '<div class="overlay-close"><button data-close class="button">No, I do not want my bespoke template CLOSE</button></div>';
 
-  if (formUrl && formUrl.includes('marketo')) {
-    const formId = new URL(formUrl).hash.substring(4);
+  if (leadFormUrl && leadFormUrl.includes('marketo')) {
+    const formId = new URL(leadFormUrl).hash.substring(4);
     form.setAttribute('id', `mktoForm_${formId}`);
 
     const formContainer = document.createElement('div');
@@ -374,6 +374,7 @@ function prevStep(el, block) {
     stepIndicator(0, block);
   }
 
+  // eslint-disable-next-line no-plusplus
   block.querySelector(`[data-step="${--current}"]`).classList.add('offboarding-generator-step--active');
 
   if (current === 0) {
@@ -504,8 +505,6 @@ async function copyToClipboard(el) {
 
   try {
     await navigator.clipboard.writeText(text);
-    // eslint-disable-next-line no-console
-    //console.log('Content copied to clipboard');
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error('Failed to copy: ', err);
