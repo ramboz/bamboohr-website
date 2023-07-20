@@ -10,7 +10,7 @@ const organisationForm = [];
 const individualForm = [];
 
 export function widgetAnalyticsTrack(form, trackType, lastStep, block) {
-	const b = block ? block : form.parentElement;
+	const b = block || form.parentElement;
 	const [blockName] = [...b.classList];
 	const widgetId = `${blockName}.${form.id}`;
 
