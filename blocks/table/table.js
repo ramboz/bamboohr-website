@@ -47,7 +47,20 @@ const handleTdClick = (evt) => {
 function addPopupDataToFirstCol(popupData, firstCol) {
   const tooltipContainerElem = document.createElement('div');
   tooltipContainerElem.classList.add('table-tooltip-container');
-  tooltipContainerElem.innerHTML = popupData.innerHTML;
+
+  // Add the close button 'x'
+  const closeButton = document.createElement('a');
+  closeButton.textContent = 'x';
+  closeButton.classList.add('close-button');
+  closeButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    tooltipContainerElem.classList.remove('table-tooltip-show');
+  });
+
+  // Append the close button to the tooltip container
+  tooltipContainerElem.appendChild(closeButton);
+
+  tooltipContainerElem.innerHTML += popupData.innerHTML;
   popupData.innerHTML = '';
 
   if (!tooltipContainerElem.querySelector('h3')) {
