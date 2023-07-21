@@ -226,7 +226,8 @@ function templateTone(el) {
 }
 
 // Lead Gen Shortcode Template
-async function leadGenTemplate(el, useMarketoForm) {
+async function leadGenTemplate(el, block) {
+  const useMarketoForm = block.classList.contains('use-marketo-form');
   let leadFormUrl;
   let chilipiper;
   let successUrl;
@@ -261,7 +262,17 @@ async function leadGenTemplate(el, useMarketoForm) {
     formContainer.append(form);
     el.append(formContainer);
     // Do I need to load form CSS???
-    loadFormAndChilipiper(formId, successUrl, chilipiper);
+    loadFormAndChilipiper(formId, successUrl, chilipiper, false, () => {
+      //e.preventDefault();
+      // const form = e.target.parentElement;
+      const form = block.querySelector('#template-form');
+      
+      // if (!validateForm(form, block)) return;
+  
+      copyToClipboard(block);
+      nextStep(el, block, false);
+      widgetAnalyticsTrack(form, 'Submission', 0, block);
+    });
   } else {
     const inputFields = generateInputs(leadGenForm);
     const btnHTML = '<button data-step="3" class="button button--teal" id="download-confirmed">Copy to Clipboard</button>';
@@ -624,8 +635,7 @@ export default async function decorate(block) {
     }
   });
 
-  const useMarketoForm = block.classList.contains('use-marketo-form');
-  if (leadGenItem) await leadGenTemplate(leadGenItem, useMarketoForm);
+  if (leadGenItem) await leadGenTemplate(leadGenItem, block);
 
   // Create progress bar div
   block.append(progressBarDiv);

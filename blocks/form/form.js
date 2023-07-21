@@ -728,7 +728,7 @@ function firstFieldTracking(formEl) {
   analyticsTrackFormStart(formEl);
 }
 
-export function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
+export function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false, successCallback = null) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
@@ -899,6 +899,7 @@ export function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLa
           setTimeout(() => {
             if (successUrl && !chilipiper) window.location.href = successUrl;
             if (successUrl && chilipiper && chilipiper === 'content-download-form' && !demoCheckbox.checked) window.location.href = successUrl;
+            if (typeof successCallback === 'function') successCallback();
           },1000);
 
           return false;
