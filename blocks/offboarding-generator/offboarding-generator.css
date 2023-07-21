@@ -535,6 +535,10 @@ main .offboarding-generator a {
   text-decoration: underline;
 }
 
+main .offboarding-generator .form.form-container {
+  max-width: unset;
+}
+
 @media (min-width: 685px) and (max-width: 781px) {
   main .offboarding-generator-step--overlay::before {
     width: 67%;

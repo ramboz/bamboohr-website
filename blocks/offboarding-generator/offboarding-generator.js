@@ -1,4 +1,4 @@
-import { createElem } from "../../scripts/scripts.js";
+import { createElem, loadCSS } from "../../scripts/scripts.js";
 import { widgetAnalyticsTrack } from "../onboarding-calculator/onboarding-calculator.js";
 import { loadFormAndChilipiper } from "../form/form.js";
 
@@ -258,7 +258,7 @@ async function leadGenTemplate(el, block) {
     form.setAttribute('id', `mktoForm_${formId}`);
 
     const formContainer = document.createElement('div');
-    formContainer.classList.add('form-container');
+    formContainer.classList.add('form', 'form-container');
     formContainer.append(form);
     el.append(formContainer);
     // Do I need to load form CSS???
@@ -274,6 +274,12 @@ async function leadGenTemplate(el, block) {
       nextStep(el, block, false, step);
       widgetAnalyticsTrack(form, 'Submission', 0, block);
     });
+
+    //if (loadFormCSS) {
+    // load css
+    const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
+    loadCSS(`${cssBase}/blocks/form/form.css`, null);
+    //}
   } else {
     const inputFields = generateInputs(leadGenForm);
     const btnHTML = '<button data-step="3" class="button button--teal" id="download-confirmed">Copy to Clipboard</button>';
@@ -675,8 +681,8 @@ export default async function decorate(block) {
     
     if (!validateForm(form, block)) return;
 
-    copyToClipboard(block);
     nextStep(e, block, false);
+    copyToClipboard(block);
     widgetAnalyticsTrack(form, 'Submission', 0, block);
   });
   
