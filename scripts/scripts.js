@@ -232,6 +232,7 @@ function loadTemplateCSS() {
       'hr-101-guide',
       'customers',
       'trade-show',
+      'customer-day'
     ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;

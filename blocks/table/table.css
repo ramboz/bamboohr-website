@@ -194,11 +194,14 @@
 }
 
 .table td.has-popup-data {
-  padding-left: 36px;
+  /* padding-left: 36px; */
   cursor: pointer;
+  text-decoration: underline var(--color-1-shade-5);
+  text-decoration-style: dotted;
+
 }
 
-.table td.has-popup-data::before {
+/* .table td.has-popup-data::before {
   background: url('/icons/cta-list-button.svg') center center no-repeat;
   content: '';
   height: 8px;
@@ -212,7 +215,7 @@
 
 .table td.has-popup-data.table-tooltip-show::before {
   transform: rotate(0);
-}
+} */
 
 .table-tooltip-container p.button-container {
   position: relative;

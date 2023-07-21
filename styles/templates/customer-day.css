@@ -1,0 +1,17 @@
+.customer-day .form.has-content .form-col {
+    grid-column: span 5/-1;
+}
+.customer-day .form.has-content .content-col {
+    grid-column: span 6;
+}
+.customer-day .content-col h4 {
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 38px;
+    color: var(--color-1-shade-10);
+    margin: 0;
+}
+.customer-day table {
+    max-width: 800px;
+    margin: 0 auto;
+}
