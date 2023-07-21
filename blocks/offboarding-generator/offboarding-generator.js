@@ -1,6 +1,6 @@
 import { createElem, loadCSS } from "../../scripts/scripts.js";
 import { widgetAnalyticsTrack } from "../onboarding-calculator/onboarding-calculator.js";
-import { loadFormAndChilipiper } from "../form/form.js";
+import { loadFormAndChilipiper, readMarketoParams } from "../form/form.js";
 
 const formUrl = '/website-marketing-resources/offboarding-calculator-form.json';
 
@@ -228,54 +228,35 @@ function templateTone(el) {
 // Lead Gen Shortcode Template
 async function leadGenTemplate(el, block) {
   const useMarketoForm = block.classList.contains('use-marketo-form');
-  let leadFormUrl;
-  let chilipiper;
-  let successUrl;
+  const formParams = {formUrl: null, formId: null, successUrl: null, chilipiper: null,
+    floatingLabel: false };
 
   if (useMarketoForm) {
-    const resp = await fetch('/forms-map.json');
-    const json = await resp.json();
-    const map = json.data;
-    map.forEach((entry) => {
-      if (
-        entry.URL === window.location.pathname || (entry.URL.endsWith('**') && window.location.pathname.startsWith(entry.URL.split('**')[0]))
-      ) {
-        leadFormUrl = entry.Form;
-        let fbTracking = '';
-        if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php';
-        // successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
-        // if (window.location.pathname.includes('/offboarding-generator')) successUrl = '';
-        chilipiper = entry.Chilipiper;
-      }
-    });
+    await readMarketoParams(formParams);
   }
 
   const form = createElem('form', 'form-wrap');
   const closeTextHTML = '<div class="overlay-close"><button data-close class="button">No, I do not want my bespoke template CLOSE</button></div>';
 
-  if (leadFormUrl && leadFormUrl.includes('marketo')) {
-    const formId = new URL(leadFormUrl).hash.substring(4);
-    form.setAttribute('id', `mktoForm_${formId}`);
+  if (formParams.formUrl?.includes('marketo')) {
+    formParams.formId = new URL(formParams.formUrl).hash.substring(4);
+    form.setAttribute('id', `mktoForm_${formParams.formId}`);
 
     const formContainer = document.createElement('div');
     formContainer.classList.add('form', 'form-container');
     formContainer.append(form);
     el.append(formContainer);
-    // Do I need to load form CSS???
-    loadFormAndChilipiper(formId, successUrl, chilipiper, false, () => {
+    loadFormAndChilipiper(formParams, () => {
       const form = block.querySelector('#template-form');
-      
       const step = el.parentElement.parentElement.dataset.step;
+
       nextStep(el, block, false, step);
       copyToClipboard(block);
       widgetAnalyticsTrack(form, 'Submission', 0, block);
     });
 
-    //if (loadFormCSS) {
-    // load css
     const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
     loadCSS(`${cssBase}/blocks/form/form.css`, null);
-    //}
   } else {
     const inputFields = generateInputs(leadGenForm);
     const btnHTML = '<button data-step="3" class="button button--teal" id="download-confirmed">Copy to Clipboard</button>';
