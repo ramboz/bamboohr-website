@@ -242,7 +242,8 @@ async function leadGenTemplate(el, useMarketoForm) {
         leadFormUrl = entry.Form;
         let fbTracking = '';
         if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php';
-        successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
+        // successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
+        // if (window.location.pathname.includes('/offboarding-generator')) successUrl = '';
         chilipiper = entry.Chilipiper;
       }
     });
