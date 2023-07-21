@@ -270,7 +270,8 @@ async function leadGenTemplate(el, block) {
       // if (!validateForm(form, block)) return;
   
       copyToClipboard(block);
-      nextStep(el, block, false);
+      const step = el.parentElement.parentElement.dataset.step;
+      nextStep(el, block, false, step);
       widgetAnalyticsTrack(form, 'Submission', 0, block);
     });
   } else {
@@ -356,8 +357,8 @@ function removeHTMLTags(str) {
 }
 
 // Next Step
-function nextStep(el, block, setActiveStep = true) {
-  let current = parseInt(el.target.dataset.step, 10);
+function nextStep(el, block, setActiveStep = true, step = null) {
+  let current = parseInt(step || el.target.dataset.step, 10);
   document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
 
   if (setActiveStep) {
