@@ -263,15 +263,11 @@ async function leadGenTemplate(el, block) {
     el.append(formContainer);
     // Do I need to load form CSS???
     loadFormAndChilipiper(formId, successUrl, chilipiper, false, () => {
-      //e.preventDefault();
-      // const form = e.target.parentElement;
       const form = block.querySelector('#template-form');
       
-      // if (!validateForm(form, block)) return;
-  
-      copyToClipboard(block);
       const step = el.parentElement.parentElement.dataset.step;
       nextStep(el, block, false, step);
+      copyToClipboard(block);
       widgetAnalyticsTrack(form, 'Submission', 0, block);
     });
 
@@ -681,8 +677,8 @@ export default async function decorate(block) {
     
     if (!validateForm(form, block)) return;
 
-    nextStep(e, block, false);
     copyToClipboard(block);
+    nextStep(e, block, false);
     widgetAnalyticsTrack(form, 'Submission', 0, block);
   });
   
