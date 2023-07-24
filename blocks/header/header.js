@@ -168,6 +168,16 @@ export default async function decorate(block) {
     else navPath = '/nav';
   }
 
+  // Check if the eyelash-banner is present
+  const headEl = document.querySelector('head');
+  const eyelashBannerExists = !headEl.nextElementSibling.classList.contains('eyelash-banner');
+  const header = document.querySelector('header');
+
+  // Add classname to the header element if eyelash-banner exists
+  if (eyelashBannerExists) {
+    header.classList.add('header-eyelash');
+  }
+
   const resp = await fetch(`${window.hlx.serverPath}${navPath}.plain.html`);
   let html = await resp.text();
 

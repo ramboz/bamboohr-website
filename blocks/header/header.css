@@ -545,6 +545,10 @@ header .nav-limited .nav-buttons .nav-login-btn {
   display: none;
 }
 
+header.header-eyelash {
+  height: 139px;
+}
+
 /* Eyelash Banner styles */
 .eyelash-banner {
   position: absolute;
