@@ -546,7 +546,7 @@ header .nav-limited .nav-buttons .nav-login-btn {
 }
 
 header.header-eyelash {
-  height: 138px;
+  height: 167px;
 }
 
 /* Eyelash Banner styles */
@@ -900,5 +900,11 @@ header.header-eyelash {
 @media (max-width: 899px) {
   .blog-redesign.blog-post .header-search {
     display: none;
+  }
+}
+
+@media (min-width: 683px) {
+  header.header-eyelash {
+    height: 138px;
   }
 }
