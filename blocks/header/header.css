@@ -563,7 +563,7 @@ header .nav-limited .nav-buttons .nav-login-btn {
   font-family: var(--heading-font-family);
   font-size: 20px;
   line-height: 28px;
-
+  margin-left: 14px;
 }
 
 .eyelash-banner-text-wrap {

@@ -149,7 +149,7 @@ function addEyelashBanner() {
     const eyelashBanner = document.createElement('div');
     eyelashBanner.classList.add('eyelash-banner');
     const eyelashLink = getMetadata('eyelash-link') || 'https://www.bamboohr.com/pl/promo-bhr15-anniversary?utm_source=bhrpublic&utm_medium=banner&utm_campaign=PROMO+BHR15';
-    eyelashBanner.innerHTML = `<img src="${window.hlx.codeBasePath}/icons/pudgy-birthday.svg"><p><span class="eyelansh-banner-text-wrap">It’s our birthday!</span> Save 15% on implementation <a class="eyelash-banner-link" href="${eyelashLink}">Claim Your Discount</a></p>`;
+    eyelashBanner.innerHTML = `<img src="${window.hlx.codeBasePath}/icons/pudgy-birthday.svg"><p><span class="eyelansh-banner-text-wrap"> IT'S OUR BIRTHDAY!</span> Save 15% on implementation <a class="eyelash-banner-link" href="${eyelashLink}"> Claim Your Discount</a></p>`;
     headEl.parentNode.insertBefore(eyelashBanner, headEl.nextSibling);
   }
 }
