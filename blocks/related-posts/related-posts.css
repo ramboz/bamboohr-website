@@ -150,12 +150,12 @@ main .related-posts-card-body a:any-link::after {
   }
 }
 
-.blog-redesign main .section > .related-posts-wrapper {
+.blog-post main .section > .related-posts-wrapper {
   background-color: unset;
   background-image: none;
   margin-top: 150px;
 }
 
-.blog-redesign main .related-posts {
+.blog-post main .related-posts {
   max-width: unset;
 }

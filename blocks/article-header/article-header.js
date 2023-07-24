@@ -1,4 +1,4 @@
-import { formatDate, toCategory, toClassName, getMetadata } from '../../scripts/scripts.js';
+import { formatDate, toClassName } from '../../scripts/scripts.js';
 import { createSharing } from '../page-header/page-header.js';
 
 function applyClasses(styles, elements, prefix) {
@@ -57,18 +57,9 @@ function createBreadcrumbListSchemaMarkup() {
 }
 
 export default async function decorateArticleHeader($block, blockName) {
-  const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
-  if (testVariation) {
-    applyClasses(['breadcrumb', 'title', 'author-pub', 'image'], $block.children, blockName);
-    applyClasses(['author', 'publication-date', 'updated-date', 'read-time'], $block.querySelector('.article-header-author-pub').firstChild.children, blockName);
-    createBreadcrumbListSchemaMarkup();
-  } else {
-    applyClasses(['image', 'eyebrow', 'title', 'author-pub'], $block.children, blockName);
-    applyClasses(['category', 'read-time'], $block.querySelector('.article-header-eyebrow').firstChild.children, blockName);
-    applyClasses(['author', 'publication-date', 'updated-date'], $block.querySelector('.article-header-author-pub').firstChild.children, blockName);
-    const category = $block.querySelector('.article-header-category');
-    category.innerHTML = `<a href="/blog/category/${toCategory(category.textContent)}">${category.textContent}</a>`;
-  }
+  applyClasses(['breadcrumb', 'title', 'author-pub', 'image'], $block.children, blockName);
+  applyClasses(['author', 'publication-date', 'updated-date', 'read-time'], $block.querySelector('.article-header-author-pub').firstChild.children, blockName);
+  createBreadcrumbListSchemaMarkup();
 
   // link author
   const $author = $block.querySelector(`.${blockName}-author`);
@@ -87,7 +78,8 @@ export default async function decorateArticleHeader($block, blockName) {
   if ($update && $update.textContent) $update.textContent = formatDate($update.textContent);
 
   // sharing + progress
-  if (!testVariation) {
+  const isBlog = document.body.classList.contains('blog-post');
+  if (!isBlog) {
     $block.append(createSharing('article-header-share'));
   }
   const progress = createProgress();

@@ -1,4 +1,4 @@
-import { createElem, createOptimizedPicture, getMetadata } from '../../scripts/scripts.js';
+import { createElem, createOptimizedPicture } from '../../scripts/scripts.js';
 
 function canReadPic(path) {
     let readPic = true;
@@ -56,8 +56,6 @@ function findDescription(block) {
 
 export default async function decorate(block) {
     const skipImageRead = block.classList.contains('no-image');
-    const testVariation = getMetadata('test-variation');
-    if (!testVariation || testVariation.toLowerCase() !== 'blog redesign') return;
 
     // Create a card with 2 parts: text and image
     const card = createElem('div', 'callout-card');
@@ -119,7 +117,6 @@ export default async function decorate(block) {
         calloutImg.remove();
         calloutText.classList.add('callout-text-only');
     }
-    block.classList.add('blog-redesign');
     const isSmall = block.classList.contains('small');
     let wrapperWidth = 'width-medium';
     if (calloutImg.children.length === 0 || isSmall) wrapperWidth = 'width-small';
