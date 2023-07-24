@@ -78,8 +78,8 @@ export default async function decorateArticleHeader($block, blockName) {
   if ($update && $update.textContent) $update.textContent = formatDate($update.textContent);
 
   // sharing + progress
-  const isBlog = document.body.classList.contains('blog-post');
-  if (!isBlog) {
+  const isBlogPost = document.body.classList.contains('blog-post');
+  if (!isBlogPost) {
     $block.append(createSharing('article-header-share'));
   }
   const progress = createProgress();
