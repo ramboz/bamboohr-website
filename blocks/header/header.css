@@ -547,7 +547,7 @@ header .nav-limited .nav-buttons .nav-login-btn {
 
 /* Eyelash Banner styles */
 header.header-eyelash {
-  height: 158px;
+  margin-bottom: 88px;
 }
 
 .eyelash-banner {
@@ -902,7 +902,7 @@ header.header-eyelash {
 
 @media (min-width: 475px) {
   header.header-eyelash {
-    height: 136px;
+    margin-bottom: 66px;
   }
 
   .eyelash-banner span > span {
@@ -919,7 +919,7 @@ header.header-eyelash {
 
 @media (min-width: 700px) {
   header.header-eyelash {
-    height: 128px;
+    margin-bottom: 58px;
   }
 
   .eyelash-banner {
@@ -934,7 +934,7 @@ header.header-eyelash {
 
 @media (min-width: 900px) {
   header.header-eyelash {
-    height: 118px;
+    margin-bottom: 48px;
   }
 
   .eyelash-banner {
