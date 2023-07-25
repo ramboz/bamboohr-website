@@ -545,6 +545,55 @@ header .nav-limited .nav-buttons .nav-login-btn {
   display: none;
 }
 
+/* Eyelash Banner styles */
+header.header-eyelash {
+  margin-bottom: 88px;
+}
+
+.eyelash-banner {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  top: 70px;
+  display: flex;
+  align-items: flex-start;
+  background-color: var(--color-1-shade-5);
+  box-shadow: var(--box-shadow-1);
+  padding: 11px 30px;
+}
+
+.eyelash-banner p {
+  color: var(--color-white);
+  font-family: var(--body-font-family);
+  font-size: 15px;
+  line-height: 22px;
+  margin: 0 0 0 16px;
+  font-weight: 700;
+}
+
+.eyelash-banner p > span {
+  display: block;
+}
+
+.eyelash-banner span > span {
+  text-transform: uppercase;
+  display: block;
+}
+
+.eyelash-banner a {
+  color: var(--color-white);
+  text-decoration: none;
+  border-bottom: 2px solid;
+  white-space: nowrap;
+}
+
+.eyelash-banner a::after {
+  content: '>';
+  position: relative;
+  left: 3px;
+}
+
 /* desktop nav styles */
 @media (min-width: 1025px) {
   header .nav {
@@ -848,5 +897,53 @@ header .nav-limited .nav-buttons .nav-login-btn {
 @media (max-width: 899px) {
   .blog-redesign.blog-post .header-search {
     display: none;
+  }
+}
+
+@media (min-width: 475px) {
+  header.header-eyelash {
+    margin-bottom: 66px;
+  }
+
+  .eyelash-banner span > span {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 600px) {
+  .eyelash-banner {
+    padding: 11px 54px;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 700px) {
+  header.header-eyelash {
+    margin-bottom: 58px;
+  }
+
+  .eyelash-banner {
+    align-items: center;
+  }
+
+  .eyelash-banner p > span {
+    display: inline-block;
+    margin-right: 14px;
+  }
+}
+
+@media (min-width: 900px) {
+  header.header-eyelash {
+    margin-bottom: 48px;
+  }
+
+  .eyelash-banner {
+    padding: 6px 0;
+  }
+
+  .eyelash-banner p {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 28px;
   }
 }
