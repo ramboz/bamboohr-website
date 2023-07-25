@@ -545,6 +545,10 @@ header .nav-limited .nav-buttons .nav-login-btn {
   display: none;
 }
 
+header.header-eyelash {
+  height: 167px;
+}
+
 /* Eyelash Banner styles */
 .eyelash-banner {
   position: absolute;
@@ -563,7 +567,7 @@ header .nav-limited .nav-buttons .nav-login-btn {
   font-family: var(--heading-font-family);
   font-size: 20px;
   line-height: 28px;
-
+  margin-left: 14px;
 }
 
 .eyelash-banner-text-wrap {
@@ -896,5 +900,11 @@ header .nav-limited .nav-buttons .nav-login-btn {
 @media (max-width: 899px) {
   .blog-redesign.blog-post .header-search {
     display: none;
+  }
+}
+
+@media (min-width: 683px) {
+  header.header-eyelash {
+    height: 138px;
   }
 }
