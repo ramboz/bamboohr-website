@@ -15,7 +15,7 @@ main .offboarding-generator-container.offboarding-generator-container--overlay {
 
 main .offboarding-generator-container.offboarding-generator-container--overlay::before {
   content: '';
-  background: #041B35;
+  background-color: var(--theme-shade15);
   opacity: 0.9;
   /* position: absolute; */
   position: fixed;
@@ -32,7 +32,7 @@ main .offboarding-generator {
   max-width: 50rem;
   /* min-height: 40rem; 33.75rem */
   margin: 5rem auto;
-  background: #F6FAFD;
+  background-color: var(--theme-tint15);
   box-shadow: 0px 4px 12px 4px rgba(134, 134, 134, 0.14);
   border-radius: 0.5rem;
   position: relative;
@@ -167,7 +167,7 @@ main .offboarding-generator-step[data-step="2"] #template-preview {
   max-height: 220px;
   overflow-x: hidden;
   overflow-y: scroll;
-  background: #fff;
+  background-color: var(--color-white);
   border-radius: 0.5rem;
   padding: 1rem;
   -webkit-user-select: none;
@@ -180,7 +180,7 @@ main .offboarding-generator-step[data-step="2"] #template-preview {
 }
 
 main .offboarding-generator-step[data-step="2"] #template-preview span {
-  color: #1A87C9;
+  color: var(--theme-shade5);
 }
 
 main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar {
@@ -188,12 +188,12 @@ main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrol
 }
 
 main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-track {
-  background: #fff;
+  background-color: var(--color-white);
 }
 
 main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb,
 main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb:hover {
-  background: #E7E7E7;
+  background-color: #E7E7E7;
   width: 8px;
   border: 16px solid rgba(0, 0, 0, 0);
   background-clip: padding-box;
@@ -205,7 +205,7 @@ main .offboarding-generator-step[data-step="2"] #template-preview p {
 }
 
 main .offboarding-generator-step[data-step="2"] #template-preview p > span{
-  color: #1A87C9;
+  color: var(--theme-shade5);
 }
 
 /* Step 3 Specific */
@@ -232,7 +232,7 @@ main .offboarding-generator-step[data-step="3"].offboarding-generator-step--over
 main .offboarding-generator *:not(h2), main {
   font-family: 'Red Hat Display', sans-serif;
   font-style: normal;
-  color: #041B35;
+  color: var(--theme-shade15);
 }
 
 main .offboarding-generator h2 {
@@ -240,7 +240,7 @@ main .offboarding-generator h2 {
   font-weight: 700;
   font-size: 28px;
   line-height: 36px;
-  color: #041B35;
+  color: var(--theme-shade15);
   margin: 0 0 0.5rem 0;
 }
 
@@ -270,51 +270,51 @@ main .offboarding-generator .button {
   font-size: 14px;
   line-height: 20px;
   cursor: pointer;
-  background: #1A87C9;
-  color: #ffffff;
+  background-color: var(--theme-shade5);
+  color: var(--color-white);
   display: inline-block;
 }
 
 /* Button Hover State */
 main .offboarding-generator .button:hover {
-  filter: brightness(85%);
+  background-color: var(--theme-shade10);
 }
 
 /* Outline Button */
 main .offboarding-generator .button.button--outline {
-  color: #1A87C9;
-  border: 1px solid #1A87C9;
+  color: var(--theme-shade5);
+  border: 1px solid var(--theme-shade5);
   background: transparent;
 }
 
 /* Outline Button Hover State */
 main .offboarding-generator .button.button--outline:hover {
-  background: #1A87C9;
-  color: white;
+  background-color: var(--theme-shade5);
+  color: var(--color-white);
 }
 
 /* Teal Button */
 main .offboarding-generator-step .button.button--teal {
   width: 100%;
-  background: #71C9C0;
-  color: #041B35;
+  background-color: var(--theme-shade5);
+  color: var(--color-white);
 }
 
 /* Teal Button Hover State */
 main .offboarding-generator .button.button--teal:hover {
-  filter: brightness(85%);
+  background-color: var(--theme-shade10);
 }
 
 /* Teal Outline Button */
 main .offboarding-generator .button.button--outline.button--teal {
-  border: 1px solid #71c9c0;
+  border: 1px solid var(--theme-shade5);
   background: transparent;
 }
 
 /* Teal Outline Button Hover State */
 main .offboarding-generator .button.button--outline.button--teal:hover {
-  color: #041B35;
-  background: #71c9c0;
+  color: var(--theme-shade10);
+  background-color: var(--theme-shade5);
   filter: brightness(100%);
 }
 
@@ -336,7 +336,7 @@ main .offboarding-generator select {
   background-repeat: no-repeat;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #E5EFF6;
+  border: 1px solid var(--theme-tint10);
   margin-bottom :1rem;
   width: 100%;
   display: block;
@@ -344,7 +344,7 @@ main .offboarding-generator select {
   transition: border-color 0.25s ease-in-out;
   outline: none;
   text-transform: capitalize;
-  background-color: white;
+  background-color: var(--color-white);
   text-overflow: ellipsis;
   padding-right: 2rem;
   white-space: nowrap;
@@ -358,13 +358,13 @@ main .offboarding-generator .field_item {
 main .offboarding-generator input {
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #E5EFF6;
+  border: 1px solid var(--theme-tint10);
   width: 100%;
   display: block;
   appearance: none;
   transition: border-color 0.25s ease-in-out;
   outline: none;
-  background-color: white;
+  background-color: var(--color-white);
 }
 
 main .offboarding-generator input[type="date"] {
@@ -374,13 +374,13 @@ main .offboarding-generator input[type="date"] {
 }
 
 main.offboarding-generator input::placeholder {
-  color: #667085; 
+  color: var(--theme-tint5);
 }
 
 /* Select / Input Focus State */
 main .offboarding-generator select:focus-visible,
 main .offboarding-generator input:focus-visible {
-  border-color: #1A87C9;
+  border-color: var(--theme-shade5);
   transition: border-color 0.25s ease-in-out;
 }
 
@@ -396,9 +396,9 @@ main .offboarding-generator input[type="radio"] {
 /* Radio Element Labels */
 main .offboarding-generator .template-selector {
   width: 100%;
-  border: 1px solid #fff;
-  background: #fff;
-  color: #041B35;
+  border: 1px solid var(--color-white);
+  background-color: var(--color-white);
+  color: var(--theme-shade15);
   padding: 1rem;
   text-align: center;
   border-radius: 0.5rem;
@@ -408,7 +408,7 @@ main .offboarding-generator .template-selector {
 
 /* Radio Element Checked State */
 main .offboarding-generator .template-selector.checked {
-  border-color: #041B35;
+  border-color: var(--theme-shade15);
 }
 
 /* ToolTip Indicator */
@@ -418,7 +418,7 @@ main .offboarding-generator .tooltip {
   margin-left: 0.25rem;
   width: 14px;
   height: 14px;
-  background: #1A87C9;
+  background-color: var(--theme-shade5);
   cursor: help;
   border-radius: 50%;
   top: 2px;
@@ -465,9 +465,9 @@ main .offboarding-generator .tooltip__text {
   bottom: 1.4rem;
   left: 50%;
   transform: translateX(-50%);
-  background:#1A87C9;
+  background-color: var(--theme-shade5);
+  color: var(--color-white);
   border-radius: 0.5rem;
-  color: white;
   width: 10rem;
   padding: 0.25rem;
   text-align: center;
@@ -505,7 +505,7 @@ main .offboarding-generator .progress-bar {
 
 main .offboarding-generator .progress-bar .step {
   height: 8px;
-  background-color: #E8F3FA;
+  background-color: var(--theme-tint10);
   flex: 1;
 }
 
