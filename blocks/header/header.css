@@ -545,11 +545,11 @@ header .nav-limited .nav-buttons .nav-login-btn {
   display: none;
 }
 
+/* Eyelash Banner styles */
 header.header-eyelash {
   height: 158px;
 }
 
-/* Eyelash Banner styles */
 .eyelash-banner {
   position: absolute;
   z-index: 1;
@@ -566,12 +566,9 @@ header.header-eyelash {
 .eyelash-banner p {
   color: var(--color-white);
   font-family: var(--body-font-family);
-  font-size: 20px;
   font-size: 15px;
-  line-height: 28px;
   line-height: 22px;
   margin: 0 0 0 16px;
-  font-weight: 600;
   font-weight: 700;
 }
 
@@ -586,15 +583,9 @@ header.header-eyelash {
 
 .eyelash-banner a {
   color: var(--color-white);
-  /* font-family: var(--body-font-family);
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 28px; */
   text-decoration: none;
   border-bottom: 2px solid;
-  /* white-space: nowrap; */
-  /* margin-left: 16px; */
+  white-space: nowrap;
 }
 
 .eyelash-banner a::after {
