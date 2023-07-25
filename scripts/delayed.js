@@ -103,9 +103,13 @@ function loadStyle(location, css) {
 
 function loadSalesforceChatScript() {
   const chatTestPaths = [
-    // '/',
-    // '/a3/',
-    // '/a4/',
+    '/',
+    '/a3/',
+    '/a4/',
+    '/demo',
+    '/demo/b',
+    '/demo/c',
+    '/pricing/',
     '/drafts/sclayton/chat-test',
     '/drafts/sclayton/chat-test-benefits-administration',
   ];
