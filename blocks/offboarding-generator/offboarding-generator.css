@@ -307,13 +307,14 @@ main .offboarding-generator .button.button--teal:hover {
 
 /* Teal Outline Button */
 main .offboarding-generator .button.button--outline.button--teal {
+  color: var(--theme-shade5);
   border: 1px solid var(--theme-shade5);
   background: transparent;
 }
 
 /* Teal Outline Button Hover State */
 main .offboarding-generator .button.button--outline.button--teal:hover {
-  color: var(--theme-shade10);
+  color: var(--color-white);
   background-color: var(--theme-shade5);
   filter: brightness(100%);
 }
