@@ -546,7 +546,7 @@ header .nav-limited .nav-buttons .nav-login-btn {
 }
 
 header.header-eyelash {
-  height: 167px;
+  height: 158px;
 }
 
 /* Eyelash Banner styles */
@@ -557,38 +557,44 @@ header.header-eyelash {
   height: auto;
   top: 70px;
   display: flex;
-  justify-content: center;
+  align-items: flex-start;
   background-color: var(--color-1-shade-5);
   box-shadow: var(--box-shadow-1);
+  padding: 11px var(--section-padding-mobile);
 }
 
 .eyelash-banner p {
   color: var(--color-white);
-  font-family: var(--heading-font-family);
+  font-family: var(--body-font-family);
   font-size: 20px;
+  font-size: 15px;
   line-height: 28px;
-  margin-left: 14px;
+  line-height: 22px;
+  margin: 0 0 0 16px;
+  font-weight: 600;
+  font-weight: 700;
 }
 
-.eyelash-banner-text-wrap {
+.eyelash-banner p > span {
+  display: block;
+}
+
+.eyelash-banner span > span {
   text-transform: uppercase;
-}
-
-.eyelash-banner-link-wrap {
-  text-decoration: underline var(--color-white);
-  text-underline-offset: 3px;
-  text-decoration-thickness: 2px;
+  display: block;
 }
 
 .eyelash-banner a {
   color: var(--color-white);
-  font-family: var(--body-font-family);
+  /* font-family: var(--body-font-family);
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
-  line-height: 28px;
+  line-height: 28px; */
   text-decoration: none;
   border-bottom: 2px solid;
+  /* white-space: nowrap; */
+  /* margin-left: 16px; */
 }
 
 .eyelash-banner a::after {
@@ -903,8 +909,50 @@ header.header-eyelash {
   }
 }
 
-@media (min-width: 683px) {
+@media (min-width: 475px) {
   header.header-eyelash {
-    height: 138px;
+    height: 136px;
+  }
+
+  .eyelash-banner span > span {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 600px) {
+  .eyelash-banner {
+    padding: 11px 54px;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 700px) {
+  header.header-eyelash {
+    height: 128px;
+  }
+
+  .eyelash-banner {
+    align-items: center;
+  }
+
+  .eyelash-banner p > span {
+    display: inline-block;
+    margin-right: 14px;
+  }
+}
+
+@media (min-width: 900px) {
+  header.header-eyelash {
+    height: 118px;
+  }
+
+  .eyelash-banner {
+    padding: 6px 0;
+  }
+
+  .eyelash-banner p {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 28px;
   }
 }

@@ -142,16 +142,13 @@ export function showSlideDown(text, type = 'success', dismissTimer = 3500) {
   }, dismissTimer);
 }
 
-function addEyelashBanner() {
-  const headEl = document.querySelector('head');
-  // prevents eyelash banner from being inserted multiple times
-  if (!headEl.nextElementSibling.classList.contains('eyelash-banner')) {
-    const eyelashBanner = document.createElement('div');
-    eyelashBanner.classList.add('eyelash-banner');
-    const eyelashLink = getMetadata('eyelash-link') || 'https://www.bamboohr.com/pl/promo-bhr15-anniversary?utm_source=bhrpublic&utm_medium=banner&utm_campaign=PROMO+BHR15';
-    eyelashBanner.innerHTML = `<img src="${window.hlx.codeBasePath}/icons/pudgy-birthday.svg"><p><span class="eyelansh-banner-text-wrap"> IT'S OUR BIRTHDAY!</span> Save 15% on implementation <a class="eyelash-banner-link" href="${eyelashLink}"> Claim Your Discount</a></p>`;
-    headEl.parentNode.insertBefore(eyelashBanner, headEl.nextSibling);
-  }
+function addEyelashBanner(headerEl) {
+  const eyelashBanner = document.createElement('div');
+  eyelashBanner.classList.add('eyelash-banner');
+  const eyelashLink = getMetadata('eyelash-link') || 'https://www.bamboohr.com/pl/promo-bhr15-anniversary?utm_source=bhrpublic&utm_medium=banner&utm_campaign=PROMO+BHR15';
+  eyelashBanner.innerHTML = `<img src="${window.hlx.codeBasePath}/icons/pudgy-birthday.svg"><p><span><span>IT’S OUR BIRTHDAY!</span> Save 15% on implementation</span> <a href="${eyelashLink}"> Claim Your Discount</a></p>`;
+  headerEl.classList.add('header-eyelash');
+  headerEl.parentNode.insertBefore(eyelashBanner, headerEl.nextSibling);
 }
 
 /**
@@ -166,16 +163,6 @@ export default async function decorate(block) {
   if (!navPath) {
     if (window.location.pathname.startsWith('/blog/')) navPath = '/blog/fixtures/nav';
     else navPath = '/nav';
-  }
-
-  // Check if the eyelash-banner is present
-  const headEl = document.querySelector('head');
-  const eyelashBannerExists = !headEl.nextElementSibling.classList.contains('eyelash-banner');
-  const header = document.querySelector('header');
-
-  // Add classname to the header element if eyelash-banner exists
-  if (eyelashBannerExists) {
-    header.classList.add('header-eyelash');
   }
 
   const resp = await fetch(`${window.hlx.serverPath}${navPath}.plain.html`);
@@ -279,8 +266,11 @@ export default async function decorate(block) {
 
         addSearch(buttonsContainer);
       }
-      // const defaultNav = document.querySelector('.extra-buttons');
-      addEyelashBanner();
+
+      const headerEl = document.querySelector('header');
+      if (navPath === '/nav' && !headerEl.nextElementSibling.classList.contains('eyelash-banner')) {
+        addEyelashBanner(headerEl);
+      }
     }
   });
 
