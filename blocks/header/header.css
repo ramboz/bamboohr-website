@@ -560,7 +560,7 @@ header.header-eyelash {
   align-items: flex-start;
   background-color: var(--color-1-shade-5);
   box-shadow: var(--box-shadow-1);
-  padding: 11px var(--section-padding-mobile);
+  padding: 11px 30px;
 }
 
 .eyelash-banner p {
