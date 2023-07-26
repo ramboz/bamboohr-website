@@ -23,6 +23,18 @@ import {
 
 sampleRUM('cwv');
 
+function getCookie(name) {
+  const cookieArr = document.cookie.split(";");
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < cookieArr.length; i++) {
+    const cookiePair = cookieArr[i].split("=");
+    if (name === cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  return null;
+}
+
 function initEmbeddedMessaging(isGDPR) {
   try {
     // eslint-disable-next-line
@@ -339,18 +351,6 @@ function updateExternalLinks() {
       console.warn(`Invalid link: ${a.href}`);
     }
   });
-}
-
-function getCookie(name) {
-  const cookieArr = document.cookie.split(";");
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < cookieArr.length; i++) {
-    const cookiePair = cookieArr[i].split("=");
-    if (name === cookiePair[0].trim()) {
-      return decodeURIComponent(cookiePair[1]);
-    }
-  }
-  return null;
 }
 
 function isTrustArcAdvertisingCookieAllowed() {
