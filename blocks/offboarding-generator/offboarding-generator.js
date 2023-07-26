@@ -250,7 +250,7 @@ async function leadGenTemplate(el, block) {
       const form = block.querySelector('#template-form');
       const step = el.parentElement.parentElement.dataset.step;
 
-      nextStep(el, block, true, step);
+      nextStep(el, block, false, step);
       // copyToClipboard(block);
       // widgetAnalyticsTrack(form, 'Submission', 0, block);
     });
@@ -349,6 +349,10 @@ function nextStep(el, block, setActiveStep = true, step = null) {
   }
 
   current += 1;
+
+  if (!setActiveStep) {
+    stepIndicator(current, block);
+  }
 
   document.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
 
