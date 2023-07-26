@@ -250,7 +250,7 @@ async function leadGenTemplate(el, block) {
       const form = block.querySelector('#template-form');
       const step = el.parentElement.parentElement.dataset.step;
 
-      nextStep(el, block, false, step);
+      nextStep(el, block, true, step);
       // copyToClipboard(block);
       // widgetAnalyticsTrack(form, 'Submission', 0, block);
     });
