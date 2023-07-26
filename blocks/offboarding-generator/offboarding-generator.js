@@ -511,6 +511,7 @@ export default async function decorate(block) {
   const data = await fetchData(formUrl);
   const progressBarDiv = createElem('div', 'progress-bar');
   block.setAttribute('id', 'offboarding-generator');
+  const isStep1Gate = block.classList.contains('step-1-gate');
 
   // Add classes to generator step wrapping divs
   const {children} = block;
@@ -519,10 +520,10 @@ export default async function decorate(block) {
     children[i].classList = 'offboarding-generator-step';
     if( i === 0 ) {
       children[i].classList = 'offboarding-generator-step offboarding-generator-step--active';
-    } else if (i === 4) {
+    } else if ((!isStep1Gate && i === 3) || i === 4) {
       children[i].classList = 'offboarding-generator-step offboarding-generator-step--overlay';
     }
-    else if (i === 1 || i === 2 || i === 3) {
+    else if (i === 1 || i === 2 || (isStep1Gate && i === 3)) {
       children[i].classList = 'offboarding-generator-step tab';
     }
   }
