@@ -176,7 +176,7 @@ function templateSelection(el, forms) {
 
 // Content Input Shortcode Template
 function templateFormWrapper() {
-  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button type="submit" class="button" id="populate-template" data-step="1">Next</button></nav>`;
+  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button type="submit" class="button" id="populate-template" data-step="2">Next</button></nav>`;
 
   return formHtml;
 }
@@ -276,14 +276,14 @@ function downloadConfirmed() {
   return output;
 }
 
-function stepIndicator(index, form) {
-  const stepsArr = form.querySelectorAll(".step");
+function stepIndicator(index, block) {
+  const stepsArr = block.querySelectorAll(".step");
   
   stepsArr.forEach(item => {
 		item.classList.remove('step-active');
 	});
 
-  stepsArr[index].classList.add('step-active');
+  if (index < stepsArr.length) stepsArr[index].classList.add('step-active');
 }
 
 function scrollToTop() {
