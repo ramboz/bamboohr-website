@@ -176,7 +176,7 @@ function templateSelection(el, forms) {
 
 // Content Input Shortcode Template
 function templateFormWrapper() {
-  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button type="submit" class="button" id="populate-template" data-step="2">Next</button></nav>`;
+  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button type="submit" class="button" id="populate-template" data-step="1">Next</button></nav>`;
 
   return formHtml;
 }
