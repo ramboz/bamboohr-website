@@ -485,7 +485,7 @@ function templateSelectHandler(event, block) {
   templatePreviewDom.innerHTML = emailFormat[0].TemplateFormal;
   pregressBar.classList.add('active');
 
-  nextStep(event, block);
+  nextStep(event, block, false);
   widgetAnalyticsTrack(formTemplate, 'Start', 0, block);
 }
 
