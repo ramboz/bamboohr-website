@@ -251,8 +251,8 @@ async function leadGenTemplate(el, block) {
       const step = el.parentElement.parentElement.dataset.step;
 
       nextStep(el, block, false, step);
-      copyToClipboard(block);
-      widgetAnalyticsTrack(form, 'Submission', 0, block);
+      // copyToClipboard(block);
+      // widgetAnalyticsTrack(form, 'Submission', 0, block);
     });
 
     const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -607,7 +607,7 @@ export default async function decorate(block) {
         break;
       case '[generator-lead-gen]':
         item.innerHTML = '';
-        leadGenItem = item;
+        if (!leadGenItem) leadGenItem = item;
         // item.append(leadGenTemplate(item));
         break;
       case '[generator-download-confirmed]':
