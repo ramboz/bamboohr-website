@@ -138,7 +138,8 @@ main .offboarding-generator-step[data-step="1"] > div {
   margin: 1.5rem;
 }
 
-main .offboarding-generator-step[data-step="1"] .form-wrap {
+main .offboarding-generator-step[data-step="1"] .form-wrap,
+main .step-1-gate .offboarding-generator-step[data-step="2"] .form-wrap {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
