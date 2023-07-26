@@ -519,10 +519,10 @@ export default async function decorate(block) {
     children[i].classList = 'offboarding-generator-step';
     if( i === 0 ) {
       children[i].classList = 'offboarding-generator-step offboarding-generator-step--active';
-    } else if (i === 3 || i === 4) {
+    } else if (i === 4) {
       children[i].classList = 'offboarding-generator-step offboarding-generator-step--overlay';
     }
-    else if (i === 1 || i === 2) {
+    else if (i === 1 || i === 2 || i === 3) {
       children[i].classList = 'offboarding-generator-step tab';
     }
   }
