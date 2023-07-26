@@ -350,10 +350,6 @@ function nextStep(el, block, setActiveStep = true, step = null) {
 
   current += 1;
 
-  if (!setActiveStep) {
-    stepIndicator(current, block);
-  }
-
   document.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
 
   if (current > farthestStep) {
