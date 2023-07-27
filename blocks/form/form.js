@@ -745,7 +745,8 @@ function addUtmParametersFromSessionStorage() {
   }
 
   inputs.forEach((input) => {
-	const name = input.name;
+	const { name } = input;
+	// eslint-disable-next-line no-prototype-builtins
 	if (inputNames.hasOwnProperty(name) && !input.value) {
 	  input.value = inputNames[name];
 	}
