@@ -551,12 +551,10 @@ header.header-eyelash {
 }
 
 .eyelash-banner {
-  position: absolute;
-  z-index: 1;
   width: 100%;
   height: auto;
-  top: 70px;
   display: flex;
+  justify-content: center;
   align-items: flex-start;
   background-color: var(--color-1-shade-5);
   box-shadow: var(--box-shadow-1);
@@ -900,9 +898,9 @@ header.header-eyelash {
   }
 }
 
-@media (min-width: 475px) {
-  header.header-eyelash {
-    margin-bottom: 66px;
+@media (min-width: 600px) {
+  .eyelash-banner {
+    padding: 11px 54px;
   }
 
   .eyelash-banner span > span {
@@ -910,40 +908,20 @@ header.header-eyelash {
   }
 }
 
-@media (min-width: 600px) {
-  .eyelash-banner {
-    padding: 11px 54px;
-    justify-content: center;
-  }
-}
-
-@media (min-width: 700px) {
-  header.header-eyelash {
-    margin-bottom: 58px;
-  }
-
-  .eyelash-banner {
-    align-items: center;
-  }
-
-  .eyelash-banner p > span {
-    display: inline-block;
-    margin-right: 14px;
-  }
-}
-
 @media (min-width: 900px) {
-  header.header-eyelash {
-    margin-bottom: 48px;
-  }
-
   .eyelash-banner {
     padding: 6px 0;
+    align-items: center;
   }
 
   .eyelash-banner p {
     font-size: 18px;
     font-weight: 700;
     line-height: 28px;
+  }
+
+  .eyelash-banner p > span {
+    display: inline-block;
+    margin-right: 14px;
   }
 }
