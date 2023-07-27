@@ -385,10 +385,10 @@ function prevStep(el, block) {
   }
 
   const isStep1Gate = block.classList.contains('step-1-gate');
-  if (isStep1Gate && current === 2) current = 1;
+  if (isStep1Gate && current === 2) current = 0;
+  else current -= 1;
 
-  // eslint-disable-next-line no-plusplus
-  block.querySelector(`[data-step="${--current}"]`).classList.add('offboarding-generator-step--active');
+  block.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
 
   if (current === 0) {
     block.querySelector('.progress-bar').classList.remove('active');
