@@ -385,7 +385,7 @@ function prevStep(el, block) {
   }
 
   const isStep1Gate = block.classList.contains('step-1-gate');
-  if (isStep1Gate && current === 2) current = 0;
+  if (isStep1Gate && current === 2) current = 1;
 
   // eslint-disable-next-line no-plusplus
   block.querySelector(`[data-step="${--current}"]`).classList.add('offboarding-generator-step--active');
