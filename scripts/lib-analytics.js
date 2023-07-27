@@ -94,6 +94,7 @@ function enhanceAnalyticsEvent(options) {
 // eslint-disable-next-line no-unused-vars
 function getAlloyConfiguration(document) {
   return {
+	targetMigrationEnabled: true,
     // enable while debugging
     debugEnabled: document.location.hostname.startsWith('localhost'),
     // disable when clicks are also tracked via sendEvent with additional details
