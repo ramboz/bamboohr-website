@@ -11,6 +11,7 @@ let selectedForm = ""
 let emailFormat = '';
 let formValues = '';
 let farthestStep = 0;
+let copiedToClip = false;
 
 // Forms
 const resignationAcknowledgementForm = [];
@@ -177,8 +178,8 @@ function templateSelection(el, forms) {
 // Content Input Shortcode Template
 function templateFormWrapper(block) {
   const isStep1Gate = block.classList.contains('step-1-gate');
-  const nextStep = isStep1Gate ? '2' : '1';
-  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="1" data-prev class="button button--outline">Back</button><button type="submit" class="button" id="populate-template" data-step="${nextStep}">Next</button></nav>`;
+  const step = isStep1Gate ? '2' : '1';
+  const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="${step}" data-prev class="button button--outline">Back</button><button type="submit" class="button" id="populate-template" data-step="${step}">Next</button></nav>`;
 
   return formHtml;
 }
@@ -211,11 +212,15 @@ function generateInputs(template) {
 }
 
 // Tone Selection Shortcode Template
-function templateTone(el) {
+function templateTone(el, block) {
   const labelArr = ['Formal', 'Neutral', 'Friendly'];
   const divWrapper = createElem('div', 'tone-selection');
+  const isStep1Gate = block.classList.contains('step-1-gate');
 
-  const toneTemplateDiv = `<div class="tone-template"><div id="template-preview"></div></div><nav><button data-step="2" data-prev class="button button--outline">Back</button><button data-step="2" class="button" id="lead-gen">Generate my template</button></nav>`;
+  const nextBtnId = isStep1Gate ? 'copy-to-clip' : 'lead-gen';
+  const nextBtnText = isStep1Gate ? 'Copy to Clipboard' : 'Generate my template';
+  const step = isStep1Gate ? '3' : '2';
+  const toneTemplateDiv = `<div class="tone-template"><div id="template-preview"></div></div><nav><button data-step="${step}" data-prev class="button button--outline">Back</button><button data-step="${step}" class="button" id="${nextBtnId}">${nextBtnText}</button></nav>`;
 
   labelArr.forEach(item => {
     const inputHtml = `<button class="template-selector" id="Template${item}">${item}</button>`;
@@ -329,6 +334,7 @@ function resetForm(block) {
   blockContainer.classList.remove('offboarding-generator-container--overlay');
 
   farthestStep = 0;
+  copiedToClip = false;
 }
 
 function removeHTMLTags(str) {
@@ -353,6 +359,12 @@ function nextStep(el, block, setActiveStep = true, step = null) {
   current += 1;
 
   document.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
+
+  const isStep1Gate = block.classList.contains('step-1-gate');
+  if (isStep1Gate && current > 1) {
+    const progressBar = block.querySelector('.progress-bar');
+    progressBar.classList.add('active');
+  }
 
   if (current > farthestStep) {
 		farthestStep = current;
@@ -478,14 +490,18 @@ function templateSelectHandler(event, block) {
   const formTemplate = block.querySelector('#template-form');
   selectedForm = formsArr.find(item => item.formValue === selectedTemplate);
   emailFormat = getTemplatesTone(selectedForm);
-  const pregressBar = block.querySelector('.progress-bar');
 
   formTemplate.innerHTML = generateInputs(selectedForm);
 
   formTemplate.setAttribute('data-form', selectedTemplate);
   addToSessionStorage(selectedTemplate, selectedForm);
   templatePreviewDom.innerHTML = emailFormat[0].TemplateFormal;
-  pregressBar.classList.add('active');
+
+  const isStep1Gate = block.classList.contains('step-1-gate');
+  if (!isStep1Gate) {
+    const progressBar = block.querySelector('.progress-bar');
+    progressBar.classList.add('active');
+  }
 
   nextStep(event, block, false);
   widgetAnalyticsTrack(formTemplate, 'Start', 0, block);
@@ -525,7 +541,7 @@ export default async function decorate(block) {
     } else if ((!isStep1Gate && i === 3) || i === 4) {
       children[i].classList = 'offboarding-generator-step offboarding-generator-step--overlay';
     }
-    else if (i === 1 || i === 2 || (isStep1Gate && i === 3)) {
+    else if ((!isStep1Gate && i === 1) || i === 2 || (isStep1Gate && i === 3)) {
       children[i].classList = 'offboarding-generator-step tab';
     }
   }
@@ -606,7 +622,7 @@ export default async function decorate(block) {
         break;
       case '[generator-template-tone]':
         item.innerHTML = '';
-        item.append(templateTone(item));
+        item.append(templateTone(item, block));
         break;
       case '[generator-lead-gen]':
         item.innerHTML = '';
@@ -649,10 +665,27 @@ export default async function decorate(block) {
   radioBtnHandler(block);
 
   // Progress to lead gen
-  block.querySelector('#lead-gen').addEventListener('click', (e) => {
-    leadGenBtnHandler(block);
-    nextStep(e, block, false);
-  });
+  const leadGen = block.querySelector('#lead-gen');
+  if (leadGen) {
+    leadGen.addEventListener('click', (e) => {
+      leadGenBtnHandler(block);
+      nextStep(e, block, false);
+    });
+  }
+
+  const copyToClip = block.querySelector('#copy-to-clip');
+  if (copyToClip) {
+    copyToClip.addEventListener('click', (e) => {
+      const form = e.target.parentElement;
+      
+      copyToClipboard(block);
+      // nextStep(e, block, false);
+      if (!copiedToClip) {
+        widgetAnalyticsTrack(form, 'Submission', 0, block);
+        copiedToClip = true;
+      }
+    });
+  }
 
   // Progress to completed template
   block.querySelector('#download-confirmed')?.addEventListener('click', (e) => {
