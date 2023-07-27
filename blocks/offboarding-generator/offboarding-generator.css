@@ -151,7 +151,8 @@ main .offboarding-generator-step[data-step="1"] .form-wrap > div {
 }
 
 /* Step 2 Specific */
-main .offboarding-generator-step[data-step="2"] > div {
+main .offboarding-generator-step[data-step="2"] > div,
+main .step-1-gate .offboarding-generator-step[data-step="3"] > div {
   margin: 1.5rem;
 }
 
@@ -164,7 +165,8 @@ main .step-1-gate .offboarding-generator-step[data-step="3"] .tone-selection {
   gap: 14px;
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview {
+main .offboarding-generator-step[data-step="2"] #template-preview,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview {
   margin: 1.5rem 0 1.75rem 0;
   max-height: 220px;
   overflow-x: hidden;
@@ -181,20 +183,25 @@ main .offboarding-generator-step[data-step="2"] #template-preview {
   margin: 1.5rem 0 1.75rem 0;
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview span {
+main .offboarding-generator-step[data-step="2"] #template-preview span,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview span {
   color: var(--theme-shade5);
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar {
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar {
   width: 40px;
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-track {
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-track,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar-track {
   background-color: var(--color-white);
 }
 
 main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb,
-main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb:hover {
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb:hover,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar-thumb,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar-thumb:hover {
   background-color: #E7E7E7;
   width: 8px;
   border: 16px solid rgba(0, 0, 0, 0);
@@ -202,11 +209,13 @@ main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrol
   border-radius: 88px;
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview p {
+main .offboarding-generator-step[data-step="2"] #template-preview p,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview p {
   max-width: 95%;
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview p > span{
+main .offboarding-generator-step[data-step="2"] #template-preview p > span,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview p > span {
   color: var(--theme-shade5);
 }
 
