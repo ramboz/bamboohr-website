@@ -1,6 +1,6 @@
 import { getMetadata, lookupPages } from '../../scripts/scripts.js';
 import { createBlogCard } from '../featured-articles/featured-articles.js';
-import { createAppCard } from '../app-cards/app-cards.js';
+import { createAppCard, sortOptions } from '../app-cards/app-cards.js';
 import { createResourceCard } from '../resources-library/resources-library.js';
 
 function highlightTextElements(terms, elements) {
@@ -66,6 +66,10 @@ async function displaySearchResults(terms, results) {
       msg.textContent = 'We don’t offer a direct integration for the provider you’ve searched for, but don’t worry! You can access that integration through one of our integration platform partners below.';
       ul.before(msg);
     }
+
+    /* Sort integrations filtered results by level */
+    const sortBy = 'level';
+    if (sortOptions(sortBy)) filtered.sort(sortOptions(sortBy));
   }
   
   filtered.forEach((row) => {
