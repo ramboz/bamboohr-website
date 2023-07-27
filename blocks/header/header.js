@@ -145,9 +145,11 @@ export function showSlideDown(text, type = 'success', dismissTimer = 3500) {
 function addEyelashBanner(headerEl) {
   const eyelashBanner = document.createElement('div');
   eyelashBanner.classList.add('eyelash-banner');
-  const eyelashLink = getMetadata('eyelash-link') || 'https://www.bamboohr.com/pl/promo-bhr15-anniversary?utm_source=bhrpublic&utm_medium=banner&utm_campaign=PROMO+BHR15';
-  eyelashBanner.innerHTML = `<img src="${window.hlx.codeBasePath}/icons/pudgy-birthday.svg"><p><span><span>IT’S OUR BIRTHDAY!</span> Save 15% on implementation</span> <a href="${eyelashLink}">Claim Your Discount</a></p>`;
-  headerEl.classList.add('header-eyelash');
+  const eyelashImplementationTypeVal = getMetadata('eyelash-implementation-type');
+  const eyelashImplementationType = eyelashImplementationTypeVal ? eyelashImplementationTypeVal.trim() : '';
+  const eyelashLinkVal = getMetadata('eyelash-link');
+  const eyelashLink = eyelashLinkVal ? eyelashLinkVal.trim() : 'https://www.bamboohr.com/pl/promo-bhr15-anniversary?utm_source=bhrpublic&utm_medium=banner&utm_campaign=PROMO+BHR15';
+  eyelashBanner.innerHTML = `<img src="${window.hlx.codeBasePath}/icons/pudgy-birthday.svg"><p><span><span>IT’S OUR BIRTHDAY!</span> Save 15% on ${eyelashImplementationType} implementation</span> <a href="${eyelashLink}">Claim Your Discount</a></p>`;
   headerEl.parentNode.insertBefore(eyelashBanner, headerEl.nextSibling);
 }
 
