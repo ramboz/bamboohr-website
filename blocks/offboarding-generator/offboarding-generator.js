@@ -257,7 +257,7 @@ async function leadGenTemplate(el, block) {
       const form = block.querySelector('#template-form');
       const step = el.parentElement.parentElement.dataset.step;
 
-      nextStep(el, block, false, step);
+      nextStep(el, block, true, step);
       // copyToClipboard(block);
       // widgetAnalyticsTrack(form, 'Submission', 0, block);
     });
@@ -352,15 +352,15 @@ function nextStep(el, block, setActiveStep = true, step = null) {
   let current = parseInt(step || el.target.dataset.step, 10);
   document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
 
+  const isStep1Gate = block.classList.contains('step-1-gate');
   if (setActiveStep) {
-    stepIndicator(current, block);
+    stepIndicator(isStep1Gate ? current - 1 : current, block);
   }
 
   current += 1;
 
   document.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
 
-  const isStep1Gate = block.classList.contains('step-1-gate');
   if (isStep1Gate && current > 1) {
     const progressBar = block.querySelector('.progress-bar');
     progressBar.classList.add('active');
