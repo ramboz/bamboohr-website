@@ -603,40 +603,44 @@ const capitalizeKeys = (obj) => {
  * @returns {Promise<object|null>} The prefill fields object or null if there was an error
  */
 const getPrefillFields = async () => {
-  try {
-    const response = await fetch('/xhr/formfill.php');
-    if (!response.ok) {
-      // eslint-disable-next-line no-console
-      console.error(`Request failed with status: ${response.status}`);
-      return null;
-    }
-
-    const data = await response.json();
-    const { formData } = data;
-    const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
-
-    return mktoLeadFields;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    return null;
-  }
+  const cookie = document.cookie.match('(^|;)\\s*' + 'bhr_prefill' + '\\s*=\\s*([^;]+)')?.pop();
+  if(cookie){ 
+	try {
+	  return JSON.parse(atob(cookie));
+	} catch (error) {
+	  // eslint-disable-next-line no-console
+	  console.error(error);
+	  return null;
+	}	
+  }  
+  return {}; 
 };
 
 const savePrefillCookie = (marketoForm) => {
   
   const inputs = marketoForm.elements;
   const cookieName = 'bhr_prefill';
+  const fieldsToSave = [
+	'FirstName', 
+	'LastName', 
+	'Email', 
+	'Phone', 
+	'Employees_Text__c', 
+	'Title', 
+	'Company', 
+	'JobOpenings', 
+	'Industry', 
+	'PostalCode'
+  ];
   let formData = {};
-
   for (let i = 0; i < inputs.length; i++) {
-	if (inputs[i].name) {
+	if (inputs[i].name && fieldsToSave.includes(inputs[i].name)) {
 	  formData = { ...formData, [inputs[i].name]: inputs[i].value };
 	}
   }
 
-  const cookieValue = JSON.stringify(formData);
-  document.cookie = `${cookieName}=${cookieValue};path=/;max-age=${24*60*60}`;  
+  const encodedCookieValue = btoa(JSON.stringify(formData));
+  document.cookie = `${cookieName}=${encodedCookieValue};path=/;max-age=${24*60*60}`;  
 }
 
 /**
