@@ -220,22 +220,26 @@ main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview p
 }
 
 /* Step 3 Specific */
-main .offboarding-generator-step[data-step="3"] .form-wrap {
+main .offboarding-generator-step[data-step="3"] .form-wrap,
+main .step-1-gate .offboarding-generator-step[data-step="1"] .form-wrap {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-main .offboarding-generator-step[data-step="3"] .form-wrap > div {
+main .offboarding-generator-step[data-step="3"] .form-wrap > div,
+main .step-1-gate .offboarding-generator-step[data-step="1"] .form-wrap > div {
   flex: 0 0 100%;
 }
 
-main .offboarding-generator-step[data-step="3"] svg {
+main .offboarding-generator-step[data-step="3"] svg,
+main .step-1-gate .offboarding-generator-step[data-step="1"] svg {
   display: none;
 }
 
-main .offboarding-generator-step[data-step="3"].offboarding-generator-step--overlay::before {
+main .offboarding-generator-step[data-step="3"].offboarding-generator-step--overlay::before,
+main .step-1-gate .offboarding-generator-step[data-step="1"].offboarding-generator-step--overlay::before {
   content: none;
 }
 
@@ -614,11 +618,13 @@ main .offboarding-generator .form.form-container {
     flex: 0 0 48%;
   }
 
-  main .offboarding-generator-step[data-step="3"] svg {
+  main .offboarding-generator-step[data-step="3"] svg,
+  main .step-1-gate .offboarding-generator-step[data-step="1"] svg {
     display: block;
   }
 
-  main .offboarding-generator-step[data-step="3"].offboarding-generator-step--overlay::before {
+  main .offboarding-generator-step[data-step="3"].offboarding-generator-step--overlay::before,
+  main .step-1-gate .offboarding-generator-step[data-step="1"].offboarding-generator-step--overlay::before {
     content: '';
   }
 
