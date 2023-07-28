@@ -640,7 +640,8 @@ const savePrefillCookie = (marketoForm) => {
   }
 
   const encodedCookieValue = btoa(JSON.stringify(formData));
-  document.cookie = `${cookieName}=${encodedCookieValue};path=/;max-age=${24*60*60}`;  
+  //30 day cookie on the root TLD path
+  document.cookie = `${cookieName}=${encodedCookieValue};path=/;max-age=${30*24*60*60}`;  
 }
 
 /**
