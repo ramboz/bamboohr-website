@@ -211,6 +211,14 @@ function generateInputs(template) {
   return output;
 }
 
+function hideCopySuccess(block) {
+  const isStep1Gate = block.classList.contains('step-1-gate');
+  if (isStep1Gate) {
+    const copySuccess = block.querySelector('#copy-success');
+    if (copySuccess) copySuccess.classList.add('copy-success-hide');
+  }
+}
+
 // Tone Selection Shortcode Template
 function templateTone(el, block) {
   const labelArr = ['Formal', 'Neutral', 'Friendly'];
@@ -391,6 +399,8 @@ function prevStep(el, block) {
   }
 
   const isStep1Gate = block.classList.contains('step-1-gate');
+  if (isStep1Gate && current === 3) hideCopySuccess(block);
+
   if (isStep1Gate && current === 2) current = 0;
   else current -= 1;
 
@@ -407,6 +417,7 @@ function prevStep(el, block) {
 function templatePreview(values, block) {
   const templatePreviewDom = block.querySelector('#template-preview');
   const tokens = templatePreviewDom.querySelectorAll('[data-token]');
+  hideCopySuccess(block);
 
   tokens.forEach(token => {
     // eslint-disable-next-line no-restricted-syntax
