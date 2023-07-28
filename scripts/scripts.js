@@ -27,8 +27,8 @@ const SEGMENTATION_CONFIG = {
         const features = getBhrFeaturesCookie();
 		if (!features) {
 		  return false;
-		} 
-		return features.is_admin && !features.bhr_user;		  
+		}
+		return features.is_admin && !features.bhr_user;
       },
     },
     'not-customer': {
@@ -883,7 +883,7 @@ initHlx();
  * ------------------------------------------------------------
  */
 
-const LCP_BLOCKS = ['hero', 'featured-articles']; // add your LCP blocks to the list
+const LCP_BLOCKS = ['hero', 'featured-articles', 'columns']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'bamboo-rum-conversion-1'; // add your RUM generation information here
 
 sampleRUM('top');
