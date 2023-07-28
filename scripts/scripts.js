@@ -1411,7 +1411,7 @@ async function loadEager(doc) {
 
   /* Adobe Target Pre-hiding (ie. flicker management) script */
   const $testPaths = [
-    '/j1/',
+    '/resources/ebooks/the-definitive-guide-to-onboarding',
   ];
   const $isOnTestPath = $testPaths.includes(window.location.pathname);
 
