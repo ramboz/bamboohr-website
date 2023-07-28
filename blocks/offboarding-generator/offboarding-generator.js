@@ -506,7 +506,7 @@ function templateSelectHandler(event, block) {
     progressBar.classList.add('active');
   }
 
-  nextStep(event, block, false);
+  nextStep(event, block, !isStep1Gate);
   widgetAnalyticsTrack(formTemplate, 'Start', 0, block);
 }
 
