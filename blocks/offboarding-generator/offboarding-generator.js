@@ -534,7 +534,7 @@ async function copyToClipboard(el) {
       if (copySuccess) {
         const selectedTone = el.querySelector('.template-selector.checked');
 
-        copySuccess.textContent = `*Copied ${selectedTone.textContent}`;
+        copySuccess.textContent = `*Copied ${selectedTone.textContent.toLowerCase()}`;
         copySuccess.classList.remove('copy-success-hide');
       }
     }
