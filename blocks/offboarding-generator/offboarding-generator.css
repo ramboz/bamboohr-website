@@ -555,6 +555,15 @@ main .offboarding-generator .form.form-container {
   max-width: unset;
 }
 
+main .offboarding-generator .next-and-success {
+  display: flex;
+  flex-direction: column;
+}
+
+.copy-success-hide {
+  display: none;
+}
+
 @media (min-width: 685px) and (max-width: 781px) {
   main .offboarding-generator-step--overlay::before {
     width: 67%;

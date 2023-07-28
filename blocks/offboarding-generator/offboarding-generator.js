@@ -220,7 +220,7 @@ function templateTone(el, block) {
   const nextBtnId = isStep1Gate ? 'copy-to-clip' : 'lead-gen';
   const nextBtnText = isStep1Gate ? 'Copy to Clipboard' : 'Generate my template';
   const step = isStep1Gate ? '3' : '2';
-  const toneTemplateDiv = `<div class="tone-template"><div id="template-preview"></div></div><nav><button data-step="${step}" data-prev class="button button--outline">Back</button><button data-step="${step}" class="button" id="${nextBtnId}">${nextBtnText}</button></nav>`;
+  const toneTemplateDiv = `<div class="tone-template"><div id="template-preview"></div></div><nav><button data-step="${step}" data-prev class="button button--outline">Back</button><div class="next-and-success"><button data-step="${step}" class="button" id="${nextBtnId}">${nextBtnText}</button><p id="copy-success" class="copy-success-hide"></p></div></nav>`;
 
   labelArr.forEach(item => {
     const inputHtml = `<button class="template-selector" id="Template${item}">${item}</button>`;
@@ -528,6 +528,16 @@ async function copyToClipboard(el) {
 
   try {
     await navigator.clipboard.writeText(text);
+    const isStep1Gate = block.classList.contains('step-1-gate');
+    if (!isStep1Gate) {
+      const copySuccess = el.querySelector('#copy-success');
+      if (copySuccess) {
+        const selectedTone = el.querySelector('.template-selector.checked');
+
+        copySuccess.textContent = `*Copied ${selectedTone.textContent}`;
+        copySuccess.classList.remove('copy-success-hide');
+      }
+    }
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error('Failed to copy: ', err);
