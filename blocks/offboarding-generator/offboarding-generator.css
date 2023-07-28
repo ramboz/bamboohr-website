@@ -50,7 +50,7 @@ main .offboarding-generator-container.offboarding-generator-container--overlay .
 main .offboarding-generator-step nav {
   display: flex;
   flex-flow: column nowrap;
-  align-items: center;
+  align-items: start;
   width: 100%;
   margin: 1rem 0 0 0;
   gap: 14px;
@@ -558,6 +558,10 @@ main .offboarding-generator .form.form-container {
 main .offboarding-generator .next-and-success {
   display: flex;
   flex-direction: column;
+}
+
+#copy-success {
+  text-align: right;
 }
 
 .copy-success-hide {
