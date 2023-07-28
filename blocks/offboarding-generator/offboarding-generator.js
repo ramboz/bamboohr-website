@@ -528,7 +528,7 @@ async function copyToClipboard(el) {
 
   try {
     await navigator.clipboard.writeText(text);
-    const isStep1Gate = block.classList.contains('step-1-gate');
+    const isStep1Gate = el.classList.contains('step-1-gate');
     if (isStep1Gate) {
       const copySuccess = el.querySelector('#copy-success');
       if (copySuccess) {
