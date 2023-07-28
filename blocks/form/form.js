@@ -902,7 +902,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
               ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: cpRedirectUrl });
             }
           });
-        }-
+        }
         
         form.onSuccess(() => {
           /* GA events tracking */
