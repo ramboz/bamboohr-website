@@ -541,7 +541,7 @@ export default async function decorate(block) {
     children[i].classList = 'offboarding-generator-step';
     if( i === 0 ) {
       children[i].classList = 'offboarding-generator-step offboarding-generator-step--active';
-    } else if ((!isStep1Gate && i === 3) || i === 4) {
+    } else if ((isStep1Gate && i === 1) || (!isStep1Gate && i === 3) || i === 4) {
       children[i].classList = 'offboarding-generator-step offboarding-generator-step--overlay';
     }
     else if ((!isStep1Gate && i === 1) || i === 2 || (isStep1Gate && i === 3)) {
