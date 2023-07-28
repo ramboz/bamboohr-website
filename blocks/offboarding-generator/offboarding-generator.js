@@ -361,9 +361,15 @@ function nextStep(el, block, setActiveStep = true, step = null) {
 
   document.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
 
-  if (isStep1Gate && current > 1) {
-    const progressBar = block.querySelector('.progress-bar');
-    progressBar.classList.add('active');
+  if (isStep1Gate) {
+    const containerDiv = block.parentElement.parentElement;
+    if (current > 1) {
+      const progressBar = block.querySelector('.progress-bar');
+      progressBar.classList.add('active');
+      containerDiv.classList.remove('offboarding-generator-container--overlay');
+    } else if (current === 1) {
+      containerDiv.classList.add('offboarding-generator-container--overlay');
+    }
   }
 
   if (current > farthestStep) {
