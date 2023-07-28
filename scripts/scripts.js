@@ -1409,6 +1409,19 @@ async function loadEager(doc) {
   }
   /* This is the end of the temporary convert test code */
 
+  /* Adobe Target Pre-hiding (ie. flicker management) script */
+  const $preHideScript = document.createElement('script');
+  $preHideScript.textContent = '    !function(e,a,n,t){\n' +
+      '    if (a) return;\n' +
+      '    var i=e.head;if(i){\n' +
+      '    var o=e.createElement("style");\n' +
+      '    o.id="alloy-prehiding",o.innerText=n,i.appendChild(o),\n' +
+      '    setTimeout(function(){o.parentNode&&o.parentNode.removeChild(o)},t)}}\n' +
+      '    (document, document.location.href.indexOf("adobe_authoring_enabled") !== -1, ".section-1 { opacity: 0 !important }", 2000);';
+
+  $head.append($preHideScript);
+  /* End Adobe Target Pre-hiding */
+
   decorateTemplateAndTheme();
   document.documentElement.lang = 'en';
   const main = doc.querySelector('main');
