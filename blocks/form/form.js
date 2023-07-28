@@ -623,6 +623,22 @@ const getPrefillFields = async () => {
   }
 };
 
+const savePrefillCookie = (marketoForm) => {
+  
+  const inputs = marketoForm.elements;
+  const cookieName = 'bhr_prefill';
+  let formData = {};
+
+  for (let i = 0; i < inputs.length; i++) {
+	if (inputs[i].name) {
+	  formData = { ...formData, [inputs[i].name]: inputs[i].value };
+	}
+  }
+
+  const cookieValue = JSON.stringify(formData);
+  document.cookie = `${cookieName}=${cookieValue};path=/;max-age=${24*60*60}`;  
+}
+
 /**
  * Fill form fields with fields that exist in prefillFields
  * @param {object} prefillFields - The prefill fields object
@@ -881,7 +897,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
               ChiliPiper.submit('bamboohr', 'content-download-form', { dynamicRedirectLink: cpRedirectUrl });
             }
           });
-        }
+        }-
         
         form.onSuccess(() => {
           /* GA events tracking */
@@ -894,6 +910,8 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 
           /* Adobe form complete events tracking */
           analyticsTrackFormSubmission(formEl);
+
+		  savePrefillCookie(formEl);
 
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
