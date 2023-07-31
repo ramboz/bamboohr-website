@@ -274,8 +274,8 @@ main .quote.color-shade-10 {
   background-image: linear-gradient(90deg, var(--theme-shade5) 0%, var(--theme-shade10) 100%);
 }
 
-.blog-redesign main .quote.left,
-.blog-redesign main .quote.right {
+.blog-post main .quote.left,
+.blog-post main .quote.right {
   float: none;
   width: unset;
   margin-left: unset;

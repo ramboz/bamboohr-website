@@ -114,7 +114,6 @@ a.button:any-link {
   color: var(--color-white);
   background-color: var(--theme-base);
   margin: 16px 0;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
@@ -962,23 +961,7 @@ main .section > div:empty {
   padding: 0;
 }
 
-@media (min-width: 600px) {
-  main .section {
-    padding: 0 54px;
-  }
-}
-
 @media (min-width: 700px) {
-  .blog-post main .section > div.toc-wrapper,
-  .blog-post main .section > div.default-content-wrapper,
-  .blog-post main .section > div.author-wrapper,
-  .blog-post main .section > div.quote-wrapper,
-  .blog-post main .section > div.table-wrapper,
-  .pricing-quote main .section > div.table-wrapper,
-  .integrations-home main .section > div.default-content-wrapper {
-    max-width: 800px;
-  }
-
   .integrations main .section > div {
     max-width: 1200px;
     padding-left: 0;
@@ -1045,12 +1028,6 @@ main .section > div:empty {
 @media (max-width: 1024px) {
   main .section > div.title-wrapper.laptop-small-width {
     max-width: 640px;
-  }
-}
-
-@media (min-width: 1440px) {
-  main .section {
-    padding: 0;
   }
 }
 
@@ -1935,73 +1912,80 @@ main .section[data-section-status='initialized'] {
   display: none;
 }
 
-/* blog redesign layout */
-.blog-redesign.blog-post main {
+/* blog post layout */
+.blog-post main {
   overflow: unset;
 }
 
-.blog-redesign.blog-post main .default-content-wrapper a:any-link,
-.blog-redesign.blog-post main .table-wrapper a:any-link {
+.blog-post main .default-content-wrapper a:any-link,
+.blog-post main .table-wrapper a:any-link {
   background: none;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
-.blog-redesign.blog-post main .section > div:not(.author-wrapper) {
+.blog-post main .section > div {
+  padding: 0;
+}
+
+.blog-post main .section > div:not(.author-wrapper) {
   max-width: 100%;
 }
 
-.blog-redesign main .section.article-header-container {
+.blog-post main .section.article-header-container {
   margin-top: 48px;
 }
 
-.blog-redesign main .section:first-child,
-.blog-redesign.blog-post main .section > div.author-wrapper,
-.blog-redesign.blog-post main .section > div.related-posts-wrapper {
-  max-width: var(--width-md);
+.blog-post main .section > div.author-wrapper,
+.blog-post main .section > div.related-posts-wrapper {
+  max-width: calc(var(--width-md) + var(--section-padding-mobile) * 2);
   margin-left: auto;
   margin-right: auto;
 }
 
-.blog-redesign main .section:first-child:not(.toc-container):not(.search-container) {
-  max-width: var(--width-sm);
+.blog-post main .section:first-child:not(.toc-container):not(.search-container) {
+  max-width: calc(var(--width-sm) + var(--section-padding-mobile) * 2);
   margin-left: auto;
   margin-right: auto;
 }
 
-.blog-redesign.blog-post main .section > div.author-wrapper,
-.blog-redesign.blog-post main .section > div.related-posts-wrapper {
+.blog-post main .section:first-child,
+.blog-post main .section > div.author-wrapper,
+.blog-post main .section > div.related-posts-wrapper {
   padding: 0 30px;
 }
 
 @media screen and (min-width: 600px) {
-  .blog-redesign.blog-post main .section > div.author-wrapper,
-  .blog-redesign.blog-post main .section > div.related-posts-wrapper {
+  .blog-post main .section:first-child,
+  .blog-post main .section > div.author-wrapper,
+  .blog-post main .section > div.related-posts-wrapper {
     padding: 0 54px;
   }
 }
 
 @media screen and (min-width: 900px) {
-  .blog-redesign main .section.toc-container {
+  .blog-post main .section.toc-container {
     display: grid;
-    grid-template-columns: 62.5% 37.5%;
+    grid-template-columns: 62.5% minmax(0, 37.5%);
     grid-gap: 0 40px;
   }
   
-  .blog-redesign main .toc-container > div {
+  .blog-post main .toc-container > div {
     grid-column: 1;
   }
   
-  .blog-redesign main .toc-container .toc-wrapper {
+  .blog-post main .toc-container .toc-wrapper {
     grid-column: 2;
     grid-row: 1 / span 2;
   }
 }
 
 @media screen and (min-width: 1200px) {
-  .blog-redesign main .section:first-child,
-  .blog-redesign.blog-post main .section > div.author-wrapper,
-  .blog-redesign.blog-post main .section > div.related-posts-wrapper {
-    max-width: var(--width-lg);
+  .blog-post main .section:first-child,
+  .blog-post main .section > div.author-wrapper,
+  .blog-post main .section > div.related-posts-wrapper {
+    max-width: calc(var(--width-lg) + var(--section-padding) * 2);
+    margin-left: auto;
+    margin-right: auto;
   }
 }
