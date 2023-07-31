@@ -251,4 +251,5 @@ main .callout .callout-card a.button {
 .blog-post main .callout.right {
   float: none;
   width: unset;
+  text-align: center;
 }
