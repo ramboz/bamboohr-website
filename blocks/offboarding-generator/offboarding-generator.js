@@ -508,7 +508,8 @@ function templateSelectHandler(event, block) {
   selectedTemplate = block.querySelector('#template-options').value;
   const templatePreviewDom = block.querySelector('#template-preview');
   const formTemplate = block.querySelector('#template-form');
-  selectedForm = formsArr.find(item => item.formValue === selectedTemplate);
+  if (formsArr.length === 1) [selectedForm] = formsArr;
+  else selectedForm = formsArr.find(item => item.formValue === selectedTemplate);
   emailFormat = getTemplatesTone(selectedForm);
 
   formTemplate.innerHTML = generateInputs(selectedForm);
@@ -625,6 +626,8 @@ export default async function decorate(block) {
    * Store all forms in array
    */
   formsArr = [resignationAcknowledgementForm, resignationAnnouncementForm, exitInterviewForm, returningEquipmentForm, leavingConfirmationForm, offboardingDismissalForm];
+  const filteredForms = formsArr.filter(f => block.classList.contains(f.formValue));
+  if (filteredForms.length) formsArr = filteredForms;
 
   // Add SVG's
   const svgOne = '<svg width="313" height="404" viewBox="0 0 313 404" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M211.451 -36.908L46.9479 -81.3319C20.2268 -88.5622 -8.31543 -80.8583 -27.8774 -61.1249L-148.295 60.3383C-167.888 80.0717 -175.518 108.835 -168.359 135.767L-124.274 301.654C-117.115 328.618 -96.2344 349.678 -69.4819 356.876L95.0521 401.332C121.773 408.562 150.315 400.858 169.877 381.125L290.295 259.693C309.888 239.96 317.518 211.196 310.359 184.264L266.274 18.3772C259.115 -8.5866 238.203 -29.6461 211.513 -36.8764L211.451 -36.908Z" fill="#E8F6F9"/></svg>';
@@ -645,7 +648,7 @@ export default async function decorate(block) {
   paragraphs.forEach( item => {
     switch(item.innerText) {
       case '[generator-template-selection]':
-        item.innerHTML = templateSelection(item, formsArr);
+        if (formsArr.length > 1) item.innerHTML = templateSelection(item, formsArr);
         break;
       case '[generator-template-population]':
         item.innerHTML = templateFormWrapper(block);
