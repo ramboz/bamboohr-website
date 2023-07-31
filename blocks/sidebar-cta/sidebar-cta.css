@@ -70,13 +70,14 @@ main .sidebar-cta .sidebar-cta-form .field-wrapper label.active + input {
 
 main .sidebar-cta .sidebar-cta-form .field-wrapper .error-msg{
   display: none;
-  font-family: var(--body-font-family);
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 22px;
-  color: var(--color-2-shade-10);
-  text-align: left;
+  position: absolute;
+  right: 2px;
+  font-size: 10px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 13px;
+  color: var(--color-2-shade-5);
+  margin-top: 2px;
 }
 
 main .sidebar-cta .sidebar-cta-form .field-wrapper.error .error-msg {

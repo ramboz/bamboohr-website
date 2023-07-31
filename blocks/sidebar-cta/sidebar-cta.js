@@ -62,11 +62,12 @@ function createForm(ctaBtn) {
     e.preventDefault();
     if (emailInput.value.trim() === '' || !emailPattern.test(emailInput.value)) {
       fieldErrorMsg.textContent = 'Please enter a valid email address.';
+      fieldWrapper.classList.add('error');
       return;
     }
     form.submit();
   });
-  
+
   return form;
 }
 
