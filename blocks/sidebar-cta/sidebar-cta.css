@@ -1,0 +1,101 @@
+main .sidebar-cta {
+  background-color: var(--color-1-tint-15);
+  padding: 24px 20px 35px;
+  border-radius: 15px;
+}
+
+main .sidebar-cta h3 {
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 30px;
+  margin: 0 0 30px;
+  color: var(--color-1-shade-15);
+}
+
+main .sidebar-cta .sidebar-cta-form .field-wrapper {
+  position: relative;
+  margin-top: 16px;
+}
+
+main .sidebar-cta .sidebar-cta-form .field-wrapper label {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--color-gray-7);
+  padding: 0 12px;
+  cursor: text;
+  text-align: left;
+  transition: all ease-out .3s;
+  margin-bottom: 0;
+}
+
+main .sidebar-cta .sidebar-cta-form .field-wrapper label.active {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-gray-12);
+  top: 10px;
+}
+
+main .sidebar-cta .sidebar-cta-form .field-wrapper input {
+  border: 1px solid var(--color-gray-6);
+  padding: 11px 12px 9px;
+  height: 44px;
+  width: 100%;
+  border-radius: 100px;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 500;
+  color: var(--color-gray-10);
+  transition: all ease-in-out 0.3s;
+  margin: 0;
+  box-shadow: none;
+}
+
+main .sidebar-cta .sidebar-cta-form .field-wrapper input:focus {
+  border-color: var(--color-8-shade-5);
+}
+
+main .sidebar-cta .sidebar-cta-form .field-wrapper.error input {
+  border-color: var(--color-2-shade-10);
+}
+
+main .sidebar-cta .sidebar-cta-form .field-wrapper label.active + input {
+  padding: 17px 12px 3px;
+}
+
+main .sidebar-cta .sidebar-cta-form .field-wrapper .error-msg{
+  display: none;
+  font-family: var(--body-font-family);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-2-shade-10);
+  text-align: left;
+}
+
+main .sidebar-cta .sidebar-cta-form .field-wrapper.error .error-msg {
+  display: block;
+}
+
+main .sidebar-cta .sidebar-cta-form button[type="submit"] {
+  width: 100%;
+  display: block;
+  margin-top: 16px;
+  padding: 17px 25px;
+  font-size: 16px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  background-color: var(--color-1-shade-10);
+  color: var(--color-white);
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: 0.5s ease-in-out all;
+}
