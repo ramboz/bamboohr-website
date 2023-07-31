@@ -961,23 +961,7 @@ main .section > div:empty {
   padding: 0;
 }
 
-@media (min-width: 600px) {
-  main .section {
-    padding: 0 54px;
-  }
-}
-
 @media (min-width: 700px) {
-  .blog-post main .section > div.toc-wrapper,
-  .blog-post main .section > div.default-content-wrapper,
-  .blog-post main .section > div.author-wrapper,
-  .blog-post main .section > div.quote-wrapper,
-  .blog-post main .section > div.table-wrapper,
-  .pricing-quote main .section > div.table-wrapper,
-  .integrations-home main .section > div.default-content-wrapper {
-    max-width: 800px;
-  }
-
   .integrations main .section > div {
     max-width: 1200px;
     padding-left: 0;
@@ -1044,12 +1028,6 @@ main .section > div:empty {
 @media (max-width: 1024px) {
   main .section > div.title-wrapper.laptop-small-width {
     max-width: 640px;
-  }
-}
-
-@media (min-width: 1440px) {
-  main .section {
-    padding: 0;
   }
 }
 
@@ -1946,6 +1924,10 @@ main .section[data-section-status='initialized'] {
   text-underline-offset: 4px;
 }
 
+.blog-post main .section > div {
+  padding: 0;
+}
+
 .blog-post main .section > div:not(.author-wrapper) {
   max-width: 100%;
 }
@@ -1954,7 +1936,6 @@ main .section[data-section-status='initialized'] {
   margin-top: 48px;
 }
 
-.blog-post main .section:first-child,
 .blog-post main .section > div.author-wrapper,
 .blog-post main .section > div.related-posts-wrapper {
   max-width: var(--width-md);
@@ -1968,22 +1949,32 @@ main .section[data-section-status='initialized'] {
   margin-right: auto;
 }
 
+.blog-post main .section:first-child,
 .blog-post main .section > div.author-wrapper,
 .blog-post main .section > div.related-posts-wrapper {
   padding: 0 30px;
 }
 
 @media screen and (min-width: 600px) {
+  .blog-post main .section:first-child,
   .blog-post main .section > div.author-wrapper,
   .blog-post main .section > div.related-posts-wrapper {
     padding: 0 54px;
   }
 }
 
+@media screen and (min-width: 1440px) {
+  .blog-post main .section:first-child,
+  .blog-post main .section > div.author-wrapper,
+  .blog-post main .section > div.related-posts-wrapper {
+    padding: 0;
+  }
+}
+
 @media screen and (min-width: 900px) {
   .blog-post main .section.toc-container {
     display: grid;
-    grid-template-columns: 62.5% 37.5%;
+    grid-template-columns: 62.5% minmax(0, 37.5%);
     grid-gap: 0 40px;
   }
   
@@ -2002,5 +1993,7 @@ main .section[data-section-status='initialized'] {
   .blog-post main .section > div.author-wrapper,
   .blog-post main .section > div.related-posts-wrapper {
     max-width: var(--width-lg);
+    margin-left: auto;
+    margin-right: auto;
   }
 }

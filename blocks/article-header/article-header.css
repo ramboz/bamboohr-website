@@ -1,15 +1,5 @@
 
 /* article header */
-main .article-header-container {
-  padding: 0;
-}
-
-main .article-header-container > div {
-  max-width: unset;
-  padding: 0;
-  margin: 0 auto;
-}
-
 main .article-header > div {
   max-width: 800px;
   margin: auto;
@@ -164,10 +154,6 @@ main .article-header-share .icon svg {
 .blog-post main .article-header h1 {
   font-style: normal;
   margin: 0 0 24px;
-}
-
-.blog-post main .article-header-container {
-  padding: 0 30px;
 }
 
 .blog-post main .article-header .article-header-image {

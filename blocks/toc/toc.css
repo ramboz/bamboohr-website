@@ -14,11 +14,6 @@ main .toc {
 }
 
 @media (min-width: 900px) {
-  main .toc-wrapper {
-    position: relative;
-    width: calc(100% - 54px);
-  }
-
   main .toc {
     position: sticky;
     top: 100px;
