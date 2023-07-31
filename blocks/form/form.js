@@ -585,25 +585,12 @@ function addExpansionProduct() {
 }
 
 /**
- * Capitalize first letter of object keys
- * @param {object} obj - The object to capitalize keys for
- * @returns {object} The object with capitalized keys
- */
-const capitalizeKeys = (obj) => {
-  const modifiedObj = {};
-  Object.keys(obj).forEach((key) => {
-    const modifiedKey = key.charAt(0).toUpperCase() + key.slice(1);
-    modifiedObj[modifiedKey] = obj[key];
-  });
-  return modifiedObj;
-};
-
-/**
  * Get prefill fields from marketo cookie
  * @returns {Promise<object|null>} The prefill fields object or null if there was an error
  */
 const getPrefillFields = async () => {
-  const cookie = document.cookie.match('(^|;)\\s*' + 'bhr_prefill' + '\\s*=\\s*([^;]+)')?.pop();
+  const cookieName = 'bhr_prefill';
+  const cookie = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)')?.pop();
   if(cookie){ 
 	try {
 	  return JSON.parse(atob(cookie));
@@ -633,6 +620,7 @@ const savePrefillCookie = (marketoForm) => {
 	'PostalCode'
   ];
   let formData = {};
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < inputs.length; i++) {
 	if (inputs[i].name && fieldsToSave.includes(inputs[i].name)) {
 	  formData = { ...formData, [inputs[i].name]: inputs[i].value };
@@ -640,7 +628,7 @@ const savePrefillCookie = (marketoForm) => {
   }
 
   const encodedCookieValue = btoa(JSON.stringify(formData));
-  //30 day cookie on the root TLD path
+  // 30 day cookie on the root TLD path
   document.cookie = `${cookieName}=${encodedCookieValue};path=/;max-age=${30*24*60*60}`;  
 }
 
