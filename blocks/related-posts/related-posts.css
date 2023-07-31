@@ -1,7 +1,3 @@
-main .related-posts-container:not(.metadata-content-container) {
-  padding: 0;
-}
-
 main .section > .related-posts-wrapper {
   max-width: unset;
   background-color: var(--color-gray-1);
