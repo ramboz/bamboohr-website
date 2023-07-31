@@ -116,13 +116,13 @@ function loadStyle(location, css) {
 
 function loadSalesforceChatScript() {
   const chatTestPaths = [
-    // '/',
-    // '/a3/',
-    // '/a4/',
-    // '/demo',
-    // '/demo/b',
-    // '/demo/c',
-    // '/pricing/',
+    '/',
+    '/a3/',
+    '/a4/',
+    '/demo',
+    '/demo/b',
+    '/demo/c',
+    '/pricing/',
     '/drafts/sclayton/chat-test',
     '/drafts/sclayton/chat-test-benefits-administration',
   ];
@@ -130,8 +130,8 @@ function loadSalesforceChatScript() {
   const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
   if (!isOnChatTestPath) return;
 
-  // const noticeBehavior = getCookie("notice_behavior");
-  const isGDPR = true; // noticeBehavior === "expressed|eu" || noticeBehavior === "implied|eu";
+  const noticeBehavior = getCookie("notice_behavior");
+  const isGDPR = noticeBehavior === "expressed|eu" || noticeBehavior === "implied|eu";
   const chatScriptURL = isGDPR ? 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1690313005860/assets/js/bootstrap.min.js'
     : 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944/assets/js/bootstrap.min.js';
 
