@@ -1333,38 +1333,45 @@ export async function initConversionTracking(parent, path, ctaElement) {
  * (e.g., Adobe Target).
  */
 async function loadMartech() {
-  /* Adobe Target Prehiding Snippet */
-  /*
-  ;(function(win, doc, style, timeout) {
-    const STYLE_ID = 'at-body-style';
-    function getParent() {
-      return doc.getElementsByTagName('head')[0];
-    }
-    function addStyle(parent, id, def) {
-      if (!parent) {
-        return;
+  const $testPaths = [
+    '/resources/ebooks/the-definitive-guide-to-onboarding',
+  ];
+  const $isOnTestPath = $testPaths.includes(window.location.pathname);
+
+  if ($isOnTestPath) {
+
+    /* Adobe Target Prehiding Snippet */
+    ;(function (win, doc, style, timeout) {
+      const STYLE_ID = 'alloy-prehiding';
+
+      function getParent() {
+        return doc.head;
       }
-      const style = doc.createElement('style');
-      style.id = id;
-      style.innerHTML = def;
-      parent.appendChild(style);
-    }
-    function removeStyle(parent, id) {
-      if (!parent) {
-        return;
+
+      function addStyle(parent, id, def) {
+        if (parent) {
+          const style = doc.createElement('style');
+          style.id = id;
+          style.innerText = def;
+          parent.appendChild(style);
+        }
       }
-      const style = doc.getElementById(id);
-      if (!style) {
-        return;
+
+      function removeStyle(parent, id) {
+        if (parent) {
+          const style = doc.getElementById(id);
+          if (style) {
+            parent.removeChild(style);
+          }
+        }
       }
-      parent.removeChild(style);
-    }
-    addStyle(getParent(), STYLE_ID, style);
-    setTimeout(function() {
-      removeStyle(getParent(), STYLE_ID);
-    }, timeout);
-  }(window, document, "body {opacity: 0 !important}", 3000));
-  */
+
+      addStyle(getParent(), STYLE_ID, style);
+      setTimeout(function () {
+        removeStyle(getParent(), STYLE_ID);
+      }, timeout);
+    }(window, document, "main {opacity: 0 !important}", 2000));
+  }
   /* Move Adobe Tags here from delayed.js if Adobe Target is added and enabled */
 }
 
@@ -1408,26 +1415,6 @@ async function loadEager(doc) {
   	$head.append($script);
   }
   /* This is the end of the temporary convert test code */
-
-  /* Adobe Target Pre-hiding (ie. flicker management) script */
-  const $testPaths = [
-    '/resources/ebooks/the-definitive-guide-to-onboarding',
-  ];
-  const $isOnTestPath = $testPaths.includes(window.location.pathname);
-
-  if ($isOnTestPath)  {
-    const $preHideScript = document.createElement('script');
-    $preHideScript.textContent = '    !function(e,a,n,t){\n' +
-        '    if (a) return;\n' +
-        '    var i=e.head;if(i){\n' +
-        '    var o=e.createElement("style");\n' +
-        '    o.id="alloy-prehiding",o.innerText=n,i.appendChild(o),\n' +
-        '    setTimeout(function(){o.parentNode&&o.parentNode.removeChild(o)},t)}}\n' +
-        '    (document, document.location.href.indexOf("adobe_authoring_enabled") !== -1, "main { opacity: 0 !important }", 2000);';
-
-    $head.append($preHideScript);
-  }
-  /* End Adobe Target Pre-hiding */
 
   decorateTemplateAndTheme();
   document.documentElement.lang = 'en';
