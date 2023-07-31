@@ -590,7 +590,8 @@ function addExpansionProduct() {
  */
 const getPrefillFields = async () => {
   const cookieName = 'bhr_prefill';
-  const cookie = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)')?.pop();
+  const cookie = document.cookie.match(`(^|;)\\s*${cookieName}\\s*=\\s*([^;]+)`)?.pop();
+
   if(cookie){ 
 	try {
 	  return JSON.parse(atob(cookie));
