@@ -1938,13 +1938,13 @@ main .section[data-section-status='initialized'] {
 
 .blog-post main .section > div.author-wrapper,
 .blog-post main .section > div.related-posts-wrapper {
-  max-width: var(--width-md);
+  max-width: calc(var(--width-md) + var(--section-padding-mobile) * 2);
   margin-left: auto;
   margin-right: auto;
 }
 
 .blog-post main .section:first-child:not(.toc-container):not(.search-container) {
-  max-width: var(--width-sm);
+  max-width: calc(var(--width-sm) + var(--section-padding-mobile) * 2);
   margin-left: auto;
   margin-right: auto;
 }
@@ -1960,14 +1960,6 @@ main .section[data-section-status='initialized'] {
   .blog-post main .section > div.author-wrapper,
   .blog-post main .section > div.related-posts-wrapper {
     padding: 0 54px;
-  }
-}
-
-@media screen and (min-width: 1440px) {
-  .blog-post main .section:first-child,
-  .blog-post main .section > div.author-wrapper,
-  .blog-post main .section > div.related-posts-wrapper {
-    padding: 0;
   }
 }
 
@@ -1992,7 +1984,7 @@ main .section[data-section-status='initialized'] {
   .blog-post main .section:first-child,
   .blog-post main .section > div.author-wrapper,
   .blog-post main .section > div.related-posts-wrapper {
-    max-width: var(--width-lg);
+    max-width: calc(var(--width-lg) + var(--section-padding) * 2);
     margin-left: auto;
     margin-right: auto;
   }
