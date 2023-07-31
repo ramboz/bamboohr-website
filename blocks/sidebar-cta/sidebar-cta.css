@@ -100,3 +100,7 @@ main .sidebar-cta .sidebar-cta-form button[type="submit"] {
   cursor: pointer;
   transition: 0.5s ease-in-out all;
 }
+
+main .sidebar-cta .sidebar-cta-form button[type="submit"]:hover {
+  background-color: var(--color-1-shade-15);
+}
