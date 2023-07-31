@@ -1333,12 +1333,12 @@ export async function initConversionTracking(parent, path, ctaElement) {
  * (e.g., Adobe Target).
  */
 async function loadMartech() {
-  // const $testPaths = [
-  //   '/resources/ebooks/the-definitive-guide-to-onboarding',
-  // ];
-  // const $isOnTestPath = $testPaths.includes(window.location.pathname);
-  //
-  // if ($isOnTestPath) {
+  const $testPaths = [
+    '/resources/ebooks/the-definitive-guide-to-onboarding2',
+  ];
+  const $isOnTestPath = $testPaths.includes(window.location.pathname);
+
+  if ($isOnTestPath) {
 
     /* Adobe Target Prehiding Snippet */
     ;(function (win, doc, style, timeout) {
@@ -1371,7 +1371,7 @@ async function loadMartech() {
         removeStyle(getParent(), STYLE_ID);
       }, timeout);
     }(window, document, "main {opacity: 0 !important}", 2000));
-  //}
+  }
   /* Move Adobe Tags here from delayed.js if Adobe Target is added and enabled */
 }
 
