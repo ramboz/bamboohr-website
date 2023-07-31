@@ -810,6 +810,7 @@ header.header-eyelash {
     margin: 0 5px;
     box-sizing: unset;
     width: auto;
+    white-space: nowrap;
   }
 
   header .nav-buttons .button.small {

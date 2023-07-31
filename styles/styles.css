@@ -114,7 +114,6 @@ a.button:any-link {
   color: var(--color-white);
   background-color: var(--theme-base);
   margin: 16px 0;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;

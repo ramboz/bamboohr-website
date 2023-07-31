@@ -242,7 +242,7 @@ main .callout .callout-card a.button {
 }
 
 @media (min-width: 900px) {
-  .blog-post main .callout .callout-card .button-container {
+  .blog-post main .callout .callout-card .callout-text-only .button-container {
     padding-right: 150px;
   }
 }
