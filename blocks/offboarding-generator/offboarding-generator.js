@@ -169,8 +169,13 @@ function createInput(id, type, label, placeholder, value, tooltip, options, data
 
 // Content Selection Template
 function templateSelection(el, forms) {
-  const selectHtml = createSelect('template-options', 'Choose your template', forms, 'Select template tooltip');
-  const selectionHtml = `<div>${selectHtml}<button data-step="0" data-next class="button button--teal" id="select-template">Get started</button></div>`;
+  let selectionHtml = null;
+  if (forms.length === 1) {
+    selectionHtml = `<div><button data-step="0" data-next class="button button--teal" id="select-template">Get started</button></div>`;
+  } else {
+    const selectHtml = createSelect('template-options', 'Choose your template', forms, 'Select template tooltip');
+    selectionHtml = `<div>${selectHtml}<button data-step="0" data-next class="button button--teal" id="select-template">Get started</button></div>`;
+  }
 
   return selectionHtml;
 }
@@ -648,7 +653,7 @@ export default async function decorate(block) {
   paragraphs.forEach( item => {
     switch(item.innerText) {
       case '[generator-template-selection]':
-        if (formsArr.length > 1) item.innerHTML = templateSelection(item, formsArr);
+        item.innerHTML = templateSelection(item, formsArr);
         break;
       case '[generator-template-population]':
         item.innerHTML = templateFormWrapper(block);
