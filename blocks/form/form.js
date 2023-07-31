@@ -728,11 +728,39 @@ function firstFieldTracking(formEl) {
   analyticsTrackFormStart(formEl);
 }
 
+function addUtmParametersFromSessionStorage() {
+  const inputs = document.querySelectorAll('input');
+  const inputNames = {
+	"UTM_Source_Capture__c": sessionStorage.getItem("utm_source"),
+	"UTM_Medium_Capture__c": sessionStorage.getItem("utm_medium"),
+	"UTM_Campaign_Capture__c": sessionStorage.getItem("utm_campaign"),
+	"UTM_Content_Capture__c": sessionStorage.getItem("utm_content"),
+	"UTM_Term_Capture__c": sessionStorage.getItem("utm_term"),
+	"GCLID__c": sessionStorage.getItem("gclid"),
+	"Microsoft_Click_ID__c": sessionStorage.getItem("msclkid"),
+	"UTM_Landing_Page_Capture__c": sessionStorage.getItem("landing page"),
+	"sessionReferrerCapture": sessionStorage.getItem("referrer"),
+	"UTM_Partner_Vendor_Capture__c": sessionStorage.getItem("bhr_pvid"),
+	"UTM_Team_Capture__c": sessionStorage.getItem("bhr_team")
+  }
+
+  inputs.forEach((input) => {
+	const { name } = input;
+	// eslint-disable-next-line no-prototype-builtins
+	if (inputNames.hasOwnProperty(name) && !input.value) {
+	  input.value = inputNames[name];
+	}
+  });
+}
+
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
     window.MktoForms2.whenReady((form) => {
+
+	  addUtmParametersFromSessionStorage();	  
+	  
       if (form.getId().toString() === formId) {
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
