@@ -116,13 +116,13 @@ function loadStyle(location, css) {
 
 function loadSalesforceChatScript() {
   const chatTestPaths = [
-    // '/',
-    // '/a3/',
-    // '/a4/',
-    // '/demo',
-    // '/demo/b',
-    // '/demo/c',
-    // '/pricing/',
+    '/',
+    '/a3/',
+    '/a4/',
+    '/demo',
+    '/demo/b',
+    '/demo/c',
+    '/pricing/',
     '/drafts/sclayton/chat-test',
     '/drafts/sclayton/chat-test-benefits-administration',
   ];
@@ -130,8 +130,8 @@ function loadSalesforceChatScript() {
   const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
   if (!isOnChatTestPath) return;
 
-  // const noticeBehavior = getCookie("notice_behavior");
-  const isGDPR = true; // noticeBehavior === "expressed|eu" || noticeBehavior === "implied|eu";
+  const noticeBehavior = getCookie("notice_behavior");
+  const isGDPR = noticeBehavior === "expressed|eu" || noticeBehavior === "implied|eu";
   const chatScriptURL = isGDPR ? 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1690313005860/assets/js/bootstrap.min.js'
     : 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944/assets/js/bootstrap.min.js';
 
@@ -392,8 +392,6 @@ async function setConsentBasedOnTrustArc() {
 // PROXIED URL: loadScript('footer',
 // 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
 loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
-
-loadScript('header', 'https://www.googleoptimize.com/optimize.js?id=OPT-PXL7MPD', null);
 
 loadTrustArcFormScript();
 
