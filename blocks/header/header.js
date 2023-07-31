@@ -142,6 +142,17 @@ export function showSlideDown(text, type = 'success', dismissTimer = 3500) {
   }, dismissTimer);
 }
 
+function addEyelashBanner(headerEl) {
+  const eyelashBanner = document.createElement('div');
+  eyelashBanner.classList.add('eyelash-banner');
+  const eyelashImplementationTypeVal = getMetadata('eyelash-implementation-type');
+  const eyelashImplementationType = eyelashImplementationTypeVal ? eyelashImplementationTypeVal.trim() : '';
+  const eyelashLinkVal = getMetadata('eyelash-link');
+  const eyelashLink = eyelashLinkVal ? eyelashLinkVal.trim() : 'https://www.bamboohr.com/pl/promo-bhr15-anniversary?utm_source=bhrpublic&utm_medium=banner&utm_campaign=PROMO+BHR15';
+  eyelashBanner.innerHTML = `<img src="${window.hlx.codeBasePath}/icons/pudgy-birthday.svg"><p><span><span>IT’S OUR BIRTHDAY!</span> Save 15% on ${eyelashImplementationType} implementation</span> <a href="${eyelashLink}">Claim Your Discount</a></p>`;
+  headerEl.parentNode.insertBefore(eyelashBanner, headerEl.nextSibling);
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -256,6 +267,11 @@ export default async function decorate(block) {
         });
 
         addSearch(buttonsContainer);
+      }
+
+      const headerEl = document.querySelector('header');
+      if (navPath === '/nav' && !headerEl.nextElementSibling.classList.contains('eyelash-banner')) {
+        addEyelashBanner(headerEl);
       }
     }
   });

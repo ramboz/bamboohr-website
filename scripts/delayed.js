@@ -23,15 +23,28 @@ import {
 
 sampleRUM('cwv');
 
-function initEmbeddedMessaging() {
+function getCookie(name) {
+  const cookieArr = document.cookie.split(";");
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < cookieArr.length; i++) {
+    const cookiePair = cookieArr[i].split("=");
+    if (name === cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  return null;
+}
+
+function initEmbeddedMessaging(isGDPR) {
   try {
     // eslint-disable-next-line
     embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
     // eslint-disable-next-line
     embeddedservice_bootstrap.init(
       '00D50000000JMqp',
-      'BambooHR_Sales_Messaging',
-      'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944',
+      isGDPR ? 'BambooHR_Sales_Messaging_GDPR' : 'BambooHR_Sales_Messaging',
+      isGDPR ? 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1690313005860' : 
+        'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944',
       {
         scrt2URL: 'https://bamboohr.my.salesforce-scrt.com'
       }
@@ -106,6 +119,10 @@ function loadSalesforceChatScript() {
     // '/',
     // '/a3/',
     // '/a4/',
+    // '/demo',
+    // '/demo/b',
+    // '/demo/c',
+    // '/pricing/',
     '/drafts/sclayton/chat-test',
     '/drafts/sclayton/chat-test-benefits-administration',
   ];
@@ -113,8 +130,13 @@ function loadSalesforceChatScript() {
   const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
   if (!isOnChatTestPath) return;
 
-  loadScript('footer', 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944/assets/js/bootstrap.min.js', async () => {
-    initEmbeddedMessaging();
+  // const noticeBehavior = getCookie("notice_behavior");
+  const isGDPR = true; // noticeBehavior === "expressed|eu" || noticeBehavior === "implied|eu";
+  const chatScriptURL = isGDPR ? 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1690313005860/assets/js/bootstrap.min.js'
+    : 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944/assets/js/bootstrap.min.js';
+
+  loadScript('footer', chatScriptURL, async () => {
+    initEmbeddedMessaging(isGDPR);
   }, 'text/javascript');
 }
 
@@ -329,18 +351,6 @@ function updateExternalLinks() {
       console.warn(`Invalid link: ${a.href}`);
     }
   });
-}
-
-function getCookie(name) {
-  const cookieArr = document.cookie.split(";");
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < cookieArr.length; i++) {
-    const cookiePair = cookieArr[i].split("=");
-    if (name === cookiePair[0].trim()) {
-      return decodeURIComponent(cookiePair[1]);
-    }
-  }
-  return null;
 }
 
 function isTrustArcAdvertisingCookieAllowed() {
