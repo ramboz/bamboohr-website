@@ -22,40 +22,40 @@ main .author-description a:any-link {
     color: var(--category-color);
 }
 
-.blog-redesign main .author {
+.blog-post main .author {
     padding-top: 28px;
     gap: 32px;
 }
 
-.blog-redesign main .author img {
+.blog-post main .author img {
     width: 135px;
     height: 135px;
     padding: 4px;
     border-radius: 50%;
 }
 
-.blog-redesign main .author-description {
+.blog-post main .author-description {
     display: flex;
     flex-direction: column;
     gap: 9px;
 }
 
-.blog-redesign main .author-description > p {
+.blog-post main .author-description > p {
     margin: 0;
     font-size: 16px;
     font-weight: 400;
 }
 
-.blog-redesign main .author-description > p.author-name {
+.blog-post main .author-description > p.author-name {
     font-weight: 700;
     font-size: 18px;
 }
 
-.blog-redesign main .author-description a:any-link {
+.blog-post main .author-description a:any-link {
     color: var(--category-color);
 }
 
-.blog-redesign main .learn-more {
+.blog-post main .learn-more {
     align-self: flex-end;
     font-weight: 500;
     font-size: 16px;
@@ -76,11 +76,11 @@ main .author-description a:any-link {
         padding-top: 25px;
     }
 
-    .blog-redesign main .author-description {
+    .blog-post main .author-description {
         padding-top: 0;
     }
 
-    .blog-redesign main .author-image {
+    .blog-post main .author-image {
         width: 135px;
         flex: 0 0 135px;
     }

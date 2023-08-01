@@ -94,6 +94,7 @@ function enhanceAnalyticsEvent(options) {
 // eslint-disable-next-line no-unused-vars
 function getAlloyConfiguration(document) {
   return {
+	targetMigrationEnabled: true,
     // enable while debugging
     debugEnabled: document.location.hostname.startsWith('localhost'),
     // disable when clicks are also tracked via sendEvent with additional details
@@ -142,6 +143,12 @@ export async function analyticsSetConsent(approved) {
   });
 }
 
+export async function getTaxonomy() { 
+  return {
+	topic: getMetadata('topic')
+  };  
+}
+
 export async function getBlogMetaFromInstrumentation() {
   
   if(window.location.href.indexOf("/blog/") < 0){
@@ -182,7 +189,7 @@ export function getCampaignString(){
  * @param blogPageDetails
  * @returns {Promise<*>}
  */
-export async function analyticsTrackPageViews(document, additionalXdmFields = {}, blogPageDetails = {}) {
+export async function analyticsTrackPageViews(document, additionalXdmFields = {}, blogPageDetails = {}, taxonomy = {}) {
   // eslint-disable-next-line no-undef
   return alloy('sendEvent', {
     renderDecisions: true,
@@ -201,6 +208,7 @@ export async function analyticsTrackPageViews(document, additionalXdmFields = {}
         },
       },
       [CUSTOM_SCHEMA_NAMESPACE]: {
+		taxonomy,
 		blogPageDetails,
         ...additionalXdmFields,
       },
@@ -222,7 +230,8 @@ export async function setupAnalyticsTrackingWithAlloy(document) {
   // Custom logic can be inserted here in order to support early tracking before alloy library
   // loads, for e.g. for page views
   const blogMeta = await getBlogMetaFromInstrumentation();
-  const pageView = analyticsTrackPageViews(document,{}, blogMeta); // track page view early
+  const taxonomy = await getTaxonomy();
+  const pageView = analyticsTrackPageViews(document,{}, blogMeta, taxonomy); // track page view early
 
   await import('./alloy.min.js');
   await configure;

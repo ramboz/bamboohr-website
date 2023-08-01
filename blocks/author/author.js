@@ -12,11 +12,11 @@ export default async function decorate(block) {
   const title = dom.querySelector('p');
   if (title) title.remove();
 
-  const isTestVariation = document.body.classList.contains('blog-redesign');
+  const isBlogPost = document.body.classList.contains('blog-post');
 
   const picture = createOptimizedPicture(img.src, false, [{ width: '200' }]);
 
-  if (isTestVariation) {
+  if (isBlogPost) {
     const description = dom.querySelector('p');
     if (description) description.remove();
 
