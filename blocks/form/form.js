@@ -760,7 +760,7 @@ export function loadFormAndChilipiper(params, successCallback = null) {
 
     window.MktoForms2.whenReady((form) => {
 
-	  addUtmParametersFromSessionStorage();	  
+	    addUtmParametersFromSessionStorage();	  
 	  
       if (form.getId().toString() === formId) {
         mktoFormReset(form);

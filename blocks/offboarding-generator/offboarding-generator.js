@@ -224,6 +224,65 @@ function hideCopySuccess(block) {
   }
 }
 
+// Next Step
+function nextStep(el, block, setActiveStep = true, step = null) {
+  let current = parseInt(step || el.target.dataset.step, 10);
+  document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
+
+  const isStep1Gate = block.classList.contains('step-1-gate');
+  if (setActiveStep) {
+    stepIndicator(isStep1Gate ? current - 1 : current, block);
+  }
+
+  current += 1;
+
+  document.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
+
+  if (isStep1Gate) {
+    const containerDiv = block.parentElement.parentElement;
+    if (current > 1) {
+      const progressBar = block.querySelector('.progress-bar');
+      progressBar.classList.add('active');
+      containerDiv.classList.remove('offboarding-generator-container--overlay');
+    } else if (current === 1) {
+      containerDiv.classList.add('offboarding-generator-container--overlay');
+    }
+  }
+
+  if (current > farthestStep) {
+		farthestStep = current;
+    const form = block.querySelector('#template-form');
+		widgetAnalyticsTrack(form, 'LastStep', farthestStep, block);
+	}
+
+  scrollToTop()
+}
+
+// Previous Step
+function prevStep(el, block) {
+  let current = parseInt(el.target.dataset.step, 10);
+  document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
+
+  if (block) {
+    stepIndicator(0, block);
+  }
+
+  const isStep1Gate = block.classList.contains('step-1-gate');
+  if (isStep1Gate && current === 3) hideCopySuccess(block);
+
+  if (isStep1Gate && current === 2) current = 0;
+  else current -= 1;
+
+  block.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
+
+  if (current === 0) {
+    block.querySelector('.progress-bar').classList.remove('active');
+    resetForm(block);
+  }
+
+  scrollToTop();
+}
+
 // Tone Selection Shortcode Template
 function templateTone(el, block) {
   const labelArr = ['Formal', 'Neutral', 'Friendly'];
@@ -267,12 +326,12 @@ async function leadGenTemplate(el, block) {
     formContainer.append(form);
     el.append(formContainer);
     loadFormAndChilipiper(formParams, () => {
-      const form = block.querySelector('#template-form');
-      const step = el.parentElement.parentElement.dataset.step;
+      // const templateForm = block.querySelector('#template-form');
+      const { step } = el.parentElement.parentElement.dataset;
 
       nextStep(el, block, true, step);
       // copyToClipboard(block);
-      // widgetAnalyticsTrack(form, 'Submission', 0, block);
+      // widgetAnalyticsTrack(templateForm, 'Submission', 0, block);
     });
 
     const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -358,65 +417,6 @@ function removeHTMLTags(str) {
   const withoutTags = withLineBreaks.replace(/<[^>]+>/g, '');
   
   return withoutTags;
-}
-
-// Next Step
-function nextStep(el, block, setActiveStep = true, step = null) {
-  let current = parseInt(step || el.target.dataset.step, 10);
-  document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
-
-  const isStep1Gate = block.classList.contains('step-1-gate');
-  if (setActiveStep) {
-    stepIndicator(isStep1Gate ? current - 1 : current, block);
-  }
-
-  current += 1;
-
-  document.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
-
-  if (isStep1Gate) {
-    const containerDiv = block.parentElement.parentElement;
-    if (current > 1) {
-      const progressBar = block.querySelector('.progress-bar');
-      progressBar.classList.add('active');
-      containerDiv.classList.remove('offboarding-generator-container--overlay');
-    } else if (current === 1) {
-      containerDiv.classList.add('offboarding-generator-container--overlay');
-    }
-  }
-
-  if (current > farthestStep) {
-		farthestStep = current;
-    const form = block.querySelector('#template-form');
-		widgetAnalyticsTrack(form, 'LastStep', farthestStep, block);
-	}
-
-  scrollToTop()
-}
-
-// Previous Step
-function prevStep(el, block) {
-  let current = parseInt(el.target.dataset.step, 10);
-  document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
-
-  if (block) {
-    stepIndicator(0, block);
-  }
-
-  const isStep1Gate = block.classList.contains('step-1-gate');
-  if (isStep1Gate && current === 3) hideCopySuccess(block);
-
-  if (isStep1Gate && current === 2) current = 0;
-  else current -= 1;
-
-  block.querySelector(`[data-step="${current}"]`).classList.add('offboarding-generator-step--active');
-
-  if (current === 0) {
-    block.querySelector('.progress-bar').classList.remove('active');
-    resetForm(block);
-  }
-
-  scrollToTop();
 }
 
 function templatePreview(values, block) {
