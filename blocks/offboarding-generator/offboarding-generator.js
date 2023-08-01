@@ -265,6 +265,14 @@ function resetForm(block) {
 
   forms.forEach(form => {
     form.reset();
+    if (form.classList.contains('mktoForm')) {
+      const formSubmitBtn = form.querySelector('.mktoButton');
+      if (formSubmitBtn?.getAttribute('disabled')) {
+        const formSubmitText = getMetadata('form-submit-text');
+        if (formSubmitText) formSubmitBtn.textContent = formSubmitText;
+        formSubmitBtn.removeAttribute('disabled');
+      }
+    }
   });
 
   stepsArr.forEach(element => {
