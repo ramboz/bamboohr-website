@@ -514,8 +514,10 @@ function templateSelectHandler(event, block) {
   selectedTemplate = templateOptions?.value || '';
   const templatePreviewDom = block.querySelector('#template-preview');
   const formTemplate = block.querySelector('#template-form');
-  if (formsArr.length === 1) [selectedForm] = formsArr;
-  else selectedForm = formsArr.find(item => item.formValue === selectedTemplate);
+  if (formsArr.length === 1) {
+    [selectedForm] = formsArr;
+    selectedTemplate = selectedForm.formValue;
+  } else selectedForm = formsArr.find(item => item.formValue === selectedTemplate);
   emailFormat = getTemplatesTone(selectedForm);
 
   formTemplate.innerHTML = generateInputs(selectedForm);
