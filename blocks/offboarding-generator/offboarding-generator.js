@@ -224,6 +224,60 @@ function hideCopySuccess(block) {
   }
 }
 
+function stepIndicator(index, block) {
+  const stepsArr = block.querySelectorAll(".step");
+  
+  stepsArr.forEach(item => {
+		item.classList.remove('step-active');
+	});
+
+  if (index < stepsArr.length) stepsArr[index].classList.add('step-active');
+}
+
+function scrollToTop() {
+  const element = document.getElementById('offboarding-generator');
+  const elementRect = element.getBoundingClientRect();
+  const nav = document.querySelector('.header-wrapper .nav');
+  const navHeight = nav.getBoundingClientRect().height;
+  // Used to fix offsetTop for Iphone
+  const topPosition = elementRect.top + window.scrollY;
+
+  const position = topPosition - navHeight;
+
+  window.scrollTo({
+    left: 0,
+    top: position,
+    behavior: 'smooth'
+  });
+}
+
+function resetForm(block) {
+  const stepsArr = block.querySelectorAll('.offboarding-generator-step');
+  const forms = block.querySelectorAll('form');
+  const radioBtns = block.querySelectorAll('.template-selector');
+  const blockContainer = block.parentNode.parentElement;
+
+  radioBtns.forEach(btn => {
+    btn.classList.remove('checked');
+  });
+
+  radioBtns[0].classList.add('checked');
+
+  forms.forEach(form => {
+    form.reset();
+  });
+
+  stepsArr.forEach(element => {
+    element.classList.remove('offboarding-generator-step--active');
+  });
+
+  block.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
+  blockContainer.classList.remove('offboarding-generator-container--overlay');
+
+  farthestStep = 0;
+  copiedToClip = false;
+}
+
 // Next Step
 function nextStep(el, block, setActiveStep = true, step = null) {
   let current = parseInt(step || el.target.dataset.step, 10);
@@ -353,60 +407,6 @@ function downloadConfirmed() {
   const output = `<div><a href="https://bamboohr.com/blog" class="button button--teal">Go to blog</a><button data-close data-step="4" class="button button--outline button--teal">Close and return to page</button></div>`;
 
   return output;
-}
-
-function stepIndicator(index, block) {
-  const stepsArr = block.querySelectorAll(".step");
-  
-  stepsArr.forEach(item => {
-		item.classList.remove('step-active');
-	});
-
-  if (index < stepsArr.length) stepsArr[index].classList.add('step-active');
-}
-
-function scrollToTop() {
-  const element = document.getElementById('offboarding-generator');
-  const elementRect = element.getBoundingClientRect();
-  const nav = document.querySelector('.header-wrapper .nav');
-  const navHeight = nav.getBoundingClientRect().height;
-  // Used to fix offsetTop for Iphone
-  const topPosition = elementRect.top + window.scrollY;
-
-  const position = topPosition - navHeight;
-
-  window.scrollTo({
-    left: 0,
-    top: position,
-    behavior: 'smooth'
-  });
-}
-
-function resetForm(block) {
-  const stepsArr = block.querySelectorAll('.offboarding-generator-step');
-  const forms = block.querySelectorAll('form');
-  const radioBtns = block.querySelectorAll('.template-selector');
-  const blockContainer = block.parentNode.parentElement;
-
-  radioBtns.forEach(btn => {
-    btn.classList.remove('checked');
-  });
-
-  radioBtns[0].classList.add('checked');
-
-  forms.forEach(form => {
-    form.reset();
-  });
-
-  stepsArr.forEach(element => {
-    element.classList.remove('offboarding-generator-step--active');
-  });
-
-  block.querySelector('[data-step="0"]').classList.add('offboarding-generator-step--active');   
-  blockContainer.classList.remove('offboarding-generator-container--overlay');
-
-  farthestStep = 0;
-  copiedToClip = false;
 }
 
 function removeHTMLTags(str) {
