@@ -1,4 +1,4 @@
-import { createElem, loadCSS } from "../../scripts/scripts.js";
+import { createElem, getMetadata, loadCSS } from "../../scripts/scripts.js";
 import { widgetAnalyticsTrack } from "../onboarding-calculator/onboarding-calculator.js";
 import { loadFormAndChilipiper, readMarketoParams } from "../form/form.js";
 
