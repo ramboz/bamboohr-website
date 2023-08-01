@@ -510,7 +510,8 @@ function radioBtnHandler(el) {
 }
 
 function templateSelectHandler(event, block) {
-  selectedTemplate = block.querySelector('#template-options').value;
+  const templateOptions = block.querySelector('#template-options');
+  selectedTemplate = templateOptions?.value || '';
   const templatePreviewDom = block.querySelector('#template-preview');
   const formTemplate = block.querySelector('#template-form');
   if (formsArr.length === 1) [selectedForm] = formsArr;
