@@ -388,12 +388,8 @@ async function leadGenTemplate(el, block) {
     formContainer.append(form);
     el.append(formContainer);
     loadFormAndChilipiper(formParams, () => {
-      // const templateForm = block.querySelector('#template-form');
       const { step } = el.parentElement.parentElement.dataset;
-
       nextStep(el, block, true, step);
-      // copyToClipboard(block);
-      // widgetAnalyticsTrack(templateForm, 'Submission', 0, block);
     });
 
     const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -676,7 +672,6 @@ export default async function decorate(block) {
       case '[generator-lead-gen]':
         item.innerHTML = '';
         if (!leadGenItem) leadGenItem = item;
-        // item.append(leadGenTemplate(item));
         break;
       case '[generator-download-confirmed]':
         item.innerHTML = downloadConfirmed();
@@ -726,7 +721,7 @@ export default async function decorate(block) {
   if (copyToClip) {
     copyToClip.addEventListener('click', () => {
       copyToClipboard(block);
-      // nextStep(e, block, false);
+      
       if (!copiedToClip) {
         const form = block.querySelector('#template-form');
         widgetAnalyticsTrack(form, 'Submission', 0, block);
