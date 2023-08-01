@@ -211,7 +211,7 @@ main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::
 main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar-thumb:hover {
   background-color: #E7E7E7;
   width: 8px;
-  border: 16px solid rgba(0 0 0 0%);
+  border: 16px solid rgba(0 0 0 / 0%);
   background-clip: padding-box;
   border-radius: 88px;
 }
@@ -252,7 +252,7 @@ main .step-1-gate .offboarding-generator-step[data-step="1"].offboarding-generat
 
 /* Typography */
 main .offboarding-generator *:not(h2), main {
-  font-family: 'Red Hat Display', sans-serif;
+  font-family: var(--body-font-family);
   font-style: normal;
   color: var(--theme-shade15);
 }
