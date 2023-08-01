@@ -716,12 +716,11 @@ export default async function decorate(block) {
 
   const copyToClip = block.querySelector('#copy-to-clip');
   if (copyToClip) {
-    copyToClip.addEventListener('click', (e) => {
-      const form = e.target.parentElement;
-      
+    copyToClip.addEventListener('click', () => {
       copyToClipboard(block);
       // nextStep(e, block, false);
       if (!copiedToClip) {
+        const form = block.querySelector('#template-form');
         widgetAnalyticsTrack(form, 'Submission', 0, block);
         copiedToClip = true;
       }
