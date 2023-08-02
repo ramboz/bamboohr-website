@@ -1,0 +1,670 @@
+/* stylelint-disable selector-class-pattern */
+
+/* Container */
+main .offboarding-generator-container {
+  margin: 4rem auto;
+}
+
+/* Container Overlay Variation */
+main .offboarding-generator-container.offboarding-generator-container--overlay {
+  /* position: fixed; */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+main .offboarding-generator-container.offboarding-generator-container--overlay::before {
+  content: '';
+  background-color: var(--theme-shade15);
+  opacity: 0.9;
+
+  /* position: absolute; */
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Wrapper */
+main .offboarding-generator {
+  width: 100%;
+  max-width: 50rem;
+
+  /* min-height: 40rem; 33.75rem */
+  margin: 5rem auto;
+  background-color: var(--theme-tint15);
+  box-shadow: 0 4px 12px 4px rgba(134 134 134 / 14%);
+  border-radius: 0.5rem;
+  position: relative;
+  z-index: 2;
+
+  /* overflow: hidden; */
+}
+
+/* Wrapper Overlay Variation */
+main .offboarding-generator-container.offboarding-generator-container--overlay .offboarding-generator {
+  max-width: 62.5rem;
+  margin: 0 auto;
+}
+
+/* Navigation */
+main .offboarding-generator-step nav {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: start;
+  width: 100%;
+  margin: 1rem 0 0;
+  gap: 14px;
+}
+
+main .offboarding-generator-step nav .button {
+  width: 100%;
+}
+
+/* Steps */
+main .offboarding-generator-step {
+  display: none;
+  width: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  flex-wrap: wrap;
+}
+
+main .offboarding-generator-step--active {
+  display: flex;
+}
+
+/* Overlay Steps */
+main .offboarding-generator-step--overlay.offboarding-generator-step--active {
+  display: flex;
+}
+
+main .offboarding-generator-step--overlay > div {
+  /* flex: 0 0 40%; */
+  margin: 32px 25px;
+  
+  /* z-index: 3; */
+}
+
+main .offboarding-generator-step--overlay::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 80%;
+  height: 40%;
+  background: url('./offboarding-generator-2.png') no-repeat;
+  background-position: 0 bottom;
+  background-size: 100%;
+  z-index: 2;
+}
+
+main .offboarding-generator-step--overlay svg {
+  height: auto;
+  transform: translate(80px, 85px);
+  position: relative;
+}
+
+main .offboarding-generator-step--overlay .button {
+  width: 100%;
+}
+
+/* Step 1 Specific */
+main .offboarding-generator-step[data-step="0"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: url('./offboarding-generator-1.png') no-repeat;
+  background-position: 1.5rem bottom;
+  background-size: 270px;
+  z-index: 2;
+}
+
+main .offboarding-generator-step[data-step="0"] > div {
+  width: 100%;
+  margin: 32px 25px;
+  z-index: 3;
+}
+
+main .offboarding-generator-step[data-step="0"] svg {
+  width: 70%;
+  z-index: 1;
+}
+
+/* Step 2 Specific */
+main .offboarding-generator-step[data-step="1"] > div {
+  margin: 1.5rem;
+}
+
+main .offboarding-generator-step[data-step="1"] .form-wrap,
+main .step-1-gate .offboarding-generator-step[data-step="2"] .form-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+main .offboarding-generator-step[data-step="1"] .form-wrap > div {
+  flex: 0 0 100%;
+}
+
+/* Step 2 Specific */
+main .offboarding-generator-step[data-step="2"] > div,
+main .step-1-gate .offboarding-generator-step[data-step="3"] > div {
+  margin: 1.5rem;
+}
+
+main .offboarding-generator-step[data-step="2"] .tone-selection,
+main .step-1-gate .offboarding-generator-step[data-step="3"] .tone-selection {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview {
+  margin: 1.5rem 0 1.75rem;
+  max-height: 220px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-user-select: none;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview span,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview span {
+  color: var(--theme-shade5);
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar {
+  width: 40px;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-track,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar-track {
+  background-color: var(--color-white);
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb,
+main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb:hover,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar-thumb,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar-thumb:hover {
+  background-color: #E7E7E7;
+  width: 8px;
+  border: 16px solid rgba(0 0 0 / 0%);
+  background-clip: padding-box;
+  border-radius: 88px;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview p,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview p {
+  max-width: 95%;
+}
+
+main .offboarding-generator-step[data-step="2"] #template-preview p > span,
+main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview p > span {
+  color: var(--theme-shade5);
+}
+
+/* Step 3 Specific */
+main .offboarding-generator-step[data-step="3"] .form-wrap,
+main .step-1-gate .offboarding-generator-step[data-step="1"] .form-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+main .offboarding-generator-step[data-step="3"] .form-wrap > div,
+main .step-1-gate .offboarding-generator-step[data-step="1"] .form-wrap > div {
+  flex: 0 0 100%;
+}
+
+main .offboarding-generator-step[data-step="3"] svg,
+main .step-1-gate .offboarding-generator-step[data-step="1"] svg {
+  display: none;
+}
+
+main .offboarding-generator-step[data-step="3"].offboarding-generator-step--overlay::before,
+main .step-1-gate .offboarding-generator-step[data-step="1"].offboarding-generator-step--overlay::before {
+  content: none;
+}
+
+/* Typography */
+main .offboarding-generator *:not(h2), main {
+  font-family: var(--body-font-family);
+  font-style: normal;
+  color: var(--theme-shade15);
+}
+
+main .offboarding-generator h2 {
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 36px;
+  color: var(--theme-shade15);
+  margin: 0 0 0.5rem;
+}
+
+main .offboarding-generator p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  margin: 0 0 1rem;
+  
+}
+
+main .offboarding-generator div p:last-of-type {
+  margin-bottom: 0 !important;
+}
+
+main .offboarding-generator strong {
+  font-weight: 500;
+}
+
+/* Button */
+main .offboarding-generator .button {
+  appearance: none;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem !important;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+  background-color: var(--theme-shade5);
+  color: var(--color-white);
+  display: inline-block;
+}
+
+/* Button Hover State */
+main .offboarding-generator .button:hover {
+  background-color: var(--theme-shade10);
+}
+
+/* Outline Button */
+main .offboarding-generator .button.button--outline {
+  color: var(--theme-shade5);
+  border: 1px solid var(--theme-shade5);
+  background: transparent;
+}
+
+/* Outline Button Hover State */
+main .offboarding-generator .button.button--outline:hover {
+  background-color: var(--theme-shade5);
+  color: var(--color-white);
+}
+
+/* Teal Button */
+main .offboarding-generator-step .button.button--teal {
+  width: 100%;
+  background-color: var(--theme-shade5);
+  color: var(--color-white);
+}
+
+/* Teal Button Hover State */
+main .offboarding-generator .button.button--teal:hover {
+  background-color: var(--theme-shade10);
+}
+
+/* Teal Outline Button */
+main .offboarding-generator .button.button--outline.button--teal {
+  color: var(--theme-shade5);
+  border: 1px solid var(--theme-shade5);
+  background: transparent;
+}
+
+/* Teal Outline Button Hover State */
+main .offboarding-generator .button.button--outline.button--teal:hover {
+  color: var(--color-white);
+  background-color: var(--theme-shade5);
+  filter: brightness(100%);
+}
+
+/* Form Labels */
+main .offboarding-generator label {
+  display: block;
+  font-weight: 500;
+  font-size: 14px !important;
+  line-height: 20px;
+  margin: 0 0 0.5rem;
+  width: 100%;
+}
+
+/* Select Elements */
+main .offboarding-generator select {
+  background-image: url('../../icons/select-arrow.svg');
+  background-size: 10px;
+  background-position: calc(100% - 1rem);
+  background-repeat: no-repeat;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--theme-tint10);
+  margin-bottom :1rem;
+  width: 100%;
+  display: block;
+  appearance: none;
+  transition: border-color 0.25s ease-in-out;
+  outline: none;
+  text-transform: capitalize;
+  background-color: var(--color-white);
+  text-overflow: ellipsis;
+  padding-right: 2rem;
+  white-space: nowrap;
+}
+
+/* Input Elements */
+main .offboarding-generator .field_item {
+  margin-bottom: 1rem;
+}
+
+main .offboarding-generator input {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--theme-tint10);
+  width: 100%;
+  display: block;
+  appearance: none;
+  transition: border-color 0.25s ease-in-out;
+  outline: none;
+  background-color: var(--color-white);
+}
+
+main .offboarding-generator input[type="date"] {
+  appearance: auto;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-appearance: none;
+  height: 50px;
+}
+
+main.offboarding-generator input::placeholder {
+  color: var(--theme-tint5);
+}
+
+/* Select / Input Focus State */
+main .offboarding-generator select:focus-visible,
+main .offboarding-generator input:focus-visible {
+  border-color: var(--theme-shade5);
+  transition: border-color 0.25s ease-in-out;
+}
+
+/* Radio Elements */
+main .offboarding-generator input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  top: -99999px;
+  left: -99999px;
+
+}
+
+/* Radio Element Labels */
+main .offboarding-generator .template-selector {
+  width: 100%;
+  border: 1px solid var(--color-white);
+  background-color: var(--color-white);
+  color: var(--theme-shade15);
+  padding: 1rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Radio Element Checked State */
+main .offboarding-generator .template-selector.checked {
+  border-color: var(--theme-shade15);
+}
+
+/* ToolTip Indicator */
+main .offboarding-generator .tooltip {
+  position: relative;
+  display: inline-block;
+  margin-left: 0.25rem;
+  width: 14px;
+  height: 14px;
+  background-color: var(--theme-shade5);
+  cursor: help;
+  border-radius: 50%;
+  top: 2px;
+}
+
+/* Tooltip Hidden Text (for Screen Readers - required?) */
+main .offboarding-generator .tooltip > span {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Tooltip 'i' */
+main .offboarding-generator .tooltip::before,
+main .offboarding-generator .tooltip::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  background: white;
+}
+
+main .offboarding-generator .tooltip::before {
+  height: 2px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-220%);
+}
+
+main .offboarding-generator .tooltip::after {
+  top: 50%;
+  left: 50%;
+  height: 5px;
+  transform: translate(-50%,-15%);
+  width: 2px;
+}
+
+/* Tooltip Text */
+main .offboarding-generator .tooltip__text {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+  bottom: 1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--theme-shade5);
+  color: var(--color-white);
+  border-radius: 0.5rem;
+  width: 10rem;
+  padding: 0.25rem;
+  text-align: center;
+  font-size: 0.75rem;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Show Tooltip on indicator hover */
+main .offboarding-generator .tooltip:hover .tooltip__text {
+  opacity: 1;
+  bottom: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+main .offboarding-generator .error {
+  font-size: 12px;
+  color: red;
+}
+
+main .offboarding-generator .hidden {
+	display: none;
+}
+
+main .offboarding-generator .progress-bar.active {
+  display: flex;
+}
+
+main .offboarding-generator .progress-bar {
+	display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+main .offboarding-generator .progress-bar .step {
+  height: 8px;
+  background-color: var(--theme-tint10);
+  flex: 1;
+}
+
+main .offboarding-generator .progress-bar .step.step-active {
+  background-color: var(--theme-shade5);
+}
+
+main .offboarding-generator .progress-bar .step.finish {
+  background-color: var(--theme-shade5);
+}
+
+main .offboarding-generator .overlay-close {
+  position: absolute;
+  bottom: -55px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+
+main .offboarding-generator .overlay-close .button{
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+main .offboarding-generator a {
+  color: var(--theme-shade10);
+  text-decoration: underline;
+}
+
+main .offboarding-generator .form.form-container {
+  max-width: unset;
+}
+
+main .offboarding-generator .next-and-success {
+  display: flex;
+  flex-direction: column;
+}
+
+#copy-success {
+  text-align: right;
+}
+
+.copy-success-hide {
+  display: none;
+}
+
+@media (min-width: 685px) and (max-width: 781px) {
+  main .offboarding-generator-step--overlay::before {
+    width: 67%;
+  }
+
+  main .offboarding-generator-step--overlay svg {
+    right: -45px;
+  }
+}
+
+@media screen and (min-width: 782px) {
+  main .offboarding-generator-step {
+    flex-wrap: unset;
+  }
+
+  main .offboarding-generator-step[data-step="0"] > div {
+    margin: 2.5rem;
+    flex: 0 0 43%;
+  }
+
+  main .offboarding-generator-step[data-step="0"] svg {
+    position: absolute;
+    width: 300px;
+  }
+
+  main .offboarding-generator-step[data-step="0"]::before {
+    position: relative;
+    background-size: 90%;
+  }
+
+  main .offboarding-generator-step[data-step="1"] .form-wrap > div,
+  main .step-1-gate .offboarding-generator-step[data-step="2"] .form-wrap > div {
+    flex: 0 0 48%;
+  }
+
+  main .offboarding-generator-step nav {
+    flex-flow: row nowrap;
+    justify-content: space-between;
+  }
+
+  main .offboarding-generator-step nav .button {
+    width: auto;
+  }
+
+  main .offboarding-generator-step[data-step="2"] .tone-selection,
+  main .step-1-gate .offboarding-generator-step[data-step="3"] .tone-selection {
+    flex-flow: row nowrap;
+    gap: 20px;
+  }
+
+  main .offboarding-generator-step--overlay > div {
+    flex: 0 0 40%;
+    margin: 2.5rem 0 2.5rem 2.5rem;
+  }
+
+  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(1),
+  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(2),
+  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(7),
+  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(8) {
+    flex: 0 0 48%;
+  }
+
+  main .offboarding-generator-step[data-step="3"] svg,
+  main .step-1-gate .offboarding-generator-step[data-step="1"] svg {
+    display: block;
+  }
+
+  main .offboarding-generator-step[data-step="3"].offboarding-generator-step--overlay::before,
+  main .step-1-gate .offboarding-generator-step[data-step="1"].offboarding-generator-step--overlay::before {
+    content: '';
+  }
+
+  main .offboarding-generator .overlay-close {
+    bottom: -50px;
+  }
+
+  main .offboarding-generator-step--overlay::before {
+    width: 45%;
+    height: 100%;
+  }
+
+  main .offboarding-generator-step--overlay svg {
+    width: 726px;
+    top: 104px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  main .offboarding-generator-step[data-step="0"] > div {
+    margin: 3.5rem;
+  }
+}
