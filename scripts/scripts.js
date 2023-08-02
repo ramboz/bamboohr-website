@@ -1350,24 +1350,24 @@ async function loadMartech() {
 
       function addStyle(parent, id, def) {
         if (parent) {
-          const style = doc.createElement('style');
-          style.id = id;
-          style.innerText = def;
-          parent.appendChild(style);
+          const styleElement = doc.createElement('style');
+          styleElement.id = id;
+          styleElement.innerText = def;
+          parent.appendChild(styleElement);
         }
       }
 
       function removeStyle(parent, id) {
         if (parent) {
-          const style = doc.getElementById(id);
-          if (style) {
-            parent.removeChild(style);
+          const styleElement = doc.getElementById(id);
+          if (styleElement) {
+            parent.removeChild(styleElement);
           }
         }
       }
 
       addStyle(getParent(), STYLE_ID, style);
-      setTimeout(function () {
+      setTimeout(() => {
         removeStyle(getParent(), STYLE_ID);
       }, timeout);
     }(window, document, "main {opacity: 0 !important}", 1000));
