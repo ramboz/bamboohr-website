@@ -1334,7 +1334,7 @@ export async function initConversionTracking(parent, path, ctaElement) {
  */
 async function loadMartech() {
   const $testPaths = [
-    '/resources/ebooks/the-definitive-guide-to-onboarding2',
+    '/resources/ebooks/the-definitive-guide-to-onboarding',
   ];
   const $isOnTestPath = $testPaths.includes(window.location.pathname);
 
@@ -1370,7 +1370,7 @@ async function loadMartech() {
       setTimeout(function () {
         removeStyle(getParent(), STYLE_ID);
       }, timeout);
-    }(window, document, "main {opacity: 0 !important}", 2000));
+    }(window, document, "main {opacity: 0 !important}", 1000));
   }
   /* Move Adobe Tags here from delayed.js if Adobe Target is added and enabled */
 }
