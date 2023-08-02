@@ -5,6 +5,7 @@ main .onboarding-calculator {
 	box-shadow: 0 4px 12px 4px #86868624;
 	margin: 2em auto;
 	position: relative;
+	max-width: 820px;
 }
 
 main .onboarding-calculator h2 {
@@ -599,35 +600,35 @@ main .onboarding-calculator .hidden {
 }
 
 @media screen and (min-width: 900px) {
-	main .onboarding-calculator__content-left {
+	.blog-post main .onboarding-calculator__content-left {
 		order: 1;
 		width: 100%;
 		text-align: center;
 	}
 
-	main .onboarding-calculator__content-right {
+	.blog-post  main .onboarding-calculator__content-right {
 		order: 0;
 		width: 100%;
 	}
 
-	main .onboarding-calculator .result__wrapper .calc-result {
+	.blog-post  main .onboarding-calculator .result__wrapper .calc-result {
 		font-size: 44px;
 	}
 }
 
 @media screen and (min-width: 1200px) {
-	main .onboarding-calculator__content-left {
+	.blog-post  main .onboarding-calculator__content-left {
 		order: 0;
 		width: calc(45% - 20px);
 		text-align: left;
 	}
 
-	main .onboarding-calculator__content-right {
+	.blog-post  main .onboarding-calculator__content-right {
 		order: 1;
-		width: calc(45% - 20px);
+		width: calc(55% - 20px);
 	}
 
-	main .onboarding-calculator .result__wrapper .calc-result {
+	.blog-post  main .onboarding-calculator .result__wrapper .calc-result {
 		font-size: 60px;
 	}
 }
