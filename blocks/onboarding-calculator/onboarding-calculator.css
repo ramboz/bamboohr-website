@@ -39,7 +39,7 @@ main .onboarding-calculator__content-left {
 }
 
 main .onboarding-calculator__content-left img {
-	max-width: 100%;
+	width: 100%;
 }
 
 main .onboarding-calculator__content-right {
@@ -156,8 +156,9 @@ main .onboarding-calculator .tab .field-item.invalid input[type="number"]{
 
 main .onboarding-calculator .error {
 	position: absolute;
-    font-size: 12px;
-    color: red;
+	font-size: 12px;
+	line-height: 1.2;
+	color: red;
 }
 
 main .onboarding-calculator .tab .field-item input[type="range"]{
@@ -486,7 +487,7 @@ main .onboarding-calculator .icon-dollar::before {
 	}
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 782px) {
 	main .onboarding-calculator {
 		min-height: 480px;
 	}
@@ -563,7 +564,7 @@ main .onboarding-calculator .icon-dollar::before {
 	}
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 782px) {
 	main .onboarding-calculator__content {
 		justify-content: space-between;
 		padding: 20px;
