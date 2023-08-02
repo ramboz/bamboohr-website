@@ -134,6 +134,10 @@ main .onboarding-calculator #organisation-form .tab:last-child   {
 	padding-right: 0;
 }
 
+main .onboarding-calculator #individual-form .tab {
+	align-items: flex-end;
+}
+
 main .onboarding-calculator .tab .field-item {
 	width: 100%;
 	position: relative;
