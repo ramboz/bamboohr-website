@@ -1930,6 +1930,7 @@ main .section[data-section-status='initialized'] {
 
 .blog-post main .section > div:not(.author-wrapper) {
   max-width: 100%;
+  width: 100%;
 }
 
 .blog-post main .section.article-header-container {
