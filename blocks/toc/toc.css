@@ -1,6 +1,6 @@
 main .toc {
   color: var(--color-gray-12);
-  background: none;
+  background-color: var(--color-white);
   border: 1px solid var(--color-gray-3);
   border-radius: 15px;
   padding: 20px 25px;
@@ -146,6 +146,10 @@ main .toc a:any-link {
   color: var(--color-gray-12);
   background: none;
   text-decoration: underline;
-  text-decoration-color: var(--category-color);
+  text-decoration-color: var(--theme-shade5);
   text-underline-offset: 4px;
+}
+
+.blog-post main .toc a:any-link {
+  text-decoration-color: var(--category-color);
 }

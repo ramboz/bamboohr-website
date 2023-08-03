@@ -796,25 +796,6 @@
   }
 }
 
-#base .toc {
-  padding: 40px 50px;
-  color: var(--theme-shade10);
-  background-color: var(--secondary-theme-tint15);
-}
-
-#base .toc a:any-link {
-  color: var(--color-gray-12);
-  background-color: transparent;
-}
-
-#base .toc ol {
-  margin-bottom: 0;
-}
-
-#base .toc li:not(:first-child) {
-  margin-top: 5px;
-}
-
 #base .cards > .card .button:any-link {
   padding: 0;
 }
