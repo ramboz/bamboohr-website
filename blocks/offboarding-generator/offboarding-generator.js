@@ -183,7 +183,7 @@ function templateSelection(el, forms) {
 }
 
 // Content Input Shortcode Template
-function templateFormWrapper(block) {
+function templateFormWrapper() {
   const step = gateStep === 1 ? '2' : '1';
   const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="${step}" data-prev class="button button--outline">Back</button><button type="submit" class="button" id="populate-template" data-step="${step}">Next</button></nav>`;
 
@@ -346,7 +346,7 @@ function prevStep(el, block) {
 }
 
 // Tone Selection Shortcode Template
-function templateTone(el, block) {
+function templateTone(el) {
   const labelArr = ['Formal', 'Neutral', 'Friendly'];
   const divWrapper = createElem('div', 'tone-selection');
   const isStep1Gate = gateStep === 1;
@@ -684,11 +684,11 @@ export default async function decorate(block) {
         item.innerHTML = templateSelection(item, formsArr);
         break;
       case '[generator-template-population]':
-        item.innerHTML = templateFormWrapper(block);
+        item.innerHTML = templateFormWrapper();
         break;
       case '[generator-template-tone]':
         item.innerHTML = '';
-        item.append(templateTone(item, block));
+        item.append(templateTone(item));
         break;
       case '[generator-lead-gen]':
         item.innerHTML = '';
