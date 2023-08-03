@@ -114,6 +114,21 @@ function loadStyle(location, css) {
   return $style;
 }
 
+// eslint-disable-next-line no-unused-vars
+function loadSalesforceChatScriptSandbox() {
+  const chatTestPaths = [
+    '/drafts/sclayton/chat-test',
+    '/drafts/sclayton/chat-test-benefits-administration',
+  ];
+
+  const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
+  if (!isOnChatTestPath) return;
+
+  loadScript('footer', 'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468/assets/js/bootstrap.min.js', async () => {
+    initEmbeddedMessagingSandbox();
+  }, 'text/javascript');
+}
+
 function loadSalesforceChatScript() {
   const chatTestPaths = [
     '/',
@@ -130,32 +145,18 @@ function loadSalesforceChatScript() {
   const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
   if (!isOnChatTestPath) return;
 
-  const noticeBehavior = getCookie("notice_behavior");
-  const isGDPR = noticeBehavior === "expressed|eu" || noticeBehavior === "implied|eu";
-  const chatScriptURL = isGDPR ? 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1690313005860/assets/js/bootstrap.min.js'
-    : 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944/assets/js/bootstrap.min.js';
+  if (window.location.pathname.startsWith('/drafts/sclayton/chat-test')) {
+    loadSalesforceChatScriptSandbox();
+  } else {
+    const noticeBehavior = getCookie("notice_behavior");
+    const isGDPR = noticeBehavior === "expressed|eu" || noticeBehavior === "implied|eu";
+    const chatScriptURL = isGDPR ? 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1690313005860/assets/js/bootstrap.min.js'
+      : 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944/assets/js/bootstrap.min.js';
 
-  loadScript('footer', chatScriptURL, async () => {
-    initEmbeddedMessaging(isGDPR);
-  }, 'text/javascript');
-}
-
-// eslint-disable-next-line no-unused-vars
-function loadSalesforceChatScriptSandbox() {
-  const chatTestPaths = [
-    // '/',
-    // '/a3/',
-    // '/a4/',
-    '/drafts/sclayton/chat-test',
-    '/drafts/sclayton/chat-test-benefits-administration',
-  ];
-
-  const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
-  if (!isOnChatTestPath) return;
-
-  loadScript('footer', 'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468/assets/js/bootstrap.min.js', async () => {
-    initEmbeddedMessagingSandbox();
-  }, 'text/javascript');
+    loadScript('footer', chatScriptURL, async () => {
+      initEmbeddedMessaging(isGDPR);
+    }, 'text/javascript');
+  }
 }
 
 // eslint-disable-next-line no-unused-vars
