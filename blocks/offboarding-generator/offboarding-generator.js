@@ -12,6 +12,8 @@ let emailFormat = '';
 let formValues = '';
 let farthestStep = 0;
 let copiedToClip = false;
+let copiedTooltip = '';
+let gateStep = -1;
 
 // Forms
 const resignationAcknowledgementForm = [];
@@ -182,8 +184,7 @@ function templateSelection(el, forms) {
 
 // Content Input Shortcode Template
 function templateFormWrapper(block) {
-  const isStep1Gate = block.classList.contains('step-1-gate');
-  const step = isStep1Gate ? '2' : '1';
+  const step = gateStep === 1 ? '2' : '1';
   const formHtml = `<form class="form-wrap" id="template-form"></form><nav><button data-step="${step}" data-prev class="button button--outline">Back</button><button type="submit" class="button" id="populate-template" data-step="${step}">Next</button></nav>`;
 
   return formHtml;
@@ -217,8 +218,7 @@ function generateInputs(template) {
 }
 
 function hideCopySuccess(block) {
-  const isStep1Gate = block.classList.contains('step-1-gate');
-  if (isStep1Gate) {
+  if (gateStep === 1) {
     const copySuccess = block.querySelector('#copy-success');
     if (copySuccess) copySuccess.classList.add('copy-success-hide');
   }
@@ -291,7 +291,7 @@ function nextStep(el, block, setActiveStep = true, step = null) {
   let current = parseInt(step || el.target.dataset.step, 10);
   document.querySelector(`[data-step="${current}"]`).classList.remove('offboarding-generator-step--active');
 
-  const isStep1Gate = block.classList.contains('step-1-gate');
+  const isStep1Gate = gateStep === 1;
   if (setActiveStep) {
     stepIndicator(isStep1Gate ? current - 1 : current, block);
   }
@@ -329,7 +329,7 @@ function prevStep(el, block) {
     stepIndicator(0, block);
   }
 
-  const isStep1Gate = block.classList.contains('step-1-gate');
+  const isStep1Gate = gateStep === 1;
   if (isStep1Gate && current === 3) hideCopySuccess(block);
 
   if (isStep1Gate && current === 2) current = 0;
@@ -349,8 +349,7 @@ function prevStep(el, block) {
 function templateTone(el, block) {
   const labelArr = ['Formal', 'Neutral', 'Friendly'];
   const divWrapper = createElem('div', 'tone-selection');
-  const isStep1Gate = block.classList.contains('step-1-gate');
-
+  const isStep1Gate = gateStep === 1;
   const nextBtnId = isStep1Gate ? 'copy-to-clip' : 'lead-gen';
   const nextBtnText = isStep1Gate ? 'Copy to Clipboard' : 'Generate my template';
   const step = isStep1Gate ? '3' : '2';
@@ -367,22 +366,31 @@ function templateTone(el, block) {
 }
 
 // Lead Gen Shortcode Template
-async function leadGenTemplate(el, block) {
-  const useMarketoForm = block.classList.contains('use-marketo-form');
+function leadGenTemplate(el) {
+  const form = createElem('form', 'form-wrap');
+  form.setAttribute('id', 'lead-gen');
+  const inputFields = generateInputs(leadGenForm);
+  form.insertAdjacentHTML('beforeend', inputFields);
+  const btnHTML = '<button data-step="3" class="button button--teal" id="download-confirmed">Copy to Clipboard</button>';
+  form.insertAdjacentHTML('beforeend', btnHTML);
+  el.append(form);
+
+  const closeTextHTML = '<div class="overlay-close"><button data-close class="button">No, I do not want my bespoke template CLOSE</button></div>';
+  el.insertAdjacentHTML('beforeend', closeTextHTML);
+}
+
+// Marketo Lead Gen Shortcode Template
+async function marketoLeadGenTemplate(el, block) {
   const formParams = {formUrl: null, formId: null, successUrl: null, chilipiper: null,
     floatingLabel: false };
 
-  if (useMarketoForm) {
-    await readMarketoParams(formParams);
-  }
-
-  const form = createElem('form', 'form-wrap');
-  const closeTextHTML = '<div class="overlay-close"><button data-close class="button">No, I do not want my bespoke template CLOSE</button></div>';
+  await readMarketoParams(formParams);
 
   if (formParams.formUrl?.includes('marketo')) {
     formParams.formId = new URL(formParams.formUrl).hash.substring(4);
+    const form = createElem('form', 'form-wrap');
     form.setAttribute('id', `mktoForm_${formParams.formId}`);
-
+    
     const formContainer = document.createElement('div');
     formContainer.classList.add('form', 'form-container');
     formContainer.append(form);
@@ -394,16 +402,10 @@ async function leadGenTemplate(el, block) {
 
     const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
     loadCSS(`${cssBase}/blocks/form/form.css`, null);
-  } else {
-    const inputFields = generateInputs(leadGenForm);
-    const btnHTML = '<button data-step="3" class="button button--teal" id="download-confirmed">Copy to Clipboard</button>';
-    form.setAttribute('id', 'lead-gen');
-    form.insertAdjacentHTML('beforeend', inputFields);
-    form.insertAdjacentHTML('beforeend', btnHTML);
-    el.append(form);
-  }
 
-  el.insertAdjacentHTML('beforeend', closeTextHTML);
+    const closeTextHTML = '<div class="overlay-close"><button data-close class="button">No, I do not want my bespoke template CLOSE</button></div>';
+    el.insertAdjacentHTML('beforeend', closeTextHTML);
+  } 
 }
 
 // Lead Gen Shortcode Template
@@ -530,7 +532,7 @@ function templateSelectHandler(event, block) {
   addToSessionStorage(selectedTemplate, selectedForm);
   templatePreviewDom.innerHTML = emailFormat[0].TemplateFormal;
 
-  const isStep1Gate = block.classList.contains('step-1-gate');
+  const isStep1Gate = gateStep === 1;
   if (!isStep1Gate) {
     const progressBar = block.querySelector('.progress-bar');
     progressBar.classList.add('active');
@@ -552,13 +554,15 @@ async function copyToClipboard(el) {
 
   try {
     await navigator.clipboard.writeText(text);
-    const isStep1Gate = el.classList.contains('step-1-gate');
-    if (isStep1Gate) {
+    if (gateStep === 1) {
       const copySuccess = el.querySelector('#copy-success');
       if (copySuccess) {
         const selectedTone = el.querySelector('.template-selector.checked');
 
         copySuccess.textContent = `*Copied ${selectedTone.textContent.toLowerCase()}`;
+        if (copiedTooltip) {
+          copySuccess.insertAdjacentHTML('beforeend', createTooltip(copiedTooltip));
+        }
         copySuccess.classList.remove('copy-success-hide');
       }
     }
@@ -568,24 +572,41 @@ async function copyToClipboard(el) {
   }
 }
 
+function getShortCode(section) {
+  let shortCode = '';
+  const paragraphs = section.querySelectorAll('p');
+  [...paragraphs].some(item => {
+    if (item.innerText.startsWith('[') && item.innerText.endsWith(']')) shortCode = item.innerText;
+
+    return shortCode;
+  });
+
+  return shortCode;
+}
+
 export default async function decorate(block) {
   const data = await fetchData(formUrl);
   const progressBarDiv = createElem('div', 'progress-bar');
   block.setAttribute('id', 'offboarding-generator');
-  const isStep1Gate = block.classList.contains('step-1-gate');
 
   // Add classes to generator step wrapping divs
   const {children} = block;
   for (let i = 0; i < children.length; i += 1) {
     children[i].dataset.step = i;
     children[i].classList = 'offboarding-generator-step';
+    const shortCode = getShortCode(children[i]);
     if( i === 0 ) {
-      children[i].classList = 'offboarding-generator-step offboarding-generator-step--active';
-    } else if ((isStep1Gate && i === 1) || (!isStep1Gate && i === 3) || i === 4) {
-      children[i].classList = 'offboarding-generator-step offboarding-generator-step--overlay';
-    }
-    else if ((!isStep1Gate && i === 1) || i === 2 || (isStep1Gate && i === 3)) {
-      children[i].classList = 'offboarding-generator-step tab';
+      children[i].classList = 'gen-select offboarding-generator-step offboarding-generator-step--active';
+    } else if (shortCode === '[generator-marketo-lead-gen]' ||
+               shortCode === '[generator-lead-gen]') {
+      children[i].classList = 'gen-lead-gen offboarding-generator-step offboarding-generator-step--overlay';
+      gateStep = i;
+    } else if (shortCode === '[generator-download-confirmed]') {
+      children[i].classList = 'gen-success offboarding-generator-step offboarding-generator-step--overlay';
+    } else if (shortCode === '[generator-template-population]') {
+      children[i].classList = 'gen-form offboarding-generator-step tab';
+    } else if (shortCode === '[generator-template-tone]') {
+      children[i].classList = 'gen-tone offboarding-generator-step tab';
     }
   }
 
@@ -656,8 +677,8 @@ export default async function decorate(block) {
 
   // Replace shortcodes with functionality
   const paragraphs = block.querySelectorAll('p');
-  let leadGenItem;
-  paragraphs.forEach( item => {
+  let marketoLeadGenItem;
+  paragraphs.forEach((item, index) => {
     switch(item.innerText) {
       case '[generator-template-selection]':
         item.innerHTML = templateSelection(item, formsArr);
@@ -671,10 +692,19 @@ export default async function decorate(block) {
         break;
       case '[generator-lead-gen]':
         item.innerHTML = '';
-        if (!leadGenItem) leadGenItem = item;
+        leadGenTemplate(item);
+        break;
+      case '[generator-marketo-lead-gen]':
+        item.innerHTML = '';
+        if (!marketoLeadGenItem) marketoLeadGenItem = item;
         break;
       case '[generator-download-confirmed]':
         item.innerHTML = downloadConfirmed();
+        break;
+      case '[generator-copied-tooltip]':
+        item.innerHTML = '';
+        copiedTooltip = paragraphs[index+1].innerText;
+        paragraphs[index+1].innerHTML = '';
         break;
       default:
         // do nothing none paragraphs
@@ -682,7 +712,7 @@ export default async function decorate(block) {
     }
   });
 
-  if (leadGenItem) await leadGenTemplate(leadGenItem, block);
+  if (marketoLeadGenItem) await marketoLeadGenTemplate(marketoLeadGenItem, block);
 
   // Create progress bar div
   block.append(progressBarDiv);
@@ -721,7 +751,7 @@ export default async function decorate(block) {
   if (copyToClip) {
     copyToClip.addEventListener('click', () => {
       copyToClipboard(block);
-      
+
       if (!copiedToClip) {
         const form = block.querySelector('#template-form');
         widgetAnalyticsTrack(form, 'Submission', 0, block);
