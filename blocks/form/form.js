@@ -708,6 +708,26 @@ const selectCheckbox = (requestTypeCheckbox) => {
   }
 };
 
+/**
+ * Adobe Form Start event tracking to first field
+ * @param {object} formEl - form element
+ */
+function firstFieldTracking(formEl) {
+  const ecidInput = formEl.querySelector('input[name="ECID"]');
+  const hashInput = formEl.querySelector('input[name="UniqueSubmissionHash"]');
+  // eslint-disable-next-line no-undef
+  alloy("getIdentity")
+  .then((identityResult) => {
+    ecidInput.value = identityResult.identity.ECID;
+    if (hashInput) hashInput.value = getUniqueFormSubmissionHash(identityResult.identity.ECID);
+  })
+  .catch( () => { 
+    ecidInput.value = '';
+    if (hashInput) hashInput.value = '';
+  });
+  analyticsTrackFormStart(formEl);
+}
+
 function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
@@ -719,27 +739,20 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
 
         /* Adobe Form Start event tracking when user changes the first field */
         formEl.firstElementChild.addEventListener('change', () => {
-          // eslint-disable-next-line
-          alloy("getIdentity")
-          .then((result) => {
-            // eslint-disable-next-line
-            formEl.querySelector('input[name="ECID"]').value = result.identity.ECID;
-      if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
-        formEl.querySelector('input[name="UniqueSubmissionHash"]').value = getUniqueFormSubmissionHash(result.identity.ECID);			  
-      }
-          })
-          .catch( () => { 
-            formEl.querySelector('input[name="ECID"]').value = '';
-      if(formEl.querySelector('input[name="UniqueSubmissionHash"]')){
-              formEl.querySelector('input[name="UniqueSubmissionHash"]').value = '';
-      }
-          });
-          analyticsTrackFormStart(formEl);
+          firstFieldTracking(formEl);
         });
 
         /* Prefill form fields */
         setFormValues(formEl)
           .then((result) => {
+            /* Adobe Form Start event tracking when first field is auto filled */
+            const firstElValue = formEl.firstElementChild?.querySelector('.mktoField')?.value;
+            if (firstElValue) {
+              setTimeout(() => {
+                firstFieldTracking(formEl);
+              },1000);
+            }
+
             const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
             if (result && testVariation === 'minimized-form') {
               // Hide all form fields except email input

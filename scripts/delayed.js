@@ -29,6 +29,25 @@ function initEmbeddedMessaging() {
     embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
     // eslint-disable-next-line
     embeddedservice_bootstrap.init(
+      '00D50000000JMqp',
+      'BambooHR_Sales_Messaging',
+      'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944',
+      {
+        scrt2URL: 'https://bamboohr.my.salesforce-scrt.com'
+      }
+    );
+  } catch (err) {
+    // eslint-disable-next-line
+    console.error('Error loading Embedded Messaging: ', err);
+  }
+};
+
+function initEmbeddedMessagingSandbox() {
+  try {
+    // eslint-disable-next-line
+    embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+    // eslint-disable-next-line
+    embeddedservice_bootstrap.init(
       '00D7h0000004j7W',
       'BambooHR_Sales_Chat',
       'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468',
@@ -82,17 +101,38 @@ function loadStyle(location, css) {
   return $style;
 }
 
-// eslint-disable-next-line no-unused-vars
 function loadSalesforceChatScript() {
   const chatTestPaths = [
+    // '/',
+    // '/a3/',
+    // '/a4/',
     '/drafts/sclayton/chat-test',
+    '/drafts/sclayton/chat-test-benefits-administration',
+  ];
+
+  const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
+  if (!isOnChatTestPath) return;
+
+  loadScript('footer', 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944/assets/js/bootstrap.min.js', async () => {
+    initEmbeddedMessaging();
+  }, 'text/javascript');
+}
+
+// eslint-disable-next-line no-unused-vars
+function loadSalesforceChatScriptSandbox() {
+  const chatTestPaths = [
+    // '/',
+    // '/a3/',
+    // '/a4/',
+    '/drafts/sclayton/chat-test',
+    '/drafts/sclayton/chat-test-benefits-administration',
   ];
 
   const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
   if (!isOnChatTestPath) return;
 
   loadScript('footer', 'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468/assets/js/bootstrap.min.js', async () => {
-    initEmbeddedMessaging();
+    initEmbeddedMessagingSandbox();
   }, 'text/javascript');
 }
 
