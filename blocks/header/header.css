@@ -810,6 +810,7 @@ header.header-eyelash {
     margin: 0 5px;
     box-sizing: unset;
     width: auto;
+    white-space: nowrap;
   }
 
   header .nav-buttons .button.small {
@@ -887,13 +888,13 @@ header.header-eyelash {
 }
 
 @media (min-width: 900px) and (max-width: 1100px) {
-  .blog-redesign .header-search {
+  .blog-post .header-search {
     right: 0
   }
 }
 
 @media (max-width: 899px) {
-  .blog-redesign.blog-post .header-search {
+  .blog-post.blog-post .header-search {
     display: none;
   }
 }

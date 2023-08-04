@@ -738,11 +738,40 @@ function firstFieldTracking(formEl) {
   analyticsTrackFormStart(formEl);
 }
 
-function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = false) {
+function addUtmParametersFromSessionStorage() {
+  const inputs = document.querySelectorAll('input');
+  const inputNames = {
+	"UTM_Source_Capture__c": sessionStorage.getItem("utm_source"),
+	"UTM_Medium_Capture__c": sessionStorage.getItem("utm_medium"),
+	"UTM_Campaign_Capture__c": sessionStorage.getItem("utm_campaign"),
+	"UTM_Content_Capture__c": sessionStorage.getItem("utm_content"),
+	"UTM_Term_Capture__c": sessionStorage.getItem("utm_term"),
+	"GCLID__c": sessionStorage.getItem("gclid"),
+	"Microsoft_Click_ID__c": sessionStorage.getItem("msclkid"),
+	"UTM_Landing_Page_Capture__c": sessionStorage.getItem("landing page"),
+	"sessionReferrerCapture": sessionStorage.getItem("referrer"),
+	"UTM_Partner_Vendor_Capture__c": sessionStorage.getItem("bhr_pvid"),
+	"UTM_Team_Capture__c": sessionStorage.getItem("bhr_team")
+  }
+
+  inputs.forEach((input) => {
+	const { name } = input;
+	// eslint-disable-next-line no-prototype-builtins
+	if (inputNames.hasOwnProperty(name) && !input.value) {
+	  input.value = inputNames[name];
+	}
+  });
+}
+
+export function loadFormAndChilipiper(params, successCallback = null) {
+  const {formId, successUrl, chilipiper, floatingLabel} = params;
   loadScript('//grow.bamboohr.com/js/forms2/js/forms2.min.js', () => {
     window.MktoForms2.loadForm('//grow.bamboohr.com', '195-LOZ-515', formId);
 
     window.MktoForms2.whenReady((form) => {
+
+	    addUtmParametersFromSessionStorage();	  
+	  
       if (form.getId().toString() === formId) {
         mktoFormReset(form);
         const formEl = form.getFormElem()[0];
@@ -827,7 +856,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           });
 
         /* floating label */
-        if (floatingLable === true) {
+        if (floatingLabel === true) {
           formEl.querySelectorAll('input:not([type="checkbox"]):not([type="radio"])').forEach((input) => {
             const label = input.previousElementSibling;
             if (input.value.trim().length && label) label.classList.add('active');
@@ -911,6 +940,7 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
           setTimeout(() => {
             if (successUrl && !chilipiper) window.location.href = successUrl;
             if (successUrl && chilipiper && chilipiper === 'content-download-form' && !demoCheckbox.checked) window.location.href = successUrl;
+            if (typeof successCallback === 'function') successCallback();
           },1000);
 
           return false;
@@ -971,6 +1001,23 @@ function loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLable = f
   }
 }
 
+export async function readMarketoParams(formParams) {
+  const resp = await fetch('/forms-map.json');
+  const json = await resp.json();
+  const map = json.data;
+  map.forEach((entry) => {
+    if (
+      entry.URL === window.location.pathname || (entry.URL.endsWith('**') && window.location.pathname.startsWith(entry.URL.split('**')[0]))
+    ) {
+      formParams.formUrl = entry.Form;
+      let fbTracking = '';
+      if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php';
+      formParams.successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
+      if (window.location.pathname.includes('/offboarding-generator')) formParams.successUrl = '';
+      formParams.chilipiper = entry.Chilipiper;
+    }
+  });
+}
 
 const getDefaultEmbed = (url) => `<iframe frameborder="0" src="${url}" allowfullscreen scrolling="no" loading="lazy"></iframe>`;
 
@@ -984,14 +1031,15 @@ export function scrollToForm() {
 
 export default async function decorate(block) {
   const config = readBlockConfig(block);
-  let chilipiper; let formUrl; let successUrl;
+  const formParams = {formUrl: null, formId: null, successUrl: null, chilipiper: null,
+    floatingLabel: false };
 
-  const floatingLabel = !!block.classList.contains('floating-label');
+  formParams.floatingLabel = !!block.classList.contains('floating-label');
 
   if (!block.classList.contains('has-content')) {
     const as = block.querySelectorAll('a');
-    formUrl = as[0] ? as[0].href : '';
-    successUrl = as[1] ? as[1].href : '';
+    formParams.formUrl = as[0] ? as[0].href : '';
+    formParams.successUrl = as[1] ? as[1].href : '';
   }
 
   [...block.classList].forEach((name) => {
@@ -1000,30 +1048,17 @@ export default async function decorate(block) {
       block.classList.add(`grid-${name}`);
     }
   });
-  if (!formUrl) {
-    const resp = await fetch('/forms-map.json');
-    const json = await resp.json();
-    const map = json.data;
-    map.forEach((entry) => {
-      if (
-        entry.URL === window.location.pathname || (entry.URL.endsWith('**') && window.location.pathname.startsWith(entry.URL.split('**')[0]))
-      ) {
-        formUrl = entry.Form;
-        let fbTracking = '';
-        if (entry.Success === '' && window.location.pathname.includes('/resources/')) fbTracking = '&fbTracking=success.php';
-        successUrl = entry.Success === '' ? `${window.location.pathname}?formSubmit=success${fbTracking}` : entry.Success;
-        chilipiper = entry.Chilipiper;
-      }
-    });
+  if (!formParams.formUrl) {
+    await readMarketoParams(formParams);
   }
 
-  if (formUrl) {
-    if (formUrl.includes('marketo')) {
-      const formId = new URL(formUrl).hash.substring(4);
+  if (formParams.formUrl) {
+    if (formParams.formUrl.includes('marketo')) {
+      formParams.formId = new URL(formParams.formUrl).hash.substring(4);
       if (config && !block.classList.contains('has-content')) {
         block.innerHTML = '';
       }
-      const mktoForm = `<form id="mktoForm_${formId}"></form>`;
+      const mktoForm = `<form id="mktoForm_${formParams.formId}"></form>`;
       if (block.classList.contains('has-content')) {
         const cols = block.querySelectorAll(':scope > div > div');
         cols.forEach((col) => {
@@ -1034,7 +1069,7 @@ export default async function decorate(block) {
             formContainer.classList.add('form-container');
             formContainer.innerHTML = mktoForm;
             formCol.replaceWith(formContainer);
-            loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLabel);
+            loadFormAndChilipiper(formParams);
           } else {
             col.classList.add('content-col');
             const a = col.querySelector('a');
@@ -1049,10 +1084,10 @@ export default async function decorate(block) {
         });
       } else {
         block.innerHTML = mktoForm;
-        loadFormAndChilipiper(formId, successUrl, chilipiper, floatingLabel);
+        loadFormAndChilipiper(formParams);
       }
     } else {
-      const formEl = await createForm(formUrl);
+      const formEl = await createForm(formParams.formUrl);
       block.firstElementChild.replaceWith(formEl);
     }
   }

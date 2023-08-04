@@ -9,8 +9,9 @@ const jsonUrl = '/website-marketing-resources/onboarding-cost-calculator-form.js
 const organisationForm = [];
 const individualForm = [];
 
-function onboardingCalcAnalyticsTrack(form, trackType, lastStep) {
-	const [blockName] = [...form.parentElement.classList];
+export function widgetAnalyticsTrack(form, trackType, lastStep, block) {
+	const b = block || form.parentElement;
+	const [blockName] = [...b.classList];
 	const widgetId = `${blockName}.${form.id}`;
 
 	switch (trackType) {
@@ -250,7 +251,7 @@ function formSubmitHandler(form) {
 		appendCalcResultToDom(totalEmployeeOnboardingCosts, form.id);
 	}
 
-	onboardingCalcAnalyticsTrack(form, 'Submission');
+	widgetAnalyticsTrack(form, 'Submission');
 }
 
 function progressIndicator(index, form) {
@@ -356,7 +357,7 @@ function nextPrev(index, form) {
 
 	if (index === 1 && currentTab > farthestTab) {
 		farthestTab = currentTab;
-		onboardingCalcAnalyticsTrack(form, 'LastStep', farthestTab);
+		widgetAnalyticsTrack(form, 'LastStep', farthestTab);
 	}
 
 	if (currentTab >= (tabsArr.length - 1)) {
@@ -641,7 +642,7 @@ function toggleForm(formId) {
 
 	showTab(currentTab, form);
 	progressIndicator(currentTab, form);
-	onboardingCalcAnalyticsTrack(form, 'Start');
+	widgetAnalyticsTrack(form, 'Start');
 }
 
 function createCtaContainer() {
