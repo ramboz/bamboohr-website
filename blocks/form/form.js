@@ -619,7 +619,7 @@ const getPrefillFields = async () => {
   } else if (marketoId) {	
 	// check passed in ID and use it to perform lead lookup
 	try {	  
-	  const response = await fetch(`https://bamboolocal.com/xhr/formfill.php?mid=${marketoId}`);	  
+	  const response = await fetch(`https://bamboohr.com/xhr/formfill.php?mid=${marketoId}`);	  
 	  if (!response.ok) {
 		// eslint-disable-next-line no-console
 		console.error(`Request failed with status: ${response.status}`);
@@ -838,7 +838,7 @@ export function loadFormAndChilipiper(params, successCallback = null) {
               // set new form title
               const formTitle = formCol?.firstElementChild?.firstElementChild;
               const originalFormTitle = formCol?.firstElementChild?.firstElementChild.textContent;
-              if (formTitle && result.FirstName) formTitle.textContent = `Welcome Back ${result.FirstName}!`;
+              if (formTitle && result.FirstName) formTitle.textContent = `Welcome ${result.FirstName}!`;
               const formSubheading = formCol?.firstElementChild?.nextSibling;
               const originalFormSubheading = formCol?.firstElementChild?.nextSibling.textContent;
 
