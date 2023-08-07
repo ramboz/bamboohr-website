@@ -437,7 +437,7 @@ function templatePreview(values, block) {
       let time = "";
 
       if (value.type === "date" || value.type === "datetime-local") {
-        data = new Date(value.value).toLocaleDateString("en-US");
+        data = new Date(value.value).toLocaleDateString("en-US", { timeZone: 'UTC' });
       }
 
       if (value.type === "datetime-local") {
