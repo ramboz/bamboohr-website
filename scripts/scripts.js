@@ -1342,6 +1342,7 @@ async function loadMartech() {
   if ($isOnTestPath) {
 
     /* Adobe Target Prehiding Snippet */
+    //eslint-disable-next-line
     ;(function (win, doc, style, timeout) {
       const STYLE_ID = 'alloy-prehiding';
 
