@@ -1,0 +1,25 @@
+@media (min-width: 900px) {
+  main .signup .signup-step {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 40px;
+    align-items: start;
+  }
+
+  main .signup .signup-step .column7 {
+    grid-column: span 7;
+  }
+
+  main .signup .signup-step .column5 {
+    grid-column: span 5;
+  }
+}
+
+main .signup h1 {
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 30px;
+  margin: 0 0 30px;
+  color: var(--color-1-shade-5);
+}
