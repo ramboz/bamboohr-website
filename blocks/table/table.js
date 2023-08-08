@@ -3,6 +3,12 @@ import { toClassName } from '../../scripts/scripts.js';
 function buildTableCell(col, rowIndex, header, isComparisonTable, isRowHeader) {
   const levels = ['pro', 'elite', 'bamboohr-product'];
   const cell = rowIndex > 0 && !isRowHeader ? document.createElement('td') : document.createElement('th');
+  
+  // Add the 'has-popup-data' class to <p> and <strong> elements
+  cell.querySelectorAll('p, strong').forEach((element) => {
+    element.classList.add('has-popup-data');
+  });
+
   if (isComparisonTable && rowIndex === 3) {
     const levelClass = toClassName(col.textContent?.trim().toLowerCase());
     const levelIdx = levels.indexOf(levelClass);
@@ -17,7 +23,15 @@ function buildTableCell(col, rowIndex, header, isComparisonTable, isRowHeader) {
 
 const handleCloseTooltip = (e) => {
   if (document.body.classList.contains('table-tooltip-is-showing')) {
-    if (e.target.tagName !== 'TD') {
+    const clickedElement = e.target;
+
+    // Check if the clicked element is a <td> or has a parent <td> with 'has-popup-data' class
+    const isTdWithPopup = clickedElement.tagName === 'TD' || clickedElement.closest('td.has-popup-data');
+
+    // Check if the clicked element is a <p> or <strong> element within the popup
+    const isPopupContent = clickedElement.tagName === 'P' || clickedElement.tagName === 'STRONG';
+
+    if (!isTdWithPopup && !isPopupContent) {
       const showedTooltipElems = document.querySelectorAll('.table-tooltip-show');
 
       showedTooltipElems.forEach((showedTooltipElem) => {
@@ -30,16 +44,18 @@ const handleCloseTooltip = (e) => {
   }
 };
 
+
 const handleTdClick = (evt) => {
-  if (evt.target.tagName !== 'TD' || !evt.target.classList.contains('has-popup-data')) return;
+  const closestTd = evt.target.closest('td.has-popup-data');
+  if (!closestTd) return;
 
   document.body.classList.add('table-tooltip-is-showing');
   const popupDataElems = document.querySelectorAll('td.has-popup-data');
-  const isShowed = evt.target.classList.contains('table-tooltip-show');
+  const isShowed = closestTd.classList.contains('table-tooltip-show');
   popupDataElems.forEach((e) => e.classList.remove('table-tooltip-show'));
 
   if (!isShowed) {
-    evt.target.classList.add('table-tooltip-show');
+    closestTd.classList.add('table-tooltip-show');
     document.body.addEventListener('click', handleCloseTooltip, { capture: true });
   }
 };

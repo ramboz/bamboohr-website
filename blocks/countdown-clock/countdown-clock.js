@@ -1,59 +1,48 @@
 import { readBlockConfig } from '../../scripts/scripts.js';
 
+function createElementWithClass(className) {
+    const element = document.createElement('div');
+    element.classList.add(className);
+    return element;
+}
+
+function createCountdownValueElement(unitText) {
+    const valueElem = createElementWithClass('countdown-value');
+
+    const numberElem = createElementWithClass('countdown-number');
+    valueElem.appendChild(numberElem);
+
+    const unitElem = createElementWithClass('countdown-unit');
+    unitElem.classList.add('typ-small-info');
+    unitElem.textContent = unitText;
+    valueElem.appendChild(unitElem);
+
+    return valueElem;
+}
+
+function createSemicolonElement() {
+    const semicolonElem = createElementWithClass('countdown-semicolon');
+    semicolonElem.textContent = ':';
+    return semicolonElem;
+}
+
 function createCountdownTimer(targetDate) {
-    const countdownElem = document.createElement('div');
-    countdownElem.classList.add('countdown-timer');
-
-    const countdownDisplay = document.createElement('div');
-    countdownDisplay.classList.add('countdown-display');
+    const countdownElem = createElementWithClass('countdown-timer');
+    const countdownDisplay = createElementWithClass('countdown-display');
     countdownElem.appendChild(countdownDisplay);
-    
-    const daysElem = document.createElement('div');
-    daysElem.classList.add('countdown-value');
-    const daysNum = document.createElement('div');
-    daysNum.classList.add('countdown-number');
-    daysElem.appendChild(daysNum);
-    const daysText = document.createElement('div');
-    daysText.classList.add('countdown-unit');
-    daysText.classList.add('typ-small-info');
-    daysText.textContent = 'DAYS';
-    daysElem.appendChild(daysText);
-    countdownDisplay.appendChild(daysElem);
 
-    const semiColon1 = document.createElement('div');
-    semiColon1.classList.add('countdown-semicolon');
-    semiColon1.textContent = ':';
-    countdownDisplay.appendChild(semiColon1);
+    countdownDisplay.appendChild(createCountdownValueElement('DAYS'));
+    countdownDisplay.appendChild(createSemicolonElement());
+    countdownDisplay.appendChild(createCountdownValueElement('HOURS'));
+    countdownDisplay.appendChild(createSemicolonElement());
+    countdownDisplay.appendChild(createCountdownValueElement('MINUTES'));
 
-    const hoursElem = document.createElement('div');
-    hoursElem.classList.add('countdown-value');
-    const hoursNum = document.createElement('div');
-    hoursNum.classList.add('countdown-number');
-    hoursElem.appendChild(hoursNum);
-    const hoursText = document.createElement('div');
-    hoursText.classList.add('countdown-unit');
-    hoursText.classList.add('typ-small-info');
-    hoursText.textContent = 'HOURS';
-    hoursElem.appendChild(hoursText);
-    countdownDisplay.appendChild(hoursElem);
-
-    const semiColon2 = semiColon1.cloneNode(true);
-    countdownDisplay.appendChild(semiColon2);
-
-    const minutesElem = document.createElement('div');
-    minutesElem.classList.add('countdown-value');
-    const minutesNum = document.createElement('div');
-    minutesNum.classList.add('countdown-number');
-    minutesElem.appendChild(minutesNum);
-    const minutesText = document.createElement('div');
-    minutesText.classList.add('countdown-unit');
-    minutesText.classList.add('typ-small-info');
-    minutesText.textContent = 'MINUTES';
-    minutesElem.appendChild(minutesText);
-    countdownDisplay.appendChild(minutesElem);
+    const daysNum = countdownDisplay.querySelector('.countdown-value:nth-child(1) .countdown-number');
+    const hoursNum = countdownDisplay.querySelector('.countdown-value:nth-child(3) .countdown-number');
+    const minutesNum = countdownDisplay.querySelector('.countdown-value:nth-child(5) .countdown-number');
 
     let countdownInterval;
-
+    
     function updateCountdown() {
         const now = new Date().getTime();
         const timeDifference = targetDate - now;
@@ -82,8 +71,8 @@ function createCountdownTimer(targetDate) {
 }
 
 export default async function decorate(block) {
-    const config = readBlockConfig(block);
-    let countdownDate = '2023-12-31T23:39:59'; // Assuming the countdownDate is in ISO format (e.g., '2023-12-31T23:59:59')
+    const blockConfig = readBlockConfig(block);
+    let countdownDate = blockConfig['start-time']; // Assuming the countdownDate is in ISO format (e.g., '2023-12-31T23:59:59')
     block.innerHTML = '';
 
     if (countdownDate) {
