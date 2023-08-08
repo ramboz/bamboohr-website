@@ -619,7 +619,7 @@ const getPrefillFields = async () => {
   } else if (marketoId) {	
 	// check passed in ID and use it to perform lead lookup
 	try {	  
-	  const response = await fetch(`https://bamboohr.com/xhr/formfill.php?mid=${marketoId}`);	  
+	  const response = await fetch(`/xhr/formfill.php?mid=${marketoId}`);	  
 	  if (!response.ok) {
 		// eslint-disable-next-line no-console
 		console.error(`Request failed with status: ${response.status}`);
