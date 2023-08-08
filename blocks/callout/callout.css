@@ -121,7 +121,7 @@ main .callout p {
 }
 
 /* Blog Redesign */
-main .callout.blog-redesign {
+.blog-post main .callout {
   margin: 35px 0;
   padding: 32px;
   border: 1px solid #DFDEDC;
@@ -242,13 +242,15 @@ main .callout .callout-card a.button {
 }
 
 @media (min-width: 900px) {
-  .blog-redesign main .callout .callout-card .button-container {
+  .blog-post main .callout .callout-card .callout-text-only .button-container {
     padding-right: 150px;
   }
 }
 
-.blog-redesign main .callout.left,
-.blog-redesign main .callout.right {
+.blog-post main .callout.left,
+.blog-post main .callout.right {
   float: none;
   width: unset;
+  text-align: center;
+  border-radius: 15px;
 }

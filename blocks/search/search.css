@@ -350,6 +350,6 @@ main .search .search-box {
   max-width: 800px;
 }
 
-.blog-redesign.blog-post .header-search-modal main {
+.blog-post .header-search-modal main {
   overflow-y: scroll;
 }

@@ -27,8 +27,8 @@ const SEGMENTATION_CONFIG = {
         const features = getBhrFeaturesCookie();
 		if (!features) {
 		  return false;
-		} 
-		return features.is_admin && !features.bhr_user;		  
+		}
+		return features.is_admin && !features.bhr_user;
       },
     },
     'not-customer': {
@@ -884,7 +884,7 @@ initHlx();
  * ------------------------------------------------------------
  */
 
-const LCP_BLOCKS = ['hero', 'featured-articles']; // add your LCP blocks to the list
+const LCP_BLOCKS = ['hero', 'featured-articles', 'columns']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'bamboo-rum-conversion-1'; // add your RUM generation information here
 
 sampleRUM('top');
@@ -1334,38 +1334,45 @@ export async function initConversionTracking(parent, path, ctaElement) {
  * (e.g., Adobe Target).
  */
 async function loadMartech() {
-  /* Adobe Target Prehiding Snippet */
-  /*
-  ;(function(win, doc, style, timeout) {
-    const STYLE_ID = 'at-body-style';
-    function getParent() {
-      return doc.getElementsByTagName('head')[0];
-    }
-    function addStyle(parent, id, def) {
-      if (!parent) {
-        return;
+  const $testPaths = [
+    '/resources/ebooks/the-definitive-guide-to-onboarding',
+  ];
+  const $isOnTestPath = $testPaths.includes(window.location.pathname);
+
+  if ($isOnTestPath) {
+
+    /* Adobe Target Prehiding Snippet */
+    ;(function (win, doc, style, timeout) {
+      const STYLE_ID = 'alloy-prehiding';
+
+      function getParent() {
+        return doc.head;
       }
-      const style = doc.createElement('style');
-      style.id = id;
-      style.innerHTML = def;
-      parent.appendChild(style);
-    }
-    function removeStyle(parent, id) {
-      if (!parent) {
-        return;
+
+      function addStyle(parent, id, def) {
+        if (parent) {
+          const styleElement = doc.createElement('style');
+          styleElement.id = id;
+          styleElement.innerText = def;
+          parent.appendChild(styleElement);
+        }
       }
-      const style = doc.getElementById(id);
-      if (!style) {
-        return;
+
+      function removeStyle(parent, id) {
+        if (parent) {
+          const styleElement = doc.getElementById(id);
+          if (styleElement) {
+            parent.removeChild(styleElement);
+          }
+        }
       }
-      parent.removeChild(style);
-    }
-    addStyle(getParent(), STYLE_ID, style);
-    setTimeout(function() {
-      removeStyle(getParent(), STYLE_ID);
-    }, timeout);
-  }(window, document, "body {opacity: 0 !important}", 3000));
-  */
+
+      addStyle(getParent(), STYLE_ID, style);
+      setTimeout(() => {
+        removeStyle(getParent(), STYLE_ID);
+      }, timeout);
+    }(window, document, "main {opacity: 0 !important}", 1000));
+  }
   /* Move Adobe Tags here from delayed.js if Adobe Target is added and enabled */
 }
 

@@ -23,15 +23,28 @@ import {
 
 sampleRUM('cwv');
 
-function initEmbeddedMessaging() {
+function getCookie(name) {
+  const cookieArr = document.cookie.split(";");
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < cookieArr.length; i++) {
+    const cookiePair = cookieArr[i].split("=");
+    if (name === cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  return null;
+}
+
+function initEmbeddedMessaging(isGDPR) {
   try {
     // eslint-disable-next-line
     embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
     // eslint-disable-next-line
     embeddedservice_bootstrap.init(
       '00D50000000JMqp',
-      'BambooHR_Sales_Messaging',
-      'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944',
+      isGDPR ? 'BambooHR_Sales_Messaging_GDPR' : 'BambooHR_Sales_Messaging',
+      isGDPR ? 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1690313005860' : 
+        'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944',
       {
         scrt2URL: 'https://bamboohr.my.salesforce-scrt.com'
       }
@@ -101,29 +114,9 @@ function loadStyle(location, css) {
   return $style;
 }
 
-function loadSalesforceChatScript() {
-  const chatTestPaths = [
-    // '/',
-    // '/a3/',
-    // '/a4/',
-    '/drafts/sclayton/chat-test',
-    '/drafts/sclayton/chat-test-benefits-administration',
-  ];
-
-  const isOnChatTestPath = chatTestPaths.includes(window.location.pathname);
-  if (!isOnChatTestPath) return;
-
-  loadScript('footer', 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944/assets/js/bootstrap.min.js', async () => {
-    initEmbeddedMessaging();
-  }, 'text/javascript');
-}
-
 // eslint-disable-next-line no-unused-vars
 function loadSalesforceChatScriptSandbox() {
   const chatTestPaths = [
-    // '/',
-    // '/a3/',
-    // '/a4/',
     '/drafts/sclayton/chat-test',
     '/drafts/sclayton/chat-test-benefits-administration',
   ];
@@ -134,6 +127,21 @@ function loadSalesforceChatScriptSandbox() {
   loadScript('footer', 'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468/assets/js/bootstrap.min.js', async () => {
     initEmbeddedMessagingSandbox();
   }, 'text/javascript');
+}
+
+function loadSalesforceChatScript() {
+  if (window.location.pathname.startsWith('/drafts/sclayton/chat-test')) {
+    loadSalesforceChatScriptSandbox();
+  } else {
+    const noticeBehavior = getCookie("notice_behavior");
+    const isGDPR = noticeBehavior === "expressed|eu" || noticeBehavior === "implied|eu";
+    const chatScriptURL = isGDPR ? 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1690313005860/assets/js/bootstrap.min.js'
+      : 'https://bamboohr.my.site.com/ESWBambooHRSalesMessagi1689805273944/assets/js/bootstrap.min.js';
+
+    loadScript('footer', chatScriptURL, async () => {
+      initEmbeddedMessaging(isGDPR);
+    }, 'text/javascript');
+  }
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -331,18 +339,6 @@ function updateExternalLinks() {
   });
 }
 
-function getCookie(name) {
-  const cookieArr = document.cookie.split(";");
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < cookieArr.length; i++) {
-    const cookiePair = cookieArr[i].split("=");
-    if (name === cookiePair[0].trim()) {
-      return decodeURIComponent(cookiePair[1]);
-    }
-  }
-  return null;
-}
-
 function isTrustArcAdvertisingCookieAllowed() {
   const noticeGDPRPrefs = getCookie("notice_gdpr_prefs");
   const noticeBehavior = getCookie("notice_behavior");
@@ -382,8 +378,6 @@ async function setConsentBasedOnTrustArc() {
 // PROXIED URL: loadScript('footer',
 // 'https://tracker.ekremney.workers.dev/?thirdPartyTracker=https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
 loadScript('footer', 'https://consent.trustarc.com/v2/notice/qvlbs6', setConsentBasedOnTrustArc, 'text/javascript');
-
-loadScript('header', 'https://www.googleoptimize.com/optimize.js?id=OPT-PXL7MPD', null);
 
 loadTrustArcFormScript();
 
