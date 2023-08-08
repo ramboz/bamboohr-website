@@ -42,7 +42,7 @@ function createCountdownTimer(targetDate) {
     const minutesNum = countdownDisplay.querySelector('.countdown-value:nth-child(5) .countdown-number');
 
     let countdownInterval;
-    
+
     function updateCountdown() {
         const now = new Date().getTime();
         const timeDifference = targetDate - now;
@@ -72,12 +72,12 @@ function createCountdownTimer(targetDate) {
 
 export default async function decorate(block) {
     const blockConfig = readBlockConfig(block);
-    let countdownDate = blockConfig['start-time']; // Assuming the countdownDate is in ISO format (e.g., '2023-12-31T23:59:59')
+    const countdownDate = blockConfig['start-time']; // Assuming the countdownDate is in ISO format (e.g., '2023-12-31T23:59:59')
     block.innerHTML = '';
 
     if (countdownDate) {
         const targetDate = new Date(countdownDate).getTime();
-        if (isNaN(targetDate)) {
+        if (Number.isNaN(targetDate)) {
         // Invalid date, show an appropriate message
         block.textContent = "Invalid countdown date";
         } else {
