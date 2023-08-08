@@ -69,7 +69,7 @@ export default async function decorate(block) {
 
     if (countdownDate) {
         const targetDate = new Date(countdownDate).getTime();
-        if (isNaN(targetDate)) {
+        if (Number.isNaN(targetDate)) {
             block.textContent = "Invalid countdown date";
         } else {
             const countdownTimer = createCountdownTimer(targetDate);
