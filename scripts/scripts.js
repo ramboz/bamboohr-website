@@ -1743,7 +1743,7 @@ export function getValuesFromClassName(className, classNameStart) {
 export function createElem(elemType, ...cssClass) {
   const elem = document.createElement(elemType);
   if (cssClass != null && cssClass.length) {
-    elem.classList.add(cssClass);
+    elem.classList.add(...cssClass.join(' ').split(' '));
   }
 
   return elem;

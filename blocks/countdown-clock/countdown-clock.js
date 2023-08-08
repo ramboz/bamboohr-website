@@ -1,45 +1,37 @@
-import { readBlockConfig } from '../../scripts/scripts.js';
-
-function createElementWithClass(className) {
-    const element = document.createElement('div');
-    element.classList.add(className);
-    return element;
-}
-
-function createCountdownValueElement(unitText) {
-    const valueElem = createElementWithClass('countdown-value');
-
-    const numberElem = createElementWithClass('countdown-number');
-    valueElem.appendChild(numberElem);
-
-    const unitElem = createElementWithClass('countdown-unit');
-    unitElem.classList.add('typ-small-info');
-    unitElem.textContent = unitText;
-    valueElem.appendChild(unitElem);
-
-    return valueElem;
-}
-
-function createSemicolonElement() {
-    const semicolonElem = createElementWithClass('countdown-semicolon');
-    semicolonElem.textContent = ':';
-    return semicolonElem;
-}
-
+import { readBlockConfig, createElem } from '../../scripts/scripts.js';
+  
 function createCountdownTimer(targetDate) {
-    const countdownElem = createElementWithClass('countdown-timer');
-    const countdownDisplay = createElementWithClass('countdown-display');
+    const countdownElem = createElem('div', 'countdown-timer');
+    const countdownDisplay = createElem('div', 'countdown-display');
     countdownElem.appendChild(countdownDisplay);
 
-    countdownDisplay.appendChild(createCountdownValueElement('DAYS'));
-    countdownDisplay.appendChild(createSemicolonElement());
-    countdownDisplay.appendChild(createCountdownValueElement('HOURS'));
-    countdownDisplay.appendChild(createSemicolonElement());
-    countdownDisplay.appendChild(createCountdownValueElement('MINUTES'));
+    const daysElem = createElem('div', 'countdown-value', 'countdown-unit', 'typ-small-info', 'days-unit');
+    const daysNum = createElem('div', 'countdown-number');
+    daysElem.appendChild(daysNum);
+    const daysText = createElem('div', 'countdown-unit', 'typ-small-info');
+    daysText.textContent = 'DAYS';
+    daysElem.appendChild(daysText);
+    countdownDisplay.appendChild(daysElem);
 
-    const daysNum = countdownDisplay.querySelector('.countdown-value:nth-child(1) .countdown-number');
-    const hoursNum = countdownDisplay.querySelector('.countdown-value:nth-child(3) .countdown-number');
-    const minutesNum = countdownDisplay.querySelector('.countdown-value:nth-child(5) .countdown-number');
+    countdownDisplay.appendChild(createElem('div', 'countdown-semicolon')).textContent = ':';
+
+    const hoursElem = createElem('div', 'countdown-value', 'countdown-unit', 'typ-small-info', 'hours-unit');
+    const hoursNum = createElem('div', 'countdown-number');
+    hoursElem.appendChild(hoursNum);
+    const hoursText = createElem('div', 'countdown-unit', 'typ-small-info');
+    hoursText.textContent = 'HOURS';
+    hoursElem.appendChild(hoursText);
+    countdownDisplay.appendChild(hoursElem);
+
+    countdownDisplay.appendChild(createElem('div', 'countdown-semicolon')).textContent = ':';
+
+    const minutesElem = createElem('div', 'countdown-value', 'countdown-unit', 'typ-small-info', 'minutes-unit');
+    const minutesNum = createElem('div', 'countdown-number');
+    minutesElem.appendChild(minutesNum);
+    const minutesText = createElem('div', 'countdown-unit', 'typ-small-info');
+    minutesText.textContent = 'MINUTES';
+    minutesElem.appendChild(minutesText);
+    countdownDisplay.appendChild(minutesElem);
 
     let countdownInterval;
 
@@ -48,23 +40,23 @@ function createCountdownTimer(targetDate) {
         const timeDifference = targetDate - now;
 
         if (timeDifference <= 0) {
-        clearInterval(countdownInterval);
-        countdownElem.textContent = ""; // Display a blank text rather than the countdown clock
+            clearInterval(countdownInterval);
+            daysNum.textContent = '00';
+            hoursNum.textContent = '00';
+            minutesNum.textContent = '00';
         } else {
-        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
 
-        daysNum.textContent = days.toString().padStart(2, '0');
-        hoursNum.textContent = hours.toString().padStart(2, '0');
-        minutesNum.textContent = minutes.toString().padStart(2, '0');
+            daysNum.textContent = days.toString().padStart(2, '0');
+            hoursNum.textContent = hours.toString().padStart(2, '0');
+            minutesNum.textContent = minutes.toString().padStart(2, '0');
         }
     }
 
-    // Initial call to update the countdown
     updateCountdown();
 
-    // Set up interval for updating countdown every second
     countdownInterval = setInterval(updateCountdown, 1000);
 
     return countdownElem;
@@ -72,20 +64,19 @@ function createCountdownTimer(targetDate) {
 
 export default async function decorate(block) {
     const blockConfig = readBlockConfig(block);
-    const countdownDate = blockConfig['start-time']; // Assuming the countdownDate is in ISO format (e.g., '2023-12-31T23:59:59')
+    const countdownDate = blockConfig['start-time'];
     block.innerHTML = '';
 
     if (countdownDate) {
         const targetDate = new Date(countdownDate).getTime();
-        if (Number.isNaN(targetDate)) {
-        // Invalid date, show an appropriate message
-        block.textContent = "Invalid countdown date";
+        if (isNaN(targetDate)) {
+            block.textContent = "Invalid countdown date";
         } else {
-        const countdownTimer = createCountdownTimer(targetDate);
-        block.appendChild(countdownTimer);
+            const countdownTimer = createCountdownTimer(targetDate);
+            block.appendChild(countdownTimer);
         }
     } else {
-        // Show a message when countdownDate is missing
         block.textContent = "Countdown date not provided";
     }
 }
+  
