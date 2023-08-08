@@ -592,8 +592,8 @@ function addExpansionProduct() {
 const capitalizeKeys = (obj) => {
   const modifiedObj = {};
   Object.keys(obj).forEach((key) => {
-    const modifiedKey = key.charAt(0).toUpperCase() + key.slice(1);
-    modifiedObj[modifiedKey] = obj[key];
+	const modifiedKey = key.charAt(0).toUpperCase() + key.slice(1);
+	modifiedObj[modifiedKey] = obj[key];
   });
   return modifiedObj;
 };
@@ -603,25 +603,71 @@ const capitalizeKeys = (obj) => {
  * @returns {Promise<object|null>} The prefill fields object or null if there was an error
  */
 const getPrefillFields = async () => {
-  try {
-    const response = await fetch('/xhr/formfill.php');
-    if (!response.ok) {
-      // eslint-disable-next-line no-console
-      console.error(`Request failed with status: ${response.status}`);
-      return null;
-    }
+  const cookieName = 'bhr_prefill';
+  const cookie = document.cookie.match(`(^|;)\\s*${cookieName}\\s*=\\s*([^;]+)`)?.pop();
+  const params = new URLSearchParams(window.location.search);
+  const marketoId = params.get('mid');
+  
+  if(cookie){ 
+	try {
+	  return JSON.parse(atob(cookie));
+	} catch (error) {
+	  // eslint-disable-next-line no-console
+	  console.error(error);
+	  return null;
+	}
+  } else if (marketoId) {	
+	// check passed in ID and use it to perform lead lookup
+	try {	  
+	  const response = await fetch(`https://bamboohr.com/xhr/formfill.php?mid=${marketoId}`);	  
+	  if (!response.ok) {
+		// eslint-disable-next-line no-console
+		console.error(`Request failed with status: ${response.status}`);
+		return null;
+	  }
+	  const data = await response.json();	  
+	  const {formData} = data;
+	  
+	  return ( formData ? capitalizeKeys(formData) : null); 	  
+	} catch (error) {
+	  // eslint-disable-next-line no-console
+	  console.error(error);
 
-    const data = await response.json();
-    const { formData } = data;
-    const mktoLeadFields = formData ? capitalizeKeys(formData) : null;
+	  return null;
+	}
+  }  
+  
+  return null; 
+}
 
-    return mktoLeadFields;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    return null;
+const savePrefillCookie = (marketoForm) => {
+  
+  const inputs = marketoForm.elements;
+  const cookieName = 'bhr_prefill';
+  const fieldsToSave = [
+	'FirstName', 
+	'LastName', 
+	'Email', 
+	'Phone', 
+	'Employees_Text__c', 
+	'Title', 
+	'Company', 
+	'JobOpenings', 
+	'Industry', 
+	'PostalCode'
+  ];
+  let formData = {};
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < inputs.length; i++) {
+	if (inputs[i].name && fieldsToSave.includes(inputs[i].name)) {
+	  formData = { ...formData, [inputs[i].name]: inputs[i].value };
+	}
   }
-};
+
+  const encodedCookieValue = btoa(JSON.stringify(formData));
+  // 30 day cookie on the root TLD path
+  document.cookie = `${cookieName}=${encodedCookieValue};path=/;max-age=${30*24*60*60}`;  
+}
 
 /**
  * Fill form fields with fields that exist in prefillFields
@@ -792,7 +838,7 @@ export function loadFormAndChilipiper(params, successCallback = null) {
               // set new form title
               const formTitle = formCol?.firstElementChild?.firstElementChild;
               const originalFormTitle = formCol?.firstElementChild?.firstElementChild.textContent;
-              if (formTitle && result.FirstName) formTitle.textContent = `Welcome Back ${result.FirstName}!`;
+              if (formTitle && result.FirstName) formTitle.textContent = `Welcome ${result.FirstName}!`;
               const formSubheading = formCol?.firstElementChild?.nextSibling;
               const originalFormSubheading = formCol?.firstElementChild?.nextSibling.textContent;
 
@@ -923,6 +969,8 @@ export function loadFormAndChilipiper(params, successCallback = null) {
 
           /* Adobe form complete events tracking */
           analyticsTrackFormSubmission(formEl);
+
+		  savePrefillCookie(formEl);
 
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
           setTimeout(() => {
