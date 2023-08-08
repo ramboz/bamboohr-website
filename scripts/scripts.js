@@ -1351,7 +1351,6 @@ async function loadMartech() {
       parent.appendChild(style);
     }
     function removeStyle(parent, id) {
-      // eslint-disable-next-line
       if (!parent) {
         return;
       }
