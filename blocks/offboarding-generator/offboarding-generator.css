@@ -61,7 +61,8 @@ main .offboarding-generator-step nav {
   gap: 14px;
 }
 
-main .offboarding-generator-step nav .button {
+main .offboarding-generator-step nav .button,
+main .offboarding-generator-step nav div.next-and-success {
   width: 100%;
 }
 
@@ -140,30 +141,27 @@ main .offboarding-generator-step[data-step="0"] svg {
 }
 
 /* Step 2 Specific */
-main .offboarding-generator-step[data-step="1"] > div {
+main .gen-form.offboarding-generator-step > div {
   margin: 1.5rem;
 }
 
-main .offboarding-generator-step[data-step="1"] .form-wrap,
-main .step-1-gate .offboarding-generator-step[data-step="2"] .form-wrap {
+main .gen-form.offboarding-generator-step .form-wrap {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-main .offboarding-generator-step[data-step="1"] .form-wrap > div {
+main .gen-form.offboarding-generator-step .form-wrap > div {
   flex: 0 0 100%;
 }
 
 /* Step 2 Specific */
-main .offboarding-generator-step[data-step="2"] > div,
-main .step-1-gate .offboarding-generator-step[data-step="3"] > div {
+main .gen-tone.offboarding-generator-step > div {
   margin: 1.5rem;
 }
 
-main .offboarding-generator-step[data-step="2"] .tone-selection,
-main .step-1-gate .offboarding-generator-step[data-step="3"] .tone-selection {
+main .gen-tone.offboarding-generator-step .tone-selection {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
@@ -171,8 +169,7 @@ main .step-1-gate .offboarding-generator-step[data-step="3"] .tone-selection {
   gap: 14px;
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview,
-main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview {
+main .gen-tone.offboarding-generator-step #template-preview {
   margin: 1.5rem 0 1.75rem;
   max-height: 220px;
   overflow-x: hidden;
@@ -190,25 +187,20 @@ main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview {
   line-height: 24px;
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview span,
-main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview span {
+main .gen-tone.offboarding-generator-step #template-preview span {
   color: var(--theme-shade5);
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar,
-main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar {
+main .gen-tone.offboarding-generator-step #template-preview::-webkit-scrollbar {
   width: 40px;
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-track,
-main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar-track {
+main .gen-tone.offboarding-generator-step #template-preview::-webkit-scrollbar-track {
   background-color: var(--color-white);
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb,
-main .offboarding-generator-step[data-step="2"] #template-preview::-webkit-scrollbar-thumb:hover,
-main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar-thumb,
-main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::-webkit-scrollbar-thumb:hover {
+main .gen-tone.offboarding-generator-step #template-preview::-webkit-scrollbar-thumb,
+main .gen-tone.offboarding-generator-step #template-preview::-webkit-scrollbar-thumb:hover {
   background-color: #E7E7E7;
   width: 8px;
   border: 16px solid rgba(0 0 0 / 0%);
@@ -216,37 +208,31 @@ main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview::
   border-radius: 88px;
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview p,
-main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview p {
+main .gen-tone.offboarding-generator-step #template-preview p {
   max-width: 95%;
 }
 
-main .offboarding-generator-step[data-step="2"] #template-preview p > span,
-main .step-1-gate .offboarding-generator-step[data-step="3"] #template-preview p > span {
+main .gen-tone.offboarding-generator-step #template-preview p > span {
   color: var(--theme-shade5);
 }
 
 /* Step 3 Specific */
-main .offboarding-generator-step[data-step="3"] .form-wrap,
-main .step-1-gate .offboarding-generator-step[data-step="1"] .form-wrap {
+main .gen-lead-gen.offboarding-generator-step .form-wrap {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-main .offboarding-generator-step[data-step="3"] .form-wrap > div,
-main .step-1-gate .offboarding-generator-step[data-step="1"] .form-wrap > div {
+main .gen-lead-gen.offboarding-generator-step .form-wrap > div {
   flex: 0 0 100%;
 }
 
-main .offboarding-generator-step[data-step="3"] svg,
-main .step-1-gate .offboarding-generator-step[data-step="1"] svg {
+main .gen-lead-gen.offboarding-generator-step svg {
   display: none;
 }
 
-main .offboarding-generator-step[data-step="3"].offboarding-generator-step--overlay::before,
-main .step-1-gate .offboarding-generator-step[data-step="1"].offboarding-generator-step--overlay::before {
+main .gen-lead-gen.offboarding-generator-step.offboarding-generator-step--overlay::before {
   content: none;
 }
 
@@ -499,6 +485,12 @@ main .offboarding-generator .tooltip__text {
   transition: all 0.3s ease-in-out;
 }
 
+main .offboarding-generator #copy-success .tooltip__text {
+  left: unset;
+  right: -150px;
+  width: 300px;
+}
+
 /* Show Tooltip on indicator hover */
 main .offboarding-generator .tooltip:hover .tooltip__text {
   opacity: 1;
@@ -606,8 +598,7 @@ main .offboarding-generator .next-and-success {
     background-size: 90%;
   }
 
-  main .offboarding-generator-step[data-step="1"] .form-wrap > div,
-  main .step-1-gate .offboarding-generator-step[data-step="2"] .form-wrap > div {
+  main .gen-form.offboarding-generator-step .form-wrap > div {
     flex: 0 0 48%;
   }
 
@@ -616,12 +607,12 @@ main .offboarding-generator .next-and-success {
     justify-content: space-between;
   }
 
-  main .offboarding-generator-step nav .button {
+  main .offboarding-generator-step nav .button,
+  main .offboarding-generator-step nav div.next-and-success {
     width: auto;
   }
 
-  main .offboarding-generator-step[data-step="2"] .tone-selection,
-  main .step-1-gate .offboarding-generator-step[data-step="3"] .tone-selection {
+  main .gen-tone.offboarding-generator-step .tone-selection {
     flex-flow: row nowrap;
     gap: 20px;
   }
@@ -631,20 +622,18 @@ main .offboarding-generator .next-and-success {
     margin: 2.5rem 0 2.5rem 2.5rem;
   }
 
-  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(1),
-  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(2),
-  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(7),
-  main .offboarding-generator-step[data-step="3"] .form-wrap > div:nth-of-type(8) {
+  main .gen-lead-gen.offboarding-generator-step .form-wrap > div:nth-of-type(1),
+  main .gen-lead-gen.offboarding-generator-step .form-wrap > div:nth-of-type(2),
+  main .gen-lead-gen.offboarding-generator-step .form-wrap > div:nth-of-type(7),
+  main .gen-lead-gen.offboarding-generator-step .form-wrap > div:nth-of-type(8) {
     flex: 0 0 48%;
   }
 
-  main .offboarding-generator-step[data-step="3"] svg,
-  main .step-1-gate .offboarding-generator-step[data-step="1"] svg {
+  main .gen-lead-gen.offboarding-generator-step svg {
     display: block;
   }
 
-  main .offboarding-generator-step[data-step="3"].offboarding-generator-step--overlay::before,
-  main .step-1-gate .offboarding-generator-step[data-step="1"].offboarding-generator-step--overlay::before {
+  main .gen-lead-gen.offboarding-generator-step.offboarding-generator-step--overlay::before {
     content: '';
   }
 
