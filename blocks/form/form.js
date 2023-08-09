@@ -1019,7 +1019,8 @@ export function loadFormAndChilipiper(params, successCallback = null) {
       // eslint-disable-next-line default-case
       switch (action) {
       case "booked":	
-        cpEvent = {"cpBookedEvent": 1};
+        cpEvent = {"cpBookedEvent": 1};		
+		window.dataLayer.push({event: "cpBookedEvent"});
         break;
       case "phone-selected":
         cpEvent = {"cpCalledEvent": 1};
