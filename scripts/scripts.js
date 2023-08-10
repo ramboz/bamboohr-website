@@ -232,6 +232,7 @@ function loadTemplateCSS() {
       'hr-101-guide',
       'customers',
       'trade-show',
+      'customer-day'
     ];
     if (templates.includes(template)) {
       const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
@@ -1341,6 +1342,7 @@ async function loadMartech() {
   if ($isOnTestPath) {
 
     /* Adobe Target Prehiding Snippet */
+    // eslint-disable-next-line
     ;(function (win, doc, style, timeout) {
       const STYLE_ID = 'alloy-prehiding';
 
@@ -1741,7 +1743,7 @@ export function getValuesFromClassName(className, classNameStart) {
 export function createElem(elemType, ...cssClass) {
   const elem = document.createElement(elemType);
   if (cssClass != null && cssClass.length) {
-    elem.classList.add(cssClass);
+    elem.classList.add(...cssClass.join(' ').split(' '));
   }
 
   return elem;

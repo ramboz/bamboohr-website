@@ -253,6 +253,17 @@ main .section .table-tooltip-container p.button-container {
   fill: var(--theme-shade5);
 }
 
+a.close-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 3px 5px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--color-gray-9);
+}
+
 @media (min-width: 600px) {
   .table-tooltip-container {
     width: 400px;
