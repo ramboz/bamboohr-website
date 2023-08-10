@@ -6,8 +6,6 @@ main .onboarding-calculator {
 	margin: 2em auto;
 	position: relative;
 	max-width: 820px;
-    display: flex;
-    align-items: flex-end;
 }
 
 main .onboarding-calculator h2 {
@@ -24,16 +22,21 @@ main .onboarding-calculator p {
 
 main .onboarding-calculator__content {
 	display: flex;
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 	row-gap: 2em;
 }
 
-main .onboarding-calculator__content-left {
-	order: 1;
+@media screen and (min-width: 1200px) {
+	main .onboarding-calculator__content {
+		flex-wrap: nowrap;
+	}
 }
 
-main .onboarding-calculator__content-left picture {
-	display: flex;
+main .onboarding-calculator__content-left {
+	flex: 0 0 auto;
+	order: 1;
+	width: 100%;
+	text-align: center;
 }
 
 main .onboarding-calculator__content-left img {
@@ -41,8 +44,16 @@ main .onboarding-calculator__content-left img {
 }
 
 main .onboarding-calculator__content-right {
+	flex: 0 0 auto;
+	width: 100%;
 	order: 0;
 	padding: 3em 25px 0;
+}
+
+@media screen and (min-width: 992px) {
+	main .onboarding-calculator__content-right {
+		padding: 3em 0 0;
+	}
 }
 
 main .onboarding-calculator__content-right p:first-child {
@@ -51,7 +62,8 @@ main .onboarding-calculator__content-right p:first-child {
 
 main .onboarding-calculator__content-right .form-cta-container {
 	display: flex;
-	gap: 17px;
+	flex-wrap: wrap;
+	gap: 10px;
 	justify-content: center;
 	margin-top: 40px;
 }
@@ -123,6 +135,10 @@ main .onboarding-calculator #organisation-form .tab:last-child   {
 	padding-right: 0;
 }
 
+main .onboarding-calculator #individual-form .tab {
+	align-items: flex-end;
+}
+
 main .onboarding-calculator .tab .field-item {
 	width: 100%;
 	position: relative;
@@ -145,8 +161,9 @@ main .onboarding-calculator .tab .field-item.invalid input[type="number"]{
 
 main .onboarding-calculator .error {
 	position: absolute;
-    font-size: 12px;
-    color: red;
+	font-size: 12px;
+	line-height: 1.2;
+	color: red;
 }
 
 main .onboarding-calculator .tab .field-item input[type="range"]{
@@ -371,7 +388,6 @@ main .onboarding-calculator .result__wrapper .result__right .button {
 	line-height: 20px;
 	transition: all 0.3s;
 	font-family: var(--body-font-family);
-	margin-left: -14px;
 }
 
 main .onboarding-calculator .result__wrapper .result__right {
@@ -400,9 +416,15 @@ main .onboarding-calculator .result__wrapper .result__right-text p {
 main .onboarding-calculator .result__wrapper .calc-result {
 	color: var(--theme-shade5);
 	font-weight: bold;
-	font-size: 60px;
+	font-size: 44px;
 	line-height: 48px;
 	margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 400px) {
+	main .onboarding-calculator .result__wrapper .calc-result {
+		font-size: 60px;
+	}
 }
 
 main .onboarding-calculator .result__wrapper .calc-result.fs-sm {
@@ -503,7 +525,8 @@ main .onboarding-calculator .icon-dollar::before {
 
 	main .onboarding-calculator__content-right {
 		order: 1;
-		flex: 0 0 55%;
+		flex: 0 0 auto;
+		width: calc(55% - 20px);
 		display: flex;
 		flex-wrap: wrap;
 		align-content: center;
@@ -551,21 +574,20 @@ main .onboarding-calculator .icon-dollar::before {
 	}
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 782px) {
 	main .onboarding-calculator__content {
 		justify-content: space-between;
-		column-gap: 40px;
-		padding-top: 20px;
+		padding: 20px;
 	}
 
 	main .onboarding-calculator__content-left {
 		order: 0;
-		flex: 0 0 33.3333%;
+		width: calc(45% - 20px);
+		text-align: left;
 	}
 
 	main .onboarding-calculator__content-left img {
 		border-bottom-left-radius: 12px;
-		min-width: 315px;
 	}
 
 	main .onboarding-calculator button {
@@ -575,4 +597,38 @@ main .onboarding-calculator .icon-dollar::before {
 
 main .onboarding-calculator .hidden {
 	display: none;
+}
+
+@media screen and (min-width: 900px) {
+	.blog-post main .onboarding-calculator__content-left {
+		order: 1;
+		width: 100%;
+		text-align: center;
+	}
+
+	.blog-post  main .onboarding-calculator__content-right {
+		order: 0;
+		width: 100%;
+	}
+
+	.blog-post  main .onboarding-calculator .result__wrapper .calc-result {
+		font-size: 44px;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.blog-post  main .onboarding-calculator__content-left {
+		order: 0;
+		width: calc(45% - 20px);
+		text-align: left;
+	}
+
+	.blog-post  main .onboarding-calculator__content-right {
+		order: 1;
+		width: calc(55% - 20px);
+	}
+
+	.blog-post  main .onboarding-calculator .result__wrapper .calc-result {
+		font-size: 60px;
+	}
 }

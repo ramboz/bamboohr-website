@@ -126,7 +126,13 @@ main .image.left img {
   border-radius: 15px;
   box-shadow: var(--box-shadow-2);
   box-sizing: border-box;
-  max-width: 400px;
+}
+
+@media (min-width: 600px) {
+  main .image.right img,
+  main .image.left img {
+    max-width: 400px;
+  }
 }
 
 .image.background-highlight {
@@ -200,4 +206,10 @@ main .image p:not(:only-child):nth-child(1) {
   .integrations main .image-wrapper {
     margin-bottom: 95px;
   }
+}
+
+.blog-post main .image.right,
+.blog-post main .image.left {
+  text-align: center;
+  float: none;
 }
