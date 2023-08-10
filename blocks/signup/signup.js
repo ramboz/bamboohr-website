@@ -27,13 +27,11 @@ export default async function decorate(block) {
   const step0FormContainer = document.createElement('div');
   step0FormContainer.classList.add('form-container');
   step0FormContainer.innerHTML = mktoForm;
-  loadFormAndChilipiper(formParams, () => {
-    console.log('loadFormAndChilipiper');
-  });
 
   const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
   loadCSS(`${cssBase}/blocks/form/form.css`, null);
 
+  let el;
   const paragraphs = block.querySelectorAll('p');
   paragraphs.forEach( paragraph => {
     if(paragraph.innerText === '[signup-step1]' || paragraph.innerText === '[signup-step2]') {
@@ -44,6 +42,7 @@ export default async function decorate(block) {
     switch(paragraph.innerText) {
       case '[signup-step1]':
         paragraph.innerHTML = step0FormContainer.outerHTML;
+        el = paragraph;
         break;
       case '[signup-step2]':
         paragraph.innerHTML = 'signup step2';
@@ -53,4 +52,12 @@ export default async function decorate(block) {
         break;
     }
   });
+
+  const { step } = el.parentElement.parentElement.dataset;
+  console.log(step);
+   loadFormAndChilipiper(formParams, () => {
+     const { step } = el.parentElement.parentElement.dataset;
+     console.log(step);
+     // nextStep(el, block, true, step);
+   });
 }
