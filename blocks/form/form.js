@@ -689,7 +689,7 @@ const fillFormFields = (prefillFields, formEl) => {
  * Set form values
  * @param {object} formEl - The form element to set values for
  */
-const setFormValues = async (formEl) => {
+export const setFormValues = async (formEl) => {
   const prefillFields = await getPrefillFields();
   if (prefillFields) fillFormFields(prefillFields, formEl);
   return prefillFields;
