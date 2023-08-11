@@ -1,6 +1,6 @@
 import { createElem, getMetadata, loadCSS } from "../../scripts/scripts.js";
 import { widgetAnalyticsTrack } from "../onboarding-calculator/onboarding-calculator.js";
-import { loadFormAndChilipiper, readMarketoParams } from "../form/form.js";
+import { loadFormAndChilipiper, readMarketoParams, setFormValues } from "../form/form.js";
 
 const formUrl = '/website-marketing-resources/offboarding-calculator-form.json';
 
@@ -266,12 +266,17 @@ function resetForm(block) {
   forms.forEach(form => {
     form.reset();
     if (form.classList.contains('mktoForm')) {
+      // autofill the marketo form
+      setFormValues(form);
       const formSubmitBtn = form.querySelector('.mktoButton');
       if (formSubmitBtn?.getAttribute('disabled')) {
         const formSubmitText = getMetadata('form-submit-text');
         if (formSubmitText) formSubmitBtn.textContent = formSubmitText;
         formSubmitBtn.removeAttribute('disabled');
       }
+    } else if (form.id === 'template-form') {
+      // auto fill template form
+      setFormValues(form);
     }
   });
 
@@ -527,6 +532,8 @@ function templateSelectHandler(event, block) {
   emailFormat = getTemplatesTone(selectedForm);
 
   formTemplate.innerHTML = generateInputs(selectedForm);
+  // auto fill template form
+  setFormValues(formTemplate);
 
   formTemplate.setAttribute('data-form', selectedTemplate);
   addToSessionStorage(selectedTemplate, selectedForm);
@@ -597,8 +604,10 @@ export default async function decorate(block) {
     const shortCode = getShortCode(children[i]);
     if( i === 0 ) {
       children[i].classList = 'gen-select offboarding-generator-step offboarding-generator-step--active';
-    } else if (shortCode === '[generator-marketo-lead-gen]' ||
-               shortCode === '[generator-lead-gen]') {
+    } else if (shortCode === '[generator-marketo-lead-gen]') {
+      children[i].classList = 'gen-form offboarding-generator-step offboarding-generator-step--overlay-hybrid';
+      gateStep = i;
+    } else if (shortCode === '[generator-lead-gen]') {
       children[i].classList = 'gen-lead-gen offboarding-generator-step offboarding-generator-step--overlay';
       gateStep = i;
     } else if (shortCode === '[generator-download-confirmed]') {
