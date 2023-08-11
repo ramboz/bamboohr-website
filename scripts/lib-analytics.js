@@ -283,6 +283,7 @@ export async function analyticsTrackFormSubmission(element, additionalXdmFields 
   const rawFormId = element.id.replace('mktoForm_', '');
   const uniqueHashElement = element.querySelector('input[name="UniqueSubmissionHash"]');
   const formUniqueSubmissionHash = uniqueHashElement?.value || '';
+  const formDemoRequested = document.querySelector('input[name="Demo_Request_Checkbox__c"]').checked ? 1 : 0;
   
   // eslint-disable-next-line no-undef
   return alloy('sendEvent', {
@@ -293,6 +294,7 @@ export async function analyticsTrackFormSubmission(element, additionalXdmFields 
         form: {
           formId: rawFormId,
           formComplete: 1,
+		  demoRequested: formDemoRequested,
 		  businessSize: formBusinessSize,
 		  uniqueSubmissionHash: formUniqueSubmissionHash
         },
