@@ -380,6 +380,9 @@ function leadGenTemplate(el) {
   form.insertAdjacentHTML('beforeend', btnHTML);
   el.append(form);
 
+  // auto fill the lead gen form
+  setFormValues(form);
+
   const closeTextHTML = '<div class="overlay-close"><button data-close class="button">No, I do not want my bespoke template CLOSE</button></div>';
   el.insertAdjacentHTML('beforeend', closeTextHTML);
 }
