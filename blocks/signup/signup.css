@@ -25,8 +25,58 @@ main .signup h1 {
 }
 
 @media (min-width: 900px) {
-  main .signup ul {
+  main .signup .content-col ul {
     column-count: 2;
     column-gap: 20px;
   }
+}
+
+main .signup .signup-step2-form .form-input-wrapper {
+  position: relative;
+}
+
+main .signup .signup-step2-form .error-message {
+  position: absolute;
+  left: 2px;
+  font-size: 10px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 13px;
+  color: var(--color-2-shade-5);
+  margin-top: 2px;
+}
+
+main .signup .signup-step2-form .domain-value-container {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 28px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--color-gray-9);
+}
+
+main .signup .signup-step2-form .signup-password-reqs {
+  margin: 20px 0;
+}
+
+main .signup .signup-step2-form .signup-password-reqs p {
+  font-family: var(--body-font-family);
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-gray-9);
+}
+
+main .signup .signup-step2-form .signup-password-reqs .signup-password-list {
+  margin-top: 10px;
+}
+
+main .signup .signup-step2-form .signup-password-reqs .signup-password-list li {
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 4px;
+  color: var(--color-gray-9);
+}
+
+main .signup .signup-step2-form .signup-password-reqs .signup-password-list li.valid {
+  text-decoration: line-through;
 }

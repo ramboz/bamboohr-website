@@ -171,6 +171,7 @@ function createButton(fd) {
   if (fd.Field === 'submit') {
     button.addEventListener('click', async (event) => {
       event.preventDefault();
+      console.log('clicked on submit button');
       button.setAttribute('disabled', '');
       const payload = await submitForm(button.closest('form'));
 
