@@ -279,6 +279,7 @@ export default function decorate(block) {
 
   const formParams = {formUrl: null, formId: null, successUrl: null, chilipiper: null, floatingLabel: false };
   formParams.formId = '2137';
+  // formParams.floatingLabel = true;
   const mktoForm = `<form id="mktoForm_${formParams.formId}"></form>`;
   const step1FormContainer = document.createElement('div');
   step1FormContainer.classList.add('form-container');
