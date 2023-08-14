@@ -76,6 +76,7 @@
   /* body */
   --body-background-color: var(--color-white);
   --body-alt-background-color: var(--color-gray-10);
+  /* Lato font added as a fallback for in-app content */
   --body-font-family: 'Red Hat Text', 'Red Hat Text-fallback', 'Lato';
   --body-font-weight: 400;
   --body-color: var(--color-gray-12);
@@ -83,6 +84,7 @@
   /* headings */
   --heading-font-weight: 700;
   --heading-color: var(--color-gray-12);
+  /* Lato font added as a fallback for in-app content */
   --heading-font-family: 'Fira Sans', 'Fira Sans-fallback', 'Lato';
 
   /* wrappers/containers sizes */
