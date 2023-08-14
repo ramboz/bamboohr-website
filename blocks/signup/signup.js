@@ -120,12 +120,6 @@ async function step2Submit(event, inputElements) {
   });
 
   if (errorMessages.every(errorMessage => errorMessage.condition === false)) {
-    // console.log('signup step2 form submitting');
-    // const postData = new URLSearchParams();
-    // postData.append('siteDomain', domainValue);
-    // postData.append('password1', passwordValue);
-    // postData.append('agree', checkboxChecked);
-
     console.log('Form data:');
     const entries = formData.entries();
     let entry = entries.next();
@@ -167,7 +161,7 @@ function buildStep2Form() {
     { type: 'hidden', id: 'email', name: 'email', value: '' },
     { type: 'checkbox', id: 'agree', name: 'agree', label: 'I agree to the&nbsp;<a href="https://www.bamboohr.com/legal/terms-of-service" rel="noopener" target="_blank">terms and conditions</a>', value: 'accept', required: true },
     { type: 'honeypot', id: 'workEmail', name: 'workEmail' },
-    { type: 'honeypot', id: 'website', name: 'website' }
+    { type: 'honeypot', id: 'Website', name: 'Website' }
   ];
 
   const inputElements = [];
