@@ -67,7 +67,7 @@ async function step2Submit(event, inputElements) {
   });
 
   const workEmailInput = sanitizedInputElements.find(elem => elem.id === 'workEmail');
-  const websiteInput = sanitizedInputElements.find(elem => elem.id === 'website');
+  const websiteInput = sanitizedInputElements.find(elem => elem.id === 'Website');
   const isWorkEmailEmpty = workEmailInput.value.trim() === '';
   const isWebsiteEmpty = websiteInput.value.trim() === '';
 
