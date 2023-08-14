@@ -289,7 +289,6 @@ export default function decorate(block) {
 
   const step2Form = buildStep2Form();
 
-  let el;
   const paragraphs = block.querySelectorAll('p');
   paragraphs.forEach( paragraph => {
     if(paragraph.innerText === '[signup-step1]' || paragraph.innerText === '[signup-step2]') {
@@ -300,7 +299,6 @@ export default function decorate(block) {
     switch(paragraph.innerText) {
       case '[signup-step1]':
         paragraph.replaceWith(step1FormContainer);
-        el = paragraph;
         break;
       case '[signup-step2]':
         paragraph.replaceWith(step2Form);
@@ -312,7 +310,7 @@ export default function decorate(block) {
   });
 
    loadFormAndChilipiper(formParams, () => {
-     const { step } = el.parentElement.parentElement.dataset;
+     const { step } = step1FormContainer.parentElement.parentElement.dataset;
      console.log(step);
 
     const marketoEmailField = step1FormContainer.querySelector(`#mktoForm_${formParams.formId} [name="Email"]`);
