@@ -989,11 +989,11 @@ export function loadFormAndChilipiper(params, successCallback = null) {
       let timeoutSuccessUrl = '';
       function redirectTimeout() {
         return setTimeout(() => {
-      setTimeout(() =>{
-      analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
-      },1000);
-      window.location.href = timeoutSuccessUrl; 
-    }, '240000');
+          setTimeout(() =>{
+          analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
+          },1000);
+          window.location.href = timeoutSuccessUrl; 
+        }, '240000');
       }
       //  eslint-disable-next-line
       window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});
