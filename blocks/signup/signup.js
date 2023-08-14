@@ -128,7 +128,7 @@ async function step2Submit(event, inputElements) {
   });
 
   if (errorMessages.every(errorMessage => errorMessage.condition === false)) {
-    console.log('Form data:');
+    console.log(formData);
     const entries = formData.entries();
     let entry = entries.next();
     while (!entry.done) {
