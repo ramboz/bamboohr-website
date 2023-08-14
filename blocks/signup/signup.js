@@ -50,12 +50,13 @@ async function validateDomain(domain) {
 
 async function step2Submit(event, inputElements) {
   event.preventDefault();
-
   const step2Form = event.target;
 
   // Sanitize all input fields
   const sanitizedInputElements = inputElements.map(input => ({
-    ...input,
+    input,
+    id: input.id,
+    name: input.name,
     value: sanitizeInput(input.value)
   }));
 
@@ -75,16 +76,18 @@ async function step2Submit(event, inputElements) {
     return;
   }
 
-  const passwordInput = sanitizedInputElements.find(elem => elem.id === 'password1');
-  const passwordValue = passwordInput.value.trim();
+  const sanitizedPasswordInput = sanitizedInputElements.find(elem => elem.id === 'password1');
+  const passwordInput = sanitizedPasswordInput.input;
+  const passwordValue = sanitizedPasswordInput.value.trim();
 
-  const domainInput = sanitizedInputElements.find(elem => elem.id === 'siteDomain');
-  const domainValue = domainInput.value.trim();
+  const sanitizedDomainInput = sanitizedInputElements.find(elem => elem.id === 'siteDomain');
+  const domainInput = sanitizedDomainInput.input;
+  const domainValue = sanitizedDomainInput.value.trim();
 
   const domainValidationResult = await validateDomain(domainValue);
   const domainTaken = domainValidationResult === true;
 
-  const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree');
+  const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree').input;
   const checkboxChecked = checkboxInput.checked;
 
   const errorMessages = [
@@ -97,9 +100,10 @@ async function step2Submit(event, inputElements) {
   ];
 
   sanitizedInputElements.forEach(input => {
-    const existingError = input.parentNode.querySelector('.error-message');
+    const inputEl = input.input;
+    const existingError = inputEl.parentNode?.querySelector('.error-message');
     if (existingError) {
-      input.parentNode.removeChild(existingError);
+      inputEl.parentNode.removeChild(existingError);
     }
   });
 
@@ -107,15 +111,19 @@ async function step2Submit(event, inputElements) {
     const { condition, input, message } = errorMessage;
 
     if (condition) {
-      const existingError = input.parentNode.querySelector('.error-message');
+      const existingError = input.parentNode?.querySelector('.error-message');
+
       if (!existingError) input.parentNode.classList.add('error');
       if (!existingError && message !== '') {
         const errorElem = createElem('p', 'error-message');
         errorElem.textContent = message;
-        input.insertAdjacentHTML('afterend', errorElem.outerHTML);
+        input.parentNode.insertBefore(errorElem, input.nextSibling);
       }
     } else {
-      input.parentNode.classList.remove('error');
+      const sameInputConditions = errorMessages.filter(msg => msg.input === input && msg.condition);
+      if (sameInputConditions.length === 0) {
+        input.parentNode.classList.remove('error');
+      }
     }
   });
 
