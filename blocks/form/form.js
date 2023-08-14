@@ -988,12 +988,12 @@ export function loadFormAndChilipiper(params, successCallback = null) {
     loadScript('https://js.chilipiper.com/marketing.js', () => {
       let timeoutSuccessUrl = '';
       function redirectTimeout() {
-        return setTimeout(() => {
-      setTimeout(() =>{
-      analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
-      },1000);
-      window.location.href = timeoutSuccessUrl; 
-    }, '240000');
+    //     return setTimeout(() => {
+    //   setTimeout(() =>{
+    //   analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
+    //   },1000);
+    //   window.location.href = timeoutSuccessUrl; 
+    // }, '240000');
       }
       //  eslint-disable-next-line
       window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});
