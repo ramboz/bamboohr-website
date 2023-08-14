@@ -15,7 +15,8 @@
 @import 'backgrounds.css';
 @import 'themes/base.css';
 
-:root{
+:root,
+:host {
   --section-padding: 54px;
   --section-padding-mobile: 30px;
 }
@@ -1612,11 +1613,11 @@ table td {
 }
 
 table thead {
-  background-color: var(--theme-tint5);
+  background-color: #3D8617;
 }
 
 table thead th {
-  border-color: var(--theme-tint5);
+  border-color: #3D8617;
 }
 
 table tbody th {

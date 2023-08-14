@@ -1,0 +1,32 @@
+.customer-day .form.has-content .form-col {
+    grid-column: span 5/-1;
+}
+.customer-day .form.has-content .content-col {
+    grid-column: span 6;
+}
+.customer-day .content-col h4 {
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 38px;
+    color: var(--color-1-shade-10);
+    margin: 0;
+}
+.customer-day table {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.customer-day .table td.has-popup-data {
+    padding-left: 20px;
+    cursor: pointer;
+    text-decoration: underline var(--color-1-shade-5);
+    text-decoration-style: dotted;
+}
+
+.customer-day .table td.has-popup-data::before {
+    background: none;
+    width: 0;
+    height: 0;
+    left: 0;
+    top: 0;
+}

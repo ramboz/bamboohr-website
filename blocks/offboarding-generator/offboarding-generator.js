@@ -1,6 +1,6 @@
 import { createElem, getMetadata, loadCSS } from "../../scripts/scripts.js";
 import { widgetAnalyticsTrack } from "../onboarding-calculator/onboarding-calculator.js";
-import { loadFormAndChilipiper, readMarketoParams } from "../form/form.js";
+import { loadFormAndChilipiper, readMarketoParams, setFormValues } from "../form/form.js";
 
 const formUrl = '/website-marketing-resources/offboarding-calculator-form.json';
 
@@ -156,7 +156,7 @@ function createInput(id, type, label, placeholder, value, tooltip, options, data
   if (type !== "select") {
     inputHtml = `<div class="field_item">
       <label for="${id}">${label} ${tooltip ? createTooltip(tooltip) : ''}</label>
-      <input type="${type}" id="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} ${type === 'date' ? 'min="2023-01-01" max="2050-12-31"' : ''} ${type === 'datetime-local' ? 'min="2023-01-01T00:00" max="2050-12-31T23:30"' : ''} ${data ? `data-field="${data}"` : ""} ${mandatory ? 'required' : ''}/>
+      <input type="${type}" id="${id}" name="${id}" ${placeholder ? `placeholder="${placeholder}"` : '' } ${value ? `value="${value}"` : ''} ${type === 'date' ? 'min="2023-01-01" max="2050-12-31"' : ''} ${type === 'datetime-local' ? 'min="2023-01-01T00:00" max="2050-12-31T23:30"' : ''} ${data ? `data-field="${data}"` : ""} ${mandatory ? 'required' : ''}/>
       <div class="error hidden"></div>
       </div>`;
   }
@@ -266,12 +266,17 @@ function resetForm(block) {
   forms.forEach(form => {
     form.reset();
     if (form.classList.contains('mktoForm')) {
+      // autofill the marketo form
+      setFormValues(form);
       const formSubmitBtn = form.querySelector('.mktoButton');
       if (formSubmitBtn?.getAttribute('disabled')) {
         const formSubmitText = getMetadata('form-submit-text');
         if (formSubmitText) formSubmitBtn.textContent = formSubmitText;
         formSubmitBtn.removeAttribute('disabled');
       }
+    } else if (form.id === 'template-form') {
+      // auto fill template form
+      setFormValues(form);
     }
   });
 
@@ -374,6 +379,9 @@ function leadGenTemplate(el) {
   const btnHTML = '<button data-step="3" class="button button--teal" id="download-confirmed">Copy to Clipboard</button>';
   form.insertAdjacentHTML('beforeend', btnHTML);
   el.append(form);
+
+  // auto fill the lead gen form
+  setFormValues(form);
 
   const closeTextHTML = '<div class="overlay-close"><button data-close class="button">No, I do not want my bespoke template CLOSE</button></div>';
   el.insertAdjacentHTML('beforeend', closeTextHTML);
@@ -527,6 +535,8 @@ function templateSelectHandler(event, block) {
   emailFormat = getTemplatesTone(selectedForm);
 
   formTemplate.innerHTML = generateInputs(selectedForm);
+  // auto fill template form
+  setFormValues(formTemplate);
 
   formTemplate.setAttribute('data-form', selectedTemplate);
   addToSessionStorage(selectedTemplate, selectedForm);
@@ -597,8 +607,10 @@ export default async function decorate(block) {
     const shortCode = getShortCode(children[i]);
     if( i === 0 ) {
       children[i].classList = 'gen-select offboarding-generator-step offboarding-generator-step--active';
-    } else if (shortCode === '[generator-marketo-lead-gen]' ||
-               shortCode === '[generator-lead-gen]') {
+    } else if (shortCode === '[generator-marketo-lead-gen]') {
+      children[i].classList = 'gen-form offboarding-generator-step offboarding-generator-step--overlay-hybrid';
+      gateStep = i;
+    } else if (shortCode === '[generator-lead-gen]') {
       children[i].classList = 'gen-lead-gen offboarding-generator-step offboarding-generator-step--overlay';
       gateStep = i;
     } else if (shortCode === '[generator-download-confirmed]') {

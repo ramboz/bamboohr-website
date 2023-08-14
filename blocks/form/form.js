@@ -684,7 +684,7 @@ const fillFormFields = (prefillFields, formEl) => {
  * Set form values
  * @param {object} formEl - The form element to set values for
  */
-const setFormValues = async (formEl) => {
+export const setFormValues = async (formEl) => {
   const prefillFields = await getPrefillFields();
   if (prefillFields) fillFormFields(prefillFields, formEl);
   return prefillFields;
@@ -984,11 +984,11 @@ export function loadFormAndChilipiper(params, successCallback = null) {
       let timeoutSuccessUrl = '';
       function redirectTimeout() {
         return setTimeout(() => {
-      setTimeout(() =>{
-      analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
-      },1000);
-      window.location.href = timeoutSuccessUrl; 
-    }, '240000');
+          setTimeout(() =>{
+          analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
+          },1000);
+          window.location.href = timeoutSuccessUrl; 
+        }, '240000');
       }
       //  eslint-disable-next-line
       window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});
@@ -1014,7 +1014,8 @@ export function loadFormAndChilipiper(params, successCallback = null) {
       // eslint-disable-next-line default-case
       switch (action) {
       case "booked":	
-        cpEvent = {"cpBookedEvent": 1};
+        cpEvent = {"cpBookedEvent": 1};		
+		window.dataLayer.push({event: "cpBookedEvent"});
         break;
       case "phone-selected":
         cpEvent = {"cpCalledEvent": 1};

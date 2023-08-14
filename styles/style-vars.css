@@ -1,4 +1,5 @@
-:root {
+:root,
+:host {
   --color-1-tint-15: #edffc8;
   --color-1-tint-10: #d5fe81;
   --color-1-tint-5: #9fe12d;
@@ -75,14 +76,18 @@
   /* body */
   --body-background-color: var(--color-white);
   --body-alt-background-color: var(--color-gray-10);
-  --body-font-family: 'Red Hat Text', 'Red Hat Text-fallback';
+
+  /* Lato font added as a fallback for in-app content */
+  --body-font-family: 'Red Hat Text', 'Red Hat Text-fallback', 'Lato';
   --body-font-weight: 400;
   --body-color: var(--color-gray-12);
 
   /* headings */
   --heading-font-weight: 700;
   --heading-color: var(--color-gray-12);
-  --heading-font-family: 'Fira Sans', 'Fira Sans-fallback';
+  
+  /* Lato font added as a fallback for in-app content */
+  --heading-font-family: 'Fira Sans', 'Fira Sans-fallback', 'Lato';
 
   /* wrappers/containers sizes */
   --width-xs: 560px;
