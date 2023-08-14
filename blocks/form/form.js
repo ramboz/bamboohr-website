@@ -973,11 +973,11 @@ export function loadFormAndChilipiper(params, successCallback = null) {
 		  savePrefillCookie(formEl);
 
           /* Delay success page redirection for 1 second to ensure adobe tracking pixel fires */
-          setTimeout(() => {
-            if (successUrl && !chilipiper) window.location.href = successUrl;
-            if (successUrl && chilipiper && chilipiper === 'content-download-form' && !demoCheckbox.checked) window.location.href = successUrl;
-            if (typeof successCallback === 'function') successCallback();
-          },1000);
+          // setTimeout(() => {
+          //   if (successUrl && !chilipiper) window.location.href = successUrl;
+          //   if (successUrl && chilipiper && chilipiper === 'content-download-form' && !demoCheckbox.checked) window.location.href = successUrl;
+          //   if (typeof successCallback === 'function') successCallback();
+          // },1000);
 
           return false;
         });
