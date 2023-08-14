@@ -110,15 +110,10 @@ function constructPayload(form) {
   return payload;
 }
 
-function sanitizeInput(input) {
-  const output = input
-    .replace(/<script[^>]*?>.*?<\/script>/gi, '')
-    // eslint-disable-next-line no-useless-escape
-    .replace(/<[\/\!]*?[^<>]*?>/gi, '')
-    .replace(/<style[^>]*?>.*?<\/style>/gi, '')
-    .replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '')
-    .replace(/&nbsp;/g, '');
-  return output;
+export function sanitizeInput(input) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(input, 'text/html');
+  return doc.body.textContent || '';
 }
 
 async function submitForm(form) {
@@ -171,7 +166,6 @@ function createButton(fd) {
   if (fd.Field === 'submit') {
     button.addEventListener('click', async (event) => {
       event.preventDefault();
-      console.log('clicked on submit button');
       button.setAttribute('disabled', '');
       const payload = await submitForm(button.closest('form'));
 

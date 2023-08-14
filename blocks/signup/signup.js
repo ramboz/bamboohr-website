@@ -1,9 +1,10 @@
 import { createElem, loadCSS } from "../../scripts/scripts.js";
-import { loadFormAndChilipiper } from "../form/form.js";
+import { loadFormAndChilipiper, sanitizeInput } from "../form/form.js";
 import { findSplitSubType } from "../columns/columns.js";
 
 const validatePassword = (password) => (
   password.length >= 8 &&
+  password.length < 124 &&
   /[A-Z]/.test(password) &&
   /[a-z]/.test(password) &&
   /[0-9]/.test(password)
@@ -50,16 +51,40 @@ async function validateDomain(domain) {
 async function step2Submit(event, inputElements) {
   event.preventDefault();
 
-  const passwordInput = inputElements.find(elem => elem.id === 'password1');
+  const step2Form = event.target;
+
+  // Sanitize all input fields
+  const sanitizedInputElements = inputElements.map(input => ({
+    ...input,
+    value: sanitizeInput(input.value)
+  }));
+
+  const formData = new FormData(step2Form);
+
+  // Append sanitized values to FormData
+  sanitizedInputElements.forEach(input => {
+    formData.append(input.name, input.value);
+  });
+
+  const workEmailInput = sanitizedInputElements.find(elem => elem.id === 'workEmail');
+  const websiteInput = sanitizedInputElements.find(elem => elem.id === 'website');
+  const isWorkEmailEmpty = workEmailInput.value.trim() === '';
+  const isWebsiteEmpty = websiteInput.value.trim() === '';
+
+  if (!isWorkEmailEmpty || !isWebsiteEmpty) {
+    return;
+  }
+
+  const passwordInput = sanitizedInputElements.find(elem => elem.id === 'password1');
   const passwordValue = passwordInput.value.trim();
 
-  const domainInput = inputElements.find(elem => elem.id === 'siteDomain');
+  const domainInput = sanitizedInputElements.find(elem => elem.id === 'siteDomain');
   const domainValue = domainInput.value.trim();
 
   const domainValidationResult = await validateDomain(domainValue);
   const domainTaken = domainValidationResult === true;
 
-  const checkboxInput = inputElements.find(elem => elem.id === 'agree');
+  const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree');
   const checkboxChecked = checkboxInput.checked;
 
   const errorMessages = [
@@ -71,7 +96,7 @@ async function step2Submit(event, inputElements) {
     { condition: !checkboxChecked, input: checkboxInput, message: '' }
   ];
 
-  inputElements.forEach(input => {
+  sanitizedInputElements.forEach(input => {
     const existingError = input.parentNode.querySelector('.error-message');
     if (existingError) {
       input.parentNode.removeChild(existingError);
@@ -95,9 +120,37 @@ async function step2Submit(event, inputElements) {
   });
 
   if (errorMessages.every(errorMessage => errorMessage.condition === false)) {
-    console.log('form submitted');
-    const step2Form = event.target;
-    // step2Form.submit(); 
+    // console.log('signup step2 form submitting');
+    // const postData = new URLSearchParams();
+    // postData.append('siteDomain', domainValue);
+    // postData.append('password1', passwordValue);
+    // postData.append('agree', checkboxChecked);
+
+    console.log('Form data:');
+    const entries = formData.entries();
+    let entry = entries.next();
+    while (!entry.done) {
+      const [name, value] = entry.value;
+      console.log(`${name}: ${value}`);
+      entry = entries.next();
+    }
+  
+
+    // try {
+    //   const response = await fetch('https://www.bamboolocal.com/post_signup.php', {
+    //     method: 'POST',
+    //     body: formData
+    //   });
+    //   if (!response.ok) {
+    //     console.error('Error submitting signup step2 form:', response.statusText);
+    //   }
+    //   // Handle success or redirect as needed
+    //   const responseData = await response.json(); // Parse the JSON response, if applicable
+    //   console.log('Form submitted successfully:', responseData);
+
+    // } catch (error) {
+    //   console.error('An error occurred:', error);
+    // }
   }
 }
 
@@ -113,6 +166,8 @@ function buildStep2Form() {
     { type: 'password', id: 'password1', name: 'password1', label: 'Password', value: '', required: true },
     { type: 'hidden', id: 'email', name: 'email', value: '' },
     { type: 'checkbox', id: 'agree', name: 'agree', label: 'I agree to the&nbsp;<a href="https://www.bamboohr.com/legal/terms-of-service" rel="noopener" target="_blank">terms and conditions</a>', value: 'accept', required: true },
+    { type: 'honeypot', id: 'workEmail', name: 'workEmail' },
+    { type: 'honeypot', id: 'website', name: 'website' }
   ];
 
   const inputElements = [];
@@ -135,11 +190,19 @@ function buildStep2Form() {
       inputWrapper.appendChild(label);
     }
     
-    input.type = fieldConfig.type;
-    input.id = fieldConfig.id;
-    input.name = fieldConfig.name;
-    if (fieldConfig.value) input.value = fieldConfig.value;
-    input.required = fieldConfig.required;
+    if (fieldConfig.type === 'honeypot') {
+      input.type = 'text';
+      input.id = fieldConfig.id;
+      input.name = fieldConfig.name;
+      input.tabIndex = -1;
+      input.style.display = 'none';
+    } else {
+      input.type = fieldConfig.type;
+      input.id = fieldConfig.id;
+      input.name = fieldConfig.name;
+      if (fieldConfig.value) input.value = fieldConfig.value;
+      input.required = fieldConfig.required;
+    }
     inputWrapper.appendChild(input);
 
     if (fieldConfig.id === 'siteDomain') {
@@ -249,6 +312,12 @@ export default function decorate(block) {
    loadFormAndChilipiper(formParams, () => {
      const { step } = el.parentElement.parentElement.dataset;
      console.log(step);
+
+    const marketoEmailField = step1FormContainer.querySelector(`#mktoForm_${formParams.formId} [name="Email"]`);
+    const emailValue = marketoEmailField ? marketoEmailField.value : '';
+
+    const customEmailField = step2Form.querySelector('[name="email"]');
+    if (customEmailField) customEmailField.value = emailValue;
      // nextStep(el, block, true, step);
    });
 }
