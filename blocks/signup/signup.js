@@ -48,9 +48,23 @@ async function validateDomain(domain) {
   }
 }
 
+function showStep(stepNumber) {
+  const steps = document.querySelectorAll('.signup-step');
+  steps.forEach(step => {
+    step.classList.remove('active');
+  });
+
+  const stepToShow = document.querySelector(`.signup-step[data-step="${stepNumber}"]`);
+  if (stepToShow) {
+    stepToShow.classList.add('active');
+  }
+}
+
 async function step2Submit(event, inputElements) {
   event.preventDefault();
   const step2Form = event.target;
+
+  const currentStep = step2Form.closest('.signup-step').dataset.step;
 
   // Sanitize all input fields
   const sanitizedInputElements = inputElements.map(input => ({
@@ -138,21 +152,24 @@ async function step2Submit(event, inputElements) {
     }
   
 
-    // try {
-    //   const response = await fetch('https://www.bamboolocal.com/post_signup.php', {
-    //     method: 'POST',
-    //     body: formData
-    //   });
-    //   if (!response.ok) {
-    //     console.error('Error submitting signup step2 form:', response.statusText);
-    //   }
-    //   // Handle success or redirect as needed
-    //   const responseData = await response.json(); // Parse the JSON response, if applicable
-    //   console.log('Form submitted successfully:', responseData);
+    try {
+      const response = await fetch('https://www.bamboolocal.com/post_signup.php', {
+        method: 'POST',
+        body: formData
+      });
+      if (!response.ok) {
+        console.error('Error submitting signup step2 form:', response.statusText);
+      }
+      // Handle success or redirect as needed
+      const responseData = await response.json(); // Parse the JSON response, if applicable
+      // eslint-disable-next-line no-console
+      console.log('Form submitted successfully:', responseData);
+      showStep(currentStep + 1)
 
-    // } catch (error) {
-    //   console.error('An error occurred:', error);
-    // }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('An error occurred:', error);
+    }
   }
 }
 
@@ -331,14 +348,10 @@ export default function decorate(block) {
   });
 
    loadFormAndChilipiper(formParams, () => {
-     const { step } = step1FormContainer.parentElement.parentElement.dataset;
-     console.log(step);
-
+    const currentStep = step1FormContainer.closest('.signup-step').dataset.step;
 
     const step1Form = step1FormContainer.querySelector(`#mktoForm_${formParams.formId}`);
     const step1FormValues = getStep1FormValues(step1Form);
-    console.log(step1FormValues);
-
     const hiddenFields = step2Form.querySelectorAll('input[type="hidden"]');
     const fieldMappings = {
       'firstName': 'FirstName',
@@ -349,16 +362,14 @@ export default function decorate(block) {
       'phone': 'Phone',
     };
     
+    // fill hidden fields value with step1 form values
     hiddenFields.forEach(hiddenField => {
       const fieldName = fieldMappings[hiddenField.name] || hiddenField.name;
-      console.log(fieldName);
       if (step1FormValues[fieldName]) {
         hiddenField.value = step1FormValues[fieldName];
-        console.log(hiddenField);
-        console.log(step1FormValues[fieldName]);
       }
     });
-    console.log(hiddenFields);
-     // nextStep(el, block, true, step);
+    
+    showStep(currentStep + 1);
    });
 }
