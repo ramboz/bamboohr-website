@@ -384,7 +384,7 @@ main .section > .card-wrapper {
 
 .columns.image-shadow div:not(.wistia) img:first-of-type,
 .columns.image-shadow .wistia picture:first-of-type {
-  box-shadow: var(--box-shadow-2);
+  box-shadow: var(--theme-shadow2-shade5);
 }
 
 .columns.app-links .img-col p:last-child {
