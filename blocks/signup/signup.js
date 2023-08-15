@@ -52,7 +52,8 @@ function showStep(steps, stepNumber) {
   console.log(steps);
   steps.forEach(step => {
     step.classList.remove('active');
-    if (step.dataset.step === stepNumber){
+    const stepToShow = parseInt(step.dataset.step, 10);
+    if (stepToShow === stepNumber){
       console.log(step);
       step.classList.add('active');
     }
@@ -347,7 +348,7 @@ export default function decorate(block) {
   });
 
    loadFormAndChilipiper(formParams, () => {
-    const currentStep = step1FormContainer.closest('.signup-step').dataset.step;
+    const currentStep = 1;
 
     const step1Form = step1FormContainer.querySelector(`#mktoForm_${formParams.formId}`);
     const step1FormValues = getStep1FormValues(step1Form);
@@ -368,7 +369,6 @@ export default function decorate(block) {
         hiddenField.value = step1FormValues[fieldName];
       }
     });
-    console.log(currentStep);
     showStep(steps, currentStep + 1);
    });
 }
