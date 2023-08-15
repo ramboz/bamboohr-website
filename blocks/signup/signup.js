@@ -49,14 +49,14 @@ async function validateDomain(domain) {
 }
 
 function showStep(steps, stepNumber) {
+  console.log(steps);
   steps.forEach(step => {
     step.classList.remove('active');
+    if (step.dataset.step === stepNumber){
+      console.log(step);
+      step.classList.add('active');
+    }
   });
-
-  const stepToShow = document.querySelector(`.signup-step[data-step="${stepNumber}"]`);
-  if (stepToShow) {
-    stepToShow.classList.add('active');
-  }
 }
 
 async function step2Submit(event, inputElements) {
@@ -368,7 +368,7 @@ export default function decorate(block) {
         hiddenField.value = step1FormValues[fieldName];
       }
     });
-    
+    console.log(currentStep);
     showStep(steps, currentStep + 1);
    });
 }
