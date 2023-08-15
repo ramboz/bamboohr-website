@@ -463,30 +463,38 @@ function mktoFormReset(form, moreStyles) {
     el.remove();
   });
 
-  if (formEl.querySelector('[name="Country"]')) {
-    formEl.querySelector('[name="Country"]').addEventListener('change', () => {
+  const countrySelect = formEl.querySelector('[name="Country"]');
+  if (countrySelect) {
+    const gdprInputHandler = () => {
+      if (currentForm.querySelector('.form-msg') && currentForm.querySelectorAll('.mktoField.mktoInvalid').length === 0 && currentForm.querySelectorAll('.mktoLogicalField.mktoInvalid').length === 0) {
+        currentForm.querySelector('.form-msg').remove();
+      }
+    };
+
+    countrySelect.addEventListener('change', () => {
       document.querySelectorAll('.mktoAsterix').forEach((el) => {
         el.remove();
       });
       document.querySelectorAll('.mktoHtmlText').forEach((el) => {
         el.removeAttribute('style');
       });
-      if (currentForm.querySelector('[name="Disclaimer__c"]')) {
-        const gdprLabel = currentForm.querySelector('[for="Disclaimer__c"]');
-        const gdprInput = currentForm.querySelector('[id="Disclaimer__c"]');
-        gdprInput.id = `Disclaimer__c_${rando}`;
-        gdprInput.nextElementSibling.htmlFor = `Disclaimer__c_${rando}`;
-        gdprLabel.htmlFor = `Disclaimer__c_${rando}`;
+      
+      const gdprInput = currentForm.querySelector('[name="Disclaimer__c"]');
+      if (gdprInput) {
+        const uniqueId = `Disclaimer__c_${rando}`;
+        const gdprLabel = currentForm.querySelector('[for="Disclaimer__c"]') 
+          || currentForm.querySelector(`[for="${uniqueId}"]`);
+
+        gdprInput.id = uniqueId;
+        gdprInput.nextElementSibling.htmlFor = uniqueId;
+        gdprLabel.htmlFor = uniqueId;
         gdprLabel.removeAttribute('style');
         gdprInput.parentElement.classList.add('form-checkbox-option');
         gdprLabel.parentElement.classList.add('form-checkbox-flex');
         gdprLabel.firstElementChild.classList.add('form-gdpr-text');
 
-        currentForm.querySelector('[name="Disclaimer__c"]').addEventListener('input', () => {
-          if (currentForm.querySelector('.form-msg') && currentForm.querySelectorAll('.mktoField.mktoInvalid').length === 0 && currentForm.querySelectorAll('.mktoLogicalField.mktoInvalid').length === 0) {
-            currentForm.querySelector('.form-msg').remove();
-          }
-        });
+        gdprInput.removeEventListener('input', gdprInputHandler);
+        gdprInput.addEventListener('input', gdprInputHandler);
       }
     });
   }
