@@ -1,5 +1,5 @@
 import { createElem, loadCSS } from "../../scripts/scripts.js";
-import { loadFormAndChilipiper, sanitizeInput } from "../form/form.js";
+import { loadFormAndChilipiper, sanitizeInput, cleanPhone, capitalizeKeys } from "../form/form.js";
 import { findSplitSubType } from "../columns/columns.js";
 
 const validatePassword = (password) => (
@@ -57,7 +57,7 @@ async function step2Submit(event, inputElements) {
     input,
     id: input.id,
     name: input.name,
-    value: sanitizeInput(input.value)
+    value: input.name === 'phone' ? cleanPhone(input.value) : sanitizeInput(input.value)
   }));
 
   const formData = new FormData(step2Form);
@@ -166,7 +166,12 @@ function buildStep2Form() {
   const fields = [
     { type: 'text', id: 'siteDomain', name: 'siteDomain', label: 'BambooHR Domain', value: '', required: true },
     { type: 'password', id: 'password1', name: 'password1', label: 'Password', value: '', required: true },
-    { type: 'hidden', id: 'email', name: 'email', value: '' },
+    { type: 'hidden', id: 'firstName', name: 'firstName'},
+    { type: 'hidden', id: 'lastName', name: 'lastName' },
+    { type: 'hidden', id: 'email', name: 'email' },
+    { type: 'hidden', id: 'companyName', name: 'companyName' },
+    { type: 'hidden', id: 'jobTitle', name: 'jobTitle' },
+    { type: 'hidden', id: 'phone', name: 'phone' },
     { type: 'checkbox', id: 'agree', name: 'agree', label: 'I agree to the&nbsp;<a href="https://www.bamboohr.com/legal/terms-of-service" rel="noopener" target="_blank">terms and conditions</a>', value: 'accept', required: true },
     { type: 'honeypot', id: 'workEmail', name: 'workEmail' },
     { type: 'honeypot', id: 'Website', name: 'Website' }
@@ -259,10 +264,15 @@ function buildStep2Form() {
   return formContainer;
 }
 
-function getAllFormValues(formElement) {
-  const formData = new FormData(formElement);
+/**
+ * get step1 form values
+ * @param {object} formElement - form element
+ */
+function getStep1FormValues(formElement) {
+  let formData = new FormData(formElement);
   const formValues = {};
 
+  formData = capitalizeKeys(formData);
   formData.forEach((value, name) => {
     formValues[name] = value;
   });
@@ -325,15 +335,22 @@ export default function decorate(block) {
      const { step } = step1FormContainer.parentElement.parentElement.dataset;
      console.log(step);
 
-    const marketoEmailField = step1FormContainer.querySelector(`#mktoForm_${formParams.formId} [name="Email"]`);
-    const emailValue = marketoEmailField ? marketoEmailField.value : '';
-
-    const customEmailField = step2Form.querySelector('[name="email"]');
-    if (customEmailField) customEmailField.value = emailValue;
 
     const step1Form = step1FormContainer.querySelector(`#mktoForm_${formParams.formId}`);
-    const step1FormValues = getAllFormValues(step1Form);
+    const step1FormValues = getStep1FormValues(step1Form);
     console.log(step1FormValues);
+
+    const hiddenFields = step2Form.querySelectorAll('input[type="hidden"]');
+    const fieldMappings = {
+      'companyName': 'Company',
+      'jobTitle': 'Title',
+    };
+    
+    hiddenFields.forEach(hiddenField => {
+      const fieldName = fieldMappings[hiddenField.name] || hiddenField.name;
+      if (step1FormValues[fieldName]) hiddenField.value = step1FormValues[fieldName];
+    });
+    console.log(hiddenFields);
      // nextStep(el, block, true, step);
    });
 }

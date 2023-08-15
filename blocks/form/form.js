@@ -584,7 +584,7 @@ function addExpansionProduct() {
  * @param {object} obj - The object to capitalize keys for
  * @returns {object} The object with capitalized keys
  */
-const capitalizeKeys = (obj) => {
+export const capitalizeKeys = (obj) => {
   const modifiedObj = {};
   Object.keys(obj).forEach((key) => {
 	const modifiedKey = key.charAt(0).toUpperCase() + key.slice(1);
@@ -792,6 +792,18 @@ function addUtmParametersFromSessionStorage() {
 	  input.value = inputNames[name];
 	}
   });
+}
+
+/**
+ * @param string $num phone number
+ * @return string
+ */
+export function cleanPhone(num) {
+  if (num.length === 10 && /[0-9]{10}/.test(num)) {
+    const arr = num.match(/.{1,3}/g);
+    return `${arr[0]}-${arr[1]}-${arr[2]}${arr[3] || ''}`;
+  }
+  return num;
 }
 
 export function loadFormAndChilipiper(params, successCallback = null) {
