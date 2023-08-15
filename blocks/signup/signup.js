@@ -48,8 +48,7 @@ async function validateDomain(domain) {
   }
 }
 
-function showStep(stepNumber) {
-  const steps = document.querySelectorAll('.signup-step');
+function showStep(steps, stepNumber) {
   steps.forEach(step => {
     step.classList.remove('active');
   });
@@ -370,6 +369,6 @@ export default function decorate(block) {
       }
     });
     
-    showStep(currentStep + 1);
+    showStep(steps, currentStep + 1);
    });
 }
