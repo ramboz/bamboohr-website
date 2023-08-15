@@ -269,15 +269,15 @@ function buildStep2Form() {
  * @param {object} formElement - form element
  */
 function getStep1FormValues(formElement) {
-  let formData = new FormData(formElement);
+  const formData = new FormData(formElement);
   const formValues = {};
 
-  formData = capitalizeKeys(formData);
   formData.forEach((value, name) => {
     formValues[name] = value;
   });
+  const capitalizedFormValues = capitalizeKeys(formValues);
 
-  return formValues;
+  return capitalizedFormValues;
 }
 
 export default function decorate(block) {
