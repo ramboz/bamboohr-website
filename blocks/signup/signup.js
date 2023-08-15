@@ -348,7 +348,12 @@ export default function decorate(block) {
     
     hiddenFields.forEach(hiddenField => {
       const fieldName = fieldMappings[hiddenField.name] || hiddenField.name;
-      if (step1FormValues[fieldName]) hiddenField.value = step1FormValues[fieldName];
+      console.log(fieldName);
+      if (step1FormValues[fieldName]) {
+        hiddenField.value = step1FormValues[fieldName];
+        console.log(hiddenField);
+        console.log(step1FormValues[fieldName]);
+      }
     });
     console.log(hiddenFields);
      // nextStep(el, block, true, step);
