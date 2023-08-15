@@ -259,6 +259,17 @@ function buildStep2Form() {
   return formContainer;
 }
 
+function getAllFormValues(formElement) {
+  const formData = new FormData(formElement);
+  const formValues = {};
+
+  formData.forEach((value, name) => {
+    formValues[name] = value;
+  });
+
+  return formValues;
+}
+
 export default function decorate(block) {
   let splitVals = null;
   [...block.classList].some((c) => {
@@ -319,6 +330,10 @@ export default function decorate(block) {
 
     const customEmailField = step2Form.querySelector('[name="email"]');
     if (customEmailField) customEmailField.value = emailValue;
+
+    const step1Form = step1FormContainer.querySelector(`#mktoForm_${formParams.formId}`);
+    const step1FormValues = getAllFormValues(step1Form);
+    console.log(step1FormValues);
      // nextStep(el, block, true, step);
    });
 }
