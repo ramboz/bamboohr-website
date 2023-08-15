@@ -1,8 +1,11 @@
 .countdown-clock-wrapper {
     color: var(--color-white);
     background-color: var(--color-1-shade-10);
-    max-width: 100%!important;
-    padding: 0!important;
+}
+
+main .section .countdown-clock-wrapper {
+    max-width: 100%;
+    padding: 0;
 }
 
 .countdown-clock {
