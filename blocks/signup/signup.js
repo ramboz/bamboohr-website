@@ -1,5 +1,5 @@
 import { createElem, loadCSS } from "../../scripts/scripts.js";
-import { loadFormAndChilipiper, sanitizeInput, cleanPhone, capitalizeKeys } from "../form/form.js";
+import { loadFormAndChilipiper, sanitizeInput, cleanPhone } from "../form/form.js";
 import { findSplitSubType } from "../columns/columns.js";
 
 const validatePassword = (password) => (
@@ -275,9 +275,8 @@ function getStep1FormValues(formElement) {
   formData.forEach((value, name) => {
     formValues[name] = value;
   });
-  const capitalizedFormValues = capitalizeKeys(formValues);
 
-  return capitalizedFormValues;
+  return formValues;
 }
 
 export default function decorate(block) {
@@ -342,8 +341,12 @@ export default function decorate(block) {
 
     const hiddenFields = step2Form.querySelectorAll('input[type="hidden"]');
     const fieldMappings = {
+      'firstName': 'FirstName',
+      'lastName': 'LastName',
+      'email': 'Email',
       'companyName': 'Company',
       'jobTitle': 'Title',
+      'phone': 'Phone',
     };
     
     hiddenFields.forEach(hiddenField => {

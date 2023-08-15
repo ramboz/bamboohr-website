@@ -584,7 +584,7 @@ function addExpansionProduct() {
  * @param {object} obj - The object to capitalize keys for
  * @returns {object} The object with capitalized keys
  */
-export const capitalizeKeys = (obj) => {
+const capitalizeKeys = (obj) => {
   const modifiedObj = {};
   Object.keys(obj).forEach((key) => {
 	const modifiedKey = key.charAt(0).toUpperCase() + key.slice(1);
