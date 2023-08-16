@@ -473,7 +473,7 @@ export default function decorate(block) {
     'companyName': 'Company',
     'jobTitle': 'Title',
     'phone': 'Phone',
-    'maxEmployee': 'Employees_Text__c',
+    'maxEmployees': 'Employees_Text__c',
     'country': 'Country',
   };
   
@@ -482,7 +482,7 @@ export default function decorate(block) {
     const fieldName = fieldMappings[hiddenField.name] || hiddenField.name;
     if (step1FormValues[fieldName]) {
       hiddenField.value = step1FormValues[fieldName];
-      if (hiddenField.name === 'maxEmployee') {
+      if (hiddenField.name === 'maxEmployees') {
         const [, max] = step1FormValues[fieldName].split('-');
         hiddenField.value = parseInt(max, 10);;
       }
