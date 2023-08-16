@@ -1,9 +1,30 @@
+@keyframes loader-circle-fade-delay {
+  0%, 80%, 100% {
+    transform: scale(0);
+ }
+
+ 40% {
+    transform: scale(1);
+ }
+}
+
+main .signup .signup-step {
+  display: none;
+}
+
+main .signup .signup-step.active {
+  display: grid;
+}
+
 @media (min-width: 900px) {
   main .signup .signup-step {
-    display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 40px;
     align-items: start;
+  }
+
+  main .signup .signup-step.active {
+    display: grid;
   }
 
   main .signup .signup-step .column7 {
@@ -79,4 +100,82 @@ main .signup .signup-step2-form .signup-password-reqs .signup-password-list li {
 
 main .signup .signup-step2-form .signup-password-reqs .signup-password-list li.valid {
   text-decoration: line-through;
+}
+
+main .signup .signup-step .modal-wrapper .modal {
+  max-width: 790px;
+  text-align: center;
+}
+
+main .signup .signup-step .modal .modal-content h4{
+  font-family: var(--heading-font-family);
+  font-weight: 900;
+  font-size: 26px;
+  line-height: 32px;
+  color: var(--color-1-shade-5);
+}
+
+@media (min-width: 1200px) {
+  main .signup .signup-step .modal-wrapper .modal .modal-content h4{
+    font-size: 30px;
+    line-height: 38px;
+  }
+}
+
+main .signup .signup-step .modal .modal-content strong {
+  font-family: var(--body-font-family);
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 30px;
+  margin: 20px 0 0;
+}
+
+main .signup .signup-step .dot-loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+main .signup .signup-step .dot-loader {
+  margin: 0 auto;
+  text-align: center;
+}
+
+main .signup .signup-step .dot-loader .dot {
+  animation: loader-circle-fade-delay 1.8s infinite ease-in-out;
+  animation-fill-mode: both;
+  background-color: #a6a5a6;
+  border-radius: 100%;
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  margin: 0 10px;
+}
+
+main .signup .signup-step .dot-loader .dot:nth-child(1) {
+  animation-delay: -0.6s;
+}
+
+main .signup .signup-step .dot-loader .dot:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+main .signup .signup-step a.success-login-btn {
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  max-width: 360px;
+  margin: 0 auto;
+  background-color: var(--color-1-shade-5);
+  color: var(--color-white);
+  text-align: center;
+  padding: 17px 25px;
+  width: 100%;
+  display: block;
+  font-size: 18px;
+  line-height: 22px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  margin-top: 30px;
 }

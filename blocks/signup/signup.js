@@ -1,6 +1,28 @@
 import { createElem, loadCSS } from "../../scripts/scripts.js";
 import { loadFormAndChilipiper, sanitizeInput, cleanPhone } from "../form/form.js";
 import { findSplitSubType } from "../columns/columns.js";
+import { getDefaultEmbed } from "../embed/embed.js";
+
+const createDotLoader = () => {
+  const loaderContainer = createElem('div', 'dot-loader-container');
+  const leftLoader = createElem('div', 'dot-loader');
+  const rightLoader = createElem('div', 'dot-loader');
+
+  const createDot = () => createElem('div', 'dot');
+
+  Array.from({ length: 3 }).forEach(() => {
+    leftLoader.appendChild(createDot());
+    rightLoader.appendChild(createDot());
+  });
+
+  const copy = createElem('div', 'typ-title2');
+  copy.textContent = 'Firing up the thingamajig...';
+
+  loaderContainer.append(leftLoader, copy, rightLoader);
+
+  return loaderContainer;
+};
+
 
 const validatePassword = (password) => (
   password.length >= 8 &&
@@ -48,7 +70,8 @@ async function validateDomain(domain) {
   }
 }
 
-function showStep(steps, stepNumber) {
+function showStep(stepNumber) {
+  const steps = document.querySelectorAll('.signup-step');
   console.log(steps);
   steps.forEach(step => {
     step.classList.remove('active');
@@ -141,6 +164,11 @@ async function step2Submit(event, inputElements) {
     }
   });
 
+  showStep(parseInt(currentStep, 10) + 1);
+  const successModal = document.getElementById('signup-success-modal');
+  successModal.classList.add('visible');
+  document.body.classList.add('modal-open');
+
   if (errorMessages.every(errorMessage => errorMessage.condition === false)) {
     console.log(formData);
     const entries = formData.entries();
@@ -150,7 +178,6 @@ async function step2Submit(event, inputElements) {
       console.log(`${name}: ${value}`);
       entry = entries.next();
     }
-  
 
     try {
       const response = await fetch('https://www.bamboolocal.com/post_signup.php', {
@@ -160,11 +187,28 @@ async function step2Submit(event, inputElements) {
       if (!response.ok) {
         console.error('Error submitting signup step2 form:', response.statusText);
       }
+      const loderContainer = successModal.querySelector('.dot-loader-container');
+      if (response.errors && response.errors.length > 0) {
+        const errorMsgEl = createElem('p', 'signup-submit-error');
+        errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
+        loderContainer.replaceWith(errorMsgEl);
+      }
       // Handle success or redirect as needed
-      const responseData = await response.json(); // Parse the JSON response, if applicable
+      const responseData = await response.json();
       // eslint-disable-next-line no-console
       console.log('Form submitted successfully:', responseData);
-      showStep(currentStep + 1)
+      const loginBtn = createElem('a', 'Button');
+      loginBtn.textContent = 'We\'re Ready!';
+      loginBtn.href = response.goTo;
+      console.log(response.goTo);
+
+      if (response.openAlso !== undefined) {
+        loginBtn.addEventListener('click', () => {
+          window.open(response.openAlso, '_blank');
+        });
+        loginBtn.setAttribute('data-openalso', '1');
+      }
+
 
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -306,11 +350,37 @@ export default function decorate(block) {
   const steps = block.querySelectorAll(':scope > div');
   steps.forEach((step, i) => {
     step.dataset.step = i + 1;
-    step.classList = 'signup-step';
+    step.classList.add('signup-step');
+    if (step.dataset.step === '1') step.classList.add('active');
 
     const cols = [...step.children];
     if(cols?.length === 2 && splitVals) {
       cols.forEach((col, n) => { col.classList.add(`column${splitVals[n]}`); });
+    }
+
+    // success step
+    if (step.dataset.step === '3') {
+      const step3Content = step.firstElementChild;
+      const wrapper = createElem('div', 'modal-wrapper');
+      wrapper.id = 'signup-success-modal';
+
+      const modal = createElem('div', 'modal');
+      const modalContent = createElem('div', 'modal-content');
+
+      if (step3Content) modalContent.appendChild(step3Content);
+      modal.append(modalContent);
+      wrapper.append(modal);
+      step.appendChild(wrapper);
+
+      const a = step.querySelector('a');
+      if (a?.href?.includes('wistia')) {
+        const url = new URL(a.href.replace(/\/$/, ''));
+        const embed = getDefaultEmbed(url);
+        a.outerHTML = embed;
+      }
+
+      const dotLoader = createDotLoader();
+      modalContent.append(dotLoader);
     }
   });
 
@@ -342,7 +412,6 @@ export default function decorate(block) {
         paragraph.replaceWith(step2Form);
         break;
       default:
-        // do nothing
         break;
     }
   });
@@ -369,6 +438,6 @@ export default function decorate(block) {
         hiddenField.value = step1FormValues[fieldName];
       }
     });
-    showStep(steps, currentStep + 1);
+    showStep(currentStep + 1);
    });
 }
