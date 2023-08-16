@@ -133,7 +133,12 @@ async function step2Submit(event, inputElements) {
 
   // Append sanitized values to FormData
   sanitizedInputElements.forEach(input => {
-    formData.append(input.name, input.value);
+    const existingField = formData.get(input.name);
+    if (existingField === null) {
+      formData.append(input.name, input.value);
+    } else {
+      formData.set(input.name, input.value);
+    }
   });
 
   const workEmailInput = sanitizedInputElements.find(elem => elem.id === 'workEmail');
