@@ -228,7 +228,7 @@ async function step2Submit(event, inputElements) {
       }
       // eslint-disable-next-line no-console
       console.log('Form submitted successfully:', responseData);
-      const loginBtn = createElem('a', 'Button');
+      const loginBtn = createElem('a', 'success-login-btn');
       loginBtn.textContent = 'We\'re Ready!';
       loginBtn.href = responseData.goTo;
       loderContainer.replaceWith(loginBtn);
@@ -482,7 +482,7 @@ export default function decorate(block) {
       hiddenField.value = step1FormValues[fieldName];
       if (hiddenField.name === 'maxEmployees') {
         const [, max] = step1FormValues[fieldName].split('-');
-        hiddenField.value = parseInt(max, 10);;
+        hiddenField.value = parseInt(max, 10);
       }
     }
   });
