@@ -284,16 +284,24 @@ export function decorateIcons(element) {
   // prepare for forward compatible icon handling
   replaceIcons(element);
 
+  const missingIcons = [
+    'sync-direction-both',
+    'sync-direction-right',
+    'sync-direction-left'
+  ];
+
   const fetchBase = window.hlx.serverPath;
   element.querySelectorAll('span.icon').forEach((span) => {
     const iconName = span.className.split('icon-')[1];
-    fetch(`${fetchBase}${window.hlx.codeBasePath}/icons/${iconName}.svg`).then((resp) => {
-      if (resp.status === 200)
-        resp.text().then((svg) => {
-          const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
-          parent.innerHTML = svg;
-        });
-    });
+    if (!missingIcons.includes(iconName)) {
+      fetch(`${fetchBase}${window.hlx.codeBasePath}/icons/${iconName}.svg`).then((resp) => {
+        if (resp.status === 200)
+          resp.text().then((svg) => {
+            const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
+            parent.innerHTML = svg;
+          });
+      });
+    }
   });
 }
 
@@ -1060,24 +1068,30 @@ export async function readIndex(indexPath, collectionCache) {
   window.pageIndex = window.pageIndex || {};
   if (!window.pageIndex[collectionCache]) {
     const resp = await fetch(indexPath);
-    const json = await resp.json();
-    const lookup = {};
-    json.data.forEach((row) => {
-      lookup[row.path] = row;
-    });
-    let { data } = json;
-    // Include/read live-demo-webinars when reading webinars index.
-    if (indexPath.startsWith('/webinars/query-index')) {
-      const resp2 = await fetch('/live-demo-webinars/query-index.json?sheet=default');
-      const json2 = await resp2.json();
-
-      json2.data.forEach((row) => {
+    if (resp.status === 200) {
+      const json = await resp.json();
+      const lookup = {};
+      json.data.forEach((row) => {
         lookup[row.path] = row;
       });
+      let { data } = json;
+      // Include/read live-demo-webinars when reading webinars index.
+      if (indexPath.startsWith('/webinars/query-index')) {
+        const resp2 = await fetch('/live-demo-webinars/query-index.json?sheet=default');
+        const json2 = await resp2.json();
 
-      data = [...json.data, ...json2.data];
+        json2.data.forEach((row) => {
+          lookup[row.path] = row;
+        });
+
+        data = [...json.data, ...json2.data];
+      }
+      window.pageIndex[collectionCache] = { data, lookup };
+    } else {
+      const lookup = {};
+      const data = [];
+      window.pageIndex[collectionCache] = { data, lookup };
     }
-    window.pageIndex[collectionCache] = { data, lookup };
   }
 }
 

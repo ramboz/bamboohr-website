@@ -1,0 +1,149 @@
+main .icons > div > div {
+  display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: stretch;
+}
+
+@media (min-width: 1200px) {
+  main .icons > div > div {
+    width: 83.33%;
+    margin: 0 auto;
+  }
+}
+
+main .icons > div > div picture {
+  flex: 0 0 auto;
+  width: 25%;
+  text-align: center;
+  padding: 0 20px;
+  margin-bottom: 22px;
+}
+
+@media (min-width: 600px) {
+  main .icons > div > div picture {
+    margin-bottom: 38px;
+  }
+
+  main .icons > div > div picture img {
+    max-height: 97px;
+  }
+}
+
+@media (min-width: 900px) {
+  main .icons > div > div picture img {
+    max-height: 124px;
+  }
+}
+
+@media (min-width: 1800px) {
+  main .icons > div > div picture {
+    margin-bottom: 58px;
+  }
+
+  main .icons > div > div picture img {
+    max-height: 148px;
+  }
+}
+
+main .icons.icons-library ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+	flex-flow: row wrap;
+	justify-content: start;
+	align-items: start;
+	align-content: stretch;
+}
+
+main .icons.icons-library ul li {
+  flex: 0 0 auto;
+  width: 50%;
+  padding: 0 8px;
+  margin-bottom: 12px;
+  border-top: 1px solid var(--theme-base);
+}
+
+main .icon-name {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+main p.icon-name {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+main .icon-count {
+  text-align: right;
+}
+
+main p.icon-size {
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+@media (min-width: 900px) {
+  main .icons.icons-library ul li {
+    margin-bottom: 16px;
+  }
+}
+
+@media (min-width: 900px) {
+  main .icons.icons-library ul li {
+    width: 33.33%;
+  }
+}
+
+@media (min-width: 1200px) {
+  main .icons.icons-library ul li {
+    width: 14%;
+  }
+
+  main .icons.optimized.icons-library ul li {
+    width: 10%;
+  }
+}
+
+main .icons.icons-library:not(.optimized) ul li .icon-image,
+main .icons.icons-library ul li picture {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background-color: var(--color-white);
+  border-radius: 1rem;
+  height: 6rem;
+  padding: 10px;
+}
+
+main .icons.icons-library ul li picture {
+  height: 4rem;
+}
+
+main .icons.icons-library:not(.optimized) ul li .bamboohr-white,
+main .icons.icons-library ul li .bamboohr-white picture {
+  background-color: var(--theme-shade10);
+}
+
+main .icons.icons-library ul li .icon-image {
+  color: var(--theme-base);
+}
+
+@media (min-width: 600px) {
+  main .icons.icons-library ul li picture {
+    padding: 6px 24px;
+  }
+}
+
+main .icons.icons-library ul li picture img {
+  max-height: 100%;
+}
+
+main .icons.icons-library.no-box-shadow ul li picture {
+  box-shadow: none;
+  border-radius: 0;
+}
