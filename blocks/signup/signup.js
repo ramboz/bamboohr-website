@@ -221,23 +221,23 @@ async function step2Submit(event, inputElements) {
         console.error('Error submitting signup step2 form:', response.statusText);
       }
       const loderContainer = successModal.querySelector('.dot-loader-container');
-      if (response.errors && response.errors.length > 0) {
+      const responseData = await response.json();
+      
+      if (responseData.errors && responseData.errors.length > 0) {
         const errorMsgEl = createElem('p', 'signup-submit-error');
         errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
         loderContainer.replaceWith(errorMsgEl);
       }
-      // Handle success or redirect as needed
-      const responseData = await response.json();
       // eslint-disable-next-line no-console
       console.log('Form submitted successfully:', responseData);
       const loginBtn = createElem('a', 'Button');
       loginBtn.textContent = 'We\'re Ready!';
-      loginBtn.href = response.goTo;
-      console.log(response.goTo);
+      loginBtn.href = responseData.goTo;
+      console.log(responseData.goTo);
 
-      if (response.openAlso !== undefined) {
+      if (responseData.openAlso !== undefined) {
         loginBtn.addEventListener('click', () => {
-          window.open(response.openAlso, '_blank');
+          window.open(responseData.openAlso, '_blank');
         });
         loginBtn.setAttribute('data-openalso', '1');
       }
@@ -459,28 +459,28 @@ export default function decorate(block) {
     }
   });
 
-   loadFormAndChilipiper(formParams, () => {
-    const currentStep = 1;
+  loadFormAndChilipiper(formParams, () => {
+  const currentStep = 1;
 
-    const step1Form = step1FormContainer.querySelector(`#mktoForm_${formParams.formId}`);
-    const step1FormValues = getStep1FormValues(step1Form);
-    const hiddenFields = step2Form.querySelectorAll('input[type="hidden"]');
-    const fieldMappings = {
-      'firstName': 'FirstName',
-      'lastName': 'LastName',
-      'email': 'Email',
-      'companyName': 'Company',
-      'jobTitle': 'Title',
-      'phone': 'Phone',
-    };
-    
-    // fill hidden fields value with step1 form values
-    hiddenFields.forEach(hiddenField => {
-      const fieldName = fieldMappings[hiddenField.name] || hiddenField.name;
-      if (step1FormValues[fieldName]) {
-        hiddenField.value = step1FormValues[fieldName];
-      }
-    });
-    showStep(currentStep + 1);
-   });
+  const step1Form = step1FormContainer.querySelector(`#mktoForm_${formParams.formId}`);
+  const step1FormValues = getStep1FormValues(step1Form);
+  const hiddenFields = step2Form.querySelectorAll('input[type="hidden"]');
+  const fieldMappings = {
+    'firstName': 'FirstName',
+    'lastName': 'LastName',
+    'email': 'Email',
+    'companyName': 'Company',
+    'jobTitle': 'Title',
+    'phone': 'Phone',
+  };
+  
+  // fill hidden fields value with step1 form values
+  hiddenFields.forEach(hiddenField => {
+    const fieldName = fieldMappings[hiddenField.name] || hiddenField.name;
+    if (step1FormValues[fieldName]) {
+      hiddenField.value = step1FormValues[fieldName];
+    }
+  });
+  showStep(currentStep + 1);
+  });
 }
