@@ -197,7 +197,6 @@ async function step2Submit(event, inputElements) {
   });
 
   if (errorMessages.every(errorMessage => errorMessage.condition === false)) {
-    console.log(formData);
 
     // show step 3
     showStep(parseInt(currentStep, 10) + 1);
@@ -205,13 +204,16 @@ async function step2Submit(event, inputElements) {
     successModal.classList.add('visible');
     document.body.classList.add('modal-open');
 
-    const urlSearchParams = new URLSearchParams(formData);
-    const urlEncodedData = urlSearchParams.toString();
+    const urlEncodedData = new URLSearchParams(formData);
+    console.log(urlEncodedData);
 
     try {
       const response = await fetch('https://www.bamboolocal.com/post_signup.php', {
         method: 'POST',
-        body: urlEncodedData
+        body: urlEncodedData,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
       });
       if (!response.ok) {
         // eslint-disable-next-line no-console
