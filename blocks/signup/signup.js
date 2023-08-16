@@ -205,10 +205,13 @@ async function step2Submit(event, inputElements) {
     successModal.classList.add('visible');
     document.body.classList.add('modal-open');
 
+    const urlSearchParams = new URLSearchParams(formData);
+    const urlEncodedData = urlSearchParams.toString();
+
     try {
       const response = await fetch('https://www.bamboolocal.com/post_signup.php', {
         method: 'POST',
-        body: formData
+        body: urlEncodedData
       });
       if (!response.ok) {
         // eslint-disable-next-line no-console
@@ -219,25 +222,24 @@ async function step2Submit(event, inputElements) {
 
       console.log(responseData);
 
-      // if (responseData.errors && responseData.errors.length > 0) {
-      //   const errorMsgEl = createElem('p', 'signup-submit-error');
-      //   errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
-      //   loderContainer.replaceWith(errorMsgEl);
-      // }
-      // // eslint-disable-next-line no-console
-      // console.log('Form submitted successfully:', responseData);
-      // const loginBtn = createElem('a', 'Button');
-      // loginBtn.textContent = 'We\'re Ready!';
-      // loginBtn.href = responseData.goTo;
-      // console.log(responseData.goTo);
+      if (responseData.errors && responseData.errors.length > 0) {
+        const errorMsgEl = createElem('p', 'signup-submit-error');
+        errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
+        loderContainer.replaceWith(errorMsgEl);
+      }
+      // eslint-disable-next-line no-console
+      console.log('Form submitted successfully:', responseData);
+      const loginBtn = createElem('a', 'Button');
+      loginBtn.textContent = 'We\'re Ready!';
+      loginBtn.href = responseData.goTo;
+      console.log(responseData.goTo);
 
-      // if (responseData.openAlso !== undefined) {
-      //   loginBtn.addEventListener('click', () => {
-      //     window.open(responseData.openAlso, '_blank');
-      //   });
-      //   loginBtn.setAttribute('data-openalso', '1');
-      // }
-
+      if (responseData.openAlso !== undefined) {
+        loginBtn.addEventListener('click', () => {
+          window.open(responseData.openAlso, '_blank');
+        });
+        loginBtn.setAttribute('data-openalso', '1');
+      }
 
     } catch (error) {
       // eslint-disable-next-line no-console
