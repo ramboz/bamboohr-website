@@ -222,25 +222,27 @@ async function step2Submit(event, inputElements) {
       }
       const loderContainer = successModal.querySelector('.dot-loader-container');
       const responseData = await response.json();
-      
-      if (responseData.errors && responseData.errors.length > 0) {
-        const errorMsgEl = createElem('p', 'signup-submit-error');
-        errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
-        loderContainer.replaceWith(errorMsgEl);
-      }
-      // eslint-disable-next-line no-console
-      console.log('Form submitted successfully:', responseData);
-      const loginBtn = createElem('a', 'Button');
-      loginBtn.textContent = 'We\'re Ready!';
-      loginBtn.href = responseData.goTo;
-      console.log(responseData.goTo);
 
-      if (responseData.openAlso !== undefined) {
-        loginBtn.addEventListener('click', () => {
-          window.open(responseData.openAlso, '_blank');
-        });
-        loginBtn.setAttribute('data-openalso', '1');
-      }
+      console.log(responseData);
+
+      // if (responseData.errors && responseData.errors.length > 0) {
+      //   const errorMsgEl = createElem('p', 'signup-submit-error');
+      //   errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
+      //   loderContainer.replaceWith(errorMsgEl);
+      // }
+      // // eslint-disable-next-line no-console
+      // console.log('Form submitted successfully:', responseData);
+      // const loginBtn = createElem('a', 'Button');
+      // loginBtn.textContent = 'We\'re Ready!';
+      // loginBtn.href = responseData.goTo;
+      // console.log(responseData.goTo);
+
+      // if (responseData.openAlso !== undefined) {
+      //   loginBtn.addEventListener('click', () => {
+      //     window.open(responseData.openAlso, '_blank');
+      //   });
+      //   loginBtn.setAttribute('data-openalso', '1');
+      // }
 
 
     } catch (error) {
