@@ -221,8 +221,6 @@ async function step2Submit(event, inputElements) {
       const loderContainer = successModal.querySelector('.dot-loader-container');
       const responseData = await response.json();
 
-      console.log(responseData);
-
       if (responseData.errors && responseData.errors.length > 0) {
         const errorMsgEl = createElem('p', 'signup-submit-error');
         errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
@@ -233,7 +231,7 @@ async function step2Submit(event, inputElements) {
       const loginBtn = createElem('a', 'Button');
       loginBtn.textContent = 'We\'re Ready!';
       loginBtn.href = responseData.goTo;
-      console.log(responseData.goTo);
+      loderContainer.replaceWith(loginBtn);
 
       if (responseData.openAlso !== undefined) {
         loginBtn.addEventListener('click', () => {
