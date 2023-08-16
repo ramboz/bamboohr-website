@@ -209,16 +209,10 @@ async function step2Submit(event, inputElements) {
     successModal.classList.add('visible');
     document.body.classList.add('modal-open');
 
-    const urlEncodedData = new URLSearchParams(formData);
-    console.log(urlEncodedData);
-
     try {
       const response = await fetch('https://www.bamboolocal.com/post_signup.php', {
         method: 'POST',
-        body: urlEncodedData,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        body: formData,
       });
       if (!response.ok) {
         // eslint-disable-next-line no-console
@@ -275,9 +269,10 @@ function buildStep2Form() {
     { type: 'hidden', id: 'companyName', name: 'companyName' },
     { type: 'hidden', id: 'jobTitle', name: 'jobTitle' },
     { type: 'hidden', id: 'phone', name: 'phone' },
-    { type: 'checkbox', id: 'agree', name: 'agree', label: 'I agree to the&nbsp;<a href="https://www.bamboohr.com/legal/terms-of-service" rel="noopener" target="_blank">terms and conditions</a>', value: 'accept', required: true },
+    { type: 'hidden', id: 'maxEmployees', name: 'maxEmployees' },
     { type: 'honeypot', id: 'workEmail', name: 'workEmail' },
-    { type: 'honeypot', id: 'Website', name: 'Website' }
+    { type: 'honeypot', id: 'Website', name: 'Website' },
+    { type: 'checkbox', id: 'agree', name: 'agree', label: 'I agree to the&nbsp;<a href="https://www.bamboohr.com/legal/terms-of-service" rel="noopener" target="_blank">terms and conditions</a>', value: 'accept', required: true }
   ];
 
   const inputElements = [];
@@ -477,6 +472,7 @@ export default function decorate(block) {
     'companyName': 'Company',
     'jobTitle': 'Title',
     'phone': 'Phone',
+    'maxEmployee': 'NumberOfEmployees',
   };
   
   // fill hidden fields value with step1 form values
