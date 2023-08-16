@@ -36,7 +36,8 @@ main .signup .signup-step.active {
   }
 }
 
-main .signup h1 {
+main .signup h1,
+main .signup .signup-title {
   font-family: var(--heading-font-family);
   font-weight: 700;
   font-size: 26px;
@@ -100,6 +101,10 @@ main .signup .signup-step2-form .signup-password-reqs .signup-password-list li {
 
 main .signup .signup-step2-form .signup-password-reqs .signup-password-list li.valid {
   text-decoration: line-through;
+}
+
+main .signup .signup-step .form-col.hide {
+  display: none;
 }
 
 main .signup .signup-step .modal-wrapper .modal {

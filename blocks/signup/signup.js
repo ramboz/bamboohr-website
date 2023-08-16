@@ -97,8 +97,13 @@ async function validateDomain(domain) {
 function showStep(stepNumber) {
   const steps = document.querySelectorAll('.signup-step');
   steps.forEach(step => {
-    step.classList.remove('active');
     const stepToShow = parseInt(step.dataset.step, 10);
+    if (stepNumber === 3 && stepToShow === 2) {
+      step.querySelector('.form-col').classList.add('hide');
+    } else {
+      step.classList.remove('active');
+    }
+
     if (stepToShow === stepNumber){
       step.classList.add('active');
     }
@@ -192,7 +197,6 @@ async function step2Submit(event, inputElements) {
   });
 
   if (errorMessages.every(errorMessage => errorMessage.condition === false)) {
-    console.log(formData);
     const entries = formData.entries();
     let entry = entries.next();
     while (!entry.done) {
@@ -213,6 +217,7 @@ async function step2Submit(event, inputElements) {
         body: formData
       });
       if (!response.ok) {
+        // eslint-disable-next-line no-console
         console.error('Error submitting signup step2 form:', response.statusText);
       }
       const loderContainer = successModal.querySelector('.dot-loader-container');
@@ -383,15 +388,21 @@ export default function decorate(block) {
   steps.forEach((step, i) => {
     step.dataset.step = i + 1;
     step.classList.add('signup-step');
-    if (step.dataset.step === '1') step.classList.add('active');
 
     const cols = [...step.children];
     if(cols?.length === 2 && splitVals) {
       cols.forEach((col, n) => { col.classList.add(`column${splitVals[n]}`); });
     }
 
-    // success step
-    if (step.dataset.step === '3') {
+    const currentStep = step.dataset.step;
+    if (currentStep === '1') {
+      step.classList.add('active');
+    } else if (currentStep === '2') {
+      const secondH1 = step.querySelector('h1');
+      const newDiv = createElem('div', 'signup-title');
+      newDiv.textContent = secondH1.textContent;
+      secondH1.replaceWith(newDiv);
+    } else if (currentStep === '3') {
       const step3Content = step.firstElementChild;
       const wrapper = createElem('div', 'modal-wrapper');
       wrapper.id = 'signup-success-modal';
