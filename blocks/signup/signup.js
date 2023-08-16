@@ -270,6 +270,7 @@ function buildStep2Form() {
     { type: 'hidden', id: 'jobTitle', name: 'jobTitle' },
     { type: 'hidden', id: 'phone', name: 'phone' },
     { type: 'hidden', id: 'maxEmployees', name: 'maxEmployees' },
+    { type: 'hidden', id: 'country', name: 'country' },
     { type: 'honeypot', id: 'workEmail', name: 'workEmail' },
     { type: 'honeypot', id: 'Website', name: 'Website' },
     { type: 'checkbox', id: 'agree', name: 'agree', label: 'I agree to the&nbsp;<a href="https://www.bamboohr.com/legal/terms-of-service" rel="noopener" target="_blank">terms and conditions</a>', value: 'accept', required: true }
@@ -472,7 +473,8 @@ export default function decorate(block) {
     'companyName': 'Company',
     'jobTitle': 'Title',
     'phone': 'Phone',
-    'maxEmployee': 'NumberOfEmployees',
+    'maxEmployee': 'Employees_Text__c',
+    'country': 'Country',
   };
   
   // fill hidden fields value with step1 form values
