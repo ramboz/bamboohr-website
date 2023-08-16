@@ -23,7 +23,10 @@ const createDotLoader = () => {
   return loaderContainer;
 };
 
-
+/**
+ * Validate password
+ * @param {string} password - password user entered on step 2
+ */
 const validatePassword = (password) => (
   password.length >= 8 &&
   password.length < 124 &&
@@ -32,6 +35,11 @@ const validatePassword = (password) => (
   /[0-9]/.test(password)
 );
 
+/**
+ * Validate password on keyup
+ * @param {string} passwordInput - password user typed
+ * @param {obj} passwordReqsWrapper - password requirements element
+ */
 const validatePasswordOnKeyup = (passwordInput, passwordReqsWrapper) => {
   const password = passwordInput.value;
   const passwordList = passwordReqsWrapper.querySelector('.signup-password-list');
@@ -53,6 +61,10 @@ const validatePasswordOnKeyup = (passwordInput, passwordReqsWrapper) => {
   });
 };
 
+/**
+ * Validate domain
+ * @param {string} domain - siteDomain that user created
+ */
 async function validateDomain(domain) {
   try {
     const response = await fetch(`https://www.bamboolocal.com/xhr/domain.php?test=${encodeURIComponent(domain)}`);
@@ -70,6 +82,10 @@ async function validateDomain(domain) {
   }
 }
 
+/**
+ * Show signup step
+ * @param {int} stepNumber - step number
+ */
 function showStep(stepNumber) {
   const steps = document.querySelectorAll('.signup-step');
   console.log(steps);
@@ -83,6 +99,11 @@ function showStep(stepNumber) {
   });
 }
 
+/**
+ * Submit step 2 form
+ * @param {obj} event - event
+ * @param {obj} inputElements - form input elements
+ */
 async function step2Submit(event, inputElements) {
   event.preventDefault();
   const step2Form = event.target;
@@ -217,6 +238,10 @@ async function step2Submit(event, inputElements) {
   }
 }
 
+/**
+ * Build step 2 form
+ * @returns {obj} formContainer
+ */
 function buildStep2Form() {
   const formContainer = createElem('div', 'signup-step2-form-container');
   const step2Form = createElem('form', 'signup-step2-form');
