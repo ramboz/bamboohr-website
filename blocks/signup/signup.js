@@ -197,13 +197,7 @@ async function step2Submit(event, inputElements) {
   });
 
   if (errorMessages.every(errorMessage => errorMessage.condition === false)) {
-    const entries = formData.entries();
-    let entry = entries.next();
-    while (!entry.done) {
-      const [name, value] = entry.value;
-      console.log(`${name}: ${value}`);
-      entry = entries.next();
-    }
+    console.log(formData);
 
     // show step 3
     showStep(parseInt(currentStep, 10) + 1);
