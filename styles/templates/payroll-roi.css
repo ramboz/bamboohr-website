@@ -89,11 +89,6 @@ main .payroll-top-leaf img {
   width: 100%;
 }
 
-main .section.payroll-bottom-leaf .image-wrapper,
-main .section.payroll-top-leaf .image-wrapper {
-  max-width: 100%;
-}
-
 main .section.payroll-roi-footer {
   background-color: var(--color-1-shade-15);
   padding-top: 40px;
