@@ -62,7 +62,10 @@ const validatePasswordOnKeyup = (passwordInput, passwordReqsWrapper) => {
   });
 
   if (password && requirements.every(requirement => requirement.condition)) {
-    if (errorElem) passwordInput.parentNode.removeChild(errorElem);
+    if (errorElem) {
+      passwordInput.parentNode.removeChild(errorElem);
+      passwordInput.parentNode.classList.remove('error');
+    }
   }
 };
 
