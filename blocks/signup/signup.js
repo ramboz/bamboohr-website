@@ -88,12 +88,10 @@ async function validateDomain(domain) {
  */
 function showStep(stepNumber) {
   const steps = document.querySelectorAll('.signup-step');
-  console.log(steps);
   steps.forEach(step => {
     step.classList.remove('active');
     const stepToShow = parseInt(step.dataset.step, 10);
     if (stepToShow === stepNumber){
-      console.log(step);
       step.classList.add('active');
     }
   });
