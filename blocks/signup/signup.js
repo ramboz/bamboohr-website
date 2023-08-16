@@ -37,12 +37,13 @@ const validatePassword = (password) => (
 
 /**
  * Validate password on keyup
- * @param {string} passwordInput - password user typed
+ * @param {obj} passwordInput - password input element
  * @param {obj} passwordReqsWrapper - password requirements element
  */
 const validatePasswordOnKeyup = (passwordInput, passwordReqsWrapper) => {
   const password = passwordInput.value;
   const passwordList = passwordReqsWrapper.querySelector('.signup-password-list');
+  const errorElem = passwordInput.parentNode.querySelector('.error-message');
 
   const requirements = [
     { condition: password.length >= 8, message: 'Eight or more characters' },
@@ -59,6 +60,10 @@ const validatePasswordOnKeyup = (passwordInput, passwordReqsWrapper) => {
       item.classList.remove('valid');
     }
   });
+
+  if (password && requirements.every(requirement => requirement.condition)) {
+    if (errorElem) passwordInput.parentNode.removeChild(errorElem);
+  }
 };
 
 /**
