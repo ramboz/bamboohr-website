@@ -1901,6 +1901,12 @@ body.modal-open {
   z-index: 1;
 }
 
+/* salesforce chat button */
+/* stylelint-disable selector-class-pattern */
+.embedded-messaging .embeddedMessagingConversationButtonWrapper .embeddedMessagingConversationButton {
+  bottom: 125px;
+}
+
 /* above the fold CSS goes here to squash CLS */
 
 main .section[data-section-status='loading'],
