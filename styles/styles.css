@@ -1902,6 +1902,7 @@ body.modal-open {
 }
 
 /* salesforce chat button */
+/* stylelint-disable selector-class-pattern */
 .embedded-messaging .embeddedMessagingConversationButtonWrapper .embeddedMessagingConversationButton {
   bottom: 125px;
 }
