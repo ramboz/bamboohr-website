@@ -579,3 +579,7 @@ main .form.minimized-form-test .form-col .form-logos img {
   max-width: 100%;
   margin-top: 20px;
 }
+
+main .form.no-box-shadow .content-col img {
+  box-shadow: unset;
+}
