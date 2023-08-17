@@ -83,7 +83,8 @@ main .sidebar-cta .sidebar-cta-form .field-wrapper.error .error-msg {
   display: block;
 }
 
-main .sidebar-cta .sidebar-cta-form button[type="submit"] {
+main .sidebar-cta .sidebar-cta-form button[type="submit"],
+main .sidebar-cta a.button {
   width: 100%;
   display: block;
   margin-top: 16px;
@@ -100,6 +101,7 @@ main .sidebar-cta .sidebar-cta-form button[type="submit"] {
   transition: 0.5s ease-in-out all;
 }
 
-main .sidebar-cta .sidebar-cta-form button[type="submit"]:hover {
+main .sidebar-cta .sidebar-cta-form button[type="submit"]:hover,
+main .sidebar-cta a.button:hover {
   background-color: var(--color-1-shade-15);
 }
