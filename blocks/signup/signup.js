@@ -484,12 +484,6 @@ export default function decorate(block) {
     const fieldName = fieldMappings[hiddenField.name] || hiddenField.name;
     if (step1FormValues[fieldName]) {
       hiddenField.value = step1FormValues[fieldName];
-      // if (hiddenField.name === 'maxEmployees') {
-      //   const selectedValue = step1FormValues[fieldName];
-      //   const matches = selectedValue.match(/\d+/g);
-      //   const modifiedValue = matches ? Math.max(...matches.map(Number)) : parseInt(selectedValue.replace('+', ''), 10)
-      //   hiddenField.value = modifiedValue;
-      // }
     }
   });
   showStep(currentStep + 1);
