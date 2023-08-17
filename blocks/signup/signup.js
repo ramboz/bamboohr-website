@@ -270,6 +270,7 @@ function buildStep2Form() {
     { type: 'hidden', id: 'maxEmployees', name: 'maxEmployees' },
     { type: 'hidden', id: 'country', name: 'country' },
     { type: 'hidden', id: 'requestType', name: 'requestType', value: 'Trial' },
+    { type: 'hidden', id: 'assetName', name: 'assetName', value: 'Free Trial Offer' },
     { type: 'honeypot', id: 'workEmail', name: 'workEmail' },
     { type: 'honeypot', id: 'Website', name: 'Website' },
     { type: 'checkbox', id: 'agree', name: 'agree', label: 'I agree to the&nbsp;<a href="https://www.bamboohr.com/legal/terms-of-service" rel="noopener" target="_blank">terms and conditions</a>', value: 'accept', required: true }
@@ -475,6 +476,7 @@ export default function decorate(block) {
     'maxEmployees': 'Employees_Text__c',
     'country': 'Country',
     'requestType': 'RequestType',
+    'assetName': 'AssetName',
   };
   
   // fill hidden fields value with step1 form values
@@ -483,8 +485,10 @@ export default function decorate(block) {
     if (step1FormValues[fieldName]) {
       hiddenField.value = step1FormValues[fieldName];
       if (hiddenField.name === 'maxEmployees') {
-        const [, max] = step1FormValues[fieldName].split('-');
-        hiddenField.value = parseInt(max, 10);
+        const selectedValue = step1FormValues[fieldName];
+        const matches = selectedValue.match(/\d+/g);
+        const modifiedValue = matches ? Math.max(...matches.map(Number)) : parseInt(selectedValue.replace('+', ''), 10)
+        hiddenField.value = modifiedValue;
       }
     }
   });
