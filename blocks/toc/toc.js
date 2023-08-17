@@ -17,7 +17,7 @@ export default function decorate(block) {
 
   const tocSiblings = document.querySelector('.toc-container').children?.length;
   const tocWrapper = document.querySelector('.toc-wrapper');
-  tocWrapper.style.gridRow = `1 / span ${tocSiblings - 1}`;
+  tocWrapper.style.gridRow = `1 / span ${tocSiblings - 2}`;
 
   let lastChapter = '';
   tocItems.forEach((h) => {

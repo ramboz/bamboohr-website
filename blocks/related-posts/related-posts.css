@@ -149,7 +149,13 @@ main .related-posts-card-body a:any-link::after {
 .blog-post main .section > .related-posts-wrapper {
   background-color: unset;
   background-image: none;
-  margin-top: 150px;
+  margin-top: 50px;
+}
+
+@media (min-width: 900px) {
+  .blog-post main .section > .related-posts-wrapper {
+    margin-top: 100px;
+  }
 }
 
 .blog-post main .related-posts {

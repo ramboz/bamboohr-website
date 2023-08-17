@@ -8,7 +8,7 @@ import {
 import { addWistia } from '../columns/columns.js';
 
 // Regular expression pattern to validate email format
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
   const script = document.createElement('script');
@@ -48,7 +48,7 @@ function createSelect(fd, multiSelect = false) {
   return select;
 }
 
-function getURLParam(param) {
+export function getURLParam(param) {
   const params = new URLSearchParams(window.location.search);
   return params.get(param);
 }
@@ -833,6 +833,10 @@ export function loadFormAndChilipiper(params, successCallback = null) {
         formEl.firstElementChild.addEventListener('change', () => {
           firstFieldTracking(formEl);
         });
+
+        // set email value if exist in url param
+        const param = getURLParam('email');
+        if (param) formEl.querySelector('input[name="Email"]').value = param;
 
         /* Prefill form fields */
         setFormValues(formEl)

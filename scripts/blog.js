@@ -71,18 +71,44 @@ function buildAuthorContainer(main) {
   return false;
 }
 
+function buildSidebarCta(main) {
+  let sidebarCta = main.querySelector('.sidebar-cta');
+  const blockContent = [];
+  if (!sidebarCta) {
+    blockContent.push(`<h3>See how easy HR can be when everything works together.</h3><p><a href="/demo">Schedule a Demo of BambooHR</a></p>`);
+    sidebarCta = buildBlock('sidebar-cta', [blockContent]);
+    sidebarCta?.classList?.add('email-form');
+  }
+  main.querySelector('main>div').append(sidebarCta);
+
+  const observer = new MutationObserver((mutationsList) => {
+    const mutationEl = mutationsList.find((mutation) =>
+        mutation.type === "attributes" &&
+        mutation.attributeName === "data-block-status" &&
+        mutation.target.dataset.blockStatus === "loaded"
+    );
+  
+    if (mutationEl) {
+      const sidebarCtaHeight = mutationEl.target.offsetHeight;
+      const tocWrapper = main.querySelector('.toc-wrapper');
+      tocWrapper.style.setProperty('--sidebar-cta-height', `${sidebarCtaHeight + 24}px`);
+    }
+  });
+
+  observer.observe(sidebarCta, { attributes: true });
+}
+
 export default async function decorateTemplate(main) {
   const isBlog = buildArticleHeader(main);
   if (isBlog) {
     buildImageBlocks(main);
     const related = main.querySelector('.related-posts');
-    // if (related && !testVariation) related.parentElement.insertBefore(buildBlock('author', [['']]), related);
     const authorBlock = buildBlock('author', [['']]);
-    const authorSection = document.createElement('div');
-    authorSection.append(authorBlock);
+    main.querySelector('main>div').append(authorBlock);
 
-    if (related && !related.nextElementSibling && !related.parentElement.nextElementSibling) {
-      main.append(authorSection);
+    buildSidebarCta(main);
+
+    if (related) {
       const section = document.createElement('div');
       section.append(related);
       main.append(section);
@@ -103,7 +129,6 @@ export default async function decorateTemplate(main) {
     const body = bio ? [[h1], [bio]] : [[h1]];
     document.querySelector('.author-container').append(
       buildBlock('author-header', body),
-      // buildBlock('featured-articles', 'oy'),
       buildBlock('article-feed', [
         ['author', h1.textContent],
       ]),
