@@ -110,15 +110,10 @@ function constructPayload(form) {
   return payload;
 }
 
-function sanitizeInput(input) {
-  const output = input
-    .replace(/<script[^>]*?>.*?<\/script>/gi, '')
-    // eslint-disable-next-line no-useless-escape
-    .replace(/<[\/\!]*?[^<>]*?>/gi, '')
-    .replace(/<style[^>]*?>.*?<\/style>/gi, '')
-    .replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '')
-    .replace(/&nbsp;/g, '');
-  return output;
+export function sanitizeInput(input) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(input, 'text/html');
+  return doc.body.textContent || '';
 }
 
 async function submitForm(form) {
@@ -805,6 +800,18 @@ function addUtmParametersFromSessionStorage() {
 	  input.value = inputNames[name];
 	}
   });
+}
+
+/**
+ * @param string $num phone number
+ * @return string
+ */
+export function cleanPhone(num) {
+  if (num.length === 10 && /[0-9]{10}/.test(num)) {
+    const arr = num.match(/.{1,3}/g);
+    return `${arr[0]}-${arr[1]}-${arr[2]}${arr[3] || ''}`;
+  }
+  return num;
 }
 
 export function loadFormAndChilipiper(params, successCallback = null) {
