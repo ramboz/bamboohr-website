@@ -226,8 +226,6 @@ async function step2Submit(event, inputElements) {
         errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
         loderContainer.replaceWith(errorMsgEl);
       }
-      // eslint-disable-next-line no-console
-      console.log('Form submitted successfully:', responseData);
       const loginBtn = createElem('a', 'success-login-btn');
       loginBtn.textContent = 'We\'re Ready!';
       loginBtn.href = responseData.goTo;
@@ -430,7 +428,6 @@ export default function decorate(block) {
 
   const formParams = {formUrl: null, formId: null, successUrl: null, chilipiper: null, floatingLabel: false };
   formParams.formId = '2137';
-  // formParams.floatingLabel = true;
   const mktoForm = `<form id="mktoForm_${formParams.formId}"></form>`;
   const step1FormContainer = document.createElement('div');
   step1FormContainer.classList.add('form-container');
