@@ -22,13 +22,14 @@
   margin: 0;
 }
 
-.table-tooltip-container a:any-link {
+main .table-tooltip-container a:any-link {
   align-items: center;
   color: var(--theme-shade5);
   display: inline-flex;
   font-size: 15px;
   font-weight: 600;
   line-height: 20px;
+  background: unset;
 }
 
 .table.comparison table a {

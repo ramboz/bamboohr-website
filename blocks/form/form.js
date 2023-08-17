@@ -463,30 +463,38 @@ function mktoFormReset(form, moreStyles) {
     el.remove();
   });
 
-  if (formEl.querySelector('[name="Country"]')) {
-    formEl.querySelector('[name="Country"]').addEventListener('change', () => {
+  const countrySelect = formEl.querySelector('[name="Country"]');
+  if (countrySelect) {
+    const gdprInputHandler = () => {
+      if (currentForm.querySelector('.form-msg') && currentForm.querySelectorAll('.mktoField.mktoInvalid').length === 0 && currentForm.querySelectorAll('.mktoLogicalField.mktoInvalid').length === 0) {
+        currentForm.querySelector('.form-msg').remove();
+      }
+    };
+
+    countrySelect.addEventListener('change', () => {
       document.querySelectorAll('.mktoAsterix').forEach((el) => {
         el.remove();
       });
       document.querySelectorAll('.mktoHtmlText').forEach((el) => {
         el.removeAttribute('style');
       });
-      if (currentForm.querySelector('[name="Disclaimer__c"]')) {
-        const gdprLabel = currentForm.querySelector('[for="Disclaimer__c"]');
-        const gdprInput = currentForm.querySelector('[id="Disclaimer__c"]');
-        gdprInput.id = `Disclaimer__c_${rando}`;
-        gdprInput.nextElementSibling.htmlFor = `Disclaimer__c_${rando}`;
-        gdprLabel.htmlFor = `Disclaimer__c_${rando}`;
+      
+      const gdprInput = currentForm.querySelector('[name="Disclaimer__c"]');
+      if (gdprInput) {
+        const uniqueId = `Disclaimer__c_${rando}`;
+        const gdprLabel = currentForm.querySelector('[for="Disclaimer__c"]') 
+          || currentForm.querySelector(`[for="${uniqueId}"]`);
+
+        gdprInput.id = uniqueId;
+        gdprInput.nextElementSibling.htmlFor = uniqueId;
+        gdprLabel.htmlFor = uniqueId;
         gdprLabel.removeAttribute('style');
         gdprInput.parentElement.classList.add('form-checkbox-option');
         gdprLabel.parentElement.classList.add('form-checkbox-flex');
         gdprLabel.firstElementChild.classList.add('form-gdpr-text');
 
-        currentForm.querySelector('[name="Disclaimer__c"]').addEventListener('input', () => {
-          if (currentForm.querySelector('.form-msg') && currentForm.querySelectorAll('.mktoField.mktoInvalid').length === 0 && currentForm.querySelectorAll('.mktoLogicalField.mktoInvalid').length === 0) {
-            currentForm.querySelector('.form-msg').remove();
-          }
-        });
+        gdprInput.removeEventListener('input', gdprInputHandler);
+        gdprInput.addEventListener('input', gdprInputHandler);
       }
     });
   }
@@ -689,7 +697,7 @@ const fillFormFields = (prefillFields, formEl) => {
  * Set form values
  * @param {object} formEl - The form element to set values for
  */
-const setFormValues = async (formEl) => {
+export const setFormValues = async (formEl) => {
   const prefillFields = await getPrefillFields();
   if (prefillFields) fillFormFields(prefillFields, formEl);
   return prefillFields;
@@ -993,11 +1001,11 @@ export function loadFormAndChilipiper(params, successCallback = null) {
       let timeoutSuccessUrl = '';
       function redirectTimeout() {
         return setTimeout(() => {
-      setTimeout(() =>{
-      analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
-      },1000);
-      window.location.href = timeoutSuccessUrl; 
-    }, '240000');
+          setTimeout(() =>{
+          analyticsTrackChiliPiper({"cpTimedOutEvent": 1});
+          },1000);
+          window.location.href = timeoutSuccessUrl; 
+        }, '240000');
       }
       //  eslint-disable-next-line
       window.q = (a) => {return function(){ChiliPiper[a].q=(ChiliPiper[a].q||[]).concat([arguments])}};window.ChiliPiper=window.ChiliPiper||"submit scheduling showCalendar submit widget bookMeeting".split(" ").reduce(function(a,b){a[b]=q(b);return a},{});

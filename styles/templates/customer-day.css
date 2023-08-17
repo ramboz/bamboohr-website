@@ -30,3 +30,13 @@
     left: 0;
     top: 0;
 }
+
+.customer-day .table-tooltip-container {
+    left: -62px;
+}
+
+@media (min-width: 600px) {
+    .customer-day .table-tooltip-container {
+        left: 32px;
+    }
+}
