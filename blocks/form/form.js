@@ -613,7 +613,9 @@ const getPrefillFields = async () => {
   
   if(cookie){ 
 	try {
-	  return JSON.parse(atob(cookie));
+	  const cookieValue = JSON.parse(atob(cookie));
+	  document.hasFormPrefillCookie = true
+	  return cookieValue;
 	} catch (error) {
 	  // eslint-disable-next-line no-console
 	  console.error(error);
