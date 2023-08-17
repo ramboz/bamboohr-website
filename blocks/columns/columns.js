@@ -316,7 +316,7 @@ function buildSplit(splitVal) {
   return newCol;
 }
 
-function findSplitSubType(val) {
+export function findSplitSubType(val) {
   let isSplitSubType = false;
   let splitVals = null;
   // Looking for sub types like: 8-4, 6-6, 3-9, 2-10, 2-5-3-2, or 4-8-4
