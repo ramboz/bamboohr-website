@@ -366,6 +366,11 @@ div.has-text-only h4 {
     box-shadow: unset;
 }
 
+.cards.image-fit > .card.has-image img {
+    width: fit-content;
+    margin: 40px auto 0;
+}
+
 /* "icon inline" styles */
 .cards.icon-inline > .card {
     margin-left: calc(var(--gap) * .75);
