@@ -72,7 +72,10 @@ main .table-tooltip-container a:any-link {
 
 .table.comparison table,
 .table.comparison th,
-.table.comparison td {
+.table.comparison td,
+.table.center table,
+.table.center th,
+.table.center td {
   text-align: center;
 }
 
