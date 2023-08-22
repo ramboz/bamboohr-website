@@ -1,3 +1,14 @@
 .wistia-embed{
   /* styles */
 }
+
+/* options */
+
+.wistia-embed.shadow-3 {
+  box-shadow: var(--theme-shadow3-shade5);
+}
+
+.wistia-embed.rounded {
+  border-radius: 16px;
+  overflow: hidden;
+}

@@ -646,6 +646,215 @@ ol ol ol li::marker {
   }
 }
 
+/* title-* (h1,h2,h3,h4,h5,h6) */ 
+.title-style-italic :is(h1, h2, h3, h4, h5, h6) {
+  font-style: italic;
+}
+
+.title-weight-light :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 300;
+}
+
+.title-weight-regular :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 400;
+}
+
+.title-weight-semibold :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 500;
+}
+
+.title-weight-bold :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 700;
+}
+
+.title-weight-extrabold :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 900;
+}
+
+.title-color-white :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--color-white);
+}
+
+.title-color-black :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--color-black);
+}
+
+.title-color-base :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--theme-base);
+}
+
+.title-color-tint-5 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--theme-tint5);
+}
+
+.title-color-tint-15 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--theme-tint15);
+}
+
+.title-color-tint-10 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--theme-tint10);
+}
+
+.title-color-shade-5 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--theme-shade5);
+}
+
+.title-color-shade-10 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--theme-shade10);
+}
+
+.title-color-shade-15 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--theme-shade15);
+}
+
+.title-color-secondary-base :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--secondary-theme-base);
+}
+
+.title-color-secondary-tint-5 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--secondary-theme-tint5);
+}
+
+.title-color-secondary-tint-15 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--secondary-theme-tint15);
+}
+
+.title-color-secondary-tint-10 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--secondary-theme-tint10);
+}
+
+.title-color-secondary-shade-5 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--secondary-theme-shade5);
+}
+
+.title-color-secondary-shade-10 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--secondary-theme-shade10);
+}
+
+.title-color-secondary-shade-15 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--secondary-theme-shade15);
+}
+
+.title-size-hero :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font-family);
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 900;
+}
+
+.title-size-hero-subhead :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+  margin: 20px 0 0;
+}
+
+.title-size-section :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font-family);
+  font-size: 48px;
+  line-height: 60px;
+}
+
+.title-size-h1 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font-family);
+  font-size: 36px;
+  line-height: 44px;
+}
+
+.title-size-h2 :is(h1, h2, h3, h4, h5, h6) {
+  font-size: 30px;
+  line-height: 38px;
+}
+
+.title-size-h3 :is(h1, h2, h3, h4, h5, h6) {
+  font-size: 26px;
+  line-height: 34px;
+}
+
+.title-size-h4 :is(h1, h2, h3, h4, h5, h6) {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.title-size-h5 :is(h1, h2, h3, h4, h5, h6) {
+  font-size: 18px;
+  line-height: 26px;
+}
+
+.title-size-h6 :is(h1, h2, h3, h4, h5, h6) {
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.title-size-medium-info :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.title-size-small-header :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 36px;
+}
+
+.title-size-title-1 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 30px;
+}
+
+.title-size-small-info :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--body-font-family);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.title-color-gray-9 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--color-gray-9);
+}
+
+.title-color-gray-11 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--color-gray-11);
+}
+
+.title-color-gray-12 :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--color-gray-12);
+}
+
+.title-margin-top-none :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 0;
+}
+
+@media (min-width: 900px) {
+  .title-size-hero :is(h1, h2, h3, h4, h5, h6) {
+    font-size: 54px;
+    line-height: 60px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .title-size-hero :is(h1, h2, h3, h4, h5, h6) {
+    font-size: 70px;
+    line-height: 80px;
+  }
+
+  .title-size-small-header :is(h1, h2, h3, h4, h5, h6) {
+    font-size: 36px;
+    line-height: 44px;
+  }
+}
+
+/* resources-guides */
 .resources-guides main h1,
 .resources-guides main h2,
 .resources-guides main h4 {
