@@ -554,3 +554,17 @@ export async function analyticsTrackChiliPiper(cpEvent = {}) {
 	},
   });
 }
+
+export async function analyticsTrackExpandedForm() {
+  
+  // eslint-disable-next-line no-undef
+  return alloy('sendEvent', {
+	xdm: {
+	  [CUSTOM_SCHEMA_NAMESPACE]: {
+		form: {
+		  expandedMinimizedFormEvent: 1
+		}
+	  },
+	},
+  });
+}

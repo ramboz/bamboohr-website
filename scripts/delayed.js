@@ -451,7 +451,7 @@ trackWistiaPlayerEvents();
  * Track external links interaction with alloy
  */
 function trackInteractionExternalLinks() {
-  const allLinkTags = document.querySelectorAll('header a, main a:not(main div.article-header-share a), footer a:not(footer div.social a)');
+  const allLinkTags = document.querySelectorAll('header a, main a:not(main div.article-header-share a, expand-minimized-form), footer a:not(footer div.social a)');
 	allLinkTags.forEach(item => {
 	  // eslint-disable-next-line no-restricted-globals
 	  const linkType = item.href.toLowerCase().includes(location.host) ? 'other' : 'exit';
