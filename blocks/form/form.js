@@ -1,7 +1,7 @@
 import { readBlockConfig, getMetadata, toClassName } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
 import {
-  analyticsTrackChiliPiper,
+  analyticsTrackChiliPiper, analyticsTrackExpandedForm,
   analyticsTrackFormStart,
   analyticsTrackFormSubmission
 } from '../../scripts/lib-analytics.js';
@@ -865,7 +865,8 @@ export function loadFormAndChilipiper(params, successCallback = null) {
 
               const clearFormEl = document.createElement('a');
               clearFormEl.href = '#';
-              clearFormEl.textContent = 'Tell us about yourself';
+			  clearFormEl.classList.add('expand-minimized-form');
+			  clearFormEl.textContent = 'Tell us about yourself';
               if (formSubheading) formSubheading.innerHTML = `Not you? ${clearFormEl.outerHTML}`;
 
               const formConsentEl = document.createElement('p');
@@ -880,6 +881,7 @@ export function loadFormAndChilipiper(params, successCallback = null) {
 
               // show all form fields and clear form values
               formSubheading.addEventListener('click', (e) => {
+				analyticsTrackExpandedForm();
                 e.preventDefault();
                 clearFormValues(formEl, formFields);
                 formConsentEl.remove();
