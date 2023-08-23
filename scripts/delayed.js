@@ -114,6 +114,23 @@ function loadStyle(location, css) {
   return $style;
 }
 
+function fixupChatButton() {
+  let findChatButtonTries = 0;
+  const findChatButtonInterval = window.setInterval(() => {
+    const chatIconContainer = document.querySelector('#embeddedMessagingIconContainer');
+    if (chatIconContainer) {
+      const chatText = document.createElement('div');
+      chatText.classList = 'sfChatButtonLabel';
+      chatText.textContent = 'Talk to a Sales Rep';
+      chatIconContainer.append(chatText);
+
+      window.clearInterval(findChatButtonInterval);
+    } else if (findChatButtonTries < 10) {
+      findChatButtonTries += 1;
+    } else window.clearInterval(findChatButtonInterval);
+  }, 500);
+}
+
 // eslint-disable-next-line no-unused-vars
 function loadSalesforceChatScriptSandbox() {
   const chatTestPaths = [
@@ -126,6 +143,7 @@ function loadSalesforceChatScriptSandbox() {
 
   loadScript('footer', 'https://bamboohr--webchat.sandbox.my.site.com/ESWBambooHRSalesChat1687205865468/assets/js/bootstrap.min.js', async () => {
     initEmbeddedMessagingSandbox();
+    fixupChatButton();
   }, 'text/javascript');
 }
 
@@ -140,6 +158,7 @@ function loadSalesforceChatScript() {
 
     loadScript('footer', chatScriptURL, async () => {
       initEmbeddedMessaging(isGDPR);
+      // fixupChatButton();
     }, 'text/javascript');
   }
 }
