@@ -2114,11 +2114,14 @@ body.modal-open {
 /* stylelint-disable selector-class-pattern */
 .embedded-messaging .embeddedMessagingConversationButtonWrapper .embeddedMessagingConversationButton {
   bottom: 125px;
+}
+
+.embedded-messaging .embeddedMessagingConversationButtonWrapper .embeddedMessagingConversationButton.sfChatButton {
   width: 180px;
   border-radius: 10px;
 }
 
-.embedded-messaging .embeddedMessagingConversationButtonWrapper .embeddedMessagingConversationButton div.embeddedMessagingIconContainer {
+.embedded-messaging .embeddedMessagingConversationButtonWrapper .embeddedMessagingConversationButton.sfChatButton div.embeddedMessagingIconContainer {
   display: flex;
   align-items: center;
   padding-left: 10px;
