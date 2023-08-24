@@ -119,6 +119,7 @@ function fixupChatButton() {
   const findChatButtonInterval = window.setInterval(() => {
     const chatIconContainer = document.querySelector('#embeddedMessagingIconContainer');
     if (chatIconContainer) {
+      chatIconContainer.parentElement.classList.add('sfChatButton');
       const chatText = document.createElement('div');
       chatText.classList = 'sfChatButtonLabel';
       chatText.textContent = 'Talk to a Sales Rep';
