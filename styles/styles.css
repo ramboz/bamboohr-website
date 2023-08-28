@@ -2117,7 +2117,7 @@ body.modal-open {
 }
 
 .embedded-messaging .embeddedMessagingConversationButtonWrapper .embeddedMessagingConversationButton.sfChatButton {
-  width: 180px;
+  width: 200px;
   border-radius: 10px;
 }
 
@@ -2129,7 +2129,7 @@ body.modal-open {
 
 .embedded-messaging div.embeddedMessagingIconContainer .sfChatButtonLabel {
   color: var(--color-white);
-  padding-left: 7px;
+  padding-left: 10px;
 }
 
 /* above the fold CSS goes here to squash CLS */
