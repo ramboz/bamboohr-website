@@ -75,7 +75,7 @@ const validatePasswordOnKeyup = (passwordInput, passwordReqsWrapper) => {
  */
 async function validateDomain(domain) {
   try {
-    const response = await fetch(`https://www.bamboolocal.com/xhr/domain.php?test=${encodeURIComponent(domain)}`);
+    const response = await fetch(`/xhr/domain.php?test=${encodeURIComponent(domain)}`);
     if (!response.ok) {
       // eslint-disable-next-line no-console
       console.error('Error validating domain:', response.statusText);
@@ -210,7 +210,7 @@ async function step2Submit(event, inputElements) {
     document.body.classList.add('modal-open');
 
     try {
-      const response = await fetch('https://www.bamboolocal.com/post_signup.php', {
+      const response = await fetch('/post_signup.php', {
         method: 'POST',
         body: formData,
       });
