@@ -122,14 +122,14 @@ function fixupChatButton() {
       chatIconContainer.parentElement.classList.add('sfChatButton');
       const chatText = document.createElement('div');
       chatText.classList = 'sfChatButtonLabel';
-      chatText.textContent = 'Talk to a Sales Rep';
+      chatText.textContent = 'Chat with a Sales Rep';
       chatIconContainer.append(chatText);
 
       window.clearInterval(findChatButtonInterval);
-    } else if (findChatButtonTries < 10) {
+    } else if (findChatButtonTries < 20) {
       findChatButtonTries += 1;
     } else window.clearInterval(findChatButtonInterval);
-  }, 500);
+  }, 250);
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -159,7 +159,7 @@ function loadSalesforceChatScript() {
 
     loadScript('footer', chatScriptURL, async () => {
       initEmbeddedMessaging(isGDPR);
-      // fixupChatButton();
+      fixupChatButton();
     }, 'text/javascript');
   }
 }
