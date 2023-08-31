@@ -125,12 +125,12 @@ async function validateInputs(inputElements) {
 
   const workEmailInput = sanitizedInputElements.find(elem => elem.id === 'workEmail');
   const websiteInput = sanitizedInputElements.find(elem => elem.id === 'Website');
-  const isWorkEmailEmpty = workEmailInput.value.trim() === '';
-  const isWebsiteEmpty = websiteInput.value.trim() === '';
-
-  if (!isWorkEmailEmpty || !isWebsiteEmpty) {
-    return false;
+  if (workEmailInput && websiteInput) {
+    const isWorkEmailEmpty = workEmailInput.value.trim() === '';
+    const isWebsiteEmpty = websiteInput.value.trim() === '';
+    if (!isWorkEmailEmpty || !isWebsiteEmpty) return false;
   }
+  
 
   const errorMessages = [];
 
@@ -169,7 +169,7 @@ async function validateInputs(inputElements) {
 
   errorMessages.forEach(errorMessage => {
     const { condition, input, message } = errorMessage;
-
+    console.log(errorMessage);
     if (condition) {
       const existingError = input.parentNode?.querySelector('.error-message');
 
