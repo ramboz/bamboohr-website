@@ -79,14 +79,14 @@ async function validateDomain(domain) {
     if (!response.ok) {
       // eslint-disable-next-line no-console
       console.error('Error validating domain:', response.statusText);
-      return false;
+      return 'validation_error';
     }
     const data = await response.json();
     return data.taken;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error validating domain:', error);
-    return false;
+    return 'validation_error';
   }
 }
 
