@@ -312,7 +312,7 @@ function buildStep2Form() {
 
     const domainValueContainer = createElem('div', 'domain-value-container');
     domainValueContainer.innerHTML = `<div><span class="domain-value"></span>.bamboohr.com</div>
-    <div class="domain-edit"><img src="/icons/edit.svg" class="domain-edit-icon" alt="Edit your domain" /> Edit<?div>`;
+    <div class="domain-edit hide"><img src="/icons/edit.svg" class="domain-edit-icon" alt="Edit your domain" /> Edit<?div>`;
     const domainValue = domainValueContainer.querySelector('.domain-value');
 
     if (fieldConfig.id === 'siteDomain') inputWrapper.appendChild(domainValueContainer);
