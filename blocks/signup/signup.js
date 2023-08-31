@@ -222,7 +222,6 @@ async function step2Submit(event, inputElements) {
 
   try {
     const isValid = await validateInputs(inputElements);
-    console.log(isValid);
     if (!isValid) {
       return;
     }
@@ -542,8 +541,6 @@ export default function decorate(block) {
 
   const companyInput = step1FormContainer.querySelector('input[name="Company"]');
   const isValidDomain = await validateInputs([companyInput]);
-  console.log(isValidDomain);
-  console.log(step1FormValues.Company);
   if(isValidDomain) toggleDomainField(step2Form, step1FormValues.Company);
   
   showStep(currentStep + 1);
