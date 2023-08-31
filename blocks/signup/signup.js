@@ -75,7 +75,7 @@ const validatePasswordOnKeyup = (passwordInput, passwordReqsWrapper) => {
  */
 async function validateDomain(domain) {
   try {
-    const response = await fetch(`/xhr/domain.php?test=${encodeURIComponent(domain)}`);
+    const response = await fetch(`https://www.bamboolocal.com/xhr/domain.php?test=${encodeURIComponent(domain)}`);
     if (!response.ok) {
       // eslint-disable-next-line no-console
       console.error('Error validating domain:', response.statusText);
@@ -123,8 +123,8 @@ async function validateInputs(inputElements) {
     value: input.name === 'phone' ? cleanPhone(input.value) : sanitizeInput(input.value)
   }));
 
-  const workEmailInput = sanitizedInputElements.find(elem => elem.id === 'workEmail');
-  const websiteInput = sanitizedInputElements.find(elem => elem.id === 'Website');
+  const workEmailInput = sanitizedInputElements.find(elem => elem.name === 'workEmail');
+  const websiteInput = sanitizedInputElements.find(elem => elem.name === 'Website');
   if (workEmailInput && websiteInput) {
     const isWorkEmailEmpty = workEmailInput.value.trim() === '';
     const isWebsiteEmpty = websiteInput.value.trim() === '';
@@ -134,7 +134,7 @@ async function validateInputs(inputElements) {
 
   const errorMessages = [];
 
-  const sanitizedPasswordInput = sanitizedInputElements.find(elem => elem.id === 'password1');
+  const sanitizedPasswordInput = sanitizedInputElements.find(elem => elem.name === 'password1');
   if (sanitizedPasswordInput) {
     const passwordInput = sanitizedPasswordInput.input;
     const passwordValue = sanitizedPasswordInput.value.trim();
@@ -142,7 +142,7 @@ async function validateInputs(inputElements) {
   }
   
 
-  const sanitizedDomainInput = sanitizedInputElements.find(elem => elem.id === 'siteDomain');
+  const sanitizedDomainInput = sanitizedInputElements.find(elem => elem.name === 'siteDomain') || sanitizedInputElements.find(elem => elem.name === 'Company');
   if(sanitizedDomainInput) {
     const domainInput = sanitizedDomainInput.input;
     const domainValue = sanitizedDomainInput.value.trim();
@@ -233,7 +233,7 @@ async function step2Submit(event, inputElements) {
     document.body.classList.add('modal-open');
 
     try {
-      const response = await fetch('/post_signup.php', {
+      const response = await fetch('https://www.bamboolocal.com/post_signup.php', {
         method: 'POST',
         body: formData,
       });
