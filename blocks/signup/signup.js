@@ -220,10 +220,12 @@ async function step2Submit(event, inputElements) {
     }
   });
 
-  const isValid = validateInputs(inputElements);
-  console.log(isValid);
-
-  if (isValid) {
+  try {
+    const isValid = await validateInputs(inputElements);
+    console.log(isValid);
+    if (!isValid) {
+      return;
+    }
 
     // show step 3
     showStep(parseInt(currentStep, 10) + 1);
@@ -264,7 +266,12 @@ async function step2Submit(event, inputElements) {
       // eslint-disable-next-line no-console
       console.error('An error occurred:', error);
     }
+
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('An error occurred during step2 form validation:', error);
   }
+
 }
 
 /**
@@ -336,8 +343,8 @@ function buildStep2Form() {
       input.addEventListener('keyup', (event) => {
         domainValue.textContent = event.target.value;
       });
-      input.addEventListener('blur', () => {
-        validateInputs([input]);
+      input.addEventListener('blur', async () => {
+        await validateInputs([input]);
       });
     }
 
@@ -534,7 +541,7 @@ export default function decorate(block) {
   });
 
   const companyInput = step1FormContainer.querySelector('input[name="Company"]');
-  const isValidDomain = validateInputs([companyInput]);
+  const isValidDomain = await validateInputs([companyInput]);
   console.log(isValidDomain);
   console.log(step1FormValues.Company);
   if(isValidDomain) toggleDomainField(step2Form, step1FormValues.Company);
