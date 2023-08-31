@@ -8,8 +8,9 @@
  }
 }
 
+main .signup .form .hide,
 main .signup .form label.hide,
-main .signup .form .hide {
+main .signup .form .domain-edit.hide {
   display: none;
 }
 
