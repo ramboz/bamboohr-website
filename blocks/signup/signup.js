@@ -221,6 +221,7 @@ async function step2Submit(event, inputElements) {
   });
 
   const isValid = validateInputs(inputElements);
+  console.log(isValid);
 
   if (isValid) {
 
@@ -413,6 +414,7 @@ function toggleDomainField(step2Form, companyName) {
   domainLabel.classList.add('hide');
   const domainValueEl = step2Form.querySelector('.domain-value');
   domainValueEl.textContent = companyName;
+  domainInput.value = companyName;
   const domainEdit = step2Form.querySelector('.domain-edit');
   domainEdit.classList.remove('hide');
 
