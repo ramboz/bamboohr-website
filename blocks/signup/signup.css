@@ -8,6 +8,11 @@
  }
 }
 
+main .signup .form label.hide,
+main .signup .form .hide {
+  display: none;
+}
+
 main .signup .signup-step {
   display: none;
 }
@@ -77,6 +82,24 @@ main .signup .signup-step2-form .domain-value-container {
   color: var(--color-gray-9);
 }
 
+main .signup .signup-step2-form .domain-edit {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 15px;
+  cursor: pointer;
+  color: var(--color-1);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
+  margin-top: 10px;
+}
+
+main .signup .signup-step2-form .domain-edit .domain-edit-icon {
+  margin-right: 6px;
+}
+
 main .signup .signup-step2-form .signup-password-reqs {
   margin: 20px 0;
 }
@@ -101,10 +124,6 @@ main .signup .signup-step2-form .signup-password-reqs .signup-password-list li {
 
 main .signup .signup-step2-form .signup-password-reqs .signup-password-list li.valid {
   text-decoration: line-through;
-}
-
-main .signup .signup-step .form-col.hide {
-  display: none;
 }
 
 main .signup .signup-step .modal-wrapper .modal {

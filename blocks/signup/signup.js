@@ -111,6 +111,85 @@ function showStep(stepNumber) {
 }
 
 /**
+ * validate form inputs on step 2
+ * @param {obj} inputElements - input elements
+ */
+async function validateInputs(inputElements) {
+  // Sanitize all input fields
+  const sanitizedInputElements = inputElements.map(input => ({
+    input,
+    id: input.id,
+    name: input.name,
+    value: input.name === 'phone' ? cleanPhone(input.value) : sanitizeInput(input.value)
+  }));
+
+  const workEmailInput = sanitizedInputElements.find(elem => elem.name === 'workEmail');
+  const websiteInput = sanitizedInputElements.find(elem => elem.name === 'Website');
+  if (workEmailInput && websiteInput) {
+    const isWorkEmailEmpty = workEmailInput.value.trim() === '';
+    const isWebsiteEmpty = websiteInput.value.trim() === '';
+    if (!isWorkEmailEmpty || !isWebsiteEmpty) return false;
+  }
+  
+
+  const errorMessages = [];
+
+  const sanitizedPasswordInput = sanitizedInputElements.find(elem => elem.name === 'password1');
+  if (sanitizedPasswordInput) {
+    const passwordInput = sanitizedPasswordInput.input;
+    const passwordValue = sanitizedPasswordInput.value.trim();
+    errorMessages.push({condition: passwordValue === '', input: passwordInput, message: 'Password cannot be empty.'}, {condition: !validatePassword(passwordValue), input: passwordInput, message: 'Password does not meet requirements.'});
+  }
+  
+
+  const sanitizedDomainInput = sanitizedInputElements.find(elem => elem.name === 'siteDomain') || sanitizedInputElements.find(elem => elem.name === 'Company');
+  if(sanitizedDomainInput) {
+    const domainInput = sanitizedDomainInput.input;
+    const domainValue = sanitizedDomainInput.value.trim();
+  
+    const domainValidationResult = await validateDomain(domainValue);
+    const domainTaken = domainValidationResult === true;
+    errorMessages.push({ condition: domainValue === '', input: domainInput, message: 'Domain cannot be empty.' }, { condition: domainValidationResult === 'bad_domain', input: domainInput, message: 'Invalid domain format.' }, { condition: domainTaken, input: domainInput, message: 'Domain is already taken.' }, { condition: domainValidationResult === false, input: domainInput, message: 'Unable to validate domain.' });
+  }
+  
+
+  const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree')?.input;
+  if(checkboxInput) {
+    const checkboxChecked = checkboxInput.checked;
+    errorMessages.push({ condition: !checkboxChecked, input: checkboxInput, message: '' });
+  }
+
+  sanitizedInputElements.forEach(input => {
+    const inputEl = input.input;
+    const existingError = inputEl.parentNode?.querySelector('.error-message');
+    if (existingError) {
+      inputEl.parentNode.removeChild(existingError);
+    }
+  });
+
+  errorMessages.forEach(errorMessage => {
+    const { condition, input, message } = errorMessage;
+    if (condition) {
+      const existingError = input.parentNode?.querySelector('.error-message');
+
+      if (!existingError) input.parentNode.classList.add('error');
+      if (!existingError && message !== '') {
+        const errorElem = createElem('p', 'error-message');
+        errorElem.textContent = message;
+        input.parentNode.insertBefore(errorElem, input.nextSibling);
+      }
+    } else {
+      const sameInputConditions = errorMessages.filter(msg => msg.input === input && msg.condition);
+      if (sameInputConditions.length === 0) {
+        input.parentNode.classList.remove('error');
+      }
+    }
+  });
+
+  return errorMessages.every(errorMessage => !errorMessage.condition);
+}
+
+/**
  * Submit step 2 form
  * @param {obj} event - event
  * @param {obj} inputElements - form input elements
@@ -141,67 +220,11 @@ async function step2Submit(event, inputElements) {
     }
   });
 
-  const workEmailInput = sanitizedInputElements.find(elem => elem.id === 'workEmail');
-  const websiteInput = sanitizedInputElements.find(elem => elem.id === 'Website');
-  const isWorkEmailEmpty = workEmailInput.value.trim() === '';
-  const isWebsiteEmpty = websiteInput.value.trim() === '';
-
-  if (!isWorkEmailEmpty || !isWebsiteEmpty) {
-    return;
-  }
-
-  const sanitizedPasswordInput = sanitizedInputElements.find(elem => elem.id === 'password1');
-  const passwordInput = sanitizedPasswordInput.input;
-  const passwordValue = sanitizedPasswordInput.value.trim();
-
-  const sanitizedDomainInput = sanitizedInputElements.find(elem => elem.id === 'siteDomain');
-  const domainInput = sanitizedDomainInput.input;
-  const domainValue = sanitizedDomainInput.value.trim();
-
-  const domainValidationResult = await validateDomain(domainValue);
-  const domainTaken = domainValidationResult === true;
-
-  const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree').input;
-  const checkboxChecked = checkboxInput.checked;
-
-  const errorMessages = [
-    { condition: passwordValue === '', input: passwordInput, message: 'Password cannot be empty.' },
-    { condition: !validatePassword(passwordValue), input: passwordInput, message: 'Password does not meet requirements.' },
-    { condition: domainValue === '', input: domainInput, message: 'Domain cannot be empty.' },
-    { condition: domainValidationResult === 'bad_domain', input: domainInput, message: 'Invalid domain format.' },
-    { condition: domainTaken, input: domainInput, message: 'Domain is already taken.' },
-    { condition: !checkboxChecked, input: checkboxInput, message: '' }
-  ];
-
-  sanitizedInputElements.forEach(input => {
-    const inputEl = input.input;
-    const existingError = inputEl.parentNode?.querySelector('.error-message');
-    if (existingError) {
-      inputEl.parentNode.removeChild(existingError);
+  try {
+    const isValid = await validateInputs(inputElements);
+    if (!isValid) {
+      return;
     }
-  });
-
-  errorMessages.forEach(errorMessage => {
-    const { condition, input, message } = errorMessage;
-
-    if (condition) {
-      const existingError = input.parentNode?.querySelector('.error-message');
-
-      if (!existingError) input.parentNode.classList.add('error');
-      if (!existingError && message !== '') {
-        const errorElem = createElem('p', 'error-message');
-        errorElem.textContent = message;
-        input.parentNode.insertBefore(errorElem, input.nextSibling);
-      }
-    } else {
-      const sameInputConditions = errorMessages.filter(msg => msg.input === input && msg.condition);
-      if (sameInputConditions.length === 0) {
-        input.parentNode.classList.remove('error');
-      }
-    }
-  });
-
-  if (errorMessages.every(errorMessage => errorMessage.condition === false)) {
 
     // show step 3
     showStep(parseInt(currentStep, 10) + 1);
@@ -214,18 +237,19 @@ async function step2Submit(event, inputElements) {
         method: 'POST',
         body: formData,
       });
+      const errorMsgEl = createElem('p', 'signup-submit-error');
+      errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
+      const loderContainer = successModal.querySelector('.dot-loader-container');
+
       if (!response.ok) {
         // eslint-disable-next-line no-console
         console.error('Error submitting signup step2 form:', response.statusText);
-      }
-      const loderContainer = successModal.querySelector('.dot-loader-container');
-      const responseData = await response.json();
-
-      if (responseData.errors && responseData.errors.length > 0) {
-        const errorMsgEl = createElem('p', 'signup-submit-error');
-        errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
         loderContainer.replaceWith(errorMsgEl);
       }
+      const responseData = await response.json();
+
+      if (responseData.errors && responseData.errors.length > 0) loderContainer.replaceWith(errorMsgEl);
+
       const loginBtn = createElem('a', 'success-login-btn');
       loginBtn.textContent = 'We\'re Ready!';
       loginBtn.href = responseData.goTo;
@@ -242,7 +266,12 @@ async function step2Submit(event, inputElements) {
       // eslint-disable-next-line no-console
       console.error('An error occurred:', error);
     }
+
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('An error occurred during step2 form validation:', error);
   }
+
 }
 
 /**
@@ -282,8 +311,9 @@ function buildStep2Form() {
     const input = document.createElement('input');
 
     const domainValueContainer = createElem('div', 'domain-value-container');
-    const domainValue = createElem('span', 'domain-value');
-    domainValueContainer.append(domainValue, '.bamboohr.com');
+    domainValueContainer.innerHTML = `<div><span class="domain-value"></span>.bamboohr.com</div>
+    <div class="domain-edit"><img src="/icons/edit.svg" class="domain-edit-icon" alt="Edit your domain" /> Edit<?div>`;
+    const domainValue = domainValueContainer.querySelector('.domain-value');
 
     if (fieldConfig.id === 'siteDomain') inputWrapper.appendChild(domainValueContainer);
 
@@ -312,6 +342,9 @@ function buildStep2Form() {
     if (fieldConfig.id === 'siteDomain') {
       input.addEventListener('keyup', (event) => {
         domainValue.textContent = event.target.value;
+      });
+      input.addEventListener('blur', async () => {
+        await validateInputs([input]);
       });
     }
 
@@ -374,6 +407,29 @@ function getStep1FormValues(formElement) {
   });
 
   return formValues;
+}
+
+/**
+ * show/hide domain field on condition
+ * @param {object} step2Form - step2 form
+ * @param {string} companyName - company input value from step1
+ */
+function toggleDomainField(step2Form, companyName) {
+  const domainInput = step2Form.querySelector('input[name="siteDomain"]');
+  const domainLabel = step2Form.querySelector('label[for="siteDomain"]');
+  domainInput.classList.add('hide');
+  domainLabel.classList.add('hide');
+  const domainValueEl = step2Form.querySelector('.domain-value');
+  domainValueEl.textContent = companyName;
+  domainInput.value = companyName;
+  const domainEdit = step2Form.querySelector('.domain-edit');
+  domainEdit.classList.remove('hide');
+
+  domainEdit.addEventListener('click', () => {
+    domainEdit.classList.add('hide');
+    domainInput.classList.remove('hide');
+    domainLabel.classList.remove('hide');
+  });
 }
 
 export default function decorate(block) {
@@ -457,12 +513,12 @@ export default function decorate(block) {
     }
   });
 
-  loadFormAndChilipiper(formParams, () => {
+  loadFormAndChilipiper(formParams, async () => {
   const currentStep = 1;
 
   const step1Form = step1FormContainer.querySelector(`#mktoForm_${formParams.formId}`);
   const step1FormValues = getStep1FormValues(step1Form);
-  const hiddenFields = step2Form.querySelectorAll('input[type="hidden"]');
+  const step2HiddenFields = step2Form.querySelectorAll('input[type="hidden"]');
   const fieldMappings = {
     'firstName': 'FirstName',
     'lastName': 'LastName',
@@ -477,12 +533,17 @@ export default function decorate(block) {
   };
   
   // fill hidden fields value with step1 form values
-  hiddenFields.forEach(hiddenField => {
+  step2HiddenFields.forEach(hiddenField => {
     const fieldName = fieldMappings[hiddenField.name] || hiddenField.name;
     if (step1FormValues[fieldName]) {
       hiddenField.value = step1FormValues[fieldName];
     }
   });
+
+  const companyInput = step1FormContainer.querySelector('input[name="Company"]');
+  const isValidDomain = await validateInputs([companyInput]);
+  if(isValidDomain) toggleDomainField(step2Form, step1FormValues.Company);
+  
   showStep(currentStep + 1);
   });
 }
