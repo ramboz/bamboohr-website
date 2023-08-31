@@ -220,66 +220,6 @@ async function step2Submit(event, inputElements) {
     }
   });
 
-  // const workEmailInput = sanitizedInputElements.find(elem => elem.id === 'workEmail');
-  // const websiteInput = sanitizedInputElements.find(elem => elem.id === 'Website');
-  // const isWorkEmailEmpty = workEmailInput.value.trim() === '';
-  // const isWebsiteEmpty = websiteInput.value.trim() === '';
-
-  // if (!isWorkEmailEmpty || !isWebsiteEmpty) {
-  //   return;
-  // }
-
-  // const sanitizedPasswordInput = sanitizedInputElements.find(elem => elem.id === 'password1');
-  // const passwordInput = sanitizedPasswordInput.input;
-  // const passwordValue = sanitizedPasswordInput.value.trim();
-
-  // const sanitizedDomainInput = sanitizedInputElements.find(elem => elem.id === 'siteDomain');
-  // const domainInput = sanitizedDomainInput.input;
-  // const domainValue = sanitizedDomainInput.value.trim();
-
-  // const domainValidationResult = await validateDomain(domainValue);
-  // const domainTaken = domainValidationResult === true;
-
-  // const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree').input;
-  // const checkboxChecked = checkboxInput.checked;
-
-  // const errorMessages = [
-  //   { condition: passwordValue === '', input: passwordInput, message: 'Password cannot be empty.' },
-  //   { condition: !validatePassword(passwordValue), input: passwordInput, message: 'Password does not meet requirements.' },
-  //   { condition: domainValue === '', input: domainInput, message: 'Domain cannot be empty.' },
-  //   { condition: domainValidationResult === 'bad_domain', input: domainInput, message: 'Invalid domain format.' },
-  //   { condition: domainTaken, input: domainInput, message: 'Domain is already taken.' },
-  //   { condition: !checkboxChecked, input: checkboxInput, message: '' }
-  // ];
-
-  // sanitizedInputElements.forEach(input => {
-  //   const inputEl = input.input;
-  //   const existingError = inputEl.parentNode?.querySelector('.error-message');
-  //   if (existingError) {
-  //     inputEl.parentNode.removeChild(existingError);
-  //   }
-  // });
-
-  // errorMessages.forEach(errorMessage => {
-  //   const { condition, input, message } = errorMessage;
-
-  //   if (condition) {
-  //     const existingError = input.parentNode?.querySelector('.error-message');
-
-  //     if (!existingError) input.parentNode.classList.add('error');
-  //     if (!existingError && message !== '') {
-  //       const errorElem = createElem('p', 'error-message');
-  //       errorElem.textContent = message;
-  //       input.parentNode.insertBefore(errorElem, input.nextSibling);
-  //     }
-  //   } else {
-  //     const sameInputConditions = errorMessages.filter(msg => msg.input === input && msg.condition);
-  //     if (sameInputConditions.length === 0) {
-  //       input.parentNode.classList.remove('error');
-  //     }
-  //   }
-  // });
-
   const isValid = await validateInputs(inputElements);
 
   if (isValid) {
@@ -363,8 +303,9 @@ function buildStep2Form() {
     const input = document.createElement('input');
 
     const domainValueContainer = createElem('div', 'domain-value-container');
-    const domainValue = createElem('span', 'domain-value');
-    domainValueContainer.append(domainValue, '.bamboohr.com');
+    domainValueContainer.innerHTML = `<div><span class="domain-value"></span>.bamboohr.com</div>
+    <div class="domain-edit"><img src="/icons/edit.svg" class="domain-edit-icon" alt="Edit your domain" /> Edit<?div>`;
+    const domainValue = domainValueContainer.querySelector('.domain-value');
 
     if (fieldConfig.id === 'siteDomain') inputWrapper.appendChild(domainValueContainer);
 
@@ -458,6 +399,27 @@ function getStep1FormValues(formElement) {
   });
 
   return formValues;
+}
+
+/**
+ * show/hide domain field on condition
+ * @param {object} step2Form - step2 form
+ */
+function toggleDomainField(step2Form) {
+  const domainInput = step2Form.querySelector('input[name="siteDomain"]');
+  const domainLabel = step2Form.querySelector('label[for="siteDomain"]');
+  domainInput.classList.add('hide');
+  domainLabel.classList.add('hide');
+  const domainValueEl = step2Form.querySelector('.domain-value');
+  domainValueEl.textContent = domainInput.value;
+  const domainEdit = step2Form.querySelector('.domain-edit');
+  domainEdit.classList.remove('hide');
+
+  domainEdit.addEventListener('click', () => {
+    domainEdit.classList.add('hide');
+    domainInput.classList.remove('hide');
+  domainLabel.classList.remove('hide');
+  });
 }
 
 export default function decorate(block) {
@@ -568,9 +530,11 @@ export default function decorate(block) {
     }
   });
 
-  const companyName = step1FormValues.Company;
-  const domainValidationResult = await validateDomain(companyName);
-  const domainTaken = domainValidationResult === true;
+  const companyInput = step1FormContainer.querySelector('input[name="Company"]');
+  const isValidDomain = validateInputs([companyInput]);
+  console.log(`isValidateDomain : ${isValidDomain}`);
+  if(isValidDomain) toggleDomainField(step2Form);
+  
   showStep(currentStep + 1);
   });
 }

@@ -77,6 +77,24 @@ main .signup .signup-step2-form .domain-value-container {
   color: var(--color-gray-9);
 }
 
+main .signup .signup-step2-form .domain-edit {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 15px;
+  cursor: pointer;
+  color: var(--color-1);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
+  margin-top: 10px;
+}
+
+main .signup .signup-step2-form .domain-edit .domain-edit-icon {
+  margin-right: 6px;
+}
+
 main .signup .signup-step2-form .signup-password-reqs {
   margin: 20px 0;
 }
@@ -183,4 +201,9 @@ main .signup .signup-step a.success-login-btn {
   border: none;
   cursor: pointer;
   margin-top: 30px;
+}
+
+main .signup .form label.hide,
+main .signup .form .hide {
+  display: none;
 }
