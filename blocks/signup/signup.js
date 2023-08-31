@@ -149,7 +149,7 @@ async function validateInputs(inputElements) {
   
     const domainValidationResult = await validateDomain(domainValue);
     const domainTaken = domainValidationResult === true;
-    errorMessages.push({ condition: domainValue === '', input: domainInput, message: 'Domain cannot be empty.' }, { condition: domainValidationResult === 'bad_domain', input: domainInput, message: 'Invalid domain format.' }, { condition: domainTaken, input: domainInput, message: 'Domain is already taken.' }, { condition: domainValidationResult === false, input: domainInput, message: 'Unable to validate domain.' });
+    errorMessages.push({ condition: domainValue === '', input: domainInput, message: 'Domain cannot be empty.' }, { condition: domainValidationResult === 'bad_domain', input: domainInput, message: 'Invalid domain format.' }, { condition: domainTaken, input: domainInput, message: 'Domain is already taken.' });
   }
   
 

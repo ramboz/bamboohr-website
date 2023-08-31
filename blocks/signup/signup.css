@@ -203,3 +203,7 @@ main .signup .signup-step a.success-login-btn {
   cursor: pointer;
   margin-top: 30px;
 }
+
+main .signup .signup-step .signup-submit-error {
+  color: var(--color-2-shade-5);
+}
