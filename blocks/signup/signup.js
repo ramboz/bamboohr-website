@@ -153,7 +153,7 @@ async function validateInputs(inputElements) {
   }
   
 
-  const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree').input;
+  const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree')?.input;
   if(checkboxInput) {
     const checkboxChecked = checkboxInput.checked;
     errorMessages.push({ condition: !checkboxChecked, input: checkboxInput, message: '' });
@@ -169,7 +169,6 @@ async function validateInputs(inputElements) {
 
   errorMessages.forEach(errorMessage => {
     const { condition, input, message } = errorMessage;
-    console.log(errorMessage);
     if (condition) {
       const existingError = input.parentNode?.querySelector('.error-message');
 
