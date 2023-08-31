@@ -111,6 +111,86 @@ function showStep(stepNumber) {
 }
 
 /**
+ * validate form inputs on step 2
+ * @param {obj} inputElements - input elements
+ */
+async function validateInputs(inputElements) {
+  // Sanitize all input fields
+  const sanitizedInputElements = inputElements.map(input => ({
+    input,
+    id: input.id,
+    name: input.name,
+    value: input.name === 'phone' ? cleanPhone(input.value) : sanitizeInput(input.value)
+  }));
+
+  const workEmailInput = sanitizedInputElements.find(elem => elem.id === 'workEmail');
+  const websiteInput = sanitizedInputElements.find(elem => elem.id === 'Website');
+  const isWorkEmailEmpty = workEmailInput.value.trim() === '';
+  const isWebsiteEmpty = websiteInput.value.trim() === '';
+
+  if (!isWorkEmailEmpty || !isWebsiteEmpty) {
+    return false;
+  }
+
+  const errorMessages = [];
+
+  const sanitizedPasswordInput = sanitizedInputElements.find(elem => elem.id === 'password1');
+  if (sanitizedPasswordInput) {
+    const passwordInput = sanitizedPasswordInput.input;
+    const passwordValue = sanitizedPasswordInput.value.trim();
+    errorMessages.push({condition: passwordValue === '', input: passwordInput, message: 'Password cannot be empty.'}, {condition: !validatePassword(passwordValue), input: passwordInput, message: 'Password does not meet requirements.'});
+  }
+  
+
+  const sanitizedDomainInput = sanitizedInputElements.find(elem => elem.id === 'siteDomain');
+  if(sanitizedDomainInput) {
+    const domainInput = sanitizedDomainInput.input;
+    const domainValue = sanitizedDomainInput.value.trim();
+  
+    const domainValidationResult = await validateDomain(domainValue);
+    const domainTaken = domainValidationResult === true;
+    errorMessages.push({ condition: domainValue === '', input: domainInput, message: 'Domain cannot be empty.' }, { condition: domainValidationResult === 'bad_domain', input: domainInput, message: 'Invalid domain format.' }, { condition: domainTaken, input: domainInput, message: 'Domain is already taken.' });
+  }
+  
+
+  const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree').input;
+  if(checkboxInput) {
+    const checkboxChecked = checkboxInput.checked;
+    errorMessages.push({ condition: !checkboxChecked, input: checkboxInput, message: '' });
+  }
+
+  sanitizedInputElements.forEach(input => {
+    const inputEl = input.input;
+    const existingError = inputEl.parentNode?.querySelector('.error-message');
+    if (existingError) {
+      inputEl.parentNode.removeChild(existingError);
+    }
+  });
+
+  errorMessages.forEach(errorMessage => {
+    const { condition, input, message } = errorMessage;
+
+    if (condition) {
+      const existingError = input.parentNode?.querySelector('.error-message');
+
+      if (!existingError) input.parentNode.classList.add('error');
+      if (!existingError && message !== '') {
+        const errorElem = createElem('p', 'error-message');
+        errorElem.textContent = message;
+        input.parentNode.insertBefore(errorElem, input.nextSibling);
+      }
+    } else {
+      const sameInputConditions = errorMessages.filter(msg => msg.input === input && msg.condition);
+      if (sameInputConditions.length === 0) {
+        input.parentNode.classList.remove('error');
+      }
+    }
+  });
+
+  return errorMessages.every(errorMessage => !errorMessage.condition);
+}
+
+/**
  * Submit step 2 form
  * @param {obj} event - event
  * @param {obj} inputElements - form input elements
@@ -141,67 +221,69 @@ async function step2Submit(event, inputElements) {
     }
   });
 
-  const workEmailInput = sanitizedInputElements.find(elem => elem.id === 'workEmail');
-  const websiteInput = sanitizedInputElements.find(elem => elem.id === 'Website');
-  const isWorkEmailEmpty = workEmailInput.value.trim() === '';
-  const isWebsiteEmpty = websiteInput.value.trim() === '';
+  // const workEmailInput = sanitizedInputElements.find(elem => elem.id === 'workEmail');
+  // const websiteInput = sanitizedInputElements.find(elem => elem.id === 'Website');
+  // const isWorkEmailEmpty = workEmailInput.value.trim() === '';
+  // const isWebsiteEmpty = websiteInput.value.trim() === '';
 
-  if (!isWorkEmailEmpty || !isWebsiteEmpty) {
-    return;
-  }
+  // if (!isWorkEmailEmpty || !isWebsiteEmpty) {
+  //   return;
+  // }
 
-  const sanitizedPasswordInput = sanitizedInputElements.find(elem => elem.id === 'password1');
-  const passwordInput = sanitizedPasswordInput.input;
-  const passwordValue = sanitizedPasswordInput.value.trim();
+  // const sanitizedPasswordInput = sanitizedInputElements.find(elem => elem.id === 'password1');
+  // const passwordInput = sanitizedPasswordInput.input;
+  // const passwordValue = sanitizedPasswordInput.value.trim();
 
-  const sanitizedDomainInput = sanitizedInputElements.find(elem => elem.id === 'siteDomain');
-  const domainInput = sanitizedDomainInput.input;
-  const domainValue = sanitizedDomainInput.value.trim();
+  // const sanitizedDomainInput = sanitizedInputElements.find(elem => elem.id === 'siteDomain');
+  // const domainInput = sanitizedDomainInput.input;
+  // const domainValue = sanitizedDomainInput.value.trim();
 
-  const domainValidationResult = await validateDomain(domainValue);
-  const domainTaken = domainValidationResult === true;
+  // const domainValidationResult = await validateDomain(domainValue);
+  // const domainTaken = domainValidationResult === true;
 
-  const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree').input;
-  const checkboxChecked = checkboxInput.checked;
+  // const checkboxInput = sanitizedInputElements.find(elem => elem.id === 'agree').input;
+  // const checkboxChecked = checkboxInput.checked;
 
-  const errorMessages = [
-    { condition: passwordValue === '', input: passwordInput, message: 'Password cannot be empty.' },
-    { condition: !validatePassword(passwordValue), input: passwordInput, message: 'Password does not meet requirements.' },
-    { condition: domainValue === '', input: domainInput, message: 'Domain cannot be empty.' },
-    { condition: domainValidationResult === 'bad_domain', input: domainInput, message: 'Invalid domain format.' },
-    { condition: domainTaken, input: domainInput, message: 'Domain is already taken.' },
-    { condition: !checkboxChecked, input: checkboxInput, message: '' }
-  ];
+  // const errorMessages = [
+  //   { condition: passwordValue === '', input: passwordInput, message: 'Password cannot be empty.' },
+  //   { condition: !validatePassword(passwordValue), input: passwordInput, message: 'Password does not meet requirements.' },
+  //   { condition: domainValue === '', input: domainInput, message: 'Domain cannot be empty.' },
+  //   { condition: domainValidationResult === 'bad_domain', input: domainInput, message: 'Invalid domain format.' },
+  //   { condition: domainTaken, input: domainInput, message: 'Domain is already taken.' },
+  //   { condition: !checkboxChecked, input: checkboxInput, message: '' }
+  // ];
 
-  sanitizedInputElements.forEach(input => {
-    const inputEl = input.input;
-    const existingError = inputEl.parentNode?.querySelector('.error-message');
-    if (existingError) {
-      inputEl.parentNode.removeChild(existingError);
-    }
-  });
+  // sanitizedInputElements.forEach(input => {
+  //   const inputEl = input.input;
+  //   const existingError = inputEl.parentNode?.querySelector('.error-message');
+  //   if (existingError) {
+  //     inputEl.parentNode.removeChild(existingError);
+  //   }
+  // });
 
-  errorMessages.forEach(errorMessage => {
-    const { condition, input, message } = errorMessage;
+  // errorMessages.forEach(errorMessage => {
+  //   const { condition, input, message } = errorMessage;
 
-    if (condition) {
-      const existingError = input.parentNode?.querySelector('.error-message');
+  //   if (condition) {
+  //     const existingError = input.parentNode?.querySelector('.error-message');
 
-      if (!existingError) input.parentNode.classList.add('error');
-      if (!existingError && message !== '') {
-        const errorElem = createElem('p', 'error-message');
-        errorElem.textContent = message;
-        input.parentNode.insertBefore(errorElem, input.nextSibling);
-      }
-    } else {
-      const sameInputConditions = errorMessages.filter(msg => msg.input === input && msg.condition);
-      if (sameInputConditions.length === 0) {
-        input.parentNode.classList.remove('error');
-      }
-    }
-  });
+  //     if (!existingError) input.parentNode.classList.add('error');
+  //     if (!existingError && message !== '') {
+  //       const errorElem = createElem('p', 'error-message');
+  //       errorElem.textContent = message;
+  //       input.parentNode.insertBefore(errorElem, input.nextSibling);
+  //     }
+  //   } else {
+  //     const sameInputConditions = errorMessages.filter(msg => msg.input === input && msg.condition);
+  //     if (sameInputConditions.length === 0) {
+  //       input.parentNode.classList.remove('error');
+  //     }
+  //   }
+  // });
 
-  if (errorMessages.every(errorMessage => errorMessage.condition === false)) {
+  const isValid = await validateInputs(inputElements);
+
+  if (isValid) {
 
     // show step 3
     showStep(parseInt(currentStep, 10) + 1);
@@ -312,6 +394,9 @@ function buildStep2Form() {
     if (fieldConfig.id === 'siteDomain') {
       input.addEventListener('keyup', (event) => {
         domainValue.textContent = event.target.value;
+      });
+      input.addEventListener('blur', async () => {
+        await validateInputs([input]);
       });
     }
 
@@ -457,12 +542,12 @@ export default function decorate(block) {
     }
   });
 
-  loadFormAndChilipiper(formParams, () => {
+  loadFormAndChilipiper(formParams, async () => {
   const currentStep = 1;
 
   const step1Form = step1FormContainer.querySelector(`#mktoForm_${formParams.formId}`);
   const step1FormValues = getStep1FormValues(step1Form);
-  const hiddenFields = step2Form.querySelectorAll('input[type="hidden"]');
+  const step2HiddenFields = step2Form.querySelectorAll('input[type="hidden"]');
   const fieldMappings = {
     'firstName': 'FirstName',
     'lastName': 'LastName',
@@ -477,12 +562,16 @@ export default function decorate(block) {
   };
   
   // fill hidden fields value with step1 form values
-  hiddenFields.forEach(hiddenField => {
+  step2HiddenFields.forEach(hiddenField => {
     const fieldName = fieldMappings[hiddenField.name] || hiddenField.name;
     if (step1FormValues[fieldName]) {
       hiddenField.value = step1FormValues[fieldName];
     }
   });
+
+  const companyName = step1FormValues.Company;
+  const domainValidationResult = await validateDomain(companyName);
+  const domainTaken = domainValidationResult === true;
   showStep(currentStep + 1);
   });
 }
