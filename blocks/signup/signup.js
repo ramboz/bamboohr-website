@@ -150,6 +150,8 @@ async function validateInputs(inputElements) {
     const domainValidationResult = await validateDomain(domainValue);
     const domainTaken = domainValidationResult === true;
     errorMessages.push({ condition: domainValue === '', input: domainInput, message: 'Domain cannot be empty.' }, { condition: domainValidationResult === 'bad_domain', input: domainInput, message: 'Invalid domain format.' }, { condition: domainTaken, input: domainInput, message: 'Domain is already taken.' });
+
+    if(domainValidationResult === false) return false;
   }
   
 
@@ -237,18 +239,19 @@ async function step2Submit(event, inputElements) {
         method: 'POST',
         body: formData,
       });
+      const errorMsgEl = createElem('p', 'signup-submit-error');
+      errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
+      const loderContainer = successModal.querySelector('.dot-loader-container');
+
       if (!response.ok) {
         // eslint-disable-next-line no-console
         console.error('Error submitting signup step2 form:', response.statusText);
-      }
-      const loderContainer = successModal.querySelector('.dot-loader-container');
-      const responseData = await response.json();
-
-      if (responseData.errors && responseData.errors.length > 0) {
-        const errorMsgEl = createElem('p', 'signup-submit-error');
-        errorMsgEl.textContent = 'There was an error setting up your account, please try again later';
         loderContainer.replaceWith(errorMsgEl);
       }
+      const responseData = await response.json();
+
+      if (responseData.errors && responseData.errors.length > 0) loderContainer.replaceWith(errorMsgEl);
+
       const loginBtn = createElem('a', 'success-login-btn');
       loginBtn.textContent = 'We\'re Ready!';
       loginBtn.href = responseData.goTo;
