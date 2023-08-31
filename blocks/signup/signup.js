@@ -220,7 +220,7 @@ async function step2Submit(event, inputElements) {
     }
   });
 
-  const isValid = await validateInputs(inputElements);
+  const isValid = validateInputs(inputElements);
 
   if (isValid) {
 
@@ -335,8 +335,8 @@ function buildStep2Form() {
       input.addEventListener('keyup', (event) => {
         domainValue.textContent = event.target.value;
       });
-      input.addEventListener('blur', async () => {
-        await validateInputs([input]);
+      input.addEventListener('blur', () => {
+        validateInputs([input]);
       });
     }
 
@@ -404,14 +404,15 @@ function getStep1FormValues(formElement) {
 /**
  * show/hide domain field on condition
  * @param {object} step2Form - step2 form
+ * @param {string} companyName - company input value from step1
  */
-function toggleDomainField(step2Form) {
+function toggleDomainField(step2Form, companyName) {
   const domainInput = step2Form.querySelector('input[name="siteDomain"]');
   const domainLabel = step2Form.querySelector('label[for="siteDomain"]');
   domainInput.classList.add('hide');
   domainLabel.classList.add('hide');
   const domainValueEl = step2Form.querySelector('.domain-value');
-  domainValueEl.textContent = domainInput.value;
+  domainValueEl.textContent = companyName;
   const domainEdit = step2Form.querySelector('.domain-edit');
   domainEdit.classList.remove('hide');
 
@@ -532,8 +533,9 @@ export default function decorate(block) {
 
   const companyInput = step1FormContainer.querySelector('input[name="Company"]');
   const isValidDomain = validateInputs([companyInput]);
-  console.log(`isValidateDomain : ${isValidDomain}`);
-  if(isValidDomain) toggleDomainField(step2Form);
+  console.log(isValidDomain);
+  console.log(step1FormValues.Company);
+  if(isValidDomain) toggleDomainField(step2Form, step1FormValues.Company);
   
   showStep(currentStep + 1);
   });
