@@ -427,7 +427,7 @@ function toggleDomainField(step2Form, companyName) {
   domainEdit.addEventListener('click', () => {
     domainEdit.classList.add('hide');
     domainInput.classList.remove('hide');
-  domainLabel.classList.remove('hide');
+    domainLabel.classList.remove('hide');
   });
 }
 

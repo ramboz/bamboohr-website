@@ -8,6 +8,11 @@
  }
 }
 
+main .signup .form label.hide,
+main .signup .form .hide {
+  display: none;
+}
+
 main .signup .signup-step {
   display: none;
 }
@@ -121,10 +126,6 @@ main .signup .signup-step2-form .signup-password-reqs .signup-password-list li.v
   text-decoration: line-through;
 }
 
-main .signup .signup-step .form-col.hide {
-  display: none;
-}
-
 main .signup .signup-step .modal-wrapper .modal {
   max-width: 790px;
   text-align: center;
@@ -201,9 +202,4 @@ main .signup .signup-step a.success-login-btn {
   border: none;
   cursor: pointer;
   margin-top: 30px;
-}
-
-main .signup .form label.hide,
-main .signup .form .hide {
-  display: none;
 }
