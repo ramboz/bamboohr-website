@@ -849,8 +849,8 @@ export function loadFormAndChilipiper(params, successCallback = null) {
               },1000);
             }
 
-            const testVariation = getMetadata('test-variation') ? toClassName(getMetadata('test-variation')) : '';
-            if (result && testVariation === 'minimized-form') {
+            const formVariation = getMetadata('form-variation') ? toClassName(getMetadata('form-variation')) : '';
+            if (result && formVariation === 'minimized-form') {
               // Hide all form fields except email input
               formEl.classList.add('minimized-form');
               formEl.closest('.form').classList.add('has-minimized-form');
