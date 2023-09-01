@@ -142,6 +142,7 @@ export function showSlideDown(text, type = 'success', dismissTimer = 3500) {
   }, dismissTimer);
 }
 
+// Adds the eyelash banner to the top of the page/bottom of the default nav.
 function addEyelashBanner(headerEl) {
   const eyelashBanner = document.createElement('div');
   eyelashBanner.classList.add('eyelash-banner');
@@ -269,10 +270,11 @@ export default async function decorate(block) {
         addSearch(buttonsContainer);
       }
 
-      const headerEl = document.querySelector('header');
-      if (navPath === '/nav' && !headerEl.nextElementSibling.classList.contains('eyelash-banner')) {
-        addEyelashBanner(headerEl);
-      }
+      // ********* Calls the addEyelashBanner function. Leave for future use. **********
+      // const headerEl = document.querySelector('header');
+      // if (navPath === '/nav' && !headerEl.nextElementSibling.classList.contains('eyelash-banner')) {
+      //   addEyelashBanner(headerEl);
+      // }
     }
   });
 
