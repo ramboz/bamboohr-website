@@ -1,0 +1,98 @@
+.events .form.has-content .form-col {
+    grid-column: span 5/-1;
+}
+.events .form.has-content .content-col {
+    grid-column: span 6;
+}
+.events .content-col h4 {
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 38px;
+    color: var(--theme-shade10);
+    margin: 0;
+}
+.events .content-col h5 {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: var(--theme-shade15);
+    margin: 24px 0 0;
+}
+.events table {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.events .table td.has-popup-data {
+    padding-left: 20px;
+    cursor: pointer;
+    text-decoration: underline var(--theme-shade5);
+    text-decoration-style: dotted;
+}
+
+.events .table td.has-popup-data::before {
+    background: none;
+    width: 0;
+    height: 0;
+    left: 0;
+    top: 0;
+}
+
+.events .table-tooltip-container {
+    left: -62px;
+}
+
+@media (min-width: 600px) {
+    .events .table-tooltip-container {
+        left: 32px;
+    }
+}
+
+/* Virtual specific styles */
+.events .virtual-banner .form-wrapper {
+    position: relative;
+    z-index: 3;
+}    
+
+.events .virtual-banner .form .form-col p strong {
+    color: var(--theme-shade15);
+}
+
+.virtual-banner {
+    position: relative;
+    background: linear-gradient(0deg, rgba(225, 243, 253, 1) 0%, rgba(151, 225, 253, 1) 100%);
+    background-size: contain;
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+
+.virtual-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/styles/virtual-banner-2.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    opacity: 1; /* Adjust the opacity as needed */
+    z-index: 1; /* Place it behind the content */
+}
+
+
+.virtual-banner .image-wrapper.content-width-full img {
+    margin-bottom: -8px;
+    position: relative;
+    z-index: 3;
+}
+
+.virtual-bottom {
+    background-image: url('/styles/virtual-bottom.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
