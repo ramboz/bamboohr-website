@@ -1142,8 +1142,12 @@ export default async function decorate(block) {
           }
         });
       } else {
-        block.querySelector('div > div').classList.add('form-col');
-        cols[0].append(formContainer);
+        if(cols.length === 0) {
+          block.append(formContainer);
+        } else {
+          block.querySelector('div > div').classList.add('form-col');
+          cols[0].append(formContainer);
+        }
         loadFormAndChilipiper(formParams);
       }
     } else {
