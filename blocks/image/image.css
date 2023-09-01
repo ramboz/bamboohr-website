@@ -24,7 +24,8 @@ main .section > .image-wrapper.content-width-full {
   max-width: 100%;
 }
 
-.image-wrapper.content-width-full img {
+.image-wrapper.content-width-full img,
+.image-wrapper.width-full img {
   width: 100%;
 }
 
