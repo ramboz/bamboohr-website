@@ -1090,24 +1090,25 @@ export function scrollToForm() {
 }
 
 export default async function decorate(block) {
-  const config = readBlockConfig(block);
-  const formParams = {formUrl: null, formId: null, successUrl: null, chilipiper: null,
-    floatingLabel: false };
-
-  formParams.floatingLabel = !!block.classList.contains('floating-label');
-
-  if (!block.classList.contains('has-content')) {
-    const as = block.querySelectorAll('a');
-    formParams.formUrl = as[0] ? as[0].href : '';
-    formParams.successUrl = as[1] ? as[1].href : '';
-  }
-
+  const cols = block.querySelectorAll(':scope > div > div');
   [...block.classList].forEach((name) => {
     if (!Number.isNaN(+name.split('').at(0))) {
       block.classList.remove(name);
       block.classList.add(`grid-${name}`);
     }
   });
+
+  const formParams = {formUrl: null, formId: null, successUrl: null, chilipiper: null,
+    floatingLabel: false };
+
+  formParams.floatingLabel = !!block.classList.contains('floating-label');
+
+  if (cols.length === 1 && !block.classList.contains('has-content')) {
+    const as = block.querySelectorAll('a');
+    formParams.formUrl = as[0] ? as[0].href : '';
+    formParams.successUrl = as[1] ? as[1].href : '';
+  }
+
   if (!formParams.formUrl) {
     await readMarketoParams(formParams);
   }
@@ -1115,19 +1116,17 @@ export default async function decorate(block) {
   if (formParams.formUrl) {
     if (formParams.formUrl.includes('marketo')) {
       formParams.formId = new URL(formParams.formUrl).hash.substring(4);
-      if (config && !block.classList.contains('has-content')) {
-        block.innerHTML = '';
-      }
-      const mktoForm = `<form id="mktoForm_${formParams.formId}"></form>`;
-      if (block.classList.contains('has-content')) {
-        const cols = block.querySelectorAll(':scope > div > div');
+      const mktoForm = document.createElement('form');
+      mktoForm.id = `mktoForm_${formParams.formId}`;
+      const formContainer = document.createElement('div');
+      formContainer.classList.add('form-container');
+      formContainer.append(mktoForm);
+
+      if (cols.length > 1) {
         cols.forEach((col) => {
           const formCol = [...col.children].find((child) => child.textContent.trim().toLowerCase() === 'form');
           if (formCol) {
             col.classList.add('form-col');
-            const formContainer = document.createElement('div');
-            formContainer.classList.add('form-container');
-            formContainer.innerHTML = mktoForm;
             formCol.replaceWith(formContainer);
             loadFormAndChilipiper(formParams);
           } else {
@@ -1143,7 +1142,8 @@ export default async function decorate(block) {
           }
         });
       } else {
-        block.innerHTML = mktoForm;
+        block.querySelector('div > div').classList.add('form-col');
+        cols[0].append(formContainer);
         loadFormAndChilipiper(formParams);
       }
     } else {
