@@ -1,4 +1,4 @@
-import { readBlockConfig, getMetadata, toClassName } from '../../scripts/scripts.js';
+import { getMetadata, toClassName } from '../../scripts/scripts.js';
 import { isUpcomingEvent } from '../listing/listing.js';
 import {
   analyticsTrackChiliPiper, analyticsTrackExpandedForm,
