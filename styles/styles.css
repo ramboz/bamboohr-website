@@ -1055,12 +1055,6 @@ main .section > div.width-2xl {
   max-width: calc(var(--width-2xl) + var(--section-padding-mobile) * 2);
 }
 
-main .section > div.width-full {
-  max-width: 100%;
-  padding-left: 0;
-  padding-right: 0;
-}
-
 @media (min-width: 600px) {
   main .section > div.width-xs {
     max-width: calc(var(--width-xs) + var(--section-padding) * 2);
