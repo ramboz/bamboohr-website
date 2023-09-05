@@ -1031,71 +1031,58 @@ For reference
 
 /* mobile and up */
 
-main .section > div.width-xs,
-main .section.width-xs > div:not([class*='width-']) {
+main .section > div.width-xs {
   max-width: calc(var(--width-xs) + var(--section-padding-mobile) * 2);
 }
 
-main .section > div.width-sm,
-main .section.width-sm > div:not([class*='width-']) {
+main .section > div.width-sm {
   max-width: calc(var(--width-sm) + var(--section-padding-mobile) * 2);
 }
 
-main .section > div.width-md,
-main .section.width-md > div:not([class*='width-']) {
+main .section > div.width-md {
   max-width: calc(var(--width-md) + var(--section-padding-mobile) * 2);
 }
 
-main .section > div.width-lg,
-main .section.width-lg > div:not([class*='width-']) {
+main .section > div.width-lg {
   max-width: calc(var(--width-lg) + var(--section-padding-mobile) * 2);
 }
 
-main .section > div.width-xl,
-main .section.width-xl > div:not([class*='width-']) {
+main .section > div.width-xl {
   max-width: calc(var(--width-xl) + var(--section-padding-mobile) * 2);
 }
 
-main .section > div.width-2xl,
-main .section.width-xl > div:not([class*='width-']) {
+main .section > div.width-2xl {
   max-width: calc(var(--width-2xl) + var(--section-padding-mobile) * 2);
 }
 
-main .section > div.width-full,
-main .section.width-full > div:not([class*='width-']) {
+main .section > div.width-full {
   max-width: 100%;
   padding-left: 0;
   padding-right: 0;
 }
 
 @media (min-width: 600px) {
-  main .section > div.width-xs,
-  main .section.width-xs > div:not([class*='width-']) {
+  main .section > div.width-xs {
     max-width: calc(var(--width-xs) + var(--section-padding) * 2);
   }
 
-  main .section > div.width-sm,
-  main .section.width-sm > div:not([class*='width-']) {
+  main .section > div.width-sm {
     max-width: calc(var(--width-sm) + var(--section-padding) * 2);
   }
 
-  main .section > div.width-md,
-  main .section.width-md > div:not([class*='width-']) {
+  main .section > div.width-md {
     max-width: calc(var(--width-md) + var(--section-padding) * 2);
   }
 
-  main .section > div.width-lg,
-  main .section.width-lg > div:not([class*='width-']) {
+  main .section > div.width-lg {
     max-width: calc(var(--width-lg) + var(--section-padding) * 2);
   }
 
-  main .section > div.width-xl,
-  main .section.width-xl > div:not([class*='width-']) {
+  main .section > div.width-xl {
     max-width: calc(var(--width-xl) + var(--section-padding) * 2);
   }
 
-  main .section > div.width-2xl,
-  main .section.width-2xl > div:not([class*='width-']) {
+  main .section > div.width-2xl {
     max-width: calc(var(--width-2xl) + var(--section-padding) * 2);
   }
 }
