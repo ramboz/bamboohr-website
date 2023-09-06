@@ -1032,27 +1032,53 @@ For reference
 /* mobile and up */
 
 main .section > div.width-xs {
-  max-width: var(--width-xs);
+  max-width: calc(var(--width-xs) + var(--section-padding-mobile) * 2);
 }
 
 main .section > div.width-sm {
-  max-width: var(--width-sm);
+  max-width: calc(var(--width-sm) + var(--section-padding-mobile) * 2);
 }
 
 main .section > div.width-md {
-  max-width: var(--width-md);
+  max-width: calc(var(--width-md) + var(--section-padding-mobile) * 2);
 }
 
 main .section > div.width-lg {
-  max-width: var(--width-lg);
+  max-width: calc(var(--width-lg) + var(--section-padding-mobile) * 2);
 }
 
 main .section > div.width-xl {
-  max-width: var(--width-xl);
+  max-width: calc(var(--width-xl) + var(--section-padding-mobile) * 2);
 }
 
 main .section > div.width-2xl {
-  max-width: var(--width-2xl);
+  max-width: calc(var(--width-2xl) + var(--section-padding-mobile) * 2);
+}
+
+@media (min-width: 600px) {
+  main .section > div.width-xs {
+    max-width: calc(var(--width-xs) + var(--section-padding) * 2);
+  }
+
+  main .section > div.width-sm {
+    max-width: calc(var(--width-sm) + var(--section-padding) * 2);
+  }
+
+  main .section > div.width-md {
+    max-width: calc(var(--width-md) + var(--section-padding) * 2);
+  }
+
+  main .section > div.width-lg {
+    max-width: calc(var(--width-lg) + var(--section-padding) * 2);
+  }
+
+  main .section > div.width-xl {
+    max-width: calc(var(--width-xl) + var(--section-padding) * 2);
+  }
+
+  main .section > div.width-2xl {
+    max-width: calc(var(--width-2xl) + var(--section-padding) * 2);
+  }
 }
 
 /* 
@@ -1069,27 +1095,27 @@ For reference
   /* tablet sizes and up */
 
   main .section > div.tablet-width-xs {
-    max-width: var(--width-xs);
+    max-width: calc(var(--width-xs) + var(--section-padding) * 2);
   }
 
   main .section > div.tablet-width-sm {
-    max-width: var(--width-sm);
+    max-width: calc(var(--width-sm) + var(--section-padding) * 2);
   }
 
   main .section > div.tablet-width-md {
-    max-width: var(--width-md);
+    max-width: calc(var(--width-md) + var(--section-padding) * 2);
   }
 
   main .section > div.tablet-width-lg {
-    max-width: var(--width-lg);
+    max-width: calc(var(--width-lg) + var(--section-padding) * 2);
   }
 
   main .section > div.tablet-width-xl {
-    max-width: var(--width-xl);
+    max-width: calc(var(--width-xl) + var(--section-padding) * 2);
   }
 
   main .section > div.tablet-width-2xl {
-    max-width: var(--width-2xl);
+    max-width: calc(var(--width-2xl) + var(--section-padding) * 2);
   }
 }
 
@@ -1106,27 +1132,27 @@ For reference
 @media (min-width: 900px) {
   /* laptop sizes and up */
   main .section > div.laptop-width-xs {
-    max-width: var(--width-xs);
+    max-width: calc(var(--width-xs) + var(--section-padding) * 2);
   }
 
   main .section > div.laptop-width-sm {
-    max-width: var(--width-sm);
+    max-width: calc(var(--width-sm) + var(--section-padding) * 2);
   }
 
   main .section > div.laptop-width-md {
-    max-width: var(--width-md);
+    max-width: calc(var(--width-md) + var(--section-padding) * 2);
   }
 
   main .section > div.laptop-width-lg {
-    max-width: var(--width-lg);
+    max-width: calc(var(--width-lg) + var(--section-padding) * 2);
   }
 
   main .section > div.laptop-width-xl {
-    max-width: var(--width-xl);
+    max-width: calc(var(--width-xl) + var(--section-padding) * 2);
   }
 
   main .section > div.laptop-width-2xl {
-    max-width: var(--width-2xl);
+    max-width: calc(var(--width-2xl) + var(--section-padding) * 2);
   }
 }
 
@@ -1143,27 +1169,27 @@ For reference
 @media (min-width: 1200px) {
   /* desktop sizes and up */
   main .section > div.desktop-width-xs {
-    max-width: var(--width-xs);
+    max-width: calc(var(--width-xs) + var(--section-padding) * 2);
   }
 
   main .section > div.desktop-width-sm {
-    max-width: var(--width-sm);
+    max-width: calc(var(--width-sm) + var(--section-padding) * 2);
   }
 
   main .section > div.desktop-width-md {
-    max-width: var(--width-md);
+    max-width: calc(var(--width-md) + var(--section-padding) * 2);
   }
 
   main .section > div.desktop-width-lg {
-    max-width: var(--width-lg);
+    max-width: calc(var(--width-lg) + var(--section-padding) * 2);
   }
 
   main .section > div.desktop-width-xl {
-    max-width: var(--width-xl);
+    max-width: calc(var(--width-xl) + var(--section-padding) * 2);
   }
 
   main .section > div.desktop-width-2xl {
-    max-width: var(--width-2xl);
+    max-width: calc(var(--width-2xl) + var(--section-padding) * 2);
   }
 }
 
