@@ -1186,8 +1186,8 @@ export async function loadHeader(header) {
   // Patch logo URL for is-customer audience
   if (getBhrFeaturesCookie()) {
 	const usp = new URLSearchParams(window.location.search);
-    if (AUDIENCES['is-customer']() && !usp.has('segment')) {
-      usp.append('segment', 'general');
+    if (AUDIENCES['is-customer']() && !usp.has('audience')) {
+      usp.append('audience', 'general');
       document.querySelector('.nav-brand a').href += `?${usp.toString()}`;
     }
   }
