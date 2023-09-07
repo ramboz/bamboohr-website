@@ -260,8 +260,8 @@ export async function runExperiment(experiment, instantExperiment) {
     || (isValidAudience(toClassName(experimentConfig.audience)) && isSuitablePage());
     
   window.hlx = window.hlx || {};
-  window.hlx.experiment = experimentConfig;
   if (!experimentConfig.run) {
+    window.hlx.experiment = experimentConfig;
     // eslint-disable-next-line no-console
     console.debug('run', experimentConfig.run, experimentConfig.audience, isSuitablePage());
     return;
