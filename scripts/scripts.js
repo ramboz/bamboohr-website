@@ -18,30 +18,18 @@ import {
   setupAnalyticsTrackingWithAlloy,
 } from './lib-analytics.js';
 
-const SEGMENTATION_CONFIG = {
-  audiences: {
-    'is-customer': {
-      label: 'Is a Customer',
-      test: () => {
-        // eslint-disable-next-line no-use-before-define
-        const features = getBhrFeaturesCookie();
-		if (!features) {
-		  return false;
-		}
-		return features.is_admin && !features.bhr_user;
-      },
-    },
-    'not-customer': {
-      label: 'Is not a Customer',
-      test: () => {
-        // eslint-disable-next-line no-use-before-define
-        const features = getBhrFeaturesCookie();
-		if (!features) {
-		  return true;
-		}
-        return !(features.is_admin && !features.bhr_user);
-      },
-    },
+const AUDIENCES = {
+  'is-customer': () => {
+    // eslint-disable-next-line no-use-before-define
+    const features = getBhrFeaturesCookie();
+    if (!features) { return false; }
+    return features.is_admin && !features.bhr_user;
+  },
+  'not-customer': () => {
+    // eslint-disable-next-line no-use-before-define
+    const features = getBhrFeaturesCookie();
+    if (!features) { return true; }
+    return !(features.is_admin && !features.bhr_user);
   },
 };
 
@@ -183,6 +171,32 @@ export function loadCSS(href, callback) {
 }
 
 /**
+ * Loads a non module JS file.
+ * @param {string} src URL to the JS file
+ * @param {Object} attrs additional optional attributes
+ */
+
+export async function loadScript(src, attrs) {
+  return new Promise((resolve, reject) => {
+    if (!document.querySelector(`head > script[src="${src}"]`)) {
+      const script = document.createElement('script');
+      script.src = src;
+      if (attrs) {
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+        for (const attr in attrs) {
+          script.setAttribute(attr, attrs[attr]);
+        }
+      }
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.append(script);
+    } else {
+      resolve();
+    }
+  });
+}
+
+/**
  * Retrieves the content of a metadata tag.
  * @param {string} name The metadata name (or property)
  * @returns {string} The metadata value
@@ -200,6 +214,22 @@ export function getMetadata(name) {
  */
 export function toClassName(name) {
   return name && typeof name === 'string' ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-') : '';
+}
+
+/**
+ * Gets all the metadata elements that are in the given scope.
+* @param {String} scope The scope/prefix for the metadata
+* @returns an array of HTMLElement nodes that match the given scope
+*/
+export function getAllMetadata(scope) {
+  return [...document.head.querySelectorAll(`meta[property^="${scope}:"],meta[name^="${scope}-"]`)]
+    .reduce((res, meta) => {
+      const id = toClassName(meta.name
+        ? meta.name.substring(scope.length + 1)
+        : meta.getAttribute('property').split(':')[1]);
+      res[id] = meta.getAttribute('content');
+      return res;
+    }, {});
 }
 
 /**
@@ -668,6 +698,26 @@ export function buildBlock(blockName, content) {
 }
 
 /**
+ * Gets the configuration for the given block, and also passes
+ * the config through all custom patching helpers added to the project.
+ *
+ * @param {Element} block The block element
+ * @returns {Object} The block config (blockName, cssPath and jsPath)
+ */
+function getBlockConfig(block) {
+  const { blockName } = block.dataset;
+  const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
+  const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
+  const original = { blockName, cssPath, jsPath };
+  return window.hlx.patchBlockConfig
+    .filter((fn) => typeof fn === 'function')
+    .reduce(
+      (config, fn) => fn(config, original),
+      { blockName, cssPath, jsPath },
+    );
+}
+
+/**
  * Loads JS and CSS for a block.
  * @param {Element} block The block element
  */
@@ -679,16 +729,15 @@ export async function loadBlock(block, eager = false) {
     )
   ) {
     block.setAttribute('data-block-status', 'loading');
-    const blockName = block.getAttribute('data-block-name');
+    const { blockName, cssPath, jsPath } = getBlockConfig(block);
     try {
       const cssLoaded = new Promise((resolve) => {
-        const cssBase = `${window.hlx.serverPath}${window.hlx.codeBasePath}`;
-        loadCSS(`${cssBase}/blocks/${blockName}/${blockName}.css`, resolve);
+        loadCSS(cssPath, resolve);
       });
       const decorationComplete = new Promise((resolve) => {
         (async () => {
           try {
-            const mod = await import(`../blocks/${blockName}/${blockName}.js`);
+            const mod = await import(jsPath);
             if (mod.default) {
               await mod.default(block, blockName, document, eager);
             }
@@ -871,6 +920,7 @@ export function initHlx(forceMultiple = false) {
     window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
     window.hlx.codeBasePath = '';
     window.hlx.serverPath = '';
+    window.hlx.patchBlockConfig = [];
 
     const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
     if (scriptEl) {
@@ -1136,7 +1186,7 @@ export async function loadHeader(header) {
   // Patch logo URL for is-customer audience
   if (getBhrFeaturesCookie()) {
 	const usp = new URLSearchParams(window.location.search);
-    if (SEGMENTATION_CONFIG.audiences['is-customer'].test() && !usp.has('segment')) {
+    if (AUDIENCES['is-customer']() && !usp.has('segment')) {
       usp.append('segment', 'general');
       document.querySelector('.nav-brand a').href += `?${usp.toString()}`;
     }
@@ -1391,31 +1441,26 @@ async function loadMartech() {
   /* Move Adobe Tags here from delayed.js if Adobe Target is added and enabled */
 }
 
+const pluginContext = {
+  getAllMetadata,
+  getMetadata,
+  loadCSS,
+  loadScript,
+  sampleRUM,
+  toCamelCase,
+  toClassName,
+};
+
 /**
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
-  const instantSegments = [
-    ...document.head.querySelectorAll(`meta[property^="audience:"],meta[name^="audience-"]`),
-  ].map((meta) => {
-    const id = (
-      meta.name ? meta.name.substring(9) : meta.getAttribute('property').split(':')[1]
-    ).replace(/^-+|-+$/g, '');
-    return { id, url: meta.getAttribute('content') };
-  });
-  if (instantSegments.length && getBhrFeaturesCookie()) {
-    // eslint-disable-next-line import/no-cycle
-    const { runSegmentation } = await import('./experimentation.js');
-    const resolution = getMetadata('audience-resolution');
-    await runSegmentation(instantSegments, { ...SEGMENTATION_CONFIG, resolution });
-  }
-
-  const experiment = getMetadata('experiment');
-  const instantExperiment = getMetadata('instant-experiment');
-  if (instantExperiment || experiment) {
-    // eslint-disable-next-line import/no-cycle
-    const { runExperiment } = await import('./experimentation.js');
-    await runExperiment(experiment, instantExperiment);
+  if (getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length) {
+    // eslint-disable-next-line import/no-relative-packages
+    const { loadEager: runEager } = await import('../plugins/experience-decisioning/src/index.js');
+    await runEager.call(pluginContext, { audiences: AUDIENCES });
   }
 
   if (!window.hlx.lighthouse) loadMartech();
@@ -1424,10 +1469,10 @@ async function loadEager(doc) {
      we are loading here to avoid the delay "long flicker" before the test page is loaded.
      This type of test should be handled in Adobe Franklin experiments going forward.
    */
-  const $head = document.querySelector('head');
-  const $script = document.createElement('script');
-  $script.src = 'https://cdn-4.convertexperiments.com/js/10004673-10005501.js';
-  if(!SEGMENTATION_CONFIG.audiences['is-customer'].test()){
+  if(!AUDIENCES['is-customer']()){
+    const $head = document.querySelector('head');
+    const $script = document.createElement('script');
+    $script.src = 'https://cdn-4.convertexperiments.com/js/10004673-10005501.js';
   	$head.append($script);
   }
   /* This is the end of the temporary convert test code */
@@ -1603,10 +1648,15 @@ async function loadLazy(doc) {
     sessionStorage.setItem('lazy-styles-loaded', 'true');
   addFavIcon('https://www.bamboohr.com/favicon.ico');
 
-  if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === 'localhost') {
-    // eslint-disable-next-line import/no-cycle
-    import('../tools/preview/experimentation-preview.js');
+  if ((getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length)
+    && (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost'))) {
+    // eslint-disable-next-line import/no-relative-packages
+    const { loadLazy: runLazy } = await import('../plugins/experience-decisioning/src/index.js');
+    await runLazy.call(pluginContext, { audiences: AUDIENCES });
   }
+
   sampleRUM('lazy');
   await headerloaded;
   initConversionTracking(document);
